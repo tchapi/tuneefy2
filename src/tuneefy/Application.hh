@@ -62,7 +62,7 @@ class Application
     }, function () {
 
       /*
-        Lookup
+        Lookup (for a permalink)
       */
       $this->slim_app->get('/lookup', function() {
 
@@ -79,15 +79,14 @@ class Application
         $result = $engine->lookup($permalink); // A MusicalEntity or null
 
         if ($result === null) {
-          // We haven't found any match
           // TODO create result
           $this->slim_app->render(200, array(
-            'msg' => "No match was found for this permalink"
+            'msg' => "No match was found for this permalink",
+            'data' => null
           ));
         } else {
           $this->slim_app->render(200, array(
-            'msg' => "A match was found"
-            // DATA here : $result->toMap()
+            'data' => $result->toMap()
           ));
         }
         
