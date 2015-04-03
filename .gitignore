@@ -8,3 +8,7 @@ vendor/
 # Vagrant stuff
 .vagrant
 Vagrantfile
+
+# Config files
+parameters.yml
+platforms.yml
