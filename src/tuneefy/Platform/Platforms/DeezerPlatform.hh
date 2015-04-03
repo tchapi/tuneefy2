@@ -10,7 +10,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
   
   const string NAME = "Deezer";
 
-  public function hasPermalink(string $permalink) : bool
+  public function hasPermalink(string $permalink): bool
   {
     return (strpos($permalink, "deezer.") !== false);
   }
