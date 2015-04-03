@@ -11,5 +11,7 @@
     "autoload": {
         "psr-4": { "": "src/" }
     },
-    "require": {}
+    "require": {
+        "symfony/yaml": "~2.6"
+    }
 }

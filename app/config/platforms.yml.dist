@@ -1,0 +1,31 @@
+platforms:
+  deezer:
+    class: tuneefy\Platform\DeezerPlatform
+    capabilities:
+      track_search: true
+      album_search: true
+      lookup: true
+    key: ""
+    secret: ""
+    default: true
+    order: 1
+  spotify:
+    class: tuneefy\Platform\SpotifyPlatform
+    capabilities:
+      track_search: true
+      album_search: true
+      lookup: true
+    key: ""
+    secret: ""
+    default: true
+    order: 2
+  qobuz:
+    class: tuneefy\Platform\QobuzPlatform
+    capabilities:
+      track_search: true
+      album_search: true
+      lookup: true
+    key: ""
+    secret: ""
+    default: true
+    order: 3
