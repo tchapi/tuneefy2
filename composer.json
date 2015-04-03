@@ -12,6 +12,7 @@
         "psr-4": { "": "src/" }
     },
     "require": {
-        "symfony/yaml": "~2.6"
+        "symfony/yaml": "~2.6",
+        "slim/slim": "~2.6"
     }
 }
