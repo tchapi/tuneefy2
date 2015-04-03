@@ -43,24 +43,22 @@ class CustomViewHandler extends View
     public int $encodingOptions = 0;
 
     /* This is a hack : the first parameter should be the template */
-    public function render(int $status = 200, ?array<string> $data = NULL): mixed
+    public function render(int $status = 200): void
     {
 
         $app = Slim::getInstance();
         $response = $this->all();
         
-        // Handle custom return type
-        $alt = $app->request->params('alt');
-
         // Remove error flag if no error
         if (!$this->has('error') || $this->get('error') === false) {
             unset($response['error']);
         }
         
         // Append status code to response
-        $response['status'] = $status;
+        // $response['status'] = $status;
 
         // Add flash messages
+        /*
         if(isset($this->data->flash) && is_object($this->data->flash)){
             $flash = $this->data->flash->getMessages();
             if (count($flash) > 0) {
@@ -69,18 +67,32 @@ class CustomViewHandler extends View
                 unset($response['flash']);
             }
         }
+        */
+        unset($response['flash']);
         
         $app->response()->status($status);
-        $app->response()->header('Content-Type', 'application/json;charset=UTF-8');
 
-        $jsonp_callback = $app->request->get('callback', null);
+        // Handle custom return type, default to JSON
+        $alt = $app->request->params('alt', 'json');
+        if ($alt === "xml") {
+            
+            $app->response()->header('Content-Type', 'application/xml;charset=UTF-8');
+            // TODO
+            $app->response()->body('<?xml version="1.0" encoding="UTF-8"?><msg></msg>');
 
-        if($jsonp_callback !== null){
-            $app->response()->body($jsonp_callback.'('.json_encode($response, $this->encodingOptions).')');
-        } else {
-            $app->response()->body(json_encode($response, $this->encodingOptions));
+        } else if ($alt === "json"){
+
+            $app->response()->header('Content-Type', 'application/json;charset=UTF-8');
+            $jsonp_callback = $app->request->get('callback', null);
+
+            if($jsonp_callback !== null){
+                $app->response()->body($jsonp_callback.'('.json_encode($response, $this->encodingOptions).')');
+            } else {
+                $app->response()->body(json_encode($response, $this->encodingOptions));
+            }
+
         }
-        
+
         $app->stop();
     }
 }
