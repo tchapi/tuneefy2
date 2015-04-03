@@ -1,0 +1,12 @@
+{
+    "name": "tchap/tuneefy",
+    "description": "tuneefy is a unified way to share music with your friends, over various online music services",
+    "license": "CC BY-NC",
+    "authors": [
+        {
+            "name": "tchapi",
+            "email": "regbasket@gmail.com"
+        }
+    ],
+    "require": {}
+}
