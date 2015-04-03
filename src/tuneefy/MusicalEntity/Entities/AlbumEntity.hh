@@ -1,6 +1,6 @@
 <?hh // strict
 
-namespace tuneefy\MusicalEntity\Entity;
+namespace tuneefy\MusicalEntity\Entities;
 
 use tuneefy\MusicalEntity\MusicalEntity;
 
@@ -8,7 +8,7 @@ class AlbumEntity extends MusicalEntity
 {
 
   const string TYPE = "album";
-  
+
   private string $name;
   private string $artist;
   private string $cover;

@@ -1,15 +1,15 @@
 <?hh // strict
 
-namespace tuneefy\MusicalEntity\Entity;
+namespace tuneefy\MusicalEntity\Entities;
 
 use tuneefy\MusicalEntity\MusicalEntity,
-    tuneefy\MusicalEntity\Entity\AlbumEntity;
+    tuneefy\MusicalEntity\Entities\AlbumEntity;
 
 class TrackEntity extends MusicalEntity
 {
 
   const string TYPE = "track";
-  
+
   private string $track_title;
   private AlbumEntity $album;
 
