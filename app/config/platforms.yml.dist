@@ -1,7 +1,10 @@
 platforms:
   deezer:
     class: tuneefy\Platform\DeezerPlatform
-    capabilities:
+    enable:
+      api: true
+      website: true
+    capabities:
       track_search: true
       album_search: true
       lookup: true
@@ -11,7 +14,10 @@ platforms:
     order: 1
   spotify:
     class: tuneefy\Platform\SpotifyPlatform
-    capabilities:
+    enable:
+      api: true
+      website: true
+    capabities:
       track_search: true
       album_search: true
       lookup: true
@@ -21,7 +27,10 @@ platforms:
     order: 2
   qobuz:
     class: tuneefy\Platform\QobuzPlatform
-    capabilities:
+    enable:
+      api: true
+      website: true
+    capabities:
       track_search: true
       album_search: true
       lookup: true
@@ -29,3 +38,146 @@ platforms:
     secret: ""
     default: true
     order: 3
+  last_fm:
+    class: tuneefy\Platform\LastFMPlatform
+    enable:
+      api: true
+      website: true
+    capabities:
+      track_search: true
+      album_search: true
+      lookup: true
+    key: ""
+    secret: ""
+    default: true
+    order: 4
+  grooveshark:
+    class: tuneefy\Platform\GroovesharkPlatform
+    enable:
+      api: true
+      website: true
+    capabities:
+      track_search: true
+      album_search: true
+      lookup: true
+    key: ""
+    secret: ""
+    default: true
+    order: 5
+  soundcloud:
+    class: tuneefy\Platform\SoundcloudPlatform
+    enable:
+      api: true
+      website: true
+    capabities:
+      track_search: true
+      album_search: false
+      lookup: true
+    key: ""
+    secret: ""
+    default: false
+    order: 6
+  hypemachine:
+    class: tuneefy\Platform\HypemachinePlatform
+    enable:
+      api: true
+      website: true
+    capabities:
+      track_search: true
+      album_search: false
+      lookup: true
+    key: ""
+    secret: ""
+    default: false
+    order: 7
+  youtube:
+    class: tuneefy\Platform\YoutubePlatform
+    enable:
+      api: true
+      website: true
+    capabities:
+      track_search: true
+      album_search: false
+      lookup: true
+    key: ""
+    secret: ""
+    default: false
+    order: 8
+  mixcloud:
+    class: tuneefy\Platform\MixcloudPlatform
+    enable:
+      api: true
+      website: true
+    capabities:
+      track_search: true
+      album_search: false
+      lookup: true
+    key: ""
+    secret: ""
+    default: false
+    order: 9
+  itunes:
+    class: tuneefy\Platform\ItunesPlatform
+    enable:
+      api: true
+      website: true
+    capabities:
+      track_search: true
+      album_search: true
+      lookup: false
+    key: ""
+    secret: ""
+    default: true
+    order: 10
+  rdio:
+    class: tuneefy\Platform\RdioPlatform
+    enable:
+      api: true
+      website: true
+    capabities:
+      track_search: true
+      album_search: true
+      lookup: true
+    key: ""
+    secret: ""
+    default: true
+    order: 11
+  xbox:
+    class: tuneefy\Platform\XboxPlatform
+    enable:
+      api: true
+      website: true
+    capabities:
+      track_search: true
+      album_search: true
+      lookup: true
+    key: ""
+    secret: ""
+    default: true
+    order: 12
+  beats:
+    class: tuneefy\Platform\BeatsPlatform
+    enable:
+      api: true
+      website: true
+    capabities:
+      track_search: true
+      album_search: true
+      lookup: true
+    key: ""
+    secret: ""
+    default: true
+    order: 13
+  tidal:
+    class: tuneefy\Platform\TidalPlatform
+    enable:
+      api: false
+      website: false
+    capabities:
+      track_search: false
+      album_search: false
+      lookup: false
+    key: ""
+    secret: ""
+    default: false
+    order: 14
