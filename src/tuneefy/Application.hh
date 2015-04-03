@@ -41,7 +41,7 @@ class Application
     }
 
     // TODO : what do we do with these arrays now ?
-     // - convert them to map
+     // - convert them to maps ?
      // - store in object
      // - create platform instances
   }

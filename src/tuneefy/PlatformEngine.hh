@@ -2,14 +2,17 @@
 
 namespace tuneefy;
 
-use tuneefy\MusicalEntity\MusicalEntity;
+use tuneefy\MusicalEntity\MusicalEntity,
+    tuneefy\MusicalEntity\Entities\TrackEntity,
+    tuneefy\MusicalEntity\Entities\AlbumEntity;
 
 class PlatformEngine
 {
 
   public function lookup(string $permalink): ?MusicalEntity
   {
-    return null;
+    $result = new TrackEntity(); // or new AlbumEntity() TODO according to the result
+    return $result;
   }
 
   public function search(string $query): ?Vector<MusicalEntity>
