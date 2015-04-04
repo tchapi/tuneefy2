@@ -12,7 +12,7 @@ abstract class MusicalEntity implements MusicalEntityInterface
   public function toMap(): Map<string,mixed>
   {
     $result = Map {};
-    $result->add(Pair { "type", self::TYPE});
+    $result->add(Pair {"type", self::TYPE});
     return  $result;
   }
 
