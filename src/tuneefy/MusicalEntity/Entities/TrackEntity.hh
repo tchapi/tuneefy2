@@ -13,19 +13,19 @@ class TrackEntity extends MusicalEntity
   private string $track_title;
   private AlbumEntity $album;
 
-  public function __construct()
+  public function __construct(string $track_title, AlbumEntity $album)
   {
-    $this->track_title = "";
-    $this->album = new AlbumEntity();
+    $this->track_title = $track_title;
+    $this->album = $album;
   }
 
   public function toMap(): Map<string,mixed>
   {
 
     $result = Map {};
-    $result->add(Pair { "type", self::TYPE});
-    $result->add(Pair { "title", $this->track_title});
-    $result->add(Pair { "album", $this->album->toMap()->remove("type")}); // Do not type the subresult
+    $result->add(Pair {"type", self::TYPE});
+    $result->add(Pair {"title", $this->track_title});
+    $result->add(Pair {"album", $this->album->toMap()->remove("type")}); // Do not type the subresult
 
     return $result;
   }
