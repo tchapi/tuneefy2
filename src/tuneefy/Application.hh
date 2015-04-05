@@ -13,8 +13,8 @@ use tuneefy\PlatformEngine;
 class Application
 {
 
-  const string APP_PARAMETERS_PATH = "config/parameters.yml";
-  const string APP_PLATFORMS_PATH  = "config/platforms.yml";
+  const string APP_PARAMETERS_PATH = "../app/config/parameters.yml";
+  const string APP_PLATFORMS_PATH  = "../app/config/platforms.yml";
 
   private Slim $slim_app;
   private PlatformEngine $engine;
@@ -94,12 +94,10 @@ class Application
         if ($result === null) {
           // TODO create result
           $this->slim_app->render(200, array(
-            'msg' => "No match was found for this permalink",
-            'data' => null
+            'msg' => "No match was found for this permalink"
           ));
         } else {
           $this->slim_app->render(200, array(
-            'msg' => "Success",
             'data' => $result
           ));
         }
@@ -120,6 +118,41 @@ class Application
         // TODO
       });
 
+    });
+
+    /*
+      The sharing page
+    */
+    $this->slim_app->get(':type/:id', function(string $type, int $id) {
+      // TODO
+    });
+
+    /*
+      Listen to a musical entity => goes to the platform link
+    */
+    $this->slim_app->get(':type/:id/listen/:platform', function(string $type, int $id, string $platform) {
+      // TODO
+    });
+
+    /*
+      The home page
+    */
+    $this->slim_app->get('/', function() {
+      // TODO
+    });
+
+    /*
+      The about page
+    */
+    $this->slim_app->get('/about', function() {
+      // TODO
+    });
+
+    /*
+      The trends page
+    */
+    $this->slim_app->get('/trends', function() {
+      // TODO
     });
 
     return $this;
