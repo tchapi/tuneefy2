@@ -13,7 +13,7 @@ use tuneefy\Platform\Platform,
 class PlatformEngine
 {
 
-  private Map<string,Platform> $platforms = Map {};
+  private Map<string,Platform> $platforms;
 
   public function __construct()
   {
