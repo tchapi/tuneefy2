@@ -15,6 +15,7 @@ class AlbumEntity extends MusicalEntity
 
   public function __construct(string $title, string $artist, string $cover)
   {
+    parent::__construct();
     $this->title = $title;
     $this->artist = $artist;
     $this->cover = $cover;
@@ -22,7 +23,6 @@ class AlbumEntity extends MusicalEntity
 
   public function toMap(): Map<string,mixed>
   {
-
     $result = Map {};
     $result->add(Pair {"type", self::TYPE});
     $result->add(Pair {"title", $this->title});
