@@ -4,24 +4,55 @@ namespace tuneefy;
 
 use tuneefy\MusicalEntity\MusicalEntity,
     tuneefy\MusicalEntity\Entities\TrackEntity,
-    tuneefy\MusicalEntity\Entities\AlbumEntity;
+    tuneefy\MusicalEntity\Entities\AlbumEntity,
+    tuneefy\Platform\WebStreamingPlatformInterface;
+
+use tuneefy\Platform\Platform,
+    tuneefy\Platform\Platforms\DeezerPlatform;
 
 class PlatformEngine
 {
 
-  public function lookup(string $permalink): ?MusicalEntity
+  private Map<string,Platform> $platforms = Map {};
+
+  public function __construct()
   {
-    $result = new TrackEntity(); // or new AlbumEntity() TODO according to the result
-    return $result;
+    $this->platforms = Map {
+      "deezer" => DeezerPlatform::getInstance(),
+      // More to come here
+    };
+  }
+
+  public function getPlatformByTag(string $tag): ?Platform
+  {
+    return $this->platforms->get($tag);
+  }
+  
+  public function lookup(string $permalink): ?Map<string,mixed>
+  { 
+    // Which platform is this permalink from ?
+    $platform = null;
+    foreach ($this->platforms as $p) {
+      if ($p instanceof WebStreamingPlatformInterface && $p->hasPermalink($permalink)){
+        $platform = $p; break;
+      }
+    }
+
+    if ($platform === null) { return null; }
+
+    // Initiate a lookup on this platform
+    return $platform->expandPermalink($permalink);
   }
 
   public function search(string $query): ?Vector<MusicalEntity>
   {
+    // TODO
     return null;
   }
 
   public function aggregate(string $query): ?Vector<MusicalEntity>
   {
+    // TODO
     return null;
   }
 }
