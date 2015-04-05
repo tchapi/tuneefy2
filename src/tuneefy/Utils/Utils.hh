@@ -36,4 +36,12 @@ class Utils
     }
   }
 
+  /*
+    Removes a bom from a string
+  */
+  public function removeBOM(string $string): string
+  {
+    $bom = pack('H*','EFBBBF');
+    return preg_replace("/^$bom/", '', $string);
+  }
 }
