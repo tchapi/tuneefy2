@@ -15,6 +15,20 @@ abstract class Platform implements GeneralPlatformInterface
   const string REGEX_FULLSTRING = "[a-zA-Z0-9%\+-\s\_\.]*";
   const string REGEX_NUMERIC_ID = "[0-9]*";
 
+  // Helper constants for API calls
+  const int LOOKUP_TRACK = 0;
+  const int LOOKUP_ALBUM = 1;
+  const int LOOKUP_ARTIST = 2;
+
+  const int SEARCH_TRACK = 3;
+  const int SEARCH_ALBUM = 4;
+  const int SEARCH_ARTIST = 5;
+
+  const string METHOD_GET = "GET";
+  const string METHOD_POST = "POST";
+
+  const int LIMIT = 10;
+
   protected bool $default;
 
   protected Map<string, bool> $enables;
@@ -118,5 +132,7 @@ abstract class Platform implements GeneralPlatformInterface
   {
     return $this->capabilities['lookup'];
   }
+
+  abstract public function fetch(int $type, string $query): ?Map<string, mixed>;
 
 }
