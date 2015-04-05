@@ -133,6 +133,57 @@ abstract class Platform implements GeneralPlatformInterface
     return $this->capabilities['lookup'];
   }
 
-  abstract public function fetch(int $type, string $query): ?Map<string, mixed>;
+  protected function fetch(int $type, string $query, ...): ?Map<string, mixed>
+  {
+
+    $url = $this->endpoints->get($type);
+    $data = $this->search_options->zip(Map {$this->search_term => $query});
+
+
+    if (self::NEEDS_OAUTH) {
+      // TODO
+    }
+
+    $ch = curl_init();
+    curl_setopt_array($ch, array(
+        CURLOPT_RETURNTRANSFER => 1,
+        CURLOPT_HEADER => 0
+    ));
+
+    if (self::API_METHOD === Platform::METHOD_GET) {
+      curl_setopt($ch, CURLOPT_URL, $url .'?'. http_build_query($data));
+    } else if (self::API_METHOD === Platform::METHOD_POST) {
+      curl_setopt($ch, CURLOPT_URL, $url);
+      curl_setopt($ch, CURLOPT_POST, 1);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    }
+
+    $response = curl_exec($ch);
+    // Close request to clear up some resources
+    curl_close($ch);
+
+    if ($response === false) {
+      // Error in the request, we should gracefully fail returning null
+      return null;
+    } else {
+
+      // PROBABLY NOT NECESSARY NOW THAT WE USE cURL ?
+      // $mustUnchunk = false;
+      //   if (strpos(strtolower($result), "transfer-encoding: chunked") !== FALSE) {
+      //       $mustUnchunk = true;
+      //   }
+
+      //   // Split the result header from the content
+      //   $result = explode("\r\n\r\n", $result, 2);
+      //   $result = isset($result[1]) ? $result[1] : null;
+
+      //   if ($mustUnchunk === true) {
+      //     $result = self::unchunkHttp11($result);
+      //   }
+
+      return $response;
+    }
+
+  }
 
 }
