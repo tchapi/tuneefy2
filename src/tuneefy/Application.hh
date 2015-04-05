@@ -8,8 +8,7 @@ use Symfony\Component\Yaml\Yaml,
     tuneefy\Utils\CustomViewHandler;
 
 // Local classes
-use tuneefy\MusicalEntity\MusicalEntity,
-    tuneefy\PlatformEngine;
+use tuneefy\PlatformEngine;
 
 class Application
 {
@@ -18,10 +17,12 @@ class Application
   const string APP_PLATFORMS_PATH  = "config/platforms.yml";
 
   private Slim $slim_app;
+  private PlatformEngine $engine;
 
   public function __construct()
   {
     $this->slim_app = new Slim();
+    $this->engine = new PlatformEngine();
   }
 
   public function run(): void
@@ -32,18 +33,31 @@ class Application
   public function configure(): mixed
   {
 
+    $platforms = null; $parameters = null;
     try {
       $parameters = Yaml::parse(file_get_contents(self::APP_PARAMETERS_PATH));
       $platforms  = Yaml::parse(file_get_contents(self::APP_PLATFORMS_PATH));
     } catch (\Exception $e) {
       // TODO  : translate / template
-      $this->slim_app->halt(500, "No config file found.");
+      $this->slim_app->halt(500, "No config file found");
     }
 
-    // TODO : what do we do with these arrays now ?
-     // - convert them to maps ?
-     // - store in object
-     // - create platform instances
+    if ($platforms === null || $platforms['platforms'] === null || $parameters === null) {
+      // TODO  : translate / template
+      $this->slim_app->halt(500, "Bad config files");
+      return; // This is to make the HH TypeChecker happy
+    }
+
+    foreach ($platforms['platforms'] as $key => $platform)
+    {
+      $p = $this->engine->getPlatformByTag($key);
+      if ($p === null) { continue; }
+
+      $p->setEnables(new Map($platform['enable']))
+        ->setCapabilities(new Map($platform['capabilities']))
+        ->setCredentials($platform['key'],$platform['secret']);
+    }
+
   }
 
   public function prepare(): mixed
@@ -75,8 +89,7 @@ class Application
           $this->error("Missing or empty parameter : q (permalink)");
         }
 
-        $engine = new PlatformEngine();
-        $result = $engine->lookup($permalink); // A MusicalEntity or null
+        $result = $this->engine->lookup($permalink); // A MusicalEntity or null
 
         if ($result === null) {
           // TODO create result
@@ -86,7 +99,8 @@ class Application
           ));
         } else {
           $this->slim_app->render(200, array(
-            'data' => $result->toMap()
+            'msg' => "Success",
+            'data' => $result
           ));
         }
         
