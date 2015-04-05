@@ -89,7 +89,7 @@ class Application
           $this->error("Missing or empty parameter : q (permalink)");
         }
 
-        $result = $this->engine->lookup($permalink); // A MusicalEntity or null
+        $result = $this->engine->lookup($permalink); // ?Map<string,mixed>
 
         if ($result === null) {
           // TODO create result
