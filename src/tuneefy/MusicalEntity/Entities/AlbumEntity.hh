@@ -28,7 +28,9 @@ class AlbumEntity extends MusicalEntity
     $result->add(Pair {"title", $this->title});
     $result->add(Pair {"artist", $this->artist});
     $result->add(Pair {"cover", $this->cover});
-    $result->add(Pair {"links", $this->links});
+    if ($this->countLinks() !== 0) {
+      $result->add(Pair {"links", $this->links});
+    }
 
     return $result;
   }
