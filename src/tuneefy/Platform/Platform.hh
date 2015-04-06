@@ -2,7 +2,8 @@
 
 namespace tuneefy\Platform;
 
-use tuneefy\Platform\GeneralPlatformInterface;
+use tuneefy\Platform\GeneralPlatformInterface,
+    tuneefy\Utils\Utils;
 
 abstract class Platform implements GeneralPlatformInterface
 {
@@ -37,6 +38,7 @@ abstract class Platform implements GeneralPlatformInterface
   protected string $key;
   protected string $secret;
 
+  // Redeclared in child classes
   const string API_ENDPOINT = "";
   const string API_METHOD = Platform::METHOD_GET;
   const bool NEEDS_OAUTH = false;
@@ -177,6 +179,9 @@ abstract class Platform implements GeneralPlatformInterface
 
     $response = curl_exec($ch);
     curl_close($ch);
+
+    // For some platforms
+    $response = Utils::removeBOM($response);
 
     if ($response === false) {
       // Error in the request, we should gracefully fail returning null
