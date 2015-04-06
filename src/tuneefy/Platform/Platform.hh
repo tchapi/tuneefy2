@@ -3,6 +3,7 @@
 namespace tuneefy\Platform;
 
 use tuneefy\Platform\GeneralPlatformInterface,
+    tuneefy\MusicalEntity\MusicalEntity,
     tuneefy\Utils\Utils;
 
 abstract class Platform implements GeneralPlatformInterface
@@ -192,5 +193,7 @@ abstract class Platform implements GeneralPlatformInterface
     }
 
   }
+
+  abstract public function search(int $type, string $query, int $limit): ?Vector<Map<string,mixed>>;
 
 }
