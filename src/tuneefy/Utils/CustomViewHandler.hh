@@ -42,7 +42,6 @@ class CustomViewHandler extends View
      */
     public int $encodingOptions = 0;
 
-    /* This is a hack : the first parameter should be the template */
     public function render(int $status = 200): void
     {
 

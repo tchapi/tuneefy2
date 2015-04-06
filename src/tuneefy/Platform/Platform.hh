@@ -23,7 +23,7 @@ abstract class Platform implements GeneralPlatformInterface
 
   const int SEARCH_TRACK = 3;
   const int SEARCH_ALBUM = 4;
-  const int SEARCH_ARTIST = 5;
+  //const int SEARCH_ARTIST = 5;
 
   const string METHOD_GET = "GET";
   const string METHOD_POST = "POST";

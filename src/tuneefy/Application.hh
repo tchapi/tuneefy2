@@ -85,7 +85,6 @@ class Application
         // Permalink could be null, but we don't accept that
         if ($permalink === null || $permalink === ""){
           // TODO translation
-          // TODO : output json/xml with error : missing parameter
           $this->error("Missing or empty parameter : q (permalink)");
         }
 
