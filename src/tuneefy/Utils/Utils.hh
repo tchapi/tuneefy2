@@ -9,7 +9,7 @@ class Utils
     Sanitizes a string 
     TODO : add doc here
   */
-  public function sanitize(string $string) : string
+  public static function sanitize(string $string) : string
   {
     return strtolower(preg_replace('/[^\w\-]+/u', '-', $string));
   }
@@ -17,7 +17,7 @@ class Utils
   /*
     Returns an ellipsed version of $text
   */
-  public function ellipsis(string $text, int $max = 100, string $append = "…" ) : string
+  public static function ellipsis(string $text, int $max = 100, string $append = "…" ) : string
   {
     if (strlen($text) <= $max) {
       return $text;
@@ -39,7 +39,7 @@ class Utils
   /*
     Removes a bom from a string
   */
-  public function removeBOM(string $string): string
+  public static function removeBOM(string $string): string
   {
     $bom = pack('H*','EFBBBF');
     return preg_replace("/^$bom/", '', $string);

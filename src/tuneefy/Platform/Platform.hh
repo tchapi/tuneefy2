@@ -180,13 +180,12 @@ abstract class Platform implements GeneralPlatformInterface
     $response = curl_exec($ch);
     curl_close($ch);
 
-    // For some platforms
-    $response = Utils::removeBOM($response);
-
     if ($response === false) {
       // Error in the request, we should gracefully fail returning null
       return null;
     } else {
+      // For some platforms
+      $response = Utils::removeBOM($response);
       // If there is a problem with the data, we want to return null to gracefully fail as well :
       // "NULL is returned if the json cannot be decoded or if the encoded data is deeper than the recursion limit."
       return json_decode($response, false);
