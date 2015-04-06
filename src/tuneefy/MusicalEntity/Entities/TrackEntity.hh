@@ -26,6 +26,7 @@ class TrackEntity extends MusicalEntity
     $result->add(Pair {"type", self::TYPE});
     $result->add(Pair {"title", $this->track_title});
     $result->add(Pair {"album", $this->album->toMap()->remove("type")}); // Do not type the subresult
+    $result->add(Pair {"links", $this->links});
 
     return $result;
   }

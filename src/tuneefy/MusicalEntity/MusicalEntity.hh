@@ -23,7 +23,8 @@ abstract class MusicalEntity implements MusicalEntityInterface
     return  $result;
   }
 
-  /* Links getter and setter
+  /*
+    Links getter and setter
   */
   public function addLink(string $link): this
   {
