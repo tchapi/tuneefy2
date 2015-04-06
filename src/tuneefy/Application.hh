@@ -1,14 +1,23 @@
-<?hh // strict
+<?hh // partial
+
+  /*
+  
+    Partial and not strict type checking here since we are 
+    using classes written in PHP, not in Hack :
+
+    http://docs.hhvm.com/manual/en/hack.modes.strict.php
+
+  */
 
 namespace tuneefy;
 
 // Vendor - This is written in PHP
 use Symfony\Component\Yaml\Yaml,
-    Slim\Slim,
-    tuneefy\Utils\CustomViewHandler;
+    Slim\Slim;
 
 // Local classes
-use tuneefy\PlatformEngine;
+use tuneefy\PlatformEngine,
+    tuneefy\Utils\CustomViewHandler;
 
 class Application
 {
