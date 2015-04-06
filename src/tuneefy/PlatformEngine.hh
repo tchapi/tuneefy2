@@ -18,6 +18,7 @@ class PlatformEngine
   public function __construct()
   {
     $this->platforms = Map {
+      // Keys must match class TAG (constant)
       "deezer" => DeezerPlatform::getInstance(),
       // More to come here
     };

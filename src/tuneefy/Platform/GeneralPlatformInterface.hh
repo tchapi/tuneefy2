@@ -7,7 +7,7 @@ interface GeneralPlatformInterface
 
   // Basics
   public function getName(): string;
-  public function getSafeName(): string;
+  public function getTag(): string;
   public function getColor(): string;
 
   // Enabled & default

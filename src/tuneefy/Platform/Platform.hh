@@ -9,7 +9,7 @@ abstract class Platform implements GeneralPlatformInterface
 {
 
   const string NAME = "";
-  const string SAFE_NAME = "";
+  const string TAG = "";
   const string COLOR = "FFFFFF";
 
   // Helper Regexes
@@ -80,9 +80,9 @@ abstract class Platform implements GeneralPlatformInterface
     return static::NAME;
   }
 
-  public function getSafeName(): string
+  public function getTag(): string
   {
-    return static::SAFE_NAME;
+    return static::TAG;
   }
 
   public function getColor(): string
