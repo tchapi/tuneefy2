@@ -54,23 +54,12 @@ class CustomViewHandler extends View
         }
         
         // Append status code to response
-        // $response['status'] = $status;
-
-        // Add flash messages
-        /*
-        if(isset($this->data->flash) && is_object($this->data->flash)){
-            $flash = $this->data->flash->getMessages();
-            if (count($flash) > 0) {
-                $response['flash'] = $flash;   
-            } else {
-                unset($response['flash']);
-            }
-        }
-        */
-        unset($response['flash']);
-        
+        $response['status'] = $status;
         $app->response()->status($status);
 
+        // Add/Remove other pairs
+        unset($response['flash']);
+        
         // Handle custom return type, default to JSON
         $alt = $app->request->params('alt', 'json');
         if ($alt === "xml") {
