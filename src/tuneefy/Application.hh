@@ -122,14 +122,14 @@ class Application
     /*
       The sharing page
     */
-    $this->slim_app->get(':type/:id', function(string $type, int $id) {
+    $this->slim_app->get('/:type/:id', function(string $type, int $id) {
       // TODO
     });
 
     /*
       Listen to a musical entity => goes to the platform link
     */
-    $this->slim_app->get(':type/:id/listen/:platform', function(string $type, int $id, string $platform) {
+    $this->slim_app->get('/:type/:id/listen/:platform', function(string $type, int $id, string $platform) {
       // TODO
     });
 
