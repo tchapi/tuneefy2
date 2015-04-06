@@ -75,17 +75,17 @@ abstract class Platform implements GeneralPlatformInterface
 
   public function getName(): string
   {
-    return self::NAME;
+    return static::NAME;
   }
 
   public function getSafeName(): string
   {
-    return self::SAFE_NAME;
+    return static::SAFE_NAME;
   }
 
   public function getColor(): string
   {
-    return self::COLOR;
+    return static::COLOR;
   }
 
   // Credentials
