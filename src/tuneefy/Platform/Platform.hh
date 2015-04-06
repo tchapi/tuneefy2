@@ -141,14 +141,23 @@ abstract class Platform implements GeneralPlatformInterface
     return $this->capabilities['lookup'];
   }
 
-  protected function fetch(int $type, string $query, ...): ?Map<string, mixed>
+  protected function fetch(int $type, string $query, ...): ?\stdClass
   {
 
     $url = $this->endpoints->get($type);
-    $data = $this->search_options->zip(Map {$this->search_term => $query});
 
-
-    if (self::NEEDS_OAUTH) {
+    if ($this->terms->get($type) === null) {
+      // See: https://github.com/facebook/hhvm/issues/3725
+      // The format string should be litteral but it's nearly impossible to achieve here
+      // UNSAFE
+      $url = sprintf($url, $query);
+      $data = $this->options->get($type);
+    } else {
+      $merge = (Map<?string,mixed> $a,$b) ==> $a->setAll($b); // Lambda function to merge a Map and an ImmMap
+      $data = $merge(Map{ $this->terms->get($type) => $query}, $this->options->get($type));
+    }
+    
+    if (static::NEEDS_OAUTH) {
       // TODO
     }
 
@@ -158,38 +167,24 @@ abstract class Platform implements GeneralPlatformInterface
         CURLOPT_HEADER => 0
     ));
 
-    if (self::API_METHOD === Platform::METHOD_GET) {
-      curl_setopt($ch, CURLOPT_URL, $url .'?'. http_build_query($data));
-    } else if (self::API_METHOD === Platform::METHOD_POST) {
+    if (static::API_METHOD === Platform::METHOD_GET) {
+      curl_setopt($ch, CURLOPT_URL, $url .'?'. http_build_query($data)); // It's ok to have a trailing "?"
+    } else if (static::API_METHOD === Platform::METHOD_POST) {
       curl_setopt($ch, CURLOPT_URL, $url);
       curl_setopt($ch, CURLOPT_POST, 1);
       curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
     }
 
     $response = curl_exec($ch);
-    // Close request to clear up some resources
     curl_close($ch);
 
     if ($response === false) {
       // Error in the request, we should gracefully fail returning null
       return null;
     } else {
-
-      // PROBABLY NOT NECESSARY NOW THAT WE USE cURL ?
-      // $mustUnchunk = false;
-      //   if (strpos(strtolower($result), "transfer-encoding: chunked") !== FALSE) {
-      //       $mustUnchunk = true;
-      //   }
-
-      //   // Split the result header from the content
-      //   $result = explode("\r\n\r\n", $result, 2);
-      //   $result = isset($result[1]) ? $result[1] : null;
-
-      //   if ($mustUnchunk === true) {
-      //     $result = self::unchunkHttp11($result);
-      //   }
-
-      return $response;
+      // If there is a problem with the data, we want to return null to gracefully fail as well :
+      // "NULL is returned if the json cannot be decoded or if the encoded data is deeper than the recursion limit."
+      return json_decode($response, false);
     }
 
   }
