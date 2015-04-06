@@ -91,14 +91,9 @@ class Application
         $result = $this->engine->lookup($permalink); // ?Map<string,mixed>
 
         if ($result === null) {
-          // TODO create result
-          $this->slim_app->render(200, array(
-            'msg' => "No match was found for this permalink"
-          ));
+          $this->slim_app->render(200, array( 'msg' => "No match was found for this permalink" ));
         } else {
-          $this->slim_app->render(200, array(
-            'data' => $result
-          ));
+          $this->slim_app->render(200, array( 'data' => $result ));
         }
         
       });
@@ -106,8 +101,31 @@ class Application
       /*
         Search (on one platform only)
       */
-      $this->slim_app->get('/search/:platform', function(string $platform) {
-        // TODO
+      $this->slim_app->get('/search/:type/:platform', function(string $type, string $platform) {
+
+        $query = $this->slim_app->request->params('q');
+        $limit = $this->slim_app->request->params('limit');
+
+        if ($query === null || $query === ""){
+          // TODO translation
+          $this->error("Missing or empty parameter : q (query)");
+        }
+
+        $p = $this->engine->getPlatformByTag($platform);
+        if ($p === null){
+          // TODO translation
+          $this->error("Invalid parameter : platform '$platform' does not exist");
+          return; // This is to make the HH TypeChecker happy
+        }
+
+        $result = $this->engine->search($p, $type, $query, intval($limit)); // ?Vector<Map<string,mixed>>
+
+        if ($result === null) {
+          $this->slim_app->render(200, array( 'msg' => "No match was found for this search, on this platform" ));
+        } else {
+          $this->slim_app->render(200, array( 'data' => $result ));
+        }
+
       });
 
       /*

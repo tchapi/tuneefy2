@@ -45,10 +45,19 @@ class PlatformEngine
     return $platform->expandPermalink($permalink);
   }
 
-  public function search(string $query): ?Vector<MusicalEntity>
+  public function search(Platform $platform, string $type, string $query, int $limit): ?Vector<Map<string,mixed>>
   {
-    // TODO
-    return null;
+    switch ($type) {
+      case 'album':
+        $search_type = Platform::SEARCH_ALBUM;
+        break;
+      case 'track':
+      default:
+        $search_type = Platform::SEARCH_TRACK;
+        break;
+    }
+
+    return $platform->search($search_type, $query, $limit);
   }
 
   public function aggregate(string $query): ?Vector<MusicalEntity>
