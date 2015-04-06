@@ -44,4 +44,13 @@ class Utils
     $bom = pack('H*','EFBBBF');
     return preg_replace("/^$bom/", '', $string);
   }
+
+  /*
+    When a platform does not return a "score" in a search session,
+    we create a fake one using this function
+  */
+  public static function indexScore(int $index): float
+  {
+    return round(1/($index/10 +1), 2);
+  }
 }
