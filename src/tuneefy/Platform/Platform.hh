@@ -37,6 +37,14 @@ abstract class Platform implements GeneralPlatformInterface
   protected string $key;
   protected string $secret;
 
+  const string API_ENDPOINT = "";
+  const string API_METHOD = Platform::METHOD_GET;
+  const bool NEEDS_OAUTH = false;
+
+  protected ImmMap<int,?string> $endpoints = ImmMap {};
+  protected ImmMap<int,?string> $terms = ImmMap {};
+  protected ImmMap<int,ImmMap<string,mixed>> $options = ImmMap {};
+
   /**
    * The singleton instance of the class.
    */
