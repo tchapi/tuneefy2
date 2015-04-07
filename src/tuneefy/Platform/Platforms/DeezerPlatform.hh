@@ -113,10 +113,10 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
       
   }
 
-  public function search(int $type, string $query, int $limit): ?Vector<Map<string,mixed>>
+  public async function search(int $type, string $query, int $limit): Awaitable<?Vector<Map<string,mixed>>>
   {
   
-    $response = $this->fetch($type, $query);
+    $response = await $this->fetch($type, $query);
 
     if ($response === null || intval($response->total) === 0) {
       return null;

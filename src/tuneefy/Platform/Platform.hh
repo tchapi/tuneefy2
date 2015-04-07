@@ -4,7 +4,8 @@ namespace tuneefy\Platform;
 
 use tuneefy\Platform\GeneralPlatformInterface,
     tuneefy\MusicalEntity\MusicalEntity,
-    tuneefy\Utils\Utils;
+    tuneefy\Utils\Utils,
+    \HH\Asio;
 
 abstract class Platform implements GeneralPlatformInterface
 {
@@ -144,7 +145,7 @@ abstract class Platform implements GeneralPlatformInterface
     return $this->capabilities['lookup'];
   }
 
-  protected function fetch(int $type, string $query, ...): ?\stdClass
+  protected async function fetch(int $type, string $query, ...): Awaitable<?\stdClass>
   {
 
     $url = $this->endpoints->get($type);
@@ -178,7 +179,8 @@ abstract class Platform implements GeneralPlatformInterface
       curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
     }
 
-    $response = curl_exec($ch);
+    // http://docs.hhvm.com/manual/en/function.hack.hh.asio.curl-exec.php
+    $response = await Asio\curl_exec($ch);
     curl_close($ch);
 
     if ($response === false) {
@@ -194,6 +196,6 @@ abstract class Platform implements GeneralPlatformInterface
 
   }
 
-  abstract public function search(int $type, string $query, int $limit): ?Vector<Map<string,mixed>>;
+  abstract public function search(int $type, string $query, int $limit): Awaitable<?Vector<Map<string,mixed>>>;
 
 }

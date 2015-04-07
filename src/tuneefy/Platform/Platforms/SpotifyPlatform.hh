@@ -62,7 +62,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
     return null;
   }
 
-  public function search(int $type, string $query, int $limit): ?Vector<Map<string,mixed>>
+  public async function search(int $type, string $query, int $limit): Awaitable<?Vector<Map<string,mixed>>>
   {
     return null;
   }

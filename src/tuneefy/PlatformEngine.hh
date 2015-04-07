@@ -57,7 +57,7 @@ class PlatformEngine
         break;
     }
 
-    return $platform->search($search_type, $query, $limit);
+    return $platform->search($search_type, $query, $limit)->getWaitHandle()->join();
   }
 
   public function aggregate(string $query): ?Vector<MusicalEntity>
