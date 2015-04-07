@@ -113,7 +113,7 @@ class Application
         if ($result === null) {
           $this->slim_app->render(200, array( 'msg' => "No match was found for this permalink" ));
         } else {
-          $this->slim_app->render(200, array( 'data' => $result ));
+          $this->slim_app->render(200, array( 'data' => $result->toMap() ));
         }
         
       });
@@ -143,7 +143,7 @@ class Application
         if ($result === null) {
           $this->slim_app->render(200, array( 'msg' => "No match was found for this search on this platform" ));
         } else {
-          $this->slim_app->render(200, array( 'data' => $result ));
+          $this->slim_app->render(200, array( 'data' => $result->map($e ==> $e->toMap()) ));
         }
 
       });

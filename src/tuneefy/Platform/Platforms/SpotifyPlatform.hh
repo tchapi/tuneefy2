@@ -3,6 +3,7 @@
 namespace tuneefy\Platform\Platforms;
 
 use tuneefy\Platform\Platform,
+    tuneefy\Platform\PlatformResult,
     tuneefy\Platform\WebStreamingPlatformInterface,
     tuneefy\MusicalEntity\MusicalEntity,
     tuneefy\MusicalEntity\Entities\TrackEntity,
@@ -57,12 +58,12 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
     return (strpos($permalink, "spotify:") !== false || strpos($permalink, "open.spotify.") !== false || strpos($permalink, "play.spotify.") !== false);
   }
 
-  public function expandPermalink(string $permalink): ?Map<string,mixed>
+  public function expandPermalink(string $permalink): ?PlatformResult
   {
     return null;
   }
 
-  public async function search(int $type, string $query, int $limit): Awaitable<?Vector<Map<string,mixed>>>
+  public async function search(int $type, string $query, int $limit): Awaitable<?Vector<PlatformResult>>
   {
     return null;
   }

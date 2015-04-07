@@ -3,6 +3,7 @@
 namespace tuneefy\Platform;
 
 use tuneefy\Platform\GeneralPlatformInterface,
+    tuneefy\Platform\PlatformResult,
     tuneefy\MusicalEntity\MusicalEntity,
     tuneefy\Utils\Utils,
     \HH\Asio;
@@ -196,6 +197,6 @@ abstract class Platform implements GeneralPlatformInterface
 
   }
 
-  abstract public function search(int $type, string $query, int $limit): Awaitable<?Vector<Map<string,mixed>>>;
+  abstract public function search(int $type, string $query, int $limit): Awaitable<?Vector<PlatformResult>>;
 
 }

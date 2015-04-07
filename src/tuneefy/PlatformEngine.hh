@@ -8,6 +8,7 @@ use tuneefy\MusicalEntity\MusicalEntity,
     tuneefy\Platform\WebStreamingPlatformInterface;
 
 use tuneefy\Platform\Platform,
+    tuneefy\Platform\PlatformResult,
     tuneefy\Platform\Platforms\DeezerPlatform;
 
 class PlatformEngine
@@ -29,7 +30,7 @@ class PlatformEngine
     return $this->platforms->get($tag);
   }
   
-  public function lookup(string $permalink): ?Map<string,mixed>
+  public function lookup(string $permalink): ?PlatformResult
   { 
     // Which platform is this permalink from ?
     $platform = null;
@@ -45,7 +46,7 @@ class PlatformEngine
     return $platform->expandPermalink($permalink);
   }
 
-  public function search(Platform $platform, string $type, string $query, int $limit): ?Vector<Map<string,mixed>>
+  public function search(Platform $platform, string $type, string $query, int $limit): ?Vector<PlatformResult>
   {
     switch ($type) {
       case 'album':

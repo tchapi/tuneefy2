@@ -3,6 +3,7 @@
 namespace tuneefy\Platform\Platforms;
 
 use tuneefy\Platform\Platform,
+    tuneefy\Platform\PlatformResult,
     tuneefy\Platform\WebStreamingPlatformInterface,
     tuneefy\MusicalEntity\MusicalEntity,
     tuneefy\MusicalEntity\Entities\TrackEntity,
@@ -61,7 +62,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
     return (strpos($permalink, "deezer.") !== false);
   }
 
-  public function expandPermalink(string $permalink): ?Map<string,mixed>
+  public function expandPermalink(string $permalink): ?PlatformResult
   {
 
     $musical_entity = null;
@@ -102,18 +103,17 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
     }
   
     // Consolidate results
-    $result = Map {"query_words" => $query_words};
+    $metadata = Map {"query_words" => $query_words};
 
     if ($musical_entity !== null) {
-      $result->add(Pair {"musical_entity", $musical_entity->toMap()});
-      $result->add(Pair {"platform", $this->getName()});
+      $metadata->add(Pair {"platform", $this->getName()});
     }
 
-    return $result;
+    return new PlatformResult($metadata, $musical_entity);
       
   }
 
-  public async function search(int $type, string $query, int $limit): Awaitable<?Vector<Map<string,mixed>>>
+  public async function search(int $type, string $query, int $limit): Awaitable<?Vector<PlatformResult>>
   {
   
     $response = await $this->fetch($type, $query);
@@ -157,7 +157,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
       
       }
       
-      $musical_entities->add(Map { "musical_entity" => $musical_entity->toMap(), "score" => Utils::indexScore($i)});
+      $musical_entities->add(new PlatformResult(Map {"score" => Utils::indexScore($i)}, $musical_entity));
 
     }
     

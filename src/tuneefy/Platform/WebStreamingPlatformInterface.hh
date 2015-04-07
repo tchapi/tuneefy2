@@ -6,6 +6,6 @@ interface WebStreamingPlatformInterface
 {
 
   public function hasPermalink(string $permalink): bool;
-  public function expandPermalink(string $permalink): ?Map<string,mixed>;
+  public function expandPermalink(string $permalink): ?PlatformResult;
 
 }
