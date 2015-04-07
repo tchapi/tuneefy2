@@ -47,8 +47,13 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
   };
 
   // http://open.spotify.com/track/5jhJur5n4fasblLSCOcrTp
-  const string REGEX_SPOTIFY_ALL = "/(artist|album|track)(:|\/)(?P<item_id>[a-zA-Z0-9]*)$/";
-    
+  const string REGEX_SPOTIFY_ALL = "/(?P<type>artist|album|track)(:|\/)(?P<item_id>[a-zA-Z0-9]*)$/";
+    private ImmMap<string, int> $lookup_type_correspondance = ImmMap {
+      'track' => Platform::LOOKUP_TRACK,
+      'album' => Platform::LOOKUP_ALBUM,
+      'artist' => Platform::LOOKUP_ARTIST,
+    };
+
   // LOCAL files : http://open.spotify.com/local/hang+the+bastard/raw+sorcery/doomed+fucking+doomed/206
   const string REGEX_SPOTIFY_LOCAL = "/local\/(?P<artist_name>".Platform::REGEX_FULLSTRING.")\/(?P<album_name>".Platform::REGEX_FULLSTRING.")\/(?P<track_name>".Platform::REGEX_FULLSTRING.")\/[0-9]+$/";
     
@@ -60,7 +65,54 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
 
   public function expandPermalink(string $permalink): ?PlatformResult
   {
-    return null;
+
+    $musical_entity = null;
+    $query_words = Vector {$permalink};
+
+    $match = Map {};
+
+    if (preg_match(self::REGEX_SPOTIFY_ALL, $permalink, $match)) {
+      // We have a nicely formatted share url
+      
+      $object_type = $this->lookup_type_correspondance[$match['type']];
+      $response = $this->fetch($object_type, $match['item_id'])->getWaitHandle()->join(); // fetch() is async
+
+      if ($response === null || property_exists($response, 'error')) { return null; }
+
+      if ($object_type === Platform::LOOKUP_TRACK) {
+      
+        $musical_entity = new TrackEntity($response->name, new AlbumEntity($response->album->name, $response->album->artists[0]->name, $response->album->images[1]->url)); 
+        $musical_entity->addLink($response->external_urls->spotify);
+
+        $query_words = Vector {$response->artists[0]->name, $response->name};
+      
+      } else if ($object_type === Platform::LOOKUP_ALBUM) {
+      
+        $musical_entity = new AlbumEntity($response->name, $response->artists[0]->name, $response->images[1]->url);
+        $musical_entity->addLink($response->external_urls->spotify);
+        
+        $query_words = Vector {$response->artists[0]->name, $response->name};
+      
+      } else if ($object_type === Platform::LOOKUP_ARTIST) {
+      
+        $query_words = Vector {$response->artists[0]->name};
+        
+      }
+        
+    } else if (preg_match(self::REGEX_SPOTIFY_LOCAL, $permalink, $match)) {
+      // We have a nicely formatted local url, but can only retrieve query words
+      $query_words = Vector {$match['artist_name'], $match['track_name']};
+    }
+    
+    // Consolidate results
+    $metadata = Map {"query_words" => $query_words};
+
+    if ($musical_entity !== null) {
+      $metadata->add(Pair {"platform", $this->getName()});
+    }
+
+    return new PlatformResult($metadata, $musical_entity);
+
   }
 
   public async function search(int $type, string $query, int $limit): Awaitable<?Vector<PlatformResult>>
