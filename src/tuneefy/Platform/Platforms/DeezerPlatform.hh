@@ -77,8 +77,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
 
       $musical_entity = new TrackEntity($response->title, new AlbumEntity($response->album->title, $response->artist->name, $response->album->cover)); 
       $musical_entity->addLink($permalink);
-        
-      // We modify the query
+
       $query_words = Vector {$response->artist->name, $response->title};
       
     } else if (preg_match(self::REGEX_DEEZER_ALBUM, $permalink, $match)) {
@@ -90,7 +89,6 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
       $musical_entity = new AlbumEntity($response->title, $response->artist->name, $response->cover);
       $musical_entity->addLink($permalink);
 
-      // We just modify the query
       $query_words = Vector {$response->artist->name, $response->title};
       
     } else if (preg_match(self::REGEX_DEEZER_ARTIST, $permalink, $match)) {
