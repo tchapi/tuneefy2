@@ -13,6 +13,8 @@
     },
     "require": {
         "symfony/yaml": "~2.6",
-        "slim/slim": "~2.6"
+        "slim/slim": "~2.6",
+        "slim/views": "0.1.*",
+        "twig/twig": "~1.18"
     }
 }
