@@ -13,7 +13,8 @@ namespace tuneefy;
 
 // Vendor - This is written in PHP
 use Symfony\Component\Yaml\Yaml,
-    Slim\Slim;
+    Slim\Slim, 
+    Slim\Views\Twig;
 
 // Local classes
 use tuneefy\PlatformEngine,
@@ -30,7 +31,10 @@ class Application
 
   public function __construct()
   {
-    $this->slim_app = new Slim();
+    $this->slim_app = new Slim(array(
+        'view' => new Twig(),
+        'templates.path' => dirname(__FILE__) . '/../../app/templates'
+    ));
     $this->engine = new PlatformEngine();
   }
 
@@ -42,6 +46,13 @@ class Application
   public function configure(): mixed
   {
 
+    // Configure Twig
+    $view = $this->slim_app->view();
+    $view->parserOptions = array(
+        // 'cache' => dirname(__FILE__) . '/../../app/cache' // For Production
+    );
+
+    // Fetch config files
     $platforms = null; $parameters = null;
     try {
       $parameters = Yaml::parse(file_get_contents(self::APP_PARAMETERS_PATH));
@@ -149,15 +160,19 @@ class Application
     /*
       The sharing page
     */
-    $this->slim_app->get('/:type/:id', function(string $type, int $id) {
+    $this->slim_app->get('/:type/:id', function(string $type, string $id) {
       // TODO
+      $this->slim_app->render('item.html.twig', array('id' => $id, 'type' => $type));
     });
 
     /*
       Listen to a musical entity => goes to the platform link
     */
-    $this->slim_app->get('/:type/:id/listen/:platform', function(string $type, int $id, string $platform) {
+    $this->slim_app->get('/:type/:id/listen/:platform', function(string $type, string $id, string $platform) {
       // TODO
+
+      // Eventually, redirect to platform
+      $this->slim_app->redirect('http://the/link/on/the/platform', 303); // "See Other"
     });
 
     /*
@@ -165,6 +180,7 @@ class Application
     */
     $this->slim_app->get('/', function() {
       // TODO
+      $this->slim_app->render('home.html.twig');
     });
 
     /*
@@ -172,6 +188,7 @@ class Application
     */
     $this->slim_app->get('/about', function() {
       // TODO
+      $this->slim_app->render('about.html.twig');
     });
 
     /*
@@ -179,6 +196,7 @@ class Application
     */
     $this->slim_app->get('/trends', function() {
       // TODO
+      $this->slim_app->render('trends.html.twig');
     });
 
     return $this;
