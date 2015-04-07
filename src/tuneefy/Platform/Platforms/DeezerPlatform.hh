@@ -71,7 +71,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
 
     if (preg_match(self::REGEX_DEEZER_TRACK, $permalink, $match)) {
 
-      $response = $this->fetch(Platform::LOOKUP_TRACK, $match['track_id']);
+      $response = $this->fetch(Platform::LOOKUP_TRACK, $match['track_id'])->getWaitHandle()->join(); // fetch() is async
 
       if ($response === null || property_exists($response, 'error')) { return null; }
 
@@ -82,7 +82,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
       
     } else if (preg_match(self::REGEX_DEEZER_ALBUM, $permalink, $match)) {
      
-      $response = $this->fetch(Platform::LOOKUP_ALBUM, $match['album_id']);
+      $response = $this->fetch(Platform::LOOKUP_ALBUM, $match['album_id'])->getWaitHandle()->join(); // fetch() is async
 
       if ($response === null || property_exists($response, 'error')) { return null; }
 
@@ -93,7 +93,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
       
     } else if (preg_match(self::REGEX_DEEZER_ARTIST, $permalink, $match)) {
 
-      $response = $this->fetch(Platform::LOOKUP_ARTIST, $match['artist_id']);
+      $response = $this->fetch(Platform::LOOKUP_ARTIST, $match['artist_id'])->getWaitHandle()->join(); // fetch() is async
 
       if ($response !== null && !property_exists($response, 'error')) {
         $query_words = Vector {$response->name};
