@@ -121,7 +121,7 @@ class Application
       /*
         Search (on one platform only)
       */
-      $this->slim_app->get('/search/:type/:platform', function(string $type, string $platform) {
+      $this->slim_app->get('/search/:type/:platform_str', function(string $type, string $platform_str) {
 
         $query = $this->slim_app->request->params('q');
         $limit = $this->slim_app->request->params('limit');
@@ -131,17 +131,17 @@ class Application
           $this->error("Missing or empty parameter : q (query)");
         }
 
-        $p = $this->engine->getPlatformByTag($platform);
-        if ($p === null){
+        $platform = $this->engine->getPlatformByTag($platform_str);
+        if ($platform === null){
           // TODO translation
-          $this->error("Invalid parameter : platform '$platform' does not exist");
+          $this->error("Invalid parameter : platform '$platform_str' does not exist");
           return; // This is to make the HH TypeChecker happy
         }
 
-        $result = $this->engine->search($p, $type, $query, intval($limit)); // ?Vector<Map<string,mixed>>
+        $result = $this->engine->search($platform, $type, $query, intval($limit)); // ?Vector<Map<string,mixed>>
 
         if ($result === null) {
-          $this->slim_app->render(200, array( 'msg' => "No match was found for this search, on this platform" ));
+          $this->slim_app->render(200, array( 'msg' => "No match was found for this search on this platform" ));
         } else {
           $this->slim_app->render(200, array( 'data' => $result ));
         }
