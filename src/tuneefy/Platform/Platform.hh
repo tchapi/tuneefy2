@@ -53,7 +53,7 @@ abstract class Platform implements GeneralPlatformInterface
   /**
    * The singleton instance of the class.
    */
-  protected static ?Platform $instance = null;
+  protected static Map<string,Platform> $instances = Map {};
 
   /**
    * Protected constructor to ensure there are no instantiations.
@@ -69,13 +69,17 @@ abstract class Platform implements GeneralPlatformInterface
 
   /**
    * Retrieves the singleton instance.
+   * We need a Map of instances otherwise
+   * only one instance of child class will
+   * we created
    */
   public static function getInstance(): Platform
   {
-      if (static::$instance === null) {
-          static::$instance = new static();
+      $class = get_called_class();
+      if (static::$instances->get($class) === null) {
+          static::$instances->add(Pair {$class, new static()});
       }
-      return static::$instance;
+      return static::$instances[$class];
   }
 
   public function getName(): string
