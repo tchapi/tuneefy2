@@ -25,9 +25,20 @@ class PlatformEngine
     };
   }
 
+  public function getAllPlatforms(): Vector<Platform>
+  {
+    return $this->platforms->values();
+  }
+
   public function getPlatformByTag(string $tag): ?Platform
   {
     return $this->platforms->get($tag);
+  }
+
+  public function getPlatformsByTags(array<string> $tags): ?Vector<Platform>
+  {
+    return $this->platforms->filterWithKey(function($key, $val) use ($tags) { return in_array($key, $tags); })
+                           ->values();
   }
   
   public function lookup(string $permalink): ?PlatformResult
@@ -61,9 +72,52 @@ class PlatformEngine
     return $platform->search($search_type, $query, $limit)->getWaitHandle()->join();
   }
 
-  public function aggregate(string $query): ?Vector<MusicalEntity>
+  // For TEST purposes
+  public function aggregateSync(string $type, string $query, int $limit, Vector<Platform> $platforms): ?Vector<PlatformResult>
   {
-    // TODO
+    switch ($type) {
+      case 'album':
+        $search_type = Platform::SEARCH_ALBUM;
+        break;
+      case 'track':
+      default:
+        $search_type = Platform::SEARCH_TRACK;
+        break;
+    }
+
+    $output = Vector {};
+    foreach ($platforms as $p) {
+      $output->add($p->search($search_type, $query, $limit)->getWaitHandle()->join());
+    }
+
+    // TODO : merge results
+    return null;
+  }
+
+  public function aggregate(string $type, string $query, int $limit, Vector<Platform> $platforms): ?Vector<PlatformResult>
+  {
+    switch ($type) {
+      case 'album':
+        $search_type = Platform::SEARCH_ALBUM;
+        break;
+      case 'track':
+      default:
+        $search_type = Platform::SEARCH_TRACK;
+        break;
+    }
+
+    $asyncs = Vector {};
+    foreach ($platforms as $p) {
+      $asyncs->add($p->search($search_type, $query, $limit)->getWaitHandle());
+    }
+
+    // Calling the functions
+    $asyncCall = GenVectorWaitHandle::create($asyncs);
+
+    // Now requesting that async finishes
+    $output = $asyncCall->join();
+
+    // TODO : merge results
     return null;
   }
 }

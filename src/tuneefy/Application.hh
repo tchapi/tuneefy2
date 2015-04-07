@@ -1,4 +1,4 @@
-<?hh // partial
+<?hh // strict
 
   /*
   
@@ -151,8 +151,36 @@ class Application
       /*
         Aggregate (all platforms)
       */
-      $this->slim_app->get('/aggregate', function() {
+      $this->slim_app->get('/aggregate/:type', function(string $type) {
         // TODO
+        $query = $this->slim_app->request->params('q');
+        $limit = $this->slim_app->request->params('limit');
+        $include = $this->slim_app->request->params('include'); // Included platforms?
+
+        if ($query === null || $query === ""){
+          // TODO translation
+          $this->error("Missing or empty parameter : q (query)");
+        }
+
+        // TODO : it's a bit cumbersome, should refactor
+        if ($include === null || $include === "") { // If empty, include all.
+          $platforms = $this->engine->getAllPlatforms();
+        } else {
+          $platforms = $this->engine->getPlatformsByTags(explode(",", strtolower($include))); 
+          if ($platforms === null) { // Silently fails if a name is invalid, that's ok
+            $platforms = $this->engine->getAllPlatforms();
+          }
+        }
+        
+        $result = $this->engine->aggregate($type, $query, intval($limit), $platforms); // ?Vector<Map<string,mixed>>
+        // For TEST purposes : $result = $this->engine->aggregateSync($type, $query, intval($limit), $platforms);
+
+        if ($result === null) {
+          $this->slim_app->render(200, array( 'msg' => "No match was found for this search" ));
+        } else {
+          $this->slim_app->render(200, array( 'data' => $result ));
+        }
+
       });
 
     });
