@@ -73,7 +73,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
 
       $response = $this->fetch(Platform::LOOKUP_TRACK, $match['track_id']);
 
-      if ($response === null) { return null; }
+      if ($response === null || property_exists($response, 'error')) { return null; }
 
       $musical_entity = new TrackEntity($response->title, new AlbumEntity($response->album->title, $response->artist->name, $response->album->cover)); 
       $musical_entity->addLink($permalink);
@@ -84,7 +84,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
      
       $response = $this->fetch(Platform::LOOKUP_ALBUM, $match['album_id']);
 
-      if ($response === null) { return null; }
+      if ($response === null || property_exists($response, 'error')) { return null; }
 
       $musical_entity = new AlbumEntity($response->title, $response->artist->name, $response->cover);
       $musical_entity->addLink($permalink);
@@ -95,9 +95,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
 
       $response = $this->fetch(Platform::LOOKUP_ARTIST, $match['artist_id']);
 
-      if ($response === null || $response->error->code == 800) { // "no data"
-        $query_words = Vector {$match['artist_id']};
-      } else {
+      if ($response !== null && !property_exists($response, 'error')) {
         $query_words = Vector {$response->name};
       }
 
