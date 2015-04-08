@@ -53,6 +53,11 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
       'album' => Platform::LOOKUP_ALBUM,
       'artist' => Platform::LOOKUP_ARTIST,
     };
+    private ImmMap<int, string> $search_type_correspondance = ImmMap {
+      Platform::SEARCH_TRACK => 'tracks',
+      Platform::SEARCH_ALBUM => 'albums',
+      //Platform::SEARCH_ARTIST => 'artists',
+    };
 
   // LOCAL files : http://open.spotify.com/local/hang+the+bastard/raw+sorcery/doomed+fucking+doomed/206
   const string REGEX_SPOTIFY_LOCAL = "/local\/(?P<artist_name>".Platform::REGEX_FULLSTRING.")\/(?P<album_name>".Platform::REGEX_FULLSTRING.")\/(?P<track_name>".Platform::REGEX_FULLSTRING.")\/[0-9]+$/";
@@ -117,6 +122,51 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
 
   public async function search(int $type, string $query, int $limit, int $mode): Awaitable<?Vector<PlatformResult>>
   {
-    return null;
+    $response = await $this->fetch($type, $query);
+
+    if ($response === null) {
+      return null;
+    }
+
+    $results = $response->{$this->search_type_correspondance[$type]}->items;
+    $length = min(count($results), $limit?$limit:Platform::LIMIT);
+    
+    if ($length === 0) {
+      return null;
+    }
+    $musical_entities = Vector {};
+    
+    // Tracks bear a popularity score
+    // that we're using to rate the results
+    if ($type === Platform::SEARCH_TRACK) {
+      $max_track_popularity = max(intval($results[0]->popularity),1);
+    }
+    for($i=0; $i<$length; $i++){
+    
+      $current_item = $results[$i];
+     
+      if ($type === Platform::SEARCH_TRACK) {
+      
+        $musical_entity = new TrackEntity($current_item->name, new AlbumEntity($current_item->album->name, $current_item->artists[0]->name, $current_item->album->images[1]->url)); 
+        $musical_entity->addLink($current_item->external_urls->spotify);
+
+        $musical_entities->add(new PlatformResult(Map {"score" => round($current_item->popularity/$maxPopularity,2)}, $musical_entity));
+
+        } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
+            
+        // The search/?type=album endpiont only returns a simplified album object, 
+        // not including the artist. Either we blank the artist, or we make an extra
+        // api call to $current_itm->href, which is painful
+          // TODO : use $mode now
+        $musical_entity = new AlbumEntity($current_item->name, "", $current_item->images[1]->url); 
+        $musical_entity->addLink($current_item->external_urls->spotify);
+
+        $musical_entities->add(new PlatformResult(Map {"score" => Utils::indexScore($i)}, $musical_entity));
+
+      }
+      
+    }
+    
+    return $musical_entities;
   }
 }
