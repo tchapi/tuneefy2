@@ -58,12 +58,12 @@ class RdioPlatform extends Platform implements WebStreamingPlatformInterface
     return (strpos($permalink, "rdio.") !== false);
   }
 
-  public function expandPermalink(string $permalink): ?PlatformResult
+  public function expandPermalink(string $permalink, int $mode): ?PlatformResult
   {
     return null;
   }
 
-  public async function search(int $type, string $query, int $limit): Awaitable<?Vector<PlatformResult>>
+  public async function search(int $type, string $query, int $limit, int $mode): Awaitable<?Vector<PlatformResult>>
   {
     return null;
   }

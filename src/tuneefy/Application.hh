@@ -101,6 +101,7 @@ class Application
       $this->slim_app->get('/lookup', function() {
 
         $permalink = $this->slim_app->request->params('q');
+        $mode = $this->slim_app->request->params('mode');
 
         // Permalink could be null, but we don't accept that
         if ($permalink === null || $permalink === ""){
@@ -108,7 +109,7 @@ class Application
           $this->error("Missing or empty parameter : q (permalink)");
         }
 
-        $result = $this->engine->lookup($permalink); // ?Map<string,mixed>
+        $result = $this->engine->lookup($permalink, $mode); // ?Map<string,mixed>
 
         if ($result === null) {
           $this->slim_app->render(200, array( 'msg' => "No match was found for this permalink" ));
@@ -125,6 +126,7 @@ class Application
 
         $query = $this->slim_app->request->params('q');
         $limit = $this->slim_app->request->params('limit');
+        $mode = $this->slim_app->request->params('mode');
 
         if ($query === null || $query === ""){
           // TODO translation
@@ -138,7 +140,7 @@ class Application
           return; // This is to make the HH TypeChecker happy
         }
 
-        $result = $this->engine->search($platform, $type, $query, intval($limit)); // ?Vector<Map<string,mixed>>
+        $result = $this->engine->search($platform, $type, $query, intval($limit), $mode); // ?Vector<Map<string,mixed>>
 
         if ($result === null) {
           $this->slim_app->render(200, array( 'msg' => "No match was found for this search on this platform" ));

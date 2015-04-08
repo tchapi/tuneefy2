@@ -62,7 +62,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
     return (strpos($permalink, "deezer.") !== false);
   }
 
-  public function expandPermalink(string $permalink): ?PlatformResult
+  public function expandPermalink(string $permalink, int $mode): ?PlatformResult
   {
 
     $musical_entity = null;
@@ -113,7 +113,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
       
   }
 
-  public async function search(int $type, string $query, int $limit): Awaitable<?Vector<PlatformResult>>
+  public async function search(int $type, string $query, int $limit, int $mode): Awaitable<?Vector<PlatformResult>>
   {
   
     $response = await $this->fetch($type, $query);

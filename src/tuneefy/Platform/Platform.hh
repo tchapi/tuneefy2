@@ -26,11 +26,20 @@ abstract class Platform implements GeneralPlatformInterface
 
   const int SEARCH_TRACK = 3;
   const int SEARCH_ALBUM = 4;
-  //const int SEARCH_ARTIST = 5;
+  const int SEARCH_ARTIST = 5;
 
+  // The 'mode' indicates whether
+  // we're going to eagerly fetch data
+  // when it's missing from the platform
+  // response
+  const int MODE_LAZY = 0;
+  const int MODE_EAGER = 1;
+
+  // Different HTTP Methods used
   const string METHOD_GET = "GET";
   const string METHOD_POST = "POST";
 
+  // Default limit for requests
   const int LIMIT = 10;
 
   protected bool $default;
@@ -201,6 +210,6 @@ abstract class Platform implements GeneralPlatformInterface
 
   }
 
-  abstract public function search(int $type, string $query, int $limit): Awaitable<?Vector<PlatformResult>>;
+  abstract public function search(int $type, string $query, int $limit, int $mode): Awaitable<?Vector<PlatformResult>>;
 
 }

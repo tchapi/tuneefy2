@@ -17,6 +17,14 @@ class PlatformEngine
 
   private Map<string,Platform> $platforms;
 
+  private ImmMap<string, int> $flags = ImmMap {
+    "type/track" => Platform::SEARCH_TRACK,
+    "type/album" => Platform::SEARCH_ALBUM,
+    "mode/lazy" => Platform::MODE_LAZY,
+    "mode/eager" => Platform::MODE_EAGER,
+    "mode/*" => Platform::MODE_LAZY, // '*' indicates defautl
+  };
+
   public function __construct()
   {
     $this->platforms = Map {
@@ -43,8 +51,24 @@ class PlatformEngine
                            ->values();
   }
   
-  public function lookup(string $permalink): ?PlatformResult
+  private function translateFlag(string $namespace, string $flag): int
+  {
+    return $this->flags[$namespace."/".$flag];
+  }
+
+  private function translateMode(?string $mode): int
+  {
+    return $this->translateFlag('mode', ($mode===null)?"*":$mode);
+  }
+  private function translateType(string $type): int
+  {
+    return $this->translateFlag('type', $type);
+  }
+
+  public function lookup(string $permalink, ?string $mode): ?PlatformResult
   { 
+    $mode = $this->translateMode($mode);
+
     // Which platform is this permalink from ?
     $platform = null;
     foreach ($this->platforms as $p) {
@@ -56,40 +80,26 @@ class PlatformEngine
     if ($platform === null) { return null; }
 
     // Initiate a lookup on this platform
-    return $platform->expandPermalink($permalink);
+    return $platform->expandPermalink($permalink, $mode);
   }
 
-  public function search(Platform $platform, string $type, string $query, int $limit): ?Vector<PlatformResult>
+  public function search(Platform $platform, string $type, string $query, int $limit, ?string $mode): ?Vector<PlatformResult>
   {
-    switch ($type) {
-      case 'album':
-        $search_type = Platform::SEARCH_ALBUM;
-        break;
-      case 'track':
-      default:
-        $search_type = Platform::SEARCH_TRACK;
-        break;
-    }
+    $type = $this->translateType($type);
+    $mode = $this->translateMode($mode);
 
-    return $platform->search($search_type, $query, $limit)->getWaitHandle()->join();
+    return $platform->search($type, $query, $limit, $mode)->getWaitHandle()->join();
   }
 
   // For TEST purposes
   public function aggregateSync(string $type, string $query, int $limit, Vector<Platform> $platforms): ?Vector<PlatformResult>
   {
-    switch ($type) {
-      case 'album':
-        $search_type = Platform::SEARCH_ALBUM;
-        break;
-      case 'track':
-      default:
-        $search_type = Platform::SEARCH_TRACK;
-        break;
-    }
+    $type = $this->translateType($type);
+    $mode = $this->translateMode($mode);
 
     $output = Vector {};
     foreach ($platforms as $p) {
-      $output->add($p->search($search_type, $query, $limit)->getWaitHandle()->join());
+      $output->add($p->search($type, $query, $limit, $mode)->getWaitHandle()->join());
     }
 
     // TODO : merge results
@@ -98,19 +108,12 @@ class PlatformEngine
 
   public function aggregate(string $type, string $query, int $limit, Vector<Platform> $platforms): ?Vector<PlatformResult>
   {
-    switch ($type) {
-      case 'album':
-        $search_type = Platform::SEARCH_ALBUM;
-        break;
-      case 'track':
-      default:
-        $search_type = Platform::SEARCH_TRACK;
-        break;
-    }
+    $type = $this->translateType($type);
+    $mode = $this->translateMode($mode);
 
     $asyncs = Vector {};
     foreach ($platforms as $p) {
-      $asyncs->add($p->search($search_type, $query, $limit)->getWaitHandle());
+      $asyncs->add($p->search($type, $query, $limit, $mode)->getWaitHandle());
     }
 
     // Calling the functions

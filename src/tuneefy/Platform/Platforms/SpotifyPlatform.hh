@@ -63,7 +63,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
     return (strpos($permalink, "spotify:") !== false || strpos($permalink, "open.spotify.") !== false || strpos($permalink, "play.spotify.") !== false);
   }
 
-  public function expandPermalink(string $permalink): ?PlatformResult
+  public function expandPermalink(string $permalink, int $mode): ?PlatformResult
   {
 
     $musical_entity = null;
@@ -115,7 +115,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
 
   }
 
-  public async function search(int $type, string $query, int $limit): Awaitable<?Vector<PlatformResult>>
+  public async function search(int $type, string $query, int $limit, int $mode): Awaitable<?Vector<PlatformResult>>
   {
     return null;
   }
