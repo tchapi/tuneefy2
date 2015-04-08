@@ -158,6 +158,7 @@ class Application
         $query = $this->slim_app->request->params('q');
         $limit = $this->slim_app->request->params('limit');
         $include = $this->slim_app->request->params('include'); // Included platforms?
+        $mode = $this->slim_app->request->params('mode');
 
         if ($query === null || $query === ""){
           // TODO translation
@@ -174,7 +175,7 @@ class Application
           }
         }
         
-        $result = $this->engine->aggregate($type, $query, intval($limit), $platforms); // ?Vector<Map<string,mixed>>
+        $result = $this->engine->aggregate($type, $query, intval($limit), $mode, $platforms); // ?Vector<Map<string,mixed>>
         // For TEST purposes : $result = $this->engine->aggregateSync($type, $query, intval($limit), $platforms);
 
         if ($result === null) {

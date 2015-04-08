@@ -92,7 +92,7 @@ class PlatformEngine
   }
 
   // For TEST purposes
-  public function aggregateSync(string $type, string $query, int $limit, Vector<Platform> $platforms): ?Vector<PlatformResult>
+  public function aggregateSync(string $type, string $query, int $limit, ?string $mode, Vector<Platform> $platforms): ?Vector<PlatformResult>
   {
     $type = $this->translateType($type);
     $mode = $this->translateMode($mode);
@@ -106,7 +106,7 @@ class PlatformEngine
     return null;
   }
 
-  public function aggregate(string $type, string $query, int $limit, Vector<Platform> $platforms): ?Vector<PlatformResult>
+  public function aggregate(string $type, string $query, int $limit, ?string $mode, Vector<Platform> $platforms): ?Vector<PlatformResult>
   {
     $type = $this->translateType($type);
     $mode = $this->translateMode($mode);
