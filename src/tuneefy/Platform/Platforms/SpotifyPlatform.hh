@@ -80,8 +80,8 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
       if ($response === null || property_exists($response, 'error')) { return null; }
 
       if ($object_type === Platform::LOOKUP_TRACK) {
-      
-        $musical_entity = new TrackEntity($response->name, new AlbumEntity($response->album->name, $response->album->artists[0]->name, $response->album->images[1]->url)); 
+
+        $musical_entity = new TrackEntity($response->name, new AlbumEntity($response->album->name, $response->artists[0]->name, $response->album->images[1]->url)); 
         $musical_entity->addLink($response->external_urls->spotify);
 
         $query_words = Vector {$response->artists[0]->name, $response->name};
@@ -90,12 +90,12 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
       
         $musical_entity = new AlbumEntity($response->name, $response->artists[0]->name, $response->images[1]->url);
         $musical_entity->addLink($response->external_urls->spotify);
-        
+
         $query_words = Vector {$response->artists[0]->name, $response->name};
       
       } else if ($object_type === Platform::LOOKUP_ARTIST) {
-      
-        $query_words = Vector {$response->artists[0]->name};
+
+        $query_words = Vector {$response->name};
         
       }
         
