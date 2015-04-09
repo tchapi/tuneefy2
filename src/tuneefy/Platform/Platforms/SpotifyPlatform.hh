@@ -80,7 +80,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
       // We have a nicely formatted share url
       
       $object_type = $this->lookup_type_correspondance[$match['type']];
-      $response = $this->fetch($object_type, $match['item_id'])->getWaitHandle()->join(); // fetch() is async
+      $response = $this->fetchSync($object_type, $match['item_id']);
 
       if ($response === null || property_exists($response, 'error')) { return null; }
 

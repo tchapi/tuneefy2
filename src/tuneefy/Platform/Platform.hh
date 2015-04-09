@@ -210,6 +210,11 @@ abstract class Platform implements GeneralPlatformInterface
 
   }
 
+  protected function fetchSync(int $type, string $query): ?\stdClass
+  {
+    return $this->fetch($type, $query)->getWaitHandle()->join();
+  }
+  
   abstract public function search(int $type, string $query, int $limit, int $mode): Awaitable<?Vector<PlatformResult>>;
 
 }
