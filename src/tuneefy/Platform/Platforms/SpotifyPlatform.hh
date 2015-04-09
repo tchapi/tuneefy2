@@ -138,9 +138,11 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
     
     // Tracks bear a popularity score
     // that we're using to rate the results
+    $max_track_popularity = 1;
     if ($type === Platform::SEARCH_TRACK) {
       $max_track_popularity = max(intval($results[0]->popularity),1);
     }
+    
     for($i=0; $i<$length; $i++){
     
       $current_item = $results[$i];
@@ -150,7 +152,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
         $musical_entity = new TrackEntity($current_item->name, new AlbumEntity($current_item->album->name, $current_item->artists[0]->name, $current_item->album->images[1]->url)); 
         $musical_entity->addLink($current_item->external_urls->spotify);
 
-        $musical_entities->add(new PlatformResult(Map {"score" => round($current_item->popularity/$maxPopularity,2)}, $musical_entity));
+        $musical_entities->add(new PlatformResult(Map {"score" => round($current_item->popularity/$max_track_popularity,2)}, $musical_entity));
 
         } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
             
