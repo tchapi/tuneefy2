@@ -154,7 +154,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
 
         $musical_entities->add(new PlatformResult(Map {"score" => round($current_item->popularity/$max_track_popularity,2)}, $musical_entity));
 
-        } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
+      } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
             
         // The search/?type=album endpiont only returns a simplified album object, 
         // not including the artist. Either we blank the artist, or we make an extra
