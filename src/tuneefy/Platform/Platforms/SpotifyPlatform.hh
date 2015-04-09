@@ -53,11 +53,6 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
       'album' => Platform::LOOKUP_ALBUM,
       'artist' => Platform::LOOKUP_ARTIST,
     };
-    private ImmMap<int, string> $search_type_correspondance = ImmMap {
-      Platform::SEARCH_TRACK => 'tracks',
-      Platform::SEARCH_ALBUM => 'albums',
-      //Platform::SEARCH_ARTIST => 'artists',
-    };
 
   // LOCAL files : http://open.spotify.com/local/hang+the+bastard/raw+sorcery/doomed+fucking+doomed/206
   const string REGEX_SPOTIFY_LOCAL = "/local\/(?P<artist_name>".Platform::REGEX_FULLSTRING.")\/(?P<album_name>".Platform::REGEX_FULLSTRING.")\/(?P<track_name>".Platform::REGEX_FULLSTRING.")\/[0-9]+$/";
@@ -128,7 +123,14 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
       return null;
     }
 
-    $results = $response->{$this->search_type_correspondance[$type]}->items;
+    switch ($type) {
+      case Platform::SEARCH_TRACK:
+        $results = $response->tracks->items;
+        break;
+      case Platform::SEARCH_ALBUM:
+        $results = $response->albums->items;
+        break;
+    }
     $length = min(count($results), $limit?$limit:Platform::LIMIT);
     
     if ($length === 0) {
