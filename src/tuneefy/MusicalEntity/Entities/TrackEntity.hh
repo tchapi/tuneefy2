@@ -20,6 +20,27 @@ class TrackEntity extends MusicalEntity
     $this->album = $album;
   }
 
+  // Getters and setters
+  public function getArtist(): string
+  {
+    return $this->album->getArtist();
+  }
+
+  public function getTitle(): string
+  {
+    return $this->track_title;
+  }
+
+  public function getAlbumTitle(): string
+  {
+    return $this->album->getTitle();
+  }
+
+  public function getCover(): string
+  {
+    return $this->album->getCover();
+  }
+
   public function toMap(): Map<string,mixed>
   {
     $result = Map {};

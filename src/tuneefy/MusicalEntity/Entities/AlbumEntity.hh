@@ -21,6 +21,22 @@ class AlbumEntity extends MusicalEntity
     $this->cover = $cover;
   }
 
+  // Getters and setters
+  public function getArtist(): string
+  {
+    return $this->artist;
+  }
+
+  public function getTitle(): string
+  {
+    return $this->title;
+  }
+
+  public function getCover(): string
+  {
+    return $this->cover;
+  }
+
   public function toMap(): Map<string,mixed>
   {
     $result = Map {};
