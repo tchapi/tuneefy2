@@ -144,7 +144,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
     if ($type === Platform::SEARCH_TRACK) {
       $max_track_popularity = max(intval($results[0]->popularity),1);
     }
-    
+
     for($i=0; $i<$length; $i++){
     
       $current_item = $results[$i];
@@ -158,11 +158,19 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
 
       } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
             
-        // The search/?type=album endpiont only returns a simplified album object, 
+        // The search/?type=album endpoint only returns a simplified album object, 
         // not including the artist. Either we blank the artist, or we make an extra
-        // api call to $current_itm->href, which is painful
-          // TODO : use $mode now
-        $musical_entity = new AlbumEntity($current_item->name, "", $current_item->images[1]->url); 
+        // api call to $current_item->href. This is what EAGER mode is here for.
+        $artist = "";
+        if ($mode === Platform::MODE_EAGER) {
+          // We need to fetch the artist of the album
+          $album_response = await $this->fetch(Platform::LOOKUP_ALBUM, $current_item->id);
+          if ($album_response !== null && !property_exists($album_response, 'error')) {
+            $artist = $album_response->artists[0]->name;
+          }
+        }
+
+        $musical_entity = new AlbumEntity($current_item->name, $artist, $current_item->images[1]->url); 
         $musical_entity->addLink($current_item->external_urls->spotify);
 
         $musical_entities->add(new PlatformResult(Map {"score" => Utils::indexScore($i)}, $musical_entity));
