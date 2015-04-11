@@ -19,7 +19,6 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
 
   const string API_ENDPOINT = "https://api.deezer.com/";
   const string API_METHOD = Platform::METHOD_GET;
-  const bool NEEDS_OAUTH = false;
 
   protected ImmMap<int,?string> $endpoints = ImmMap {
     Platform::LOOKUP_TRACK  => self::API_ENDPOINT . "track/%s",

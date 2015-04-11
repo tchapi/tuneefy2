@@ -19,6 +19,7 @@ class RdioPlatform extends Platform implements WebStreamingPlatformInterface
 
   const string API_ENDPOINT = "http://api.rdio.com/1/";
   const string API_METHOD = Platform::METHOD_POST;
+  
   const bool NEEDS_OAUTH = true;
 
   protected ImmMap<int,?string> $endpoints = ImmMap {
