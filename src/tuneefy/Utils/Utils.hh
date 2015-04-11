@@ -53,4 +53,13 @@ class Utils
   {
     return round(1/($index/10 +1), 2);
   }
+
+  /*
+    Flattens tokens (a Vector of strings) to return a single "alphanumeric" string
+  */
+  public static function flatten(Vector<string> $tokens): string
+  {
+    return preg_replace("/[^a-z0-9]+/", "", strtolower(implode('',$tokens)));
+  }
+
 }
