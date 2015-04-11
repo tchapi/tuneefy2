@@ -65,7 +65,7 @@ class BeatsMusicPlatform extends Platform implements WebStreamingPlatformInterfa
     // http://mn.ec.cdn.beatsmusic.com/albums/008/992/411/m.jpeg
     // s = small, m = medium, b = large, g = large
     $padded_id = str_pad(substr($album_id,2), 9, "0", STR_PAD_LEFT);
-    return sprintf("http://mn.ec.cdn.beatsmusic.com/albums/%s/%s/%s/b.jpeg", substr($padded_id,0,3), substr($padded_id,3,3), substr($padded_id,-3));
+    return sprintf("http://mn.ec.cdn.beatsmusic.com/albums/%s/%s/%s/g.jpeg", substr($padded_id,0,3), substr($padded_id,3,3), substr($padded_id,-3));
   }
 
   public function expandPermalink(string $permalink, int $mode): ?PlatformResult
@@ -121,6 +121,39 @@ class BeatsMusicPlatform extends Platform implements WebStreamingPlatformInterfa
 
   public async function search(int $type, string $query, int $limit, int $mode): Awaitable<?Vector<PlatformResult>>
   {
-    return null;
+    $response = await $this->fetch($type, $query);
+
+    if ($response === null || intval($response->info->total) === 0) {
+      return null;
+    }
+
+    // We actually don't pass the limit to the fetch() 
+    // request since it's not really useful, in fact
+    $length = min(intval($response->info->total), $limit?$limit:Platform::LIMIT);
+    
+    $musical_entities = Vector {};
+
+    // Normalizing each track found
+    for($i=0; $i<$length; $i++){
+    
+      $current_item = $response->data[$i];
+
+      if ($type === Platform::SEARCH_TRACK) {
+
+        $musical_entity = new TrackEntity($current_item->display, new AlbumEntity($current_item->related->display, $current_item->detail, $this->getCoverUrlFromAlbumId($current_item->related->id))); 
+        $musical_entity->addLink(sprintf("http://on.beatsmusic.com/albums/%s/tracks/%s", $current_item->related->id, $current_item->id));
+             
+      } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
+
+        $musical_entity = new AlbumEntity($current_item->display, $current_item->detail, $this->getCoverUrlFromAlbumId($current_item->id)); 
+        $musical_entity->addLink(sprintf("http://on.beatsmusic.com/albums/%s", $current_item->id));
+      
+      }
+      
+      $musical_entities->add(new PlatformResult(Map {"score" => Utils::indexScore($i)}, $musical_entity));
+
+    }
+    
+    return $musical_entities;
   }
 }
