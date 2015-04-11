@@ -47,12 +47,14 @@ abstract class Platform implements GeneralPlatformInterface
   protected Map<string, bool> $enables;
   protected Map<string, bool> $capabilities;
 
-  protected string $key;
-  protected string $secret;
+  protected string $key = "";
+  protected string $key_param = "";
+  protected string $secret = "";
 
   // Redeclared in child classes
   const string API_ENDPOINT = "";
   const string API_METHOD = Platform::METHOD_GET;
+  const bool NEEDS_KEY = false;
   const bool NEEDS_OAUTH = false;
 
   protected ImmMap<int,?string> $endpoints = ImmMap {};
@@ -163,6 +165,7 @@ abstract class Platform implements GeneralPlatformInterface
   {
 
     $url = $this->endpoints->get($type);
+    $merge = (Map<?string,mixed> $a,$b) ==> $a->setAll($b); // Lambda function to merge a Map and an ImmMap
 
     if ($this->terms->get($type) === null) {
       // See: https://github.com/facebook/hhvm/issues/3725
@@ -171,10 +174,13 @@ abstract class Platform implements GeneralPlatformInterface
       $url = sprintf($url, $query);
       $data = $this->options->get($type);
     } else {
-      $merge = (Map<?string,mixed> $a,$b) ==> $a->setAll($b); // Lambda function to merge a Map and an ImmMap
       $data = $merge(Map{ $this->terms->get($type) => $query}, $this->options->get($type));
     }
     
+    if (static::NEEDS_KEY) {
+      $data = $merge(Map{ $this->key_param => $this->key}, $data);
+    }
+
     if (static::NEEDS_OAUTH) {
       // TODO
     }
@@ -214,7 +220,7 @@ abstract class Platform implements GeneralPlatformInterface
   {
     return $this->fetch($type, $query)->getWaitHandle()->join();
   }
-  
+
   abstract public function search(int $type, string $query, int $limit, int $mode): Awaitable<?Vector<PlatformResult>>;
 
 }
