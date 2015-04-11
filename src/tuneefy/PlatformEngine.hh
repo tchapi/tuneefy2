@@ -10,7 +10,8 @@ use tuneefy\MusicalEntity\MusicalEntity,
 use tuneefy\Platform\Platform,
     tuneefy\Platform\PlatformResult,
     tuneefy\Platform\Platforms\DeezerPlatform,
-    tuneefy\Platform\Platforms\SpotifyPlatform;
+    tuneefy\Platform\Platforms\SpotifyPlatform,
+    tuneefy\Platform\Platforms\BeatsMusicPlatform;
 
 class PlatformEngine
 {
@@ -31,6 +32,7 @@ class PlatformEngine
       // Keys must match class TAG (constant)
       "deezer" => DeezerPlatform::getInstance(),
       "spotify" => SpotifyPlatform::getInstance(),
+      "beats" => BeatsMusicPlatform::getInstance(),
       // More to come here
     };
   }
