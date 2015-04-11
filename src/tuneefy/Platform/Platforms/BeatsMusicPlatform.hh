@@ -20,9 +20,6 @@ class BeatsMusicPlatform extends Platform implements WebStreamingPlatformInterfa
   const string API_ENDPOINT = "https://partner.api.beatsmusic.com/v1/api/";
   const string API_METHOD = Platform::METHOD_GET;
 
-  const bool NEEDS_KEY = true;
-  protected string $key_param = "client_id";
-
   protected ImmMap<int,?string> $endpoints = ImmMap {
     Platform::LOOKUP_TRACK  => self::API_ENDPOINT . "tracks/%s",
     Platform::LOOKUP_ALBUM  => self::API_ENDPOINT . "albums/%s",
@@ -66,6 +63,11 @@ class BeatsMusicPlatform extends Platform implements WebStreamingPlatformInterfa
     // s = small, m = medium, b = large, g = large
     $padded_id = str_pad(substr($album_id,2), 9, "0", STR_PAD_LEFT);
     return sprintf("http://mn.ec.cdn.beatsmusic.com/albums/%s/%s/%s/g.jpeg", substr($padded_id,0,3), substr($padded_id,3,3), substr($padded_id,-3));
+  }
+
+  protected function addContextOptions(Map<?string, mixed> $data): Map<?string, mixed>
+  {
+    return $data->add(Pair {"client_id", $this->key});
   }
 
   public function expandPermalink(string $permalink, int $mode): ?PlatformResult

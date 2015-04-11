@@ -48,13 +48,11 @@ abstract class Platform implements GeneralPlatformInterface
   protected Map<string, bool> $capabilities;
 
   protected string $key = "";
-  protected string $key_param = "";
   protected string $secret = "";
 
   // Redeclared in child classes
   const string API_ENDPOINT = "";
   const string API_METHOD = Platform::METHOD_GET;
-  const bool NEEDS_KEY = false;
   const bool NEEDS_OAUTH = false;
 
   protected ImmMap<int,?string> $endpoints = ImmMap {};
@@ -161,7 +159,15 @@ abstract class Platform implements GeneralPlatformInterface
     return $this->capabilities['lookup'];
   }
 
-  protected async function fetch(int $type, string $query, ...): Awaitable<?\stdClass>
+  // This function, or its children class' counterpart, 
+  // is called in the fetch method to give the child
+  // class a chance to add other contextual options
+  protected function addContextOptions(Map<?string, mixed> $data): Map<?string, mixed>
+  {
+    return $data;
+  }
+
+  protected async function fetch(int $type, string $query): Awaitable<?\stdClass>
   {
 
     $url = $this->endpoints->get($type);
@@ -176,10 +182,11 @@ abstract class Platform implements GeneralPlatformInterface
     } else {
       $data = $merge(Map{ $this->terms->get($type) => $query}, $this->options->get($type));
     }
-    
-    if (static::NEEDS_KEY) {
-      $data = $merge(Map{ $this->key_param => $this->key}, $data);
-    }
+
+    // Gives the child class a chance to add options that are
+    // contextual to the request, eg. for Xbox, a token, or 
+    // just simply the API key ...
+    $data = $this->addContextOptions($data);
 
     if (static::NEEDS_OAUTH) {
       // TODO
