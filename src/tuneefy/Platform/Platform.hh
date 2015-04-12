@@ -178,7 +178,7 @@ abstract class Platform implements GeneralPlatformInterface
       // The format string should be litteral but it's nearly impossible to achieve here
       // UNSAFE
       $url = sprintf($url, $query);
-      $data = $this->options->get($type);
+      $data = $this->options->get($type)->toMap(); // We need to create a mutable map
     } else {
       $data = $merge(Map{ $this->terms->get($type) => $query}, $this->options->get($type));
     }
