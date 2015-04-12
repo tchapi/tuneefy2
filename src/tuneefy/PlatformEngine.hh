@@ -11,7 +11,8 @@ use tuneefy\Platform\Platform,
     tuneefy\Platform\PlatformResult,
     tuneefy\Platform\Platforms\DeezerPlatform,
     tuneefy\Platform\Platforms\SpotifyPlatform,
-    tuneefy\Platform\Platforms\BeatsMusicPlatform;
+    tuneefy\Platform\Platforms\BeatsMusicPlatform,
+    tuneefy\Platform\Platforms\XboxMusicPlatform;
 
 class PlatformEngine
 {
@@ -33,6 +34,7 @@ class PlatformEngine
       "deezer" => DeezerPlatform::getInstance(),
       "spotify" => SpotifyPlatform::getInstance(),
       "beats" => BeatsMusicPlatform::getInstance(),
+      "xbox" => XboxMusicPlatform::getInstance(),
       // More to come here
     };
   }
