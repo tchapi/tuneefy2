@@ -17,7 +17,8 @@ use Symfony\Component\Yaml\Yaml,
     Slim\Views\Twig;
 
 // Local classes
-use tuneefy\PlatformEngine,
+use tuneefy\Platform\Platform,
+    tuneefy\PlatformEngine,
     tuneefy\Utils\CustomViewHandler;
 
 class Application
@@ -109,6 +110,10 @@ class Application
           $this->error("Missing or empty parameter : q (permalink)");
         }
 
+        if ($real_mode === null) {
+          $real_mode = Platform::MODE_LAZY;
+        }
+
         $result = $this->engine->lookup($permalink, $real_mode); // ?Map<string,mixed>
 
         if ($result === null) {
@@ -144,6 +149,10 @@ class Application
         if ($real_type === null) {
           $this->error("Invalid parameter : type '$type' does not exist");
           return; // This is to make the HH TypeChecker happy
+        }
+
+        if ($real_mode === null) {
+          $real_mode = Platform::MODE_LAZY;
         }
 
         $result = $this->engine->search($platform, $real_type, $query, intval($limit), $real_mode); // ?Vector<Map<string,mixed>>
@@ -185,6 +194,10 @@ class Application
         if ($real_type === null) {
           $this->error("Invalid parameter : type '$type' does not exist");
           return; // This is to make the HH TypeChecker happy
+        }
+
+        if ($real_mode === null) {
+          $real_mode = Platform::MODE_LAZY;
         }
 
         $result = $this->engine->aggregate($real_type, $query, intval($limit), $real_mode, $platforms); // ?Vector<Map<string,mixed>>
