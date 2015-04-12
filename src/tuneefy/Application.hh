@@ -101,7 +101,7 @@ class Application
       $this->slim_app->get('/lookup', function() {
 
         $permalink = $this->slim_app->request->params('q');
-        $mode = $this->slim_app->request->params('mode');
+        $real_mode = $this->engine->translateFlag('mode', $this->slim_app->request->params('mode'));
 
         // Permalink could be null, but we don't accept that
         if ($permalink === null || $permalink === ""){
@@ -109,7 +109,7 @@ class Application
           $this->error("Missing or empty parameter : q (permalink)");
         }
 
-        $result = $this->engine->lookup($permalink, $mode); // ?Map<string,mixed>
+        $result = $this->engine->lookup($permalink, $real_mode); // ?Map<string,mixed>
 
         if ($result === null) {
           $this->slim_app->render(200, array( 'msg' => "No match was found for this permalink" ));
@@ -126,7 +126,8 @@ class Application
 
         $query = $this->slim_app->request->params('q');
         $limit = $this->slim_app->request->params('limit');
-        $mode = $this->slim_app->request->params('mode');
+        $real_type = $this->engine->translateFlag('type', $type);
+        $real_mode = $this->engine->translateFlag('mode', $this->slim_app->request->params('mode'));
 
         if ($query === null || $query === ""){
           // TODO translation
@@ -140,7 +141,12 @@ class Application
           return; // This is to make the HH TypeChecker happy
         }
 
-        $result = $this->engine->search($platform, $type, $query, intval($limit), $mode); // ?Vector<Map<string,mixed>>
+        if ($real_type === null) {
+          $this->error("Invalid parameter : type '$type' does not exist");
+          return; // This is to make the HH TypeChecker happy
+        }
+
+        $result = $this->engine->search($platform, $real_type, $query, intval($limit), $real_mode); // ?Vector<Map<string,mixed>>
 
         if ($result === null) {
           $this->slim_app->render(200, array( 'msg' => "No match was found for this search on this platform" ));
@@ -158,7 +164,8 @@ class Application
         $query = $this->slim_app->request->params('q');
         $limit = $this->slim_app->request->params('limit');
         $include = $this->slim_app->request->params('include'); // Included platforms?
-        $mode = $this->slim_app->request->params('mode');
+        $real_type = $this->engine->translateFlag('type', $type);
+        $real_mode = $this->engine->translateFlag('mode', $this->slim_app->request->params('mode'));
 
         if ($query === null || $query === ""){
           // TODO translation
@@ -175,7 +182,12 @@ class Application
           }
         }
         
-        $result = $this->engine->aggregate($type, $query, intval($limit), $mode, $platforms); // ?Vector<Map<string,mixed>>
+        if ($real_type === null) {
+          $this->error("Invalid parameter : type '$type' does not exist");
+          return; // This is to make the HH TypeChecker happy
+        }
+
+        $result = $this->engine->aggregate($real_type, $query, intval($limit), $real_mode, $platforms); // ?Vector<Map<string,mixed>>
         // For TEST purposes : $result = $this->engine->aggregateSync($type, $query, intval($limit), $platforms);
 
         if ($result === null) {

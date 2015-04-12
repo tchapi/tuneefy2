@@ -23,7 +23,7 @@ class PlatformEngine
     "type/album" => Platform::SEARCH_ALBUM,
     "mode/lazy" => Platform::MODE_LAZY,
     "mode/eager" => Platform::MODE_EAGER,
-    "mode/*" => Platform::MODE_LAZY, // '*' indicates defautl
+    "mode/*" => Platform::MODE_LAZY, // '*' indicates default
   };
 
   public function __construct()
@@ -53,24 +53,16 @@ class PlatformEngine
                            ->values();
   }
   
-  private function translateFlag(string $namespace, string $flag): int
+  public function translateFlag(string $namespace, ?string $flag): ?int
   {
-    return $this->flags[$namespace."/".$flag];
+    if ($flag === null) {
+      $flag = '*';
+    }
+    return $this->flags->get($namespace."/".$flag);
   }
 
-  private function translateMode(?string $mode): int
-  {
-    return $this->translateFlag('mode', ($mode===null)?"*":$mode);
-  }
-  private function translateType(string $type): int
-  {
-    return $this->translateFlag('type', $type);
-  }
-
-  public function lookup(string $permalink, ?string $mode): ?PlatformResult
+  public function lookup(string $permalink, int $mode): ?PlatformResult
   { 
-    $mode = $this->translateMode($mode);
-
     // Which platform is this permalink from ?
     $platform = null;
     foreach ($this->platforms as $p) {
@@ -85,20 +77,14 @@ class PlatformEngine
     return $platform->expandPermalink($permalink, $mode);
   }
 
-  public function search(Platform $platform, string $type, string $query, int $limit, ?string $mode): ?Vector<PlatformResult>
+  public function search(Platform $platform, int $type, string $query, int $limit, int $mode): ?Vector<PlatformResult>
   {
-    $type = $this->translateType($type);
-    $mode = $this->translateMode($mode);
-
     return $platform->search($type, $query, $limit, $mode)->getWaitHandle()->join();
   }
 
   // For TEST purposes
-  public function aggregateSync(string $type, string $query, int $limit, ?string $mode, Vector<Platform> $platforms): ?Vector<PlatformResult>
+  public function aggregateSync(int $type, string $query, int $limit, int $mode, Vector<Platform> $platforms): ?Vector<PlatformResult>
   {
-    $type = $this->translateType($type);
-    $mode = $this->translateMode($mode);
-
     $output = Vector {};
     foreach ($platforms as $p) {
       $output->add($p->search($type, $query, $limit, $mode)->getWaitHandle()->join());
@@ -108,11 +94,8 @@ class PlatformEngine
     return null;
   }
 
-  public function aggregate(string $type, string $query, int $limit, ?string $mode, Vector<Platform> $platforms): ?Vector<PlatformResult>
+  public function aggregate(int $type, string $query, int $limit, int $mode, Vector<Platform> $platforms): ?Vector<PlatformResult>
   {
-    $type = $this->translateType($type);
-    $mode = $this->translateMode($mode);
-
     $asyncs = Vector {};
     foreach ($platforms as $p) {
       $asyncs->add($p->search($type, $query, $limit, $mode)->getWaitHandle());
