@@ -82,31 +82,33 @@ class BeatsMusicPlatform extends Platform implements WebStreamingPlatformInterfa
 
       $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
 
-      if ($response === null || !property_exists($response, 'data')) { return null; }
+      if ($response === null || !property_exists($response->data, 'data')) { return null; }
 
-      $musical_entity = new TrackEntity($response->data->title, new AlbumEntity($response->data->refs->album->display, $response->data->artist_display_name, $this->getCoverUrlFromAlbumId($match['album_id']))); 
+      $entity = $response->data;
+      $musical_entity = new TrackEntity($entity->data->title, new AlbumEntity($entity->data->refs->album->display, $entity->data->artist_display_name, $this->getCoverUrlFromAlbumId($match['album_id']))); 
       $musical_entity->addLink($permalink);
 
-      $query_words = Vector {$response->data->artist_display_name, $response->data->title};
+      $query_words = Vector {$entity->data->artist_display_name, $entity->data->title};
       
     } else if (preg_match(self::REGEX_BEATS_ALBUM, $permalink, $match)) {
      
       $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
 
-      if ($response === null || property_exists($response, 'error')) { return null; }
+      if ($response === null || !property_exists($response->data, 'data')) { return null; }
 
-      $musical_entity = new AlbumEntity($response->title, $response->artist->name, $response->cover);
+      $entity = $response->data;
+      $musical_entity = new AlbumEntity($entity->title, $entity->artist->name, $entity->cover);
       $musical_entity->addLink($permalink);
 
-      $query_words = Vector {$response->artist->name, $response->title};
+      $query_words = Vector {$entity->artist->name, $entity->title};
       
     } else if (preg_match(self::REGEX_BEATS_ARTIST, $permalink, $match)) {
 
       $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_id']);
 
-      if ($response !== null && !property_exists($response, 'error')) {
-        $query_words = Vector {$response->name};
-      }
+      if ($response === null || !property_exists($response->data, 'data')) { return null; }
+
+      $query_words = Vector {$response->data->name};
 
     }
   
@@ -125,20 +127,21 @@ class BeatsMusicPlatform extends Platform implements WebStreamingPlatformInterfa
   {
     $response = await $this->fetch($type, $query);
 
-    if ($response === null || intval($response->info->total) === 0) {
+    if ($response === null || intval($response->data->info->total) === 0) {
       return null;
     }
+    $entities = $response->data;
 
     // We actually don't pass the limit to the fetch() 
     // request since it's not really useful, in fact
-    $length = min(intval($response->info->total), $limit?$limit:Platform::LIMIT);
+    $length = min(intval($entities->info->total), $limit?$limit:Platform::LIMIT);
     
     $musical_entities = Vector {};
 
     // Normalizing each track found
     for($i=0; $i<$length; $i++){
     
-      $current_item = $response->data[$i];
+      $current_item = $entities->data[$i];
 
       if ($type === Platform::SEARCH_TRACK) {
 

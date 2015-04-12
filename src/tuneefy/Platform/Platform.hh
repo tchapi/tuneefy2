@@ -218,7 +218,11 @@ abstract class Platform implements GeneralPlatformInterface
       $response = Utils::removeBOM($response);
       // If there is a problem with the data, we want to return null to gracefully fail as well :
       // "NULL is returned if the json cannot be decoded or if the encoded data is deeper than the recursion limit."
-      return json_decode($response, false);
+      // 
+      // Why the "data" key ? It's to cope with the result of json_decode. If the first level of $response
+      // is pure array, json_decode will return a array object instead of an expected stdClass object.
+      // To bypass that, we force the inclusion of the response in a data key, making it de facto an object.
+      return json_decode('{"data":'.$response.'}', false);
     }
 
   }

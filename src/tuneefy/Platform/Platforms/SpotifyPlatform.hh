@@ -76,25 +76,26 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
       $object_type = $this->lookup_type_correspondance[$match['type']];
       $response = $this->fetchSync($object_type, $match['item_id']);
 
-      if ($response === null || property_exists($response, 'error')) { return null; }
+      if ($response === null || property_exists($response->data, 'error')) { return null; }
+      $entity = $response->data;
 
       if ($object_type === Platform::LOOKUP_TRACK) {
 
-        $musical_entity = new TrackEntity($response->name, new AlbumEntity($response->album->name, $response->artists[0]->name, $response->album->images[1]->url)); 
-        $musical_entity->addLink($response->external_urls->spotify);
+        $musical_entity = new TrackEntity($entity->name, new AlbumEntity($entity->album->name, $entity->artists[0]->name, $entity->album->images[1]->url)); 
+        $musical_entity->addLink($entity->external_urls->spotify);
 
-        $query_words = Vector {$response->artists[0]->name, $response->name};
+        $query_words = Vector {$entity->artists[0]->name, $entity->name};
       
       } else if ($object_type === Platform::LOOKUP_ALBUM) {
       
-        $musical_entity = new AlbumEntity($response->name, $response->artists[0]->name, $response->images[1]->url);
-        $musical_entity->addLink($response->external_urls->spotify);
+        $musical_entity = new AlbumEntity($entity->name, $entity->artists[0]->name, $entity->images[1]->url);
+        $musical_entity->addLink($entity->external_urls->spotify);
 
-        $query_words = Vector {$response->artists[0]->name, $response->name};
+        $query_words = Vector {$entity->artists[0]->name, $entity->name};
       
       } else if ($object_type === Platform::LOOKUP_ARTIST) {
 
-        $query_words = Vector {$response->name};
+        $query_words = Vector {$entity->name};
         
       }
         
@@ -121,13 +122,14 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
     if ($response === null) {
       return null;
     }
+    $entities = $response->data;
 
     switch ($type) {
       case Platform::SEARCH_TRACK:
-        $results = $response->tracks->items;
+        $results = $entities->tracks->items;
         break;
       case Platform::SEARCH_ALBUM:
-        $results = $response->albums->items;
+        $results = $entities->albums->items;
         break;
     }
     $length = min(count($results), $limit?$limit:Platform::LIMIT);

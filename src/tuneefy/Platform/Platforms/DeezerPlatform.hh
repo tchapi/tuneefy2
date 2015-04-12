@@ -73,31 +73,33 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
 
       $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
 
-      if ($response === null || property_exists($response, 'error')) { return null; }
+      if ($response === null || property_exists($response->data, 'error')) { return null; }
 
-      $musical_entity = new TrackEntity($response->title, new AlbumEntity($response->album->title, $response->artist->name, $response->album->cover)); 
+      $entity = $response->data;
+      $musical_entity = new TrackEntity($entity->title, new AlbumEntity($entity->album->title, $entity->artist->name, $entity->album->cover)); 
       $musical_entity->addLink($permalink);
 
-      $query_words = Vector {$response->artist->name, $response->title};
+      $query_words = Vector {$entity->artist->name, $entity->title};
       
     } else if (preg_match(self::REGEX_DEEZER_ALBUM, $permalink, $match)) {
      
       $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
 
-      if ($response === null || property_exists($response, 'error')) { return null; }
+      if ($response === null || property_exists($response->data, 'error')) { return null; }
 
-      $musical_entity = new AlbumEntity($response->title, $response->artist->name, $response->cover);
+      $entity = $response->data;
+      $musical_entity = new AlbumEntity($entity->title, $entity->artist->name, $entity->cover);
       $musical_entity->addLink($permalink);
 
-      $query_words = Vector {$response->artist->name, $response->title};
+      $query_words = Vector {$entity->artist->name, $entity->title};
       
     } else if (preg_match(self::REGEX_DEEZER_ARTIST, $permalink, $match)) {
 
       $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_id']);
 
-      if ($response !== null && !property_exists($response, 'error')) {
-        $query_words = Vector {$response->name};
-      }
+      if ($response === null || property_exists($response->data, 'error')) { return null; }
+      
+      $query_words = Vector {$response->data->name};
 
     }
   
@@ -117,20 +119,21 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
   
     $response = await $this->fetch($type, $query);
 
-    if ($response === null || intval($response->total) === 0) {
+    if ($response === null || intval($response->data->total) === 0) {
       return null;
     }
+    $entities = $response->data;
 
     // We actually don't pass the limit to the fetch() 
     // request since it's not really useful, in fact
-    $length = min(count($response->data), $limit?$limit:Platform::LIMIT);
+    $length = min(count($entities->data), $limit?$limit:Platform::LIMIT);
     
     $musical_entities = Vector {};
 
     // Normalizing each track found
     for($i=0; $i<$length; $i++){
     
-      $current_item = $response->data[$i];
+      $current_item = $entities->data[$i];
 
       if ($type === Platform::SEARCH_TRACK) {
         

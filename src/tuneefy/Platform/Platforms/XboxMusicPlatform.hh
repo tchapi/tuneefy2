@@ -94,9 +94,9 @@ class XboxMusicPlatform extends Platform implements WebStreamingPlatformInterfac
 
       $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
 
-      if ($response === null || property_exists($response, 'Error')) { return null; }
-      $entity = $response->Tracks->Items[0];
-
+      if ($response === null || property_exists($response->data, 'Error')) { return null; }
+      
+      $entity = $response->data->Tracks->Items[0];
       $musical_entity = new TrackEntity($entity->Name, new AlbumEntity($entity->Album->Name, $entity->Artists[0]->Artist->Name, $entity->Album->ImageUrl)); 
       $musical_entity->addLink($entity->Link);
 
@@ -106,9 +106,9 @@ class XboxMusicPlatform extends Platform implements WebStreamingPlatformInterfac
      
       $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
 
-      if ($response === null || property_exists($response, 'Error')) { return null; }
-      $entity = $response->Albums->Items[0];
-
+      if ($response === null || property_exists($response->data, 'Error')) { return null; }
+      
+      $entity = $response->data->Albums->Items[0];
       $musical_entity = new AlbumEntity($entity->Name, $entity->Artists[0]->Artist->Name, $entity->ImageUrl);
       $musical_entity->addLink($entity->Link);
 
@@ -131,16 +131,17 @@ class XboxMusicPlatform extends Platform implements WebStreamingPlatformInterfac
   {
     $response = await $this->fetch($type, $query);
 
-    if ($response === null || property_exists($response, 'Error')) {
+    if ($response === null || property_exists($response->data, 'Error')) {
       return null;
     }
+    $entities = $response->data;
 
     switch ($type) {
       case Platform::SEARCH_TRACK:
-        $results = $response->Tracks->Items;
+        $results = $entities->Tracks->Items;
         break;
       case Platform::SEARCH_ALBUM:
-        $results = $response->Albums->Items;
+        $results = $entities->Albums->Items;
         break;
     }
     $length = min(count($results), $limit?$limit:Platform::LIMIT);
