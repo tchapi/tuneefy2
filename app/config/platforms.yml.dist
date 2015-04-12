@@ -58,8 +58,8 @@ platforms:
       website: true
     capabities:
       track_search: true
-      album_search: true
-      lookup: true
+      album_search: false
+      lookup: false
     key: ""
     secret: ""
     default: true
