@@ -40,7 +40,7 @@ abstract class Platform implements GeneralPlatformInterface
   const string METHOD_POST = "POST";
 
   // Default limit for requests
-  const int LIMIT = 10;
+  const int LIMIT = 10; // 1 < LIMIT < 25
 
   protected bool $default;
 
