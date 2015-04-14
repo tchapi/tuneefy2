@@ -133,7 +133,48 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
   
     $response = await $this->fetch($type, $query);
 
-    return null;
+    if ($response === null) {
+      return null;
+    }
+    $entities = $response->data;
+
+    switch ($type) {
+      case Platform::SEARCH_TRACK:
+        $results = $entities->tracks->items;
+        break;
+      case Platform::SEARCH_ALBUM:
+        $results = $entities->albums->items;
+        break;
+    }
+    $length = min(count($results), $limit?$limit:Platform::LIMIT);
+    
+    if ($length === 0) {
+      return null;
+    }
+    $musical_entities = Vector {};
+
+    // Normalizing each track found
+    for($i=0; $i<$length; $i++){
+    
+      $current_item = $results[$i];
+
+      if ($type === Platform::SEARCH_TRACK) {
+        
+        $musical_entity = new TrackEntity($current_item->title, new AlbumEntity($current_item->album->title, $current_item->album->artist->name, $current_item->album->image->small)); 
+        $musical_entity->addLink($this->getPlayerUrlFromTrackId("".$current_item->id));
+             
+      } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
+
+        $musical_entity = new AlbumEntity($current_item->title, $current_item->artist->name, $current_item->image->small);
+        $musical_entity->addLink($this->getPlayerUrlFromAlbumId("".$current_item->id));
+      
+      }
+      
+      $musical_entities->add(new PlatformResult(Map {"score" => Utils::indexScore($i)}, $musical_entity));
+
+    }
+    
+    return $musical_entities;
     
   }
 }
