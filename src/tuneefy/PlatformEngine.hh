@@ -13,7 +13,8 @@ use tuneefy\Platform\Platform,
     tuneefy\Platform\Platforms\SpotifyPlatform,
     tuneefy\Platform\Platforms\BeatsMusicPlatform,
     tuneefy\Platform\Platforms\XboxMusicPlatform,
-    tuneefy\Platform\Platforms\GroovesharkPlatform;
+    tuneefy\Platform\Platforms\GroovesharkPlatform,
+    tuneefy\Platform\Platforms\QobuzPlatform;
 
 class PlatformEngine
 {
@@ -37,6 +38,7 @@ class PlatformEngine
       "beats" => BeatsMusicPlatform::getInstance(),
       "xbox" => XboxMusicPlatform::getInstance(),
       "grooveshark" => GroovesharkPlatform::getInstance(),
+      "qobuz" => QobuzPlatform::getInstance(),
       // More to come here
     };
   }
