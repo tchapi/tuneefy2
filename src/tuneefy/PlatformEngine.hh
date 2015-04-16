@@ -16,7 +16,8 @@ use tuneefy\Platform\Platform,
     tuneefy\Platform\Platforms\XboxMusicPlatform,
     tuneefy\Platform\Platforms\GroovesharkPlatform,
     tuneefy\Platform\Platforms\QobuzPlatform,
-    tuneefy\Platform\Platforms\ItunesPlatform;
+    tuneefy\Platform\Platforms\ItunesPlatform,
+    tuneefy\Platform\Platforms\SoundcloudPlatform;
 
 class PlatformEngine
 {
@@ -35,12 +36,17 @@ class PlatformEngine
   {
     $this->platforms = Map {
       // Keys must match class TAG (constant)
+
+      // Streaming platforms
       "deezer" => DeezerPlatform::getInstance(),
       "spotify" => SpotifyPlatform::getInstance(),
       "beats" => BeatsMusicPlatform::getInstance(),
       "xbox" => XboxMusicPlatform::getInstance(),
       "grooveshark" => GroovesharkPlatform::getInstance(),
       "qobuz" => QobuzPlatform::getInstance(),
+      "soundcloud" => SoundcloudPlatform::getInstance(),
+
+      // Stores
       "itunes" => ItunesPlatform::getInstance(),
       // More to come here
     };
