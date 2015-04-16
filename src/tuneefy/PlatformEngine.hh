@@ -5,7 +5,8 @@ namespace tuneefy;
 use tuneefy\MusicalEntity\MusicalEntity,
     tuneefy\MusicalEntity\Entities\TrackEntity,
     tuneefy\MusicalEntity\Entities\AlbumEntity,
-    tuneefy\Platform\WebStreamingPlatformInterface;
+    tuneefy\Platform\WebStreamingPlatformInterface,
+    tuneefy\Platform\WebStoreInterface;
 
 use tuneefy\Platform\Platform,
     tuneefy\Platform\PlatformResult,
@@ -14,7 +15,8 @@ use tuneefy\Platform\Platform,
     tuneefy\Platform\Platforms\BeatsMusicPlatform,
     tuneefy\Platform\Platforms\XboxMusicPlatform,
     tuneefy\Platform\Platforms\GroovesharkPlatform,
-    tuneefy\Platform\Platforms\QobuzPlatform;
+    tuneefy\Platform\Platforms\QobuzPlatform,
+    tuneefy\Platform\Platforms\ItunesPlatform;
 
 class PlatformEngine
 {
@@ -39,6 +41,7 @@ class PlatformEngine
       "xbox" => XboxMusicPlatform::getInstance(),
       "grooveshark" => GroovesharkPlatform::getInstance(),
       "qobuz" => QobuzPlatform::getInstance(),
+      "itunes" => ItunesPlatform::getInstance(),
       // More to come here
     };
   }
@@ -72,7 +75,7 @@ class PlatformEngine
     // Which platform is this permalink from ?
     $platform = null;
     foreach ($this->platforms as $p) {
-      if ($p instanceof WebStreamingPlatformInterface && $p->hasPermalink($permalink)){
+      if (($p instanceof WebStreamingPlatformInterface || $p instanceof WebStoreInterface) && $p->hasPermalink($permalink)){
         $platform = $p; break;
       }
     }
