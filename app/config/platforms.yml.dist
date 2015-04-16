@@ -109,7 +109,7 @@ platforms:
       api: true
       website: true
     capabities:
-      track_search: true
+      track_search: false
       album_search: false
       lookup: true
     key: ""
