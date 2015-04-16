@@ -17,7 +17,8 @@ use tuneefy\Platform\Platform,
     tuneefy\Platform\Platforms\GroovesharkPlatform,
     tuneefy\Platform\Platforms\QobuzPlatform,
     tuneefy\Platform\Platforms\ItunesPlatform,
-    tuneefy\Platform\Platforms\SoundcloudPlatform;
+    tuneefy\Platform\Platforms\SoundcloudPlatform,
+    tuneefy\Platform\Platforms\MixcloudPlatform;
 
 class PlatformEngine
 {
@@ -45,6 +46,7 @@ class PlatformEngine
       "grooveshark" => GroovesharkPlatform::getInstance(),
       "qobuz" => QobuzPlatform::getInstance(),
       "soundcloud" => SoundcloudPlatform::getInstance(),
+      "mixcloud" => MixcloudPlatform::getInstance(),
 
       // Stores
       "itunes" => ItunesPlatform::getInstance(),
