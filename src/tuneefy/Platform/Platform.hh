@@ -195,7 +195,8 @@ abstract class Platform implements GeneralPlatformInterface
     $ch = curl_init();
     curl_setopt_array($ch, array(
         CURLOPT_RETURNTRANSFER => 1,
-        CURLOPT_HEADER => 0
+        CURLOPT_HEADER => 0,
+        CURLOPT_FOLLOWLOCATION => 1 // Some APIs redirect to content with a 3XX code
     ));
 
     if (static::API_METHOD === Platform::METHOD_GET) {
