@@ -75,7 +75,10 @@ class PlatformEngine
     // Which platform is this permalink from ?
     $platform = null;
     foreach ($this->platforms as $p) {
-      if (($p instanceof WebStreamingPlatformInterface || $p instanceof WebStoreInterface) && $p->hasPermalink($permalink)){
+      if ($p instanceof WebStreamingPlatformInterface && $p->hasPermalink($permalink)) {
+        $platform = $p; break;
+      }
+      if ($p instanceof WebStoreInterface && $p->hasPermalink($permalink)) {
         $platform = $p; break;
       }
     }
