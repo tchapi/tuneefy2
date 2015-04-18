@@ -8,6 +8,10 @@ use tuneefy\Platform\GeneralPlatformInterface,
     tuneefy\Utils\Utils,
     \HH\Asio;
 
+use tuneefy\Utils\OAuth\OAuthConsumer,
+    tuneefy\Utils\OAuth\OAuthRequest,
+    tuneefy\Utils\OAuth\OAuthSignatureMethod_HMAC_SHA1;
+
 abstract class Platform implements GeneralPlatformInterface
 {
 
@@ -189,7 +193,13 @@ abstract class Platform implements GeneralPlatformInterface
     $data = $this->addContextOptions($data);
 
     if (static::NEEDS_OAUTH) {
-      // TODO
+      // We add the signature to the request data
+      $consumer = new OAuthConsumer($this->key, $this->secret, null);
+      $req = OAuthRequest::from_consumer_and_token($consumer, null, static::API_METHOD, (string) $url, $data->toArray());
+      $hmac_method = new OAuthSignatureMethod_HMAC_SHA1();
+      $req->sign_request($hmac_method, $consumer, null);
+
+      $data = new Map ($req->get_parameters());
     }
 
     $ch = curl_init();
