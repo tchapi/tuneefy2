@@ -18,7 +18,8 @@ use tuneefy\Platform\Platform,
     tuneefy\Platform\Platforms\QobuzPlatform,
     tuneefy\Platform\Platforms\ItunesPlatform,
     tuneefy\Platform\Platforms\SoundcloudPlatform,
-    tuneefy\Platform\Platforms\MixcloudPlatform;
+    tuneefy\Platform\Platforms\MixcloudPlatform,
+    tuneefy\Platform\Platforms\RdioPlatform;
 
 class PlatformEngine
 {
@@ -47,6 +48,7 @@ class PlatformEngine
       "qobuz" => QobuzPlatform::getInstance(),
       "soundcloud" => SoundcloudPlatform::getInstance(),
       "mixcloud" => MixcloudPlatform::getInstance(),
+      "rdio" => RdioPlatform::getInstance(),
 
       // Stores
       "itunes" => ItunesPlatform::getInstance(),
