@@ -19,7 +19,8 @@ use tuneefy\Platform\Platform,
     tuneefy\Platform\Platforms\ItunesPlatform,
     tuneefy\Platform\Platforms\SoundcloudPlatform,
     tuneefy\Platform\Platforms\MixcloudPlatform,
-    tuneefy\Platform\Platforms\RdioPlatform;
+    tuneefy\Platform\Platforms\RdioPlatform,
+    tuneefy\Platform\Platforms\TidalPlatform;
 
 class PlatformEngine
 {
@@ -49,6 +50,7 @@ class PlatformEngine
       "soundcloud" => SoundcloudPlatform::getInstance(),
       "mixcloud" => MixcloudPlatform::getInstance(),
       "rdio" => RdioPlatform::getInstance(),
+      "tidal" => TidalPlatform::getInstance(),
 
       // Stores
       "itunes" => ItunesPlatform::getInstance(),
