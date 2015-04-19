@@ -199,7 +199,7 @@ abstract class Platform implements GeneralPlatformInterface
       $hmac_method = new OAuthSignatureMethod_HMAC_SHA1();
       $req->sign_request($hmac_method, $consumer, null);
 
-      $data = new Map ($req->get_parameters());
+      $data->setAll($req->get_parameters());
     }
 
     $ch = curl_init();
