@@ -214,7 +214,7 @@ abstract class Platform implements GeneralPlatformInterface
     } else if (static::API_METHOD === Platform::METHOD_POST) {
       curl_setopt($ch, CURLOPT_URL, $url);
       curl_setopt($ch, CURLOPT_POST, 1);
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
     }
 
     // http://docs.hhvm.com/manual/en/function.hack.hh.asio.curl-exec.php
