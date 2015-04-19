@@ -28,13 +28,14 @@ class OAuthRequest {
    */
   public static function from_consumer_and_token(OAuthConsumer $consumer, ?OAuthToken $token, string $http_method, string $http_url, array<string,mixed> $parameters = array()): OAuthRequest
   {
-    $parameters = is_null($parameters) ?  $parameters : array();
+    $parameters = !is_null($parameters) ?  $parameters : array();
     $defaults = array("oauth_version" => OAuthRequest::$version,
                       "oauth_nonce" => OAuthRequest::generate_nonce(),
                       "oauth_timestamp" => OAuthRequest::generate_timestamp(),
                       "oauth_consumer_key" => $consumer->key);
-    if ($token)
+    if ($token) {
       $defaults['oauth_token'] = $token->key;
+    }
 
     $parameters = array_merge($defaults, $parameters);
 
