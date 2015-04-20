@@ -47,9 +47,9 @@ class XboxMusicPlatform extends Platform implements WebStreamingPlatformInterfac
 
 
   // http://music.xbox.com/Album/C954F807-0100-11DB-89CA-0019B92A3933
-  const string REGEX_XBOX_ALBUM = "/Album\/(?<album_id>".Platform::REGEX_FULLSTRING.").*$/";
+  const string REGEX_XBOX_ALBUM = "/Album\/(?<album_id>".Platform::REGEX_FULLSTRING.").*[\/]?$/";
   // http://music.xbox.com/Track/87CF3706-0100-11DB-89CA-0019B92A3933
-  const string REGEX_XBOX_TRACK = "/Track\/(?<track_id>".Platform::REGEX_FULLSTRING.").*$/";
+  const string REGEX_XBOX_TRACK = "/Track\/(?<track_id>".Platform::REGEX_FULLSTRING.").*[\/]?$/";
   // Artist ??
 
   public function hasPermalink(string $permalink): bool

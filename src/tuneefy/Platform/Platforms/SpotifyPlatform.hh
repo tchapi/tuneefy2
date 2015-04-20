@@ -46,7 +46,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
   };
 
   // http://open.spotify.com/track/5jhJur5n4fasblLSCOcrTp
-  const string REGEX_SPOTIFY_ALL = "/(?P<type>artist|album|track)(:|\/)(?P<item_id>[a-zA-Z0-9]*)$/";
+  const string REGEX_SPOTIFY_ALL = "/(?P<type>artist|album|track)(:|\/)(?P<item_id>[a-zA-Z0-9]*)[\/]?$/";
     private ImmMap<string, int> $lookup_type_correspondance = ImmMap {
       'track' => Platform::LOOKUP_TRACK,
       'album' => Platform::LOOKUP_ALBUM,

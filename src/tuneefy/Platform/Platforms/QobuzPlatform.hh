@@ -46,16 +46,16 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
   };
 
   // http://player.qobuz.com/#!/track/23860968
-  const string REGEX_QOBUZ_TRACK = "/\/track\/(?P<track_id>".Platform::REGEX_NUMERIC_ID.")$/";
+  const string REGEX_QOBUZ_TRACK = "/\/track\/(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
   // http://player.qobuz.com/#!/album/0060254728859
-  const string REGEX_QOBUZ_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")$/";
+  const string REGEX_QOBUZ_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
     
   // http://player.qobuz.com/#!/artist/2131688
-  const string REGEX_QOBUZ_ARTIST = "/\/artist\/(?P<artist_id>".Platform::REGEX_NUMERIC_ID.")$/";
+  const string REGEX_QOBUZ_ARTIST = "/\/artist\/(?P<artist_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
    
   // http://www.qobuz.com/fr-fr/album/mon-premier-ep-salut-cest-cool/0060254728859
-  const string REGEX_QOBUZ_ALBUM_SITE = "/\/album\/".Platform::REGEX_FULLSTRING."\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")$/";
+  const string REGEX_QOBUZ_ALBUM_SITE = "/\/album\/".Platform::REGEX_FULLSTRING."\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
   public function hasPermalink(string $permalink): bool
   {

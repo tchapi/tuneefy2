@@ -46,11 +46,11 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
   };
 
   // http://www.lastfm.fr/music/The+Clash/London+Calling/London+Calling
-  const string REGEX_LASTFM_TRACK = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")\/(?P<track_slug>".Platform::REGEX_FULLSTRING.")$/";
+  const string REGEX_LASTFM_TRACK = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")\/(?P<track_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
   // http://www.lastfm.fr/music/The+Clash/London+Calling
-  const string REGEX_LASTFM_ALBUM = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")$/";
+  const string REGEX_LASTFM_ALBUM = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
   // http://www.lastfm.fr/music/Sex+Pistols
-  const string REGEX_LASTFM_ARTIST = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")$/";
+  const string REGEX_LASTFM_ARTIST = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
   public function hasPermalink(string $permalink): bool
   {

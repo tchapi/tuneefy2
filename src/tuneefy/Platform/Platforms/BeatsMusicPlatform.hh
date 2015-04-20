@@ -48,9 +48,9 @@ class BeatsMusicPlatform extends Platform implements WebStreamingPlatformInterfa
   // http://on.beatsmusic.com/albums/al8992411/tracks/tr8992441
   // http://on.beatsmusic.com/artists/ar27304
   // http://on.beatsmusic.com/albums/al6960443
-  const string REGEX_BEATS_TRACK = "/albums\/(?P<album_id>al".Platform::REGEX_NUMERIC_ID.")\/tracks\/(?P<track_id>tr".Platform::REGEX_NUMERIC_ID.")$/";
-  const string REGEX_BEATS_ALBUM = "/albums\/(?P<album_id>al".Platform::REGEX_NUMERIC_ID.")$/";
-  const string REGEX_BEATS_ARTIST = "/artists\/(?P<artist_id>ar".Platform::REGEX_NUMERIC_ID.")$/";
+  const string REGEX_BEATS_TRACK = "/albums\/(?P<album_id>al".Platform::REGEX_NUMERIC_ID.")\/tracks\/(?P<track_id>tr".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+  const string REGEX_BEATS_ALBUM = "/albums\/(?P<album_id>al".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+  const string REGEX_BEATS_ARTIST = "/artists\/(?P<artist_id>ar".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
   public function hasPermalink(string $permalink): bool
   {

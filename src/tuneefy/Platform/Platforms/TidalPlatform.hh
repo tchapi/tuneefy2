@@ -46,11 +46,11 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
   };
 
   // http://www.tidal.com/track/40358305
-  const string REGEX_TIDAL_TRACK = "/track\/(?P<track_id>".Platform::REGEX_NUMERIC_ID.")$/";
+  const string REGEX_TIDAL_TRACK = "/track\/(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
   // http://www.tidal.com/album/571179
-  const string REGEX_TIDAL_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")$/";
+  const string REGEX_TIDAL_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
   // http://www.tidal.com/artist/3528326
-  const string REGEX_TIDAL_ARTIST = "/artist\/(?P<artist_id>".Platform::REGEX_FULLSTRING.")$/";
+  const string REGEX_TIDAL_ARTIST = "/artist\/(?P<artist_id>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
   public function hasPermalink(string $permalink): bool
   {

@@ -46,10 +46,10 @@ class ItunesPlatform extends Platform implements WebStoreInterface
   };
 
   // https://itunes.apple.com/us/artist/jack-johnson/id909253
-  const string REGEX_ITUNES_ARTIST = "/\/artist\/(?P<artist_name>".Platform::REGEX_FULLSTRING.")\/id(?P<artist_id>".Platform::REGEX_NUMERIC_ID.")$/";
+  const string REGEX_ITUNES_ARTIST = "/\/artist\/(?P<artist_name>".Platform::REGEX_FULLSTRING.")\/id(?P<artist_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
   // https://itunes.apple.com/us/album/weezer/id115255
-  const string REGEX_ITUNES_ALBUM = "/\/album\/(?P<album_name>".Platform::REGEX_FULLSTRING.")\/id(?P<album_id>".Platform::REGEX_NUMERIC_ID.")$/";
+  const string REGEX_ITUNES_ALBUM = "/\/album\/(?P<album_name>".Platform::REGEX_FULLSTRING.")\/id(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
   public function hasPermalink(string $permalink): bool
   {

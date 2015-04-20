@@ -46,7 +46,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
   };
 
   // http://soundcloud.com/mariecolonna/eminem-feat-tricky-welcome-to
-  const string REGEX_SOUNDCLOUD_ALL = "/\/".Platform::REGEX_FULLSTRING."\/".Platform::REGEX_FULLSTRING."$/";
+  const string REGEX_SOUNDCLOUD_ALL = "/\/".Platform::REGEX_FULLSTRING."\/".Platform::REGEX_FULLSTRING."[\/]?$/";
 
   public function hasPermalink(string $permalink): bool
   {
