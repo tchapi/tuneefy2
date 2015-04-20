@@ -22,7 +22,8 @@ use tuneefy\Platform\Platform,
     tuneefy\Platform\Platforms\MixcloudPlatform,
     tuneefy\Platform\Platforms\RdioPlatform,
     tuneefy\Platform\Platforms\TidalPlatform,
-    tuneefy\Platform\Platforms\LastFMPlatform;
+    tuneefy\Platform\Platforms\LastFMPlatform,
+    tuneefy\Platform\Platforms\HypeMachinePlatform;
 
 class PlatformEngine
 {
@@ -54,6 +55,8 @@ class PlatformEngine
       "rdio" => RdioPlatform::getInstance(),
       "tidal" => TidalPlatform::getInstance(),
       "lastfm" => LastFMPlatform::getInstance(),
+      "hypem" => HypeMachinePlatform::getInstance(),
+
 
       // Stores
       "itunes" => ItunesPlatform::getInstance(),
