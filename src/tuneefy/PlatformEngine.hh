@@ -6,7 +6,8 @@ use tuneefy\MusicalEntity\MusicalEntity,
     tuneefy\MusicalEntity\Entities\TrackEntity,
     tuneefy\MusicalEntity\Entities\AlbumEntity,
     tuneefy\Platform\WebStreamingPlatformInterface,
-    tuneefy\Platform\WebStoreInterface;
+    tuneefy\Platform\WebStoreInterface,
+    tuneefy\Platform\ScrobblingPlatformInterface;
 
 use tuneefy\Platform\Platform,
     tuneefy\Platform\PlatformResult,
@@ -20,7 +21,8 @@ use tuneefy\Platform\Platform,
     tuneefy\Platform\Platforms\SoundcloudPlatform,
     tuneefy\Platform\Platforms\MixcloudPlatform,
     tuneefy\Platform\Platforms\RdioPlatform,
-    tuneefy\Platform\Platforms\TidalPlatform;
+    tuneefy\Platform\Platforms\TidalPlatform,
+    tuneefy\Platform\Platforms\LastFMPlatform;
 
 class PlatformEngine
 {
@@ -51,6 +53,7 @@ class PlatformEngine
       "mixcloud" => MixcloudPlatform::getInstance(),
       "rdio" => RdioPlatform::getInstance(),
       "tidal" => TidalPlatform::getInstance(),
+      "lastfm" => LastFMPlatform::getInstance(),
 
       // Stores
       "itunes" => ItunesPlatform::getInstance(),
@@ -91,6 +94,9 @@ class PlatformEngine
         $platform = $p; break;
       }
       if ($p instanceof WebStoreInterface && $p->hasPermalink($permalink)) {
+        $platform = $p; break;
+      }
+      if ($p instanceof ScrobblingPlatformInterface && $p->hasPermalink($permalink)) {
         $platform = $p; break;
       }
     }
