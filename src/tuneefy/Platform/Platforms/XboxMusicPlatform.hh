@@ -36,13 +36,13 @@ class XboxMusicPlatform extends Platform implements WebStreamingPlatformInterfac
     Platform::SEARCH_ALBUM  => "q",
    // Platform::SEARCH_ARTIST => "q" 
   };
-  protected ImmMap<int,ImmMap<string,mixed>> $options = ImmMap {
-    Platform::LOOKUP_TRACK  => ImmMap { "contentType" => "json" },
-    Platform::LOOKUP_ALBUM  => ImmMap { "contentType" => "json" },
-    Platform::LOOKUP_ARTIST => ImmMap { "contentType" => "json" },
-    Platform::SEARCH_TRACK  => ImmMap { "contentType" => "json", "filters" => "tracks", "maxItems" => Platform::LIMIT },
-    Platform::SEARCH_ALBUM  => ImmMap { "contentType" => "json", "filters" => "albums", "maxItems" => Platform::LIMIT },
-   // Platform::SEARCH_ARTIST => ImmMap { "contentType" => "json", "filters" => "artists", "maxItems" => Platform::LIMIT } 
+  protected ImmMap<int,Map<string,mixed>> $options = ImmMap {
+    Platform::LOOKUP_TRACK  => Map { "contentType" => "json" },
+    Platform::LOOKUP_ALBUM  => Map { "contentType" => "json" },
+    Platform::LOOKUP_ARTIST => Map { "contentType" => "json" },
+    Platform::SEARCH_TRACK  => Map { "contentType" => "json", "filters" => "tracks", "maxItems" => Platform::LIMIT },
+    Platform::SEARCH_ALBUM  => Map { "contentType" => "json", "filters" => "albums", "maxItems" => Platform::LIMIT },
+   // Platform::SEARCH_ARTIST => Map { "contentType" => "json", "filters" => "artists", "maxItems" => Platform::LIMIT } 
   };
 
 

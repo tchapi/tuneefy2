@@ -36,13 +36,13 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
     Platform::SEARCH_ALBUM  => "query",
    // Platform::SEARCH_ARTIST => "query" 
   };
-  protected ImmMap<int,ImmMap<string,mixed>> $options = ImmMap {
-    Platform::LOOKUP_TRACK  => ImmMap { "countryCode" => "FR" },
-    Platform::LOOKUP_ALBUM  => ImmMap { "countryCode" => "FR" },
-    Platform::LOOKUP_ARTIST => ImmMap { "countryCode" => "FR" },
-    Platform::SEARCH_TRACK  => ImmMap { "countryCode" => "FR", "limit" => Platform::LIMIT },
-    Platform::SEARCH_ALBUM  => ImmMap { "countryCode" => "FR", "limit" => Platform::LIMIT },
-   // Platform::SEARCH_ARTIST => ImmMap { "countryCode" => "FR", "limit" => Platform::LIMIT } 
+  protected ImmMap<int,Map<string,mixed>> $options = ImmMap {
+    Platform::LOOKUP_TRACK  => Map { "countryCode" => "FR" },
+    Platform::LOOKUP_ALBUM  => Map { "countryCode" => "FR" },
+    Platform::LOOKUP_ARTIST => Map { "countryCode" => "FR" },
+    Platform::SEARCH_TRACK  => Map { "countryCode" => "FR", "limit" => Platform::LIMIT },
+    Platform::SEARCH_ALBUM  => Map { "countryCode" => "FR", "limit" => Platform::LIMIT },
+   // Platform::SEARCH_ARTIST => Map { "countryCode" => "FR", "limit" => Platform::LIMIT } 
   };
 
   // http://www.tidal.com/track/40358305

@@ -61,7 +61,7 @@ abstract class Platform implements GeneralPlatformInterface
 
   protected ImmMap<int,?string> $endpoints = ImmMap {};
   protected ImmMap<int,?string> $terms = ImmMap {};
-  protected ImmMap<int,ImmMap<string,mixed>> $options = ImmMap {};
+  protected ImmMap<int,Map<string,mixed>> $options = ImmMap {};
 
   /**
    * The singleton instance of the class.

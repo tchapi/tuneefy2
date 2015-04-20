@@ -36,13 +36,13 @@ class GroovesharkPlatform extends Platform implements WebStreamingPlatformInterf
     Platform::SEARCH_ALBUM  => null,
    // Platform::SEARCH_ARTIST => null
   };
-  protected ImmMap<int,ImmMap<string,mixed>> $options = ImmMap {
-    Platform::LOOKUP_TRACK  => ImmMap {},
-    Platform::LOOKUP_ALBUM  => ImmMap {},
-    Platform::LOOKUP_ARTIST => ImmMap {},
-    Platform::SEARCH_TRACK  => ImmMap { "format" => "json", "limit" => Platform::LIMIT },
-    Platform::SEARCH_ALBUM  => ImmMap { "format" => "json", "limit" => Platform::LIMIT },
-   // Platform::SEARCH_ARTIST => ImmMap { "format" => "json", "limit" => Platform::LIMIT }, 
+  protected ImmMap<int,Map<string,mixed>> $options = ImmMap {
+    Platform::LOOKUP_TRACK  => Map {},
+    Platform::LOOKUP_ALBUM  => Map {},
+    Platform::LOOKUP_ARTIST => Map {},
+    Platform::SEARCH_TRACK  => Map { "format" => "json", "limit" => Platform::LIMIT },
+    Platform::SEARCH_ALBUM  => Map { "format" => "json", "limit" => Platform::LIMIT },
+   // Platform::SEARCH_ARTIST => Map { "format" => "json", "limit" => Platform::LIMIT }, 
   };
 
 

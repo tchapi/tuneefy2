@@ -36,13 +36,13 @@ class BeatsMusicPlatform extends Platform implements WebStreamingPlatformInterfa
     Platform::SEARCH_ALBUM  => "q",
    // Platform::SEARCH_ARTIST => "q" 
   };
-  protected ImmMap<int,ImmMap<string,mixed>> $options = ImmMap {
-    Platform::LOOKUP_TRACK  => ImmMap {},
-    Platform::LOOKUP_ALBUM  => ImmMap {},
-    Platform::LOOKUP_ARTIST => ImmMap {},
-    Platform::SEARCH_TRACK  => ImmMap { "type" => "track", "limit" => Platform::LIMIT },
-    Platform::SEARCH_ALBUM  => ImmMap { "type" => "album", "limit" => Platform::LIMIT },
-   // Platform::SEARCH_ARTIST => ImmMap { "type" => "artist", "limit" => Platform::LIMIT } 
+  protected ImmMap<int,Map<string,mixed>> $options = ImmMap {
+    Platform::LOOKUP_TRACK  => Map {},
+    Platform::LOOKUP_ALBUM  => Map {},
+    Platform::LOOKUP_ARTIST => Map {},
+    Platform::SEARCH_TRACK  => Map { "type" => "track", "limit" => Platform::LIMIT },
+    Platform::SEARCH_ALBUM  => Map { "type" => "album", "limit" => Platform::LIMIT },
+   // Platform::SEARCH_ARTIST => Map { "type" => "artist", "limit" => Platform::LIMIT } 
   };
 
   // http://on.beatsmusic.com/albums/al8992411/tracks/tr8992441

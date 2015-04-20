@@ -36,13 +36,13 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
     Platform::SEARCH_ALBUM  => null,
    // Platform::SEARCH_ARTIST => "q" // Search for a user, in fact
   };
-  protected ImmMap<int,ImmMap<string,mixed>> $options = ImmMap {
-    Platform::LOOKUP_TRACK  => ImmMap {},
-    Platform::LOOKUP_ALBUM  => ImmMap {},
-    Platform::LOOKUP_ARTIST => ImmMap {},
-    Platform::SEARCH_TRACK  => ImmMap { "limit" => Platform::LIMIT },
-    Platform::SEARCH_ALBUM  => ImmMap { "limit" => Platform::LIMIT },
-   // Platform::SEARCH_ARTIST => ImmMap { "limit" => Platform::LIMIT } 
+  protected ImmMap<int,Map<string,mixed>> $options = ImmMap {
+    Platform::LOOKUP_TRACK  => Map {},
+    Platform::LOOKUP_ALBUM  => Map {},
+    Platform::LOOKUP_ARTIST => Map {},
+    Platform::SEARCH_TRACK  => Map { "limit" => Platform::LIMIT },
+    Platform::SEARCH_ALBUM  => Map { "limit" => Platform::LIMIT },
+   // Platform::SEARCH_ARTIST => Map { "limit" => Platform::LIMIT } 
   };
 
   // http://soundcloud.com/mariecolonna/eminem-feat-tricky-welcome-to

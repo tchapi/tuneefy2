@@ -36,13 +36,13 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
     Platform::SEARCH_ALBUM  => "q",
    // Platform::SEARCH_ARTIST => "q" 
   };
-  protected ImmMap<int,ImmMap<string,mixed>> $options = ImmMap {
-    Platform::LOOKUP_TRACK  => ImmMap {},
-    Platform::LOOKUP_ALBUM  => ImmMap {},
-    Platform::LOOKUP_ARTIST => ImmMap {},
-    Platform::SEARCH_TRACK  => ImmMap { "nb_items" => Platform::LIMIT },
-    Platform::SEARCH_ALBUM  => ImmMap { "nb_items" => Platform::LIMIT },
-   // Platform::SEARCH_ARTIST => ImmMap { "nb_items" => Platform::LIMIT } 
+  protected ImmMap<int,Map<string,mixed>> $options = ImmMap {
+    Platform::LOOKUP_TRACK  => Map {},
+    Platform::LOOKUP_ALBUM  => Map {},
+    Platform::LOOKUP_ARTIST => Map {},
+    Platform::SEARCH_TRACK  => Map { "nb_items" => Platform::LIMIT },
+    Platform::SEARCH_ALBUM  => Map { "nb_items" => Platform::LIMIT },
+   // Platform::SEARCH_ARTIST => Map { "nb_items" => Platform::LIMIT } 
   };
 
   // NOT VALID ANYMORE http://www.deezer.com/listen-10236179

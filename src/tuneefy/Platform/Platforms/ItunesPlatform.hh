@@ -36,13 +36,13 @@ class ItunesPlatform extends Platform implements WebStoreInterface
     Platform::SEARCH_ALBUM  => "term",
    // Platform::SEARCH_ARTIST => "term" 
   };
-  protected ImmMap<int,ImmMap<string,mixed>> $options = ImmMap {
-    Platform::LOOKUP_TRACK  => ImmMap {},
-    Platform::LOOKUP_ALBUM  => ImmMap {},
-    Platform::LOOKUP_ARTIST => ImmMap {},
-    Platform::SEARCH_TRACK  => ImmMap { "media" => "music", "entity" => "song", "limit" => Platform::LIMIT },
-    Platform::SEARCH_ALBUM  => ImmMap { "media" => "music", "entity" => "album", "limit" => Platform::LIMIT },
-   // Platform::SEARCH_ARTIST => ImmMap { "media" => "music", "entity" => "musicArtist", "limit" => Platform::LIMIT } 
+  protected ImmMap<int,Map<string,mixed>> $options = ImmMap {
+    Platform::LOOKUP_TRACK  => Map {},
+    Platform::LOOKUP_ALBUM  => Map {},
+    Platform::LOOKUP_ARTIST => Map {},
+    Platform::SEARCH_TRACK  => Map { "media" => "music", "entity" => "song", "limit" => Platform::LIMIT },
+    Platform::SEARCH_ALBUM  => Map { "media" => "music", "entity" => "album", "limit" => Platform::LIMIT },
+   // Platform::SEARCH_ARTIST => Map { "media" => "music", "entity" => "musicArtist", "limit" => Platform::LIMIT } 
   };
 
   // https://itunes.apple.com/us/artist/jack-johnson/id909253

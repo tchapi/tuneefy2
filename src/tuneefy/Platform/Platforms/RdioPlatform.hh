@@ -38,13 +38,13 @@ class RdioPlatform extends Platform implements WebStreamingPlatformInterface
     Platform::SEARCH_ALBUM  => "query",
    // Platform::SEARCH_ARTIST => "query" 
   };
-  protected ImmMap<int,ImmMap<string,mixed>> $options = ImmMap {
-    Platform::LOOKUP_TRACK  => ImmMap { "method" => "getObjectFromUrl", "extras" => "-*,name,album,artist,icon,type" }, // type = t
-    Platform::LOOKUP_ALBUM  => ImmMap { "method" => "getObjectFromUrl", "extras" => "-*,name,artist,icon,type" }, // type = a 
-    Platform::LOOKUP_ARTIST => ImmMap { "method" => "getObjectFromUrl", "extras" => "-*,name,icon,type" }, // type = r
-    Platform::SEARCH_TRACK  => ImmMap { "method" => "search", "types" => "Track", "count" => Platform::LIMIT },
-    Platform::SEARCH_ALBUM  => ImmMap { "method" => "search", "types" => "Album", "count" => Platform::LIMIT },
-   // Platform::SEARCH_ARTIST => ImmMap { "method" => "search", "types" => "Artist", "count" => Platform::LIMIT } 
+  protected ImmMap<int,Map<string,mixed>> $options = ImmMap {
+    Platform::LOOKUP_TRACK  => Map { "method" => "getObjectFromUrl", "extras" => "-*,name,album,artist,icon,type" }, // type = t
+    Platform::LOOKUP_ALBUM  => Map { "method" => "getObjectFromUrl", "extras" => "-*,name,artist,icon,type" }, // type = a 
+    Platform::LOOKUP_ARTIST => Map { "method" => "getObjectFromUrl", "extras" => "-*,name,icon,type" }, // type = r
+    Platform::SEARCH_TRACK  => Map { "method" => "search", "types" => "Track", "count" => Platform::LIMIT },
+    Platform::SEARCH_ALBUM  => Map { "method" => "search", "types" => "Album", "count" => Platform::LIMIT },
+   // Platform::SEARCH_ARTIST => Map { "method" => "search", "types" => "Artist", "count" => Platform::LIMIT } 
   };
 
   // http://www.rdio.com/artist/The_Rolling_Stones/
