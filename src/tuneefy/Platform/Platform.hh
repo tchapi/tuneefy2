@@ -22,7 +22,7 @@ abstract class Platform implements GeneralPlatformInterface
   const string COLOR = "FFFFFF";
 
   // Helper Regexes
-  const string REGEX_FULLSTRING = "[a-zA-Z0-9%\+-\s\_\.]*";
+  const string REGEX_FULLSTRING = "[a-zA-Z0-9%\+\-\s\_\.]*";
   const string REGEX_NUMERIC_ID = "[0-9]*";
 
   // Helper constants for API calls
