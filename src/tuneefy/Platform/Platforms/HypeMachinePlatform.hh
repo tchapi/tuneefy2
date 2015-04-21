@@ -46,7 +46,7 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
   };
 
   // http://hypem.com/item/1arwr/Digitalism+-+2+Hearts
-  const string REGEX_HYPEM_TRACK = "/\/(item|track)\/(?P<track_id>[0-9a-zA-Z]*)(|\/(?P<track_slug>".Platform::REGEX_FULLSTRING."))[\/]?$/";
+  const string REGEX_HYPEM_TRACK = "/\/(?:item|track)\/(?P<track_id>[0-9a-zA-Z]*)(|\/(?P<track_slug>".Platform::REGEX_FULLSTRING."))[\/]?$/";
   // http://hypem.com/artist/Digitalism
   const string REGEX_HYPEM_ARTIST = "/\/artist\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
     

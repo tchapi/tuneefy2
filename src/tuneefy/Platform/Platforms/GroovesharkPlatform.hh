@@ -49,7 +49,7 @@ class GroovesharkPlatform extends Platform implements WebStreamingPlatformInterf
   // http://grooveshark.com/s/Sweet+Sweet+Heartkiller/2GVBvD?src=5
   // http://grooveshark.com/#!/s/Sweet+Sweet+Heartkiller/2GVBvD?src=5
   // http://grooveshark.com/#!/s/~/2GVBvD?src=11 if we're not lucky ...
-  const string REGEX_GROOVESHARK_TRACK = "/\/s\/(?P<track_name>".Platform::REGEX_FULLSTRING.")\/([a-zA-Z0-9]*)\?([a-zA-Z0-9%\+\=-]*)$/";
+  const string REGEX_GROOVESHARK_TRACK = "/\/s\/(?P<track_name>".Platform::REGEX_FULLSTRING.")\/(?:[a-zA-Z0-9]*)\?(?:[a-zA-Z0-9%\+\=-]*)$/";
   // http://grooveshark.com/album/Impeccable+Blahs/1529354
   // http://grooveshark.com/#!/album/Impeccable+Blahs/1529354
   const string REGEX_GROOVESHARK_ALBUM_ARTIST = "/\/(?P<type>album|artist)\/(?P<name>".Platform::REGEX_FULLSTRING.")\/(?P<id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
