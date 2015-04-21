@@ -235,9 +235,13 @@ abstract class Platform implements GeneralPlatformInterface
       
       if (static::RETURN_CONTENT_TYPE === Platform::RETURN_XML) {
         $response = Utils::flattenMetaXMLNodes($response);
-        $xml = new \SimpleXMLElement($response);
         $converter = new XmlToJsonConverter();
-        $response = $converter->convert($xml);
+        try {
+          $xml = new \SimpleXMLElement($response);
+          $response = $converter->convert($xml);
+        } catch(\Exception $e) {
+          return null; // XML can't be parsed
+        }
       }
 
       // For some platforms
