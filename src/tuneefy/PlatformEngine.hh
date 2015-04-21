@@ -24,7 +24,8 @@ use tuneefy\Platform\Platform,
     tuneefy\Platform\Platforms\RdioPlatform,
     tuneefy\Platform\Platforms\TidalPlatform,
     tuneefy\Platform\Platforms\LastFMPlatform,
-    tuneefy\Platform\Platforms\HypeMachinePlatform;
+    tuneefy\Platform\Platforms\HypeMachinePlatform,
+    tuneefy\Platform\Platforms\YoutubePlatform;
 
 class PlatformEngine
 {
@@ -55,14 +56,16 @@ class PlatformEngine
       "mixcloud" => MixcloudPlatform::getInstance(),
       "rdio" => RdioPlatform::getInstance(),
       "tidal" => TidalPlatform::getInstance(),
+      "youtube" => YoutubePlatform::getInstance(),
+
+      // Blogs / Scrobbling
       "lastfm" => LastFMPlatform::getInstance(),
       "hypem" => HypeMachinePlatform::getInstance(),
-
 
       // Stores
       "itunes" => ItunesPlatform::getInstance(),
       "amazon" => AmazonMP3Platform::getInstance(),
-      // More to come here
+
     };
   }
 
