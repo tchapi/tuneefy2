@@ -45,6 +45,11 @@ class Utils
     return preg_replace("/^$bom/", '', $string);
   }
 
+  public static function flattenMetaXMLNodes(string $xml): string
+  {
+    return preg_replace('/<meta\ rel\=\".*\/([a-zA-Z0-9]*)\">(.*)<\/meta>/', '<$1>$2</$1>', $xml);
+  }
+
   /*
     When a platform does not return a "score" in a search session,
     we create a fake one using this function

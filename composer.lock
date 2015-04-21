@@ -4,8 +4,94 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9b1b90da4de320ae50c8ed880669373e",
+    "hash": "fe44d51b591be1f609a51f7b73fcd3df",
     "packages": [
+        {
+            "name": "markwilson/xml-to-json",
+            "version": "0.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/markwilson/xml-to-json.git",
+                "reference": "5c3b18b5142cfc5332b521ce7f16bafad8545437"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/markwilson/xml-to-json/zipball/5c3b18b5142cfc5332b521ce7f16bafad8545437",
+                "reference": "5c3b18b5142cfc5332b521ce7f16bafad8545437",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "MarkWilson": "./src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Wilson",
+                    "email": "mark@89allport.co.uk"
+                }
+            ],
+            "time": "2015-04-08 07:52:43"
+        },
+        {
+            "name": "sabre/uri",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fruux/sabre-uri.git",
+                "reference": "0368d3cfb006a5a27660e20c23ffd71117da41b8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fruux/sabre-uri/zipball/0368d3cfb006a5a27660e20c23ffd71117da41b8",
+                "reference": "0368d3cfb006a5a27660e20c23ffd71117da41b8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.7"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*",
+                "squizlabs/php_codesniffer": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/functions.php"
+                ],
+                "psr-4": {
+                    "Sabre\\Uri\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Evert Pot",
+                    "email": "me@evertpot.com",
+                    "homepage": "http://evertpot.com/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Functions for making sense out of URIs.",
+            "homepage": "http://sabre.io/uri/",
+            "keywords": [
+                "rfc3986",
+                "uri",
+                "url"
+            ],
+            "time": "2015-01-27 22:21:38"
+        },
         {
             "name": "slim/slim",
             "version": "2.6.2",

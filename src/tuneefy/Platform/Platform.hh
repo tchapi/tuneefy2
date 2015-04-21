@@ -12,6 +12,8 @@ use tuneefy\Utils\OAuth\OAuthConsumer,
     tuneefy\Utils\OAuth\OAuthRequest,
     tuneefy\Utils\OAuth\OAuthSignatureMethod_HMAC_SHA1;
 
+use MarkWilson\XmlToJson\XmlToJsonConverter;
+
 abstract class Platform implements GeneralPlatformInterface
 {
 
@@ -43,6 +45,10 @@ abstract class Platform implements GeneralPlatformInterface
   const string METHOD_GET = "GET";
   const string METHOD_POST = "POST";
 
+  // Different Return content-type
+  const int RETURN_JSON = 1;
+  const int RETURN_XML = 2;
+
   // Default limit for requests
   const int LIMIT = 10; // 1 < LIMIT < 25
 
@@ -57,6 +63,7 @@ abstract class Platform implements GeneralPlatformInterface
   // Redeclared in child classes
   const string API_ENDPOINT = "";
   const string API_METHOD = Platform::METHOD_GET;
+  const int RETURN_CONTENT_TYPE = Platform::RETURN_JSON;
   const bool NEEDS_OAUTH = false;
 
   protected ImmMap<int,?string> $endpoints = ImmMap {};
@@ -225,6 +232,14 @@ abstract class Platform implements GeneralPlatformInterface
       // Error in the request, we should gracefully fail returning null
       return null;
     } else {
+      
+      if (static::RETURN_CONTENT_TYPE === Platform::RETURN_XML) {
+        $response = Utils::flattenMetaXMLNodes($response);
+        $xml = new \SimpleXMLElement($response);
+        $converter = new XmlToJsonConverter();
+        $response = $converter->convert($xml);
+      }
+
       // For some platforms
       $response = Utils::removeBOM($response);
       // If there is a problem with the data, we want to return null to gracefully fail as well :
@@ -234,6 +249,7 @@ abstract class Platform implements GeneralPlatformInterface
       // is pure array, json_decode will return a array object instead of an expected stdClass object.
       // To bypass that, we force the inclusion of the response in a data key, making it de facto an object.
       return json_decode('{"data":'.$response.'}', false);
+
     }
 
   }

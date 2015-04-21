@@ -15,6 +15,7 @@
         "symfony/yaml": "~2.6",
         "slim/slim": "~2.6",
         "slim/views": "0.1.*",
-        "twig/twig": "~1.18"
+        "twig/twig": "~1.18",
+        "markwilson/xml-to-json": "0.1.*"
     }
 }
