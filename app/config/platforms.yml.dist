@@ -4,7 +4,7 @@ platforms:
     enable:
       api: true
       website: true
-    capabities:
+    capabilities:
       track_search: true
       album_search: true
       lookup: true
@@ -17,7 +17,7 @@ platforms:
     enable:
       api: true
       website: true
-    capabities:
+    capabilities:
       track_search: true
       album_search: true
       lookup: true
@@ -30,7 +30,7 @@ platforms:
     enable:
       api: true
       website: true
-    capabities:
+    capabilities:
       track_search: true
       album_search: true
       lookup: true
@@ -43,7 +43,7 @@ platforms:
     enable:
       api: true
       website: true
-    capabities:
+    capabilities:
       track_search: true
       album_search: true
       lookup: true
@@ -56,7 +56,7 @@ platforms:
     enable:
       api: true
       website: true
-    capabities:
+    capabilities:
       track_search: true
       album_search: false
       lookup: false
@@ -69,7 +69,7 @@ platforms:
     enable:
       api: true
       website: true
-    capabities:
+    capabilities:
       track_search: true
       album_search: false
       lookup: true
@@ -82,7 +82,7 @@ platforms:
     enable:
       api: true
       website: true
-    capabities:
+    capabilities:
       track_search: true
       album_search: false
       lookup: true
@@ -95,7 +95,7 @@ platforms:
     enable:
       api: true
       website: true
-    capabities:
+    capabilities:
       track_search: true
       album_search: false
       lookup: true
@@ -108,7 +108,7 @@ platforms:
     enable:
       api: true
       website: true
-    capabities:
+    capabilities:
       track_search: false
       album_search: false
       lookup: true
@@ -121,7 +121,7 @@ platforms:
     enable:
       api: true
       website: true
-    capabities:
+    capabilities:
       track_search: true
       album_search: true
       lookup: false
@@ -134,7 +134,7 @@ platforms:
     enable:
       api: true
       website: true
-    capabities:
+    capabilities:
       track_search: true
       album_search: true
       lookup: true
@@ -147,7 +147,7 @@ platforms:
     enable:
       api: true
       website: true
-    capabities:
+    capabilities:
       track_search: true
       album_search: true
       lookup: true
@@ -160,7 +160,7 @@ platforms:
     enable:
       api: true
       website: true
-    capabities:
+    capabilities:
       track_search: true
       album_search: true
       lookup: true
@@ -171,13 +171,26 @@ platforms:
   tidal:
     class: tuneefy\Platform\TidalPlatform
     enable:
-      api: false
-      website: false
-    capabities:
-      track_search: false
-      album_search: false
-      lookup: false
+      api: true
+      website: true
+    capabilities:
+      track_search: true
+      album_search: true
+      lookup: true
     key: ""
     secret: ""
     default: false
     order: 14
+  amazon:
+    class: tuneefy\Platform\AmazonMP3Platform
+    enable:
+      api: true
+      website: true
+    capabilities:
+      track_search: true
+      album_search: true
+      lookup: true
+    key: ""
+    secret: ""
+    default: false
+    order: 15
