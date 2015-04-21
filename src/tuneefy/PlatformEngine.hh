@@ -18,6 +18,7 @@ use tuneefy\Platform\Platform,
     tuneefy\Platform\Platforms\GroovesharkPlatform,
     tuneefy\Platform\Platforms\QobuzPlatform,
     tuneefy\Platform\Platforms\ItunesPlatform,
+    tuneefy\Platform\Platforms\AmazonMP3Platform,
     tuneefy\Platform\Platforms\SoundcloudPlatform,
     tuneefy\Platform\Platforms\MixcloudPlatform,
     tuneefy\Platform\Platforms\RdioPlatform,
@@ -60,6 +61,7 @@ class PlatformEngine
 
       // Stores
       "itunes" => ItunesPlatform::getInstance(),
+      "amazon" => AmazonMP3Platform::getInstance(),
       // More to come here
     };
   }
