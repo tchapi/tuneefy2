@@ -98,14 +98,16 @@ class PlatformEngine
     // Which platform is this permalink from ?
     $platform = null;
     foreach ($this->platforms as $p) {
-      if ($p instanceof WebStreamingPlatformInterface && $p->hasPermalink($permalink)) {
-        $platform = $p; break;
-      }
-      if ($p instanceof WebStoreInterface && $p->hasPermalink($permalink)) {
-        $platform = $p; break;
-      }
-      if ($p instanceof ScrobblingPlatformInterface && $p->hasPermalink($permalink)) {
-        $platform = $p; break;
+      if ($p->isCapableOfLookingUp()) {
+        if ($p instanceof WebStreamingPlatformInterface && $p->hasPermalink($permalink)) {
+          $platform = $p; break;
+        }
+        if ($p instanceof WebStoreInterface && $p->hasPermalink($permalink)) {
+          $platform = $p; break;
+        }
+        if ($p instanceof ScrobblingPlatformInterface && $p->hasPermalink($permalink)) {
+          $platform = $p; break;
+        }
       }
     }
 
@@ -117,7 +119,12 @@ class PlatformEngine
 
   public function search(Platform $platform, int $type, string $query, int $limit, int $mode): ?Vector<PlatformResult>
   {
-    return $platform->search($type, $query, $limit, $mode)->getWaitHandle()->join();
+    if ( ($platform->isCapableOfSearchingTracks() && $type === Platform::SEARCH_TRACK)
+      || ($platform->isCapableOfSearchingAlbums() && $type === Platform::SEARCH_ALBUM) ) {
+      return $platform->search($type, $query, $limit, $mode)->getWaitHandle()->join();
+    } else {
+      return null;
+    }
   }
 
   // For TEST purposes
@@ -125,7 +132,10 @@ class PlatformEngine
   {
     $output = Vector {};
     foreach ($platforms as $p) {
-      $output->add($p->search($type, $query, $limit, $mode)->getWaitHandle()->join());
+      if ( ($p->isCapableOfSearchingTracks() && $type === Platform::SEARCH_TRACK)
+      || ($p->isCapableOfSearchingAlbums() && $type === Platform::SEARCH_ALBUM) ) {
+        $output->add($p->search($type, $query, $limit, $mode)->getWaitHandle()->join());
+      }
     }
 
     // TODO : merge results
