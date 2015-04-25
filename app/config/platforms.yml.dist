@@ -77,7 +77,7 @@ platforms:
     secret: ""
     default: false
     order: 6
-  hypemachine:
+  hypem:
     class: tuneefy\Platform\HypemachinePlatform
     enable:
       api: true
