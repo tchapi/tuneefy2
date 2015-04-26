@@ -65,7 +65,45 @@ class AlbumEntity extends MusicalEntity
       $result->add(Pair {"links", $this->links});
     }
 
+    if ($this->introspected === true) {
+      $result->add(Pair {"safe_title", $this->safe_title});
+      $result->add(Pair {"meta", $this->metadata});
+    }
+
     return $result;
+  }
+
+  /*
+    Strips unnecessary words from an album title
+    And extracts metadata
+  */
+  public function introspect(): this
+  {
+    if ($this->introspected === false) {
+
+      // What about we strip all dirty addons strings from the title
+      $matches = Map{};
+      if (preg_match("/(?P<title>.*?)\s?[\(\[\-\—]\s*(?P<meta>.*)/i", $this->title, $matches)) {
+        $this->safe_title = trim($matches['title']);
+        if (array_key_exists("meta", $matches)) {
+          $this->metadata = new Map(preg_split("/[\[\(\]\)]+/", $matches['meta'], -1, PREG_SPLIT_NO_EMPTY));
+        }
+      }
+  
+      $this->introspected = true;
+    }
+
+    return $this;
+  }
+
+  public function getPrimaryHash(): string
+  {
+    return Utils::flatten(Vector {$this->artist, $this->safe_title});
+  }
+
+  public function getSecondaryHash(): string
+  {
+    return Utils::flatten(Vector {$this->safe_title});
   }
 
 }

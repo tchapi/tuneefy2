@@ -66,11 +66,59 @@ class TrackEntity extends MusicalEntity
     $result->add(Pair {"type", self::TYPE});
     $result->add(Pair {"title", $this->track_title});
     $result->add(Pair {"album", $this->album->toMap()->remove("type")}); // Do not type the subresult
+    
     if ($this->countLinks() !== 0) {
       $result->add(Pair {"links", $this->links});
     }
 
+    if ($this->introspected === true) {
+      $result->add(Pair {"cover", $this->is_cover});
+      $result->add(Pair {"safe_title", $this->safe_track_title});
+      $result->add(Pair {"meta", $this->metadata});
+    }
+
     return $result;
+  }
+
+  /*
+    Strips unnecessary words from a track title
+    And extracts metadata
+  */
+  public function introspect(): this
+  {
+    if ($this->introspected === false) {
+
+      // Is this a cover or karaoke version ?
+      // the strlen part prevents from matching a track named "cover" or "karaoke" 
+      $this->is_cover = (preg_match('/[\(\[\-].*(originally\sperformed|cover|tribute|karaoke)/i', $this->track_title) === 1 && strlen($this->track_title) > 8);
+
+      // What about we strip all dirty addons strings from the title
+      $matches = Map{};
+      if (preg_match("/(?P<title>[^\[\(]*)(?:\s?[\(\[](?P<meta>.*)[\)\]]\s?)?/i", $this->track_title, $matches)) {
+        $this->safe_track_title = trim($matches['title']);
+        if (array_key_exists("meta", $matches)) {
+          $this->metadata = new Map(preg_split("/[\[\(\]\)]+/", $matches['meta'], -1, PREG_SPLIT_NO_EMPTY));
+        }
+      }
+      $matches_feat = Map{};
+      if (preg_match("/.*f(?:ea)?t(?:uring)?\.?\s?(?P<artist>[^\(\)\[\]\-]*)/i", $this->track_title, $matches_feat)) {
+        $this->metadata->add(Pair{"featuring", trim($matches_feat['artist'])});
+      }
+  
+      $this->introspected = true;
+    }
+
+    return $this;
+  }
+
+  public function getPrimaryHash(): string
+  {
+    return Utils::flatten(Vector {$this->album->getArtist(), $this->album->getSafeTitle(), $this->safe_track_title});
+  }
+
+  public function getSecondaryHash(): string
+  {
+    return Utils::flatten(Vector {$this->album->getArtist(), $this->safe_track_title});
   }
 
 }
