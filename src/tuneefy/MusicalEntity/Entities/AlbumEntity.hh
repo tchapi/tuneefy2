@@ -3,6 +3,7 @@
 namespace tuneefy\MusicalEntity\Entities;
 
 use tuneefy\MusicalEntity\MusicalEntity;
+use tuneefy\Utils\Utils;
 
 class AlbumEntity extends MusicalEntity
 {
@@ -11,14 +12,24 @@ class AlbumEntity extends MusicalEntity
 
   private string $title;
   private string $artist;
-  private string $cover;
+  private string $picture;
 
-  public function __construct(string $title, string $artist, string $cover)
+  // Introspection
+  private bool $introspected = false;
+  private string $safe_title;
+  private Map<string,string> $metadata;
+
+  public function __construct(string $title, string $artist, string $picture)
   {
     parent::__construct();
     $this->title = $title;
     $this->artist = $artist;
-    $this->cover = $cover;
+    $this->picture = $picture;
+
+    // Blank meta for now
+    $this->introspected = false;
+    $this->safe_title = $title;
+    $this->metadata = Map{};
   }
 
   // Getters and setters
@@ -32,9 +43,14 @@ class AlbumEntity extends MusicalEntity
     return $this->title;
   }
 
-  public function getCover(): string
+  public function getSafeTitle(): string
   {
-    return $this->cover;
+    return $this->safe_title;
+  }
+
+  public function getPicture(): string
+  {
+    return $this->picture;
   }
 
   public function toMap(): Map<string,mixed>
@@ -43,7 +59,8 @@ class AlbumEntity extends MusicalEntity
     $result->add(Pair {"type", self::TYPE});
     $result->add(Pair {"title", $this->title});
     $result->add(Pair {"artist", $this->artist});
-    $result->add(Pair {"cover", $this->cover});
+    $result->add(Pair {"picture", $this->picture});
+
     if ($this->countLinks() !== 0) {
       $result->add(Pair {"links", $this->links});
     }

@@ -5,6 +5,8 @@ namespace tuneefy\MusicalEntity\Entities;
 use tuneefy\MusicalEntity\MusicalEntity,
     tuneefy\MusicalEntity\Entities\AlbumEntity;
 
+use tuneefy\Utils\Utils;
+
 class TrackEntity extends MusicalEntity
 {
 
@@ -13,11 +15,23 @@ class TrackEntity extends MusicalEntity
   private string $track_title;
   private AlbumEntity $album;
 
+  // Introspection
+  private bool $is_cover = false;
+  private bool $introspected = false;
+  private string $safe_track_title;
+  private Map<string,string> $metadata;
+
   public function __construct(string $track_title, AlbumEntity $album)
   {
     parent::__construct();
     $this->track_title = $track_title;
     $this->album = $album;
+
+    // Blank meta for now
+    $this->is_cover = false;
+    $this->introspected = false;
+    $this->safe_track_title = $track_title;
+    $this->metadata = Map{};
   }
 
   // Getters and setters
@@ -36,9 +50,14 @@ class TrackEntity extends MusicalEntity
     return $this->album->getTitle();
   }
 
-  public function getCover(): string
+  public function getAlbumPicture(): string
   {
-    return $this->album->getCover();
+    return $this->album->getPicture();
+  }
+
+  public function isCover(): bool
+  {
+    return $this->is_cover;
   }
 
   public function toMap(): Map<string,mixed>

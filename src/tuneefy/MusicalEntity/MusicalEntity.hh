@@ -41,4 +41,5 @@ abstract class MusicalEntity implements MusicalEntityInterface
   {
     return count($this->links);
   }
+  
 }
