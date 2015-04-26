@@ -33,4 +33,10 @@ class PlatformResult
       };
     }
   }
+
+  public function mergeWith(PlatformResult $result): this
+  {
+    // TODO : merge for real
+    return $this;
+  }
 }

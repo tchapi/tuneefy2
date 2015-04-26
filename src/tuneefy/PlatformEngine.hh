@@ -138,8 +138,14 @@ class PlatformEngine
       }
     }
 
-    // TODO : merge results
-    return null;
+    // Let's flatten it out first
+    $result = Vector {};
+    foreach ($output as $o) {
+      $result->addAll($o);
+    }
+
+    return $this->mergeResults($result);
+
   }
 
   public function aggregate(int $type, string $query, int $limit, int $mode, Vector<Platform> $platforms): ?Vector<PlatformResult>
@@ -155,7 +161,41 @@ class PlatformEngine
     // Now requesting that async finishes
     $output = $asyncCall->join();
 
-    // TODO : merge results
-    return null;
+    // We now have a Vector of 15 (or more) Vectors containing each 10 (or more) PlatformResult results, we now want to merge that
+    // Let's flatten it out first
+    $result = Vector {};
+    foreach ($output as $o) {
+      $result->addAll($o);
+    }
+
+    return $this->mergeResults($result);
+
   }
+
+  public function mergeResults(Vector<PlatformResult> $results): ?Vector<PlatformResult>
+  {
+
+    $merged_results = Map {};
+
+    foreach ($results as $result) {
+
+      $current_entity = $result->getMusicalEntity();
+      if ($current_entity === null) { continue; }
+
+      // Run introspection and get primary hash
+      $key = $current_entity->introspect()->getPrimaryHash();
+
+      // Then merges with the actual Map we already have
+      if (!$merged_results->containsKey($key)){
+        //$merged_results[$key] = Vector{}; // DEBUG
+        $merged_results[$key] = $result;
+      }
+      $merged_results[$key]->mergeWith($result);
+      //$merged_results[$key]->add($current_entity); // DEBUG
+
+    }
+
+    return $merged_results->values();
+  }
+
 }
