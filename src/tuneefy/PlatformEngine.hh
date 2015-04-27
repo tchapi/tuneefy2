@@ -187,14 +187,13 @@ class PlatformEngine
 
       // Then merges with the actual Map we already have
       if (!$merged_results->containsKey($key)){
-        //$merged_results[$key] = Vector{}; // DEBUG
         $merged_results[$key] = $result;
+      } else {
+        $merged_results[$key]->mergeWith($result);
       }
-      $merged_results[$key]->mergeWith($result);
-      //$merged_results[$key]->add($current_entity); // DEBUG
 
     }
-
+    
     return $merged_results->values();
   }
 
