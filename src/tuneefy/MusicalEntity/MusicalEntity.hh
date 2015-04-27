@@ -65,6 +65,7 @@ abstract class MusicalEntity implements MusicalEntityInterface
     if ($extra_info !== null){
       $this->extra_info = $extra_info;
     }
+    return $this;
   }
 
   public function getExtraInfo(): Map<string,string>
