@@ -12,8 +12,8 @@ abstract class MusicalEntity implements MusicalEntityInterface
   protected Vector<string> $links;
 
   // Introspection
-  private bool $introspected = false;
-  private Map<string,string> $metadata;
+  protected bool $introspected = false;
+  protected Map<string,string> $metadata;
 
   public function __construct()
   {
