@@ -15,9 +15,7 @@ class AlbumEntity extends MusicalEntity
   private string $picture;
 
   // Introspection
-  private bool $introspected = false;
   private string $safe_title;
-  private Map<string,string> $metadata;
 
   public function __construct(string $title, string $artist, string $picture)
   {
@@ -26,10 +24,7 @@ class AlbumEntity extends MusicalEntity
     $this->artist = $artist;
     $this->picture = $picture;
 
-    // Blank meta for now
-    $this->introspected = false;
     $this->safe_title = $title;
-    $this->metadata = Map{};
   }
 
   // Getters and setters
