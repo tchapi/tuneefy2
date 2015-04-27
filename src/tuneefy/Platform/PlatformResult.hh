@@ -39,6 +39,10 @@ class PlatformResult
   public function mergeWith(PlatformResult $that): this
   {
 
+    if ($this->musical_entity === null || $that->getMusicalEntity() === null) {
+      return $this;
+    }
+
     // Merge musical entities
     if ($this->musical_entity instanceof TrackEntity) {
       $this->musical_entity = TrackEntity::merge($this->musical_entity, $that->getMusicalEntity());
@@ -49,14 +53,14 @@ class PlatformResult
     // Merge score
     $thatMetadata = $that->getMetadata();
     if (array_key_exists("score", $this->metadata) && array_key_exists("score", $thatMetadata)) {
-      $this->metadata['score'] = ($this->metadata['score'] + $thatMetadata['score']) / 2;
+      $this->metadata['score'] = (floatval($this->metadata['score']) + floatval($thatMetadata['score'])) / 2;
     }
 
     // Merge other metadata ?
     // TODO
 
     if (array_key_exists("merges", $this->metadata)) {
-      $this->metadata['merges'] += 1;
+      $this->metadata['merges'] = intval($this->metadata['merges']) + 1;
     } else {
       $this->metadata['merges'] = 1;
     }
