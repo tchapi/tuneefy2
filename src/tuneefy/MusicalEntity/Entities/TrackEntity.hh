@@ -25,7 +25,6 @@ class TrackEntity extends MusicalEntity
     $this->track_title = $track_title;
     $this->album = $album;
 
-    // Blank meta for now
     $this->is_cover = false;
     $this->safe_track_title = $track_title;
   }
