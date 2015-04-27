@@ -32,6 +32,12 @@ abstract class MusicalEntity implements MusicalEntityInterface
     return $this;
   }
 
+  public function addLinks(Vector<string> $links): this
+  {
+    $this->links->addAll($links);
+    return $this;
+  }
+
   public function getLinks(): Vector<string>
   {
     return $this->links;
