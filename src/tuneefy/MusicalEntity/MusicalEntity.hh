@@ -59,11 +59,11 @@ abstract class MusicalEntity implements MusicalEntityInterface
     return $this->introspected;
   }
 
-  public function setIntrospected(?Map $metadata = null): this
+  public function setIntrospected(?Map $extra_info = null): this
   {
     $this->introspected = true;
-    if ($metadata !== null){
-      $this->metadata = $metadata;
+    if ($extra_info !== null){
+      $this->extra_info = $extra_info;
     }
   }
 
