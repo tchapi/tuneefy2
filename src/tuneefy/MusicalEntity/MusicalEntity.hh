@@ -13,13 +13,13 @@ abstract class MusicalEntity implements MusicalEntityInterface
 
   // Introspection
   protected bool $introspected = false;
-  protected Map<string,string> $metadata;
+  protected Map<string,string> $extra_info;
 
   public function __construct()
   {
     $this->links = Vector {};
     $this->introspected = false;
-    $this->metadata = Map{};
+    $this->extra_info = Map{};
   }
 
   public function toMap(): Map<string,mixed>
@@ -67,9 +67,9 @@ abstract class MusicalEntity implements MusicalEntityInterface
     }
   }
 
-  public function getMetadata(): Map<string,string>
+  public function getExtraInfo(): Map<string,string>
   {
-    return $this->metadata;
+    return $this->extra_info;
   }
 
 }

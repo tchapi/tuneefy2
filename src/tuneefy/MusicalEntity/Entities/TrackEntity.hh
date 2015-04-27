@@ -79,7 +79,7 @@ class TrackEntity extends MusicalEntity
     if ($this->introspected === true) {
       $result->add(Pair {"cover", $this->is_cover});
       $result->add(Pair {"safe_title", $this->safe_track_title});
-      $result->add(Pair {"meta", $this->metadata});
+      $result->add(Pair {"extra_info", $this->extra_info});
     }
 
     return $result;
@@ -87,7 +87,7 @@ class TrackEntity extends MusicalEntity
 
   /*
     Strips unnecessary words from a track title
-    And extracts metadata
+    And extracts extra_info
   */
   public function introspect(): this
   {
@@ -102,12 +102,12 @@ class TrackEntity extends MusicalEntity
       if (preg_match("/(?P<title>[^\[\(]*)(?:\s?[\(\[](?P<meta>.*)[\)\]]\s?)?/i", $this->track_title, $matches)) {
         $this->safe_track_title = trim($matches['title']);
         if (array_key_exists("meta", $matches)) {
-          $this->metadata = new Map(preg_split("/[\[\(\]\)]+/", $matches['meta'], -1, PREG_SPLIT_NO_EMPTY));
+          $this->extra_info->add(Pair{"context", str_replace("/\(\[\-\—/g", ' ', $matches['meta'])});
         }
       }
       $matches_feat = Map{};
       if (preg_match("/.*f(?:ea)?t(?:uring)?\.?\s?(?P<artist>[^\(\)\[\]\-]*)/i", $this->track_title, $matches_feat)) {
-        $this->metadata->add(Pair{"featuring", trim($matches_feat['artist'])});
+        $this->extra_info->add(Pair{"featuring", trim($matches_feat['artist'])});
       }
   
       $this->introspected = true;
