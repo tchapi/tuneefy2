@@ -101,4 +101,38 @@ class AlbumEntity extends MusicalEntity
     return Utils::flatten(Vector {$this->safe_title});
   }
 
+  public static function merge(AlbumEntity $a, AlbumEntity $b): AlbumEntity
+  {
+    // $a has precedence
+
+    if ($a->getSafeTitle() === "") {
+      $title = $b->getSafeTitle();
+    } else {
+      $title = $a->getSafeTitle();
+    }
+
+    if ($a->getArtist() === "") {
+      $artist = $b->getArtist();
+    } else {
+      $artist = $a->getArtist();
+    }
+
+    if ($a->getPicture() === "") {
+      $picture = $b->getPicture();
+    } else {
+      $picture = $a->getPicture();
+    }
+
+    // Create the result
+    $c = new AlbumEntity($title, $artist, $picture);
+    $c->addLinks($a->getLinks()->addAll($b->getLinks()));
+
+    if ($a->isIntrospected() === true && $b->isIntrospected() === true) {
+      // TODO merge metadata Maps, or find a better way to rekey them beforehand
+      // $c->setIntrospected($a->getMetadata()->setAll($b->getMetadata()));
+    } // But do not force introspection
+
+    return $c;
+  }
+
 }

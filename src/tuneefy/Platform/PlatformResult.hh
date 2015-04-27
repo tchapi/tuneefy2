@@ -2,7 +2,9 @@
 
 namespace tuneefy\Platform;
 
-use tuneefy\MusicalEntity\MusicalEntity;
+use tuneefy\MusicalEntity\MusicalEntity,
+    tuneefy\MusicalEntity\Entities\TrackEntity,
+    tuneefy\MusicalEntity\Entities\AlbumEntity;
 
 class PlatformResult
 {
@@ -34,9 +36,31 @@ class PlatformResult
     }
   }
 
-  public function mergeWith(PlatformResult $result): this
+  public function mergeWith(PlatformResult $that): this
   {
-    // TODO : merge for real
+
+    // Merge musical entities
+    if ($this->musical_entity instanceof TrackEntity) {
+      $this->musical_entity = TrackEntity::merge($this->musical_entity, $that->getMusicalEntity());
+    } else if ($this->musical_entity instanceof AlbumEntity) {
+      $this->musical_entity = AlbumEntity::merge($this->musical_entity, $that->getMusicalEntity());
+    }
+
+    // Merge score
+    $thatMetadata = $that->getMetadata();
+    if (array_key_exists("score", $this->metadata) && array_key_exists("score", $thatMetadata)) {
+      $this->metadata['score'] = ($this->metadata['score'] + $thatMetadata['score']) / 2;
+    }
+
+    // Merge other metadata ?
+    // TODO
+
+    if (array_key_exists("merges", $this->metadata)) {
+      $this->metadata['merges'] += 1;
+    } else {
+      $this->metadata['merges'] = 1;
+    }
+
     return $this;
   }
 }
