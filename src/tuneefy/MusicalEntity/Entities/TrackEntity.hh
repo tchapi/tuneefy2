@@ -17,9 +17,7 @@ class TrackEntity extends MusicalEntity
 
   // Introspection
   private bool $is_cover = false;
-  private bool $introspected = false;
   private string $safe_track_title;
-  private Map<string,string> $metadata;
 
   public function __construct(string $track_title, AlbumEntity $album)
   {
@@ -29,9 +27,7 @@ class TrackEntity extends MusicalEntity
 
     // Blank meta for now
     $this->is_cover = false;
-    $this->introspected = false;
     $this->safe_track_title = $track_title;
-    $this->metadata = Map{};
   }
 
   // Getters and setters
@@ -45,9 +41,19 @@ class TrackEntity extends MusicalEntity
     return $this->track_title;
   }
 
+  public function getSafeTitle(): string
+  {
+    return $this->safe_title;
+  }
+
   public function getAlbumTitle(): string
   {
     return $this->album->getTitle();
+  }
+
+  public function getAlbumSafeTitle(): string
+  {
+    return $this->album->getSafeTitle();
   }
 
   public function getAlbumPicture(): string
