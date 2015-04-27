@@ -11,9 +11,15 @@ abstract class MusicalEntity implements MusicalEntityInterface
 
   protected Vector<string> $links;
 
+  // Introspection
+  private bool $introspected = false;
+  private Map<string,string> $metadata;
+
   public function __construct()
   {
     $this->links = Vector {};
+    $this->introspected = false;
+    $this->metadata = Map{};
   }
 
   public function toMap(): Map<string,mixed>
@@ -48,4 +54,22 @@ abstract class MusicalEntity implements MusicalEntityInterface
     return count($this->links);
   }
   
+  public function isIntrospected(): bool
+  {
+    return $this->introspected;
+  }
+
+  public function setIntrospected(?Map $metadata = null): this
+  {
+    $this->introspected = true;
+    if ($metadata !== null){
+      $this->metadata = $metadata;
+    }
+  }
+
+  public function getMetadata(): Map<string,string>
+  {
+    return $this->metadata;
+  }
+
 }
