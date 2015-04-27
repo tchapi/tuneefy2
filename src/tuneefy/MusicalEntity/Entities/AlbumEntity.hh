@@ -128,8 +128,7 @@ class AlbumEntity extends MusicalEntity
     $c->addLinks($a->getLinks()->addAll($b->getLinks()));
 
     if ($a->isIntrospected() === true && $b->isIntrospected() === true) {
-      // TODO merge metadata Maps, or find a better way to rekey them beforehand
-      // $c->setIntrospected($a->getMetadata()->setAll($b->getMetadata()));
+      $c->setIntrospected($a->getExtraInfo()->setAll($b->getExtraInfo()));
     } // But do not force introspection
 
     return $c;
