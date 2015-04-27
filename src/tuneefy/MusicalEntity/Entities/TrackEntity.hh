@@ -126,7 +126,7 @@ class TrackEntity extends MusicalEntity
     return Utils::flatten(Vector {$this->album->getArtist(), $this->safe_track_title});
   }
 
-  public static function merge(AlbumEntity $a, AlbumEntity $b): AlbumEntity
+  public static function merge(TrackEntity $a, TrackEntity $b): TrackEntity
   {
     // TODO
     return $a;
