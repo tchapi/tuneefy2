@@ -42,7 +42,7 @@ class TrackEntity extends MusicalEntity
 
   public function getSafeTitle(): string
   {
-    return $this->safe_title;
+    return $this->safe_track_title;
   }
 
   public function getAlbumTitle(): string
