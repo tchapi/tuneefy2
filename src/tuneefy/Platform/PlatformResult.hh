@@ -53,7 +53,7 @@ class PlatformResult
     // Merge score
     $thatMetadata = $that->getMetadata();
     if (array_key_exists("score", $this->metadata) && array_key_exists("score", $thatMetadata)) {
-      $this->metadata['score'] = (floatval($this->metadata['score']) + floatval($thatMetadata['score'])) / 2;
+      $this->metadata['score'] = floatval($this->metadata['score']) + floatval($thatMetadata['score']);
     }
 
     // Merge other metadata ?
@@ -66,5 +66,18 @@ class PlatformResult
     }
 
     return $this;
+  }
+
+  public function finalizeMerge(): this
+  {
+    // Compute a final score
+    if (array_key_exists("merges", $this->metadata) && array_key_exists("score", $this->metadata)) {
+      // The more merges, the better the result must be
+      // so we only divide by 'merges' and not 'merges+1'
+      $this->metadata['score'] = floatval($this->metadata['score']) / (floatval($this->metadata['merges']));
+    } else if (array_key_exists("score", $this->metadata)){
+      // has not been merged, ever. Lower score
+      $this->metadata['score'] = floatval($this->metadata['score']) / 2;
+    }
   }
 }

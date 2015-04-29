@@ -193,7 +193,9 @@ class PlatformEngine
       }
 
     }
-    
+
+    $merged_results->map($e ==> {$e->finalizeMerge();});
+
     return $merged_results->values();
   }
 
