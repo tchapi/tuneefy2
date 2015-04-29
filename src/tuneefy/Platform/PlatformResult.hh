@@ -79,5 +79,7 @@ class PlatformResult
       // has not been merged, ever. Lower score
       $this->metadata['score'] = floatval($this->metadata['score']) / 2;
     }
+
+    return $this;
   }
 }
