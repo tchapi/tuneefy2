@@ -51,6 +51,7 @@ abstract class Platform implements GeneralPlatformInterface
 
   // Default limit for requests
   const int LIMIT = 10; // 1 < LIMIT < 25
+  const int AGGREGATE_LIMIT = 50; // The more the merrier
 
   protected bool $default;
 
