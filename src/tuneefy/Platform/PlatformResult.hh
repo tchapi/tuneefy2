@@ -73,12 +73,16 @@ class PlatformResult
     // Compute a final score
     if (array_key_exists("merges", $this->metadata) && array_key_exists("score", $this->metadata)) {
       // The more merges, the better the result must be
-      // so we only divide by 'merges' and not 'merges+1'
-      $this->metadata['score'] = floatval($this->metadata['score']) / (floatval($this->metadata['merges']));
+      $merge_quantifier_offset = floatval($this->metadata['merges']) / 2.25; // Completely heuristic number
+      $this->metadata['score'] = $merge_quantifier_offset + floatval($this->metadata['score']) / (floatval($this->metadata['merges']) + 1);
     } else if (array_key_exists("score", $this->metadata)){
       // has not been merged, ever. Lower score
       $this->metadata['score'] = floatval($this->metadata['score']) / 2;
+    } else {
+      $this->metadata['score'] = 0.0;
     }
+
+    $this->metadata['score'] = round($this->metadata['score'], 3);
 
     return $this;
   }
