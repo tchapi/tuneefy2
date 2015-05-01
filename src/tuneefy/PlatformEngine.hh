@@ -134,7 +134,7 @@ class PlatformEngine
     foreach ($platforms as $p) {
       if ( ($p->isCapableOfSearchingTracks() && $type === Platform::SEARCH_TRACK)
       || ($p->isCapableOfSearchingAlbums() && $type === Platform::SEARCH_ALBUM) ) {
-        $output->add($p->search($type, $query, $limit, $mode)->getWaitHandle()->join());
+        $output->add($p->search($type, $query, Platform::AGGREGATE_LIMIT, $mode)->getWaitHandle()->join());
       }
     }
 
@@ -144,7 +144,7 @@ class PlatformEngine
       $result->addAll($o);
     }
 
-    return $this->mergeResults($result);
+    return $this->mergeResults($result, $limit);
 
   }
 
@@ -152,7 +152,7 @@ class PlatformEngine
   {
     $asyncs = Vector {};
     foreach ($platforms as $p) {
-      $asyncs->add($p->search($type, $query, $limit, $mode)->getWaitHandle());
+      $asyncs->add($p->search($type, $query, Platform::AGGREGATE_LIMIT, $mode)->getWaitHandle());
     }
 
     // Calling the functions
@@ -168,11 +168,11 @@ class PlatformEngine
       $result->addAll($o);
     }
 
-    return $this->mergeResults($result);
+    return $this->mergeResults($result, $limit);
 
   }
 
-  public function mergeResults(Vector<PlatformResult> $results): ?Vector<PlatformResult>
+  public function mergeResults(Vector<PlatformResult> $results, int $limit): ?Vector<PlatformResult>
   {
 
     $merged_results = Map {};
