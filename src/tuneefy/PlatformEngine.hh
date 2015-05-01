@@ -194,9 +194,24 @@ class PlatformEngine
 
     }
 
+    // Gives each element a last chance of doing something useful on its data
     $merged_results->map($e ==> {$e->finalizeMerge();});
 
-    return $merged_results->values();
+    // Discards the key (hash) that we don't need anymore
+    $result = $merged_results->values();
+
+    // Sorts by score
+    usort($result, ($a, $b) ==> { 
+      $am = $a->getMetadata();
+      $bm = $b->getMetadata();
+      if ($am['score'] == $bm['score']) { return 0; }
+      return ($am['score'] > $bm['score'])? -1 : 1 ;
+    });
+
+    // Resizes to keep only the wanted number of elements
+    $result->splice(0, $limit);
+
+    return $result;
   }
 
 }
