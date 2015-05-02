@@ -51,19 +51,6 @@ platforms:
     secret: ""
     default: true
     order: 4
-  grooveshark:
-    class: tuneefy\Platform\GroovesharkPlatform
-    enable:
-      api: true
-      website: true
-    capabilities:
-      track_search: true
-      album_search: false
-      lookup: false
-    key: ""
-    secret: ""
-    default: true
-    order: 5
   soundcloud:
     class: tuneefy\Platform\SoundcloudPlatform
     enable:
