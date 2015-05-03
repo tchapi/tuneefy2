@@ -236,7 +236,7 @@ class Application
     */
     $this->slim_app->get('/', function() {
       // TODO
-      $this->slim_app->render('home.html.twig');
+      $this->slim_app->render('home.html.twig', array( "platforms" => $this->engine->getAllPlatforms() ));
     });
 
     /*

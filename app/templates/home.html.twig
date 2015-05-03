@@ -4,4 +4,35 @@
 
 Home (WIP)
 
+<form id="form">
+  
+  <input type="text" name="query" id="query" placeholder="rechercher"/>
+
+  <ul id="type">
+    <li>
+      <label for="type_track"><input id="type_track" data-api-verb="track" type="radio" name="type" checked="checked"/> track</label>
+      <label for="type_album"><input id="type_album" data-api-verb="album" type="radio" name="type"/> album</label>
+    </li>
+  </ul>
+
+  <ul id="platforms">
+  {% for platform in platforms %}
+    <li>
+      <label for="platform_{{ platform.tag }}"><input id="platform_{{ platform.tag }}" data-platform-tag="{{ platform.tag }}" class="platform" type="checkbox" /> {{ platform.name }}</label>
+    </li>
+  {% endfor %}
+  </ul>
+  
+  <input type="submit" value="Search" name="search" id="search"/>
+
+</form>
+
+<ul id="results">
+</ul>
+
+{% endblock %}
+
+{% block javascript %}
+  <script type="text/javascript" src="/js/zepto.min.js"></script>
+  <script type="text/javascript" src="/js/main.js"></script>
 {% endblock %}
