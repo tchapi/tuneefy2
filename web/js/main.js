@@ -33,16 +33,17 @@ p.search = function(query, type, platforms) {
   /* Client-side aggregation */
 
   /* Or server side aggregation */
-  $.get('/api/aggregate/' + type, { q: query, include: platforms.join(',') }, function(response){
-    // process response
+  $.get('/api/aggregate/' + type, { q: query, include: platforms.join(',') }, (function(response){
+    
+    // Process response
     if (response.data) {
-      $.each(response.data, function(key, item) {
-        var li = $('<li/>')
-                  .text(item.musical_entity.safe_title)
-                  .appendTo(this.results);
-      })
+      $.each(response.data, (function(key, item) {
+        var li = $("<li />", { text: item.musical_entity.safe_title })
+        li.appendTo(this.results)
+      }).bind(this))
     }
-  })
+    
+  }).bind(this))
 
 }
 
