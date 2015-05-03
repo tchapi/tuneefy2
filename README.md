@@ -18,6 +18,10 @@ This project uses [composer](https://getcomposer.org/). Just run :
   - [Twig](http://twig.sensiolabs.org/), a template engine
   - [XmlToJsonConverter](https://github.com/markwilson/xml-to-json) to convert Amazon XML to correct JSON
 
+### On the frontend side of things
+
+I'm using [Zepto.js](http://zeptojs.com) to cover the DOM manipulation tasks and related stuff.
+
 ### Code structure
 
 This project is a very basic composer project with a PSR-4 autoloader.
