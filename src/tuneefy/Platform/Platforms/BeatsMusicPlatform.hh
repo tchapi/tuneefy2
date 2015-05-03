@@ -127,14 +127,14 @@ class BeatsMusicPlatform extends Platform implements WebStreamingPlatformInterfa
   {
     $response = await $this->fetch($type, $query);
 
-    if ($response === null || intval($response->data->info->total) === 0) {
+    if ($response === null || count($response->data->data) === 0) {
       return null;
     }
     $entities = $response->data;
 
     // We actually don't pass the limit to the fetch() 
     // request since it's not really useful, in fact
-    $length = min(intval($entities->info->total), $limit?$limit:Platform::LIMIT);
+    $length = min(count($entities->data), $limit?$limit:Platform::LIMIT);
     
     $musical_entities = Vector {};
 
