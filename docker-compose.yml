@@ -1,0 +1,14 @@
+hhvm:
+  image: hhvm:latest
+  volumes:
+    - .:/var/www/tuneefy
+  ports:
+    - "9000:9000"
+nginx:
+  image: nginx:latest
+  volumes:
+    - .:/var/www/tuneefy
+  links:
+    - hhvm
+  ports:
+    - "80:80"
