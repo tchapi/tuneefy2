@@ -10,6 +10,29 @@ This project uses [composer](https://getcomposer.org/). Just run :
 
  ... and you should be good to go !
 
+### Docker
+
+Tuneefy can be run in two [Docker](https://www.docker.com/) containers, one containing Nginx, and one containing HHVM. The two are linked via a Docker Compose file.
+
+All the Docker files are present in the `docker` folder.
+
+To create the images :
+
+    docker build -f ./docker/Dockerfile-nginx -t nginx .
+    docker build -f ./docker/Dockerfile-hhvm -t hhvm .
+
+And then :
+
+    docker-compose up -d  # may differ if you're on a Mac, Linux or Windows PC
+
+Then, to tail the logs :
+
+    docker-compose logs
+
+To run the typechecker in the running HHVM container :
+
+    docker exec -it [container_name] /bin/bash -c "cd /var/www/tuneefy/ && hh_client"
+
 ### Packages used
 
   - [Composer](https://getcomposer.org/), providing a nice package manager *and* a practical PSR-4 autoloader
