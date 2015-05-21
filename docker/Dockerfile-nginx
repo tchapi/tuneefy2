@@ -1,7 +1,7 @@
 FROM debian:jessie
 MAINTAINER tchap
 
-ADD tuneefy.conf /etc/nginx/sites-available/
+ADD ./docker/tuneefy.conf /etc/nginx/sites-available/
 
 RUN apt-get update && \
     apt-get install -y --fix-missing vim nano wget curl && \

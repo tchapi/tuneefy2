@@ -18,8 +18,8 @@ All the Docker files are present in the `docker` folder.
 
 To create the images :
 
-    docker build -f ./docker/Dockerfile-nginx -t nginx .
-    docker build -f ./docker/Dockerfile-hhvm -t hhvm .
+    docker build -rm -f ./docker/Dockerfile-nginx -t nginx .
+    docker build -rm -f ./docker/Dockerfile-hhvm -t hhvm .
 
 And then :
 
