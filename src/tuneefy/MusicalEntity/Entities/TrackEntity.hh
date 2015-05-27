@@ -115,25 +115,45 @@ class TrackEntity extends MusicalEntity
         $this->extra_info->add(Pair{"featuring", trim($matches_feat['artist'])});
       }
   
+      // The underlying album should be introspected too
+      $this->album->introspect();
+
       $this->introspected = true;
     }
 
     return $this;
   }
 
-  public function getPrimaryHash(): string
+  public function getHash(bool $aggressive): string
   {
-    return Utils::flatten(Vector {$this->album->getArtist(), $this->album->getSafeTitle(), $this->safe_track_title});
-  }
-
-  public function getSecondaryHash(): string
-  {
-    return Utils::flatten(Vector {$this->album->getArtist(), $this->safe_track_title});
+    if ($aggressive === true){
+      return Utils::flatten(Vector {$this->album->getArtist(), $this->safe_track_title});
+    } else {
+      return Utils::flatten(Vector {$this->album->getArtist(), $this->album->getSafeTitle(), $this->safe_track_title});
+    }
   }
 
   public static function merge(TrackEntity $a, TrackEntity $b): TrackEntity
   {
-    // TODO
-    return $a;
+    // $a has precedence
+
+    if ($a->getSafeTitle() === "") {
+      $title = $b->getSafeTitle();
+    } else {
+      $title = $a->getSafeTitle();
+    }
+
+    // "Recurse" to album entity
+    $album = AlbumEntity::merge($a->getAlbum(), $b->getAlbum());
+
+    // Create the result
+    $c = new TrackEntity($title, $album);
+    $c->addLinks($a->getLinks()->addAll($b->getLinks()));
+
+    if ($a->isIntrospected() === true && $b->isIntrospected() === true) {
+      $c->setIntrospected($a->getExtraInfo()->setAll($b->getExtraInfo()));
+    } // But do not force introspection
+
+    return $c;
   }
 }
