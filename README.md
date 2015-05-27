@@ -90,6 +90,11 @@ Limits are placed on the number of API requests you may make using your API key.
 
 > TBC
 
+##### Merging aggressively
+
+The `aggressive` parameter allows to merge tracks without taking the album name into account. This works for a majority of scenarios since it's quite rare that an artist released two tracks with exactly the same name, but it can confuse **live** or **acoustic** versions, for instance.
+
+
 - - -
 
 > This is work in progress, but if you want to participate/contribute, feel free to tell me ! :)

@@ -146,7 +146,7 @@ class PlatformEngine
 
   }
 
-  public function aggregate(int $type, string $query, int $limit, int $mode, Vector<Platform> $platforms): ?Vector<PlatformResult>
+  public function aggregate(int $type, string $query, int $limit, int $mode, bool $aggressive, Vector<Platform> $platforms): ?Vector<PlatformResult>
   {
     $asyncs = Vector {};
     foreach ($platforms as $p) {
@@ -166,11 +166,11 @@ class PlatformEngine
       $result->addAll($o);
     }
 
-    return $this->mergeResults($result, $limit);
+    return $this->mergeResults($result, $aggressive, $limit);
 
   }
 
-  public function mergeResults(Vector<PlatformResult> $results, int $limit): ?Vector<PlatformResult>
+  public function mergeResults(Vector<PlatformResult> $results, bool $aggressive, int $limit): ?Vector<PlatformResult>
   {
 
     $merged_results = Map {};
@@ -180,8 +180,8 @@ class PlatformEngine
       $current_entity = $result->getMusicalEntity();
       if ($current_entity === null) { continue; }
 
-      // Run introspection and get primary hash
-      $key = $current_entity->introspect()->getPrimaryHash();
+      // Run introspection and get hash
+      $key = $current_entity->introspect()->getHash($aggressive);
 
       // Then merges with the actual Map we already have
       if (!$merged_results->containsKey($key)){

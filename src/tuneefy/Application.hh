@@ -173,6 +173,7 @@ class Application
         $query = $this->slim_app->request->params('q');
         $limit = $this->slim_app->request->params('limit');
         $include = $this->slim_app->request->params('include'); // Included platforms?
+        $aggressive = $this->slim_app->request->params('aggressive')?true:false; // If aggressive, merge more (actual behaviour depends on the type)
         $real_type = $this->engine->translateFlag('type', $type);
         $real_mode = $this->engine->translateFlag('mode', $this->slim_app->request->params('mode'));
 
@@ -200,7 +201,7 @@ class Application
           $real_mode = Platform::MODE_LAZY;
         }
 
-        $result = $this->engine->aggregate($real_type, $query, intval($limit), $real_mode, $platforms); // ?Vector<Map<string,mixed>>
+        $result = $this->engine->aggregate($real_type, $query, intval($limit), $real_mode, $aggressive, $platforms); // ?Vector<Map<string,mixed>>
         // For TEST purposes : $result = $this->engine->aggregateSync($type, $query, intval($limit), $platforms);
 
         if ($result === null) {

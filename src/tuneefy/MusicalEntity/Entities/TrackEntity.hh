@@ -45,6 +45,11 @@ class TrackEntity extends MusicalEntity
     return $this->safe_track_title;
   }
 
+  public function getAlbum(): AlbumEntity
+  {
+    return $this->album;
+  }
+
   public function getAlbumTitle(): string
   {
     return $this->album->getTitle();

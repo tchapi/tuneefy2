@@ -91,14 +91,13 @@ class AlbumEntity extends MusicalEntity
     return $this;
   }
 
-  public function getPrimaryHash(): string
+  public function getHash(bool $aggressive): string
   {
-    return Utils::flatten(Vector {$this->artist, $this->safe_title});
-  }
-
-  public function getSecondaryHash(): string
-  {
-    return Utils::flatten(Vector {$this->safe_title});
+    if ($aggressive === true) {
+      return Utils::flatten(Vector {$this->safe_title});
+    } else {
+      return Utils::flatten(Vector {$this->artist, $this->safe_title});
+    }
   }
 
   public static function merge(AlbumEntity $a, AlbumEntity $b): AlbumEntity
