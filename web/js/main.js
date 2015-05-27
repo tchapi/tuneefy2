@@ -37,8 +37,9 @@ p.search = function(query, type, platforms) {
     
     // Process response
     if (response.data) {
+      this.results.empty();
       $.each(response.data, (function(key, item) {
-        var li = $("<li />", { text: item.musical_entity.safe_title })
+        var li = $("<li />", { text: item.musical_entity.safe_title + " (" + item.musical_entity.links.length + " links)"})
         li.appendTo(this.results)
       }).bind(this))
     }
