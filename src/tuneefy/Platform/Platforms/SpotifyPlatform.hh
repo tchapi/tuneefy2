@@ -82,14 +82,14 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
       if ($object_type === Platform::LOOKUP_TRACK) {
 
         $musical_entity = new TrackEntity($entity->name, new AlbumEntity($entity->album->name, $entity->artists[0]->name, $entity->album->images[1]->url)); 
-        $musical_entity->addLink($entity->external_urls->spotify);
+        $musical_entity->addLink(static::TAG, $entity->external_urls->spotify);
 
         $query_words = Vector {$entity->artists[0]->name, $entity->name};
       
       } else if ($object_type === Platform::LOOKUP_ALBUM) {
       
         $musical_entity = new AlbumEntity($entity->name, $entity->artists[0]->name, $entity->images[1]->url);
-        $musical_entity->addLink($entity->external_urls->spotify);
+        $musical_entity->addLink(static::TAG, $entity->external_urls->spotify);
 
         $query_words = Vector {$entity->artists[0]->name, $entity->name};
       
@@ -153,7 +153,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
       if ($type === Platform::SEARCH_TRACK) {
       
         $musical_entity = new TrackEntity($current_item->name, new AlbumEntity($current_item->album->name, $current_item->artists[0]->name, $current_item->album->images[1]->url)); 
-        $musical_entity->addLink($current_item->external_urls->spotify);
+        $musical_entity->addLink(static::TAG, $current_item->external_urls->spotify);
 
         $musical_entities->add(new PlatformResult(Map {"score" => round($current_item->popularity/$max_track_popularity,2)}, $musical_entity));
 
@@ -172,7 +172,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
         }
 
         $musical_entity = new AlbumEntity($current_item->name, $artist, $current_item->images[1]->url); 
-        $musical_entity->addLink($current_item->external_urls->spotify);
+        $musical_entity->addLink(static::TAG, $current_item->external_urls->spotify);
 
         $musical_entities->add(new PlatformResult(Map {"score" => Utils::indexScore($i)}, $musical_entity));
 

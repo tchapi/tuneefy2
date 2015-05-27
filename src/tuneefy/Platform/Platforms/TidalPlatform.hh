@@ -83,7 +83,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
 
       $entity = $response->data;
       $musical_entity = new TrackEntity($entity->title, new AlbumEntity($entity->album->title, $entity->artist->name, $this->getCoverUrlFromCoverHash($entity->album->cover))); 
-      $musical_entity->addLink($entity->url);
+      $musical_entity->addLink(static::TAG, $entity->url);
 
       $query_words = Vector {$entity->artist->name, $entity->title};
       
@@ -95,7 +95,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
 
       $entity = $response->data;
       $musical_entity = new AlbumEntity($entity->title, $entity->artist->name, $this->getCoverUrlFromCoverHash($entity->cover));
-      $musical_entity->addLink($entity->url);
+      $musical_entity->addLink(static::TAG, $entity->url);
 
       $query_words = Vector {$entity->artist->name, $entity->title};
       
@@ -144,12 +144,12 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
       if ($type === Platform::SEARCH_TRACK) {
         
         $musical_entity = new TrackEntity($current_item->title, new AlbumEntity($current_item->album->title, $current_item->artist->name, $this->getCoverUrlFromCoverHash($current_item->album->cover))); 
-        $musical_entity->addLink($current_item->url);
+        $musical_entity->addLink(static::TAG, $current_item->url);
              
       } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
 
         $musical_entity = new AlbumEntity($current_item->title, $current_item->artist->name, $this->getCoverUrlFromCoverHash($current_item->cover)); 
-        $musical_entity->addLink($current_item->url);
+        $musical_entity->addLink(static::TAG, $current_item->url);
       
       }
 

@@ -9,7 +9,7 @@ abstract class MusicalEntity implements MusicalEntityInterface
 
   const string TYPE = "musical_entity";
 
-  protected Vector<string> $links;
+  protected Vector<(string,string)> $links;
 
   // Introspection
   protected bool $introspected = false;
@@ -32,19 +32,19 @@ abstract class MusicalEntity implements MusicalEntityInterface
   /*
     Links getter and setter
   */
-  public function addLink(string $link): this
+  public function addLink(string $platform, string $link): this
   {
-    $this->links->add($link);
+    $this->links->add(tuple($platform, $link));
     return $this;
   }
 
-  public function addLinks(Vector<string> $links): this
+  public function addLinks(Vector<(string,string)> $links): this
   {
     $this->links->addAll($links);
     return $this;
   }
 
-  public function getLinks(): Vector<string>
+  public function getLinks(): Vector<(string,string)>
   {
     return $this->links;
   }

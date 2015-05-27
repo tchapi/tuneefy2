@@ -78,7 +78,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
 
       $entity = $response->data->items[0];
       $musical_entity = new TrackEntity($entity->snippet->title, new AlbumEntity("", "", $entity->snippet->thumbnails->medium->url)); 
-      $musical_entity->addLink($this->getPermalinkFromTrackId($entity->id));
+      $musical_entity->addLink(static::TAG, $this->getPermalinkFromTrackId($entity->id));
 
       $query_words = Vector {$entity->snippet->title};
       
@@ -119,7 +119,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
       if ($type === Platform::SEARCH_TRACK) {
         
         $musical_entity = new TrackEntity($current_item->snippet->title, new AlbumEntity("", "", $current_item->snippet->thumbnails->medium->url)); 
-        $musical_entity->addLink($this->getPermalinkFromTrackId($current_item->id->videoId));
+        $musical_entity->addLink(static::TAG, $this->getPermalinkFromTrackId($current_item->id->videoId));
         $musical_entities->add(new PlatformResult(Map {"score" => Utils::indexScore($i)}, $musical_entity));
              
       }

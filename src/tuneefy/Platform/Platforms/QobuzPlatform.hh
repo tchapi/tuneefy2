@@ -93,7 +93,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
 
       $entity = $response->data;
       $musical_entity = new TrackEntity($entity->title, new AlbumEntity($entity->album->title, $entity->album->artist->name, $entity->album->image->small)); 
-      $musical_entity->addLink($this->getPlayerUrlFromTrackId("".$entity->id));
+      $musical_entity->addLink(static::TAG, $this->getPlayerUrlFromTrackId("".$entity->id));
 
       $query_words = Vector {$entity->album->artist->name, $entity->title};
       
@@ -104,7 +104,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
 
       $entity = $response->data;
       $musical_entity = new AlbumEntity($entity->title, $entity->artist->name, $entity->image->small);
-      $musical_entity->addLink($this->getPlayerUrlFromAlbumId("".$entity->id));
+      $musical_entity->addLink(static::TAG, $this->getPlayerUrlFromAlbumId("".$entity->id));
 
       $query_words = Vector {$entity->artist->name, $entity->title};
       
@@ -161,12 +161,12 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
       if ($type === Platform::SEARCH_TRACK && $current_item->album->artist->name !== null) {
 
         $musical_entity = new TrackEntity($current_item->title, new AlbumEntity($current_item->album->title, $current_item->album->artist->name, $current_item->album->image->small)); 
-        $musical_entity->addLink($this->getPlayerUrlFromTrackId("".$current_item->id));
+        $musical_entity->addLink(static::TAG, $this->getPlayerUrlFromTrackId("".$current_item->id));
              
       } else if ($type === Platform::SEARCH_ALBUM) {
 
         $musical_entity = new AlbumEntity($current_item->title, $current_item->artist->name, $current_item->image->small);
-        $musical_entity->addLink($this->getPlayerUrlFromAlbumId("".$current_item->id));
+        $musical_entity->addLink(static::TAG, $this->getPlayerUrlFromAlbumId("".$current_item->id));
       
       }
       

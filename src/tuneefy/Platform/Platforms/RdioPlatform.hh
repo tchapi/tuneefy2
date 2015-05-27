@@ -75,7 +75,7 @@ class RdioPlatform extends Platform implements WebStreamingPlatformInterface
 
       $entity = $response->data->result;
       $musical_entity = new TrackEntity($entity->name, new AlbumEntity($entity->album, $entity->artist, $entity->icon)); 
-      $musical_entity->addLink($permalink);
+      $musical_entity->addLink(static::TAG, $permalink);
 
       $query_words = Vector {$entity->artist, $entity->name};
       
@@ -87,7 +87,7 @@ class RdioPlatform extends Platform implements WebStreamingPlatformInterface
 
       $entity = $response->data->result;
       $musical_entity = new AlbumEntity($entity->name, $entity->artist, $entity->icon);
-      $musical_entity->addLink($permalink);
+      $musical_entity->addLink(static::TAG, $permalink);
 
       $query_words = Vector {$entity->artist, $entity->name};
       
@@ -136,12 +136,12 @@ class RdioPlatform extends Platform implements WebStreamingPlatformInterface
       if ($type === Platform::SEARCH_TRACK) {
         
         $musical_entity = new TrackEntity($current_item->name, new AlbumEntity($current_item->album, $current_item->artist, $current_item->icon)); 
-        $musical_entity->addLink($current_item->shortUrl);
+        $musical_entity->addLink(static::TAG, $current_item->shortUrl);
              
       } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
 
         $musical_entity = new AlbumEntity($current_item->name, $current_item->artist, $current_item->icon); 
-        $musical_entity->addLink($current_item->shortUrl);
+        $musical_entity->addLink(static::TAG, $current_item->shortUrl);
       
       }
       

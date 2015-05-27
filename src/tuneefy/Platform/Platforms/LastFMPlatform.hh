@@ -88,7 +88,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
       }
 
       $musical_entity = new TrackEntity($entity->name, new AlbumEntity($entity->album->title, $entity->artist->name, $picture)); 
-      $musical_entity->addLink($entity->url);
+      $musical_entity->addLink(static::TAG, $entity->url);
 
       $query_words = Vector {$entity->artist->name, $entity->name};
       
@@ -110,7 +110,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
       }
 
       $musical_entity = new AlbumEntity($entity->name, $entity->artist, $picture);
-      $musical_entity->addLink($entity->url);
+      $musical_entity->addLink(static::TAG, $entity->url);
 
       $query_words = Vector {$entity->artist, $entity->name};
       
@@ -175,7 +175,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         }
         
         $musical_entity = new TrackEntity($current_item->name, new AlbumEntity("", $current_item->artist, $picture)); 
-        $musical_entity->addLink($current_item->url);
+        $musical_entity->addLink(static::TAG, $current_item->url);
              
       } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
 
@@ -187,7 +187,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         }
 
         $musical_entity = new AlbumEntity($current_item->name, $current_item->artist, $picture); 
-        $musical_entity->addLink($current_item->url);
+        $musical_entity->addLink(static::TAG, $current_item->url);
       
       }
       

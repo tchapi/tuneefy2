@@ -77,7 +77,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
 
       $entity = $response->data;
       $musical_entity = new TrackEntity($entity->title, new AlbumEntity($entity->album->title, $entity->artist->name, $entity->album->cover)); 
-      $musical_entity->addLink($permalink);
+      $musical_entity->addLink(static::TAG, $permalink);
 
       $query_words = Vector {$entity->artist->name, $entity->title};
       
@@ -89,7 +89,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
 
       $entity = $response->data;
       $musical_entity = new AlbumEntity($entity->title, $entity->artist->name, $entity->cover);
-      $musical_entity->addLink($permalink);
+      $musical_entity->addLink(static::TAG, $permalink);
 
       $query_words = Vector {$entity->artist->name, $entity->title};
       
@@ -144,7 +144,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         }
         
         $musical_entity = new TrackEntity($current_item->title, new AlbumEntity($current_item->album->title, $current_item->artist->name, $picture)); 
-        $musical_entity->addLink($current_item->link);
+        $musical_entity->addLink(static::TAG, $current_item->link);
              
       } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
 
@@ -155,7 +155,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         }
 
         $musical_entity = new AlbumEntity($current_item->title, $current_item->artist->name, $picture); 
-        $musical_entity->addLink($current_item->link);
+        $musical_entity->addLink(static::TAG, $current_item->link);
       
       }
       

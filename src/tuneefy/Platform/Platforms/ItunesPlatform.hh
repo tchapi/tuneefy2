@@ -72,7 +72,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
 
       $entity = $response->data->results[0];
       $musical_entity = new AlbumEntity($entity->collectionName, $entity->artistName, $entity->artworkUrl100);
-      $musical_entity->addLink($entity->collectionViewUrl);
+      $musical_entity->addLink(static::TAG, $entity->collectionViewUrl);
 
       $query_words = Vector {$entity->artistName, $entity->collectionName};
       
@@ -121,12 +121,12 @@ class ItunesPlatform extends Platform implements WebStoreInterface
       if ($type === Platform::SEARCH_TRACK) {
         
         $musical_entity = new TrackEntity($current_item->trackName, new AlbumEntity($current_item->collectionName, $current_item->artistName, $current_item->artworkUrl100)); 
-        $musical_entity->addLink($current_item->trackViewUrl);
+        $musical_entity->addLink(static::TAG, $current_item->trackViewUrl);
              
       } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
 
         $musical_entity = new AlbumEntity($current_item->collectionName, $current_item->artistName, $current_item->artworkUrl100); 
-        $musical_entity->addLink($current_item->collectionViewUrl);
+        $musical_entity->addLink(static::TAG, $current_item->collectionViewUrl);
       
       }
       

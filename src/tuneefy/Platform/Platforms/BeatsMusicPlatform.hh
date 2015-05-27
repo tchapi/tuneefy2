@@ -86,7 +86,7 @@ class BeatsMusicPlatform extends Platform implements WebStreamingPlatformInterfa
 
       $entity = $response->data;
       $musical_entity = new TrackEntity($entity->data->title, new AlbumEntity($entity->data->refs->album->display, $entity->data->artist_display_name, $this->getCoverUrlFromAlbumId($match['album_id']))); 
-      $musical_entity->addLink($permalink);
+      $musical_entity->addLink(static::TAG, $permalink);
 
       $query_words = Vector {$entity->data->artist_display_name, $entity->data->title};
       
@@ -98,7 +98,7 @@ class BeatsMusicPlatform extends Platform implements WebStreamingPlatformInterfa
 
       $entity = $response->data;
       $musical_entity = new AlbumEntity($entity->title, $entity->artist->name, $entity->cover);
-      $musical_entity->addLink($permalink);
+      $musical_entity->addLink(static::TAG, $permalink);
 
       $query_words = Vector {$entity->artist->name, $entity->title};
       
@@ -146,12 +146,12 @@ class BeatsMusicPlatform extends Platform implements WebStreamingPlatformInterfa
       if ($type === Platform::SEARCH_TRACK) {
 
         $musical_entity = new TrackEntity($current_item->display, new AlbumEntity($current_item->related->display, $current_item->detail, $this->getCoverUrlFromAlbumId($current_item->related->id))); 
-        $musical_entity->addLink(sprintf("http://on.beatsmusic.com/albums/%s/tracks/%s", $current_item->related->id, $current_item->id));
+        $musical_entity->addLink(static::TAG, sprintf("http://on.beatsmusic.com/albums/%s/tracks/%s", $current_item->related->id, $current_item->id));
              
       } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
 
         $musical_entity = new AlbumEntity($current_item->display, $current_item->detail, $this->getCoverUrlFromAlbumId($current_item->id)); 
-        $musical_entity->addLink(sprintf("http://on.beatsmusic.com/albums/%s", $current_item->id));
+        $musical_entity->addLink(static::TAG, sprintf("http://on.beatsmusic.com/albums/%s", $current_item->id));
       
       }
       

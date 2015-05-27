@@ -98,7 +98,7 @@ class XboxMusicPlatform extends Platform implements WebStreamingPlatformInterfac
       
       $entity = $response->data->Tracks->Items[0];
       $musical_entity = new TrackEntity($entity->Name, new AlbumEntity($entity->Album->Name, $entity->Artists[0]->Artist->Name, $entity->Album->ImageUrl)); 
-      $musical_entity->addLink($entity->Link);
+      $musical_entity->addLink(static::TAG, $entity->Link);
 
       $query_words = Vector {$entity->Artists[0]->Artist->Name, $entity->Name};
       
@@ -110,7 +110,7 @@ class XboxMusicPlatform extends Platform implements WebStreamingPlatformInterfac
       
       $entity = $response->data->Albums->Items[0];
       $musical_entity = new AlbumEntity($entity->Name, $entity->Artists[0]->Artist->Name, $entity->ImageUrl);
-      $musical_entity->addLink($entity->Link);
+      $musical_entity->addLink(static::TAG, $entity->Link);
 
       $query_words = Vector {$entity->Artists[0]->Artist->Name, $entity->Name};
       
@@ -160,12 +160,12 @@ class XboxMusicPlatform extends Platform implements WebStreamingPlatformInterfac
       if ($type === Platform::SEARCH_TRACK) {
         
         $musical_entity = new TrackEntity($current_item->Name, new AlbumEntity($current_item->Album->Name, $current_item->Artists[0]->Artist->Name, $current_item->ImageUrl)); 
-        $musical_entity->addLink($current_item->Link);
+        $musical_entity->addLink(static::TAG, $current_item->Link);
              
       } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
 
         $musical_entity = new AlbumEntity($current_item->Name, $current_item->Artists[0]->Artist->Name, $current_item->ImageUrl); 
-        $musical_entity->addLink($current_item->Link);
+        $musical_entity->addLink(static::TAG, $current_item->Link);
       
       }
       

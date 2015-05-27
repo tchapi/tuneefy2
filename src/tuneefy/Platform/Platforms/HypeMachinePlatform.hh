@@ -78,7 +78,7 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
 
       // No cover : on HypeM, covers are not the album's, so they are not relevant
       $musical_entity = new TrackEntity($entity[1]->title, new AlbumEntity("", $entity[1]->artist, "")); 
-      $musical_entity->addLink($permalink);
+      $musical_entity->addLink(static::TAG, $permalink);
 
       $query_words = Vector {$entity[1]->artist, $entity[1]->title};
       
@@ -127,7 +127,7 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
       if ($type === Platform::SEARCH_TRACK) {
         
         $musical_entity = new TrackEntity($current_item->title, new AlbumEntity("", $current_item->artist, "")); 
-        $musical_entity->addLink($this->getPermalinkFromTrackId($current_item->mediaid));
+        $musical_entity->addLink(static::TAG, $this->getPermalinkFromTrackId($current_item->mediaid));
         $musical_entities->add(new PlatformResult(Map {"score" => Utils::indexScore($i)}, $musical_entity));
   
       }

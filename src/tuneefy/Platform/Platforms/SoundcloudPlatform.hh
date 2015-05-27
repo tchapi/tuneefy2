@@ -75,7 +75,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
       $entity = $response->data;
 
       $musical_entity = new TrackEntity($entity->title, new AlbumEntity("", $entity->user->username, $entity->artwork_url?$entity->artwork_url:"")); 
-      $musical_entity->addLink($entity->permalink_url);
+      $musical_entity->addLink(static::TAG, $entity->permalink_url);
 
       $query_words = Vector {$entity->user->username, $entity->title};
       
@@ -123,7 +123,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
       if ($type === Platform::SEARCH_TRACK) {
       
         $musical_entity = new TrackEntity($current_item->title, new AlbumEntity("", $current_item->user->username, $current_item->artwork_url?$current_item->artwork_url:"")); 
-        $musical_entity->addLink($current_item->permalink_url);
+        $musical_entity->addLink(static::TAG, $current_item->permalink_url);
   
         $musical_entities->add(new PlatformResult(Map {"score" => $current_item->playback_count/$max_playback_count}, $musical_entity));
        

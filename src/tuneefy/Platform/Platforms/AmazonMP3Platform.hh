@@ -85,7 +85,7 @@ class AmazonMP3Platform extends Platform implements WebStoreInterface
 
         $entity = $response->data->trackList->track;
         $musical_entity = new TrackEntity($entity->title, new AlbumEntity($entity->album, $entity->creator, $entity->imageMedium)); 
-        $musical_entity->addLink($this->getPermalinkFromASIN($match['asin']));
+        $musical_entity->addLink(static::TAG, $this->getPermalinkFromASIN($match['asin']));
 
         $query_words = Vector {$entity->creator, $entity->title};
       
@@ -93,7 +93,7 @@ class AmazonMP3Platform extends Platform implements WebStoreInterface
         
         $entity = $response->data->album;
         $musical_entity = new AlbumEntity($entity->title, $entity->creator, $entity->imageMedium);
-        $musical_entity->addLink($this->getPermalinkFromASIN($match['asin']));
+        $musical_entity->addLink(static::TAG, $this->getPermalinkFromASIN($match['asin']));
 
         $query_words = Vector {$entity->creator, $entity->title};
       
@@ -139,14 +139,14 @@ class AmazonMP3Platform extends Platform implements WebStoreInterface
         $current_item = $entities[$i]->track;
         
         $musical_entity = new TrackEntity($current_item->title, new AlbumEntity($current_item->album, $current_item->creator, $current_item->imageMedium)); 
-        $musical_entity->addLink($this->getPermalinkFromASIN($current_item->ASIN));
+        $musical_entity->addLink(static::TAG, $this->getPermalinkFromASIN($current_item->ASIN));
              
       } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
       
         $current_item = $entities[$i]->album;
 
         $musical_entity = new AlbumEntity($current_item->title, $current_item->creator, $current_item->imageMedium); 
-        $musical_entity->addLink($this->getPermalinkFromASIN($current_item->ASIN));
+        $musical_entity->addLink(static::TAG, $this->getPermalinkFromASIN($current_item->ASIN));
       
       }
       
