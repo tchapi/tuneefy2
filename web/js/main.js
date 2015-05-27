@@ -14,10 +14,13 @@ var tuneefy = function() {
     }).get()
 
     // What type ?
-    var type = $("input[type='radio']:checked").attr("data-api-verb")
+    var type = $("#type input[type='radio']:checked").attr("data-api-verb")
+
+    // Merge aggressively ?
+    var aggressive = $("input[type='checkbox'].aggressive").is(":checked")
 
     // Initiate search ...
-    this.search(this.search_input.val(), type, platforms)
+    this.search(this.search_input.val(), type, aggressive, platforms)
 
     e.preventDefault()
     return false;
@@ -28,12 +31,12 @@ var tuneefy = function() {
 
 var p = tuneefy.prototype
 
-p.search = function(query, type, platforms) {
+p.search = function(query, type, aggressive, platforms) {
 
   /* Client-side aggregation */
 
   /* Or server side aggregation */
-  $.get('/api/aggregate/' + type, { q: query, include: platforms.join(',') }, (function(response){
+  $.get('/api/aggregate/' + type, { q: query, include: platforms.join(','), aggressive: aggressive }, (function(response){
     
     // Process response
     if (response.data) {
