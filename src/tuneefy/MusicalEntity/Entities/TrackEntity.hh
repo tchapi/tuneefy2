@@ -124,6 +124,12 @@ class TrackEntity extends MusicalEntity
     return $this;
   }
 
+  public function setSafeTitle(string $safe_title): this
+  {
+    $this->safe_track_title = $safe_title;
+    return $this;
+  }
+
   public function getHash(bool $aggressive): string
   {
     if ($aggressive === true){
@@ -137,10 +143,12 @@ class TrackEntity extends MusicalEntity
   {
     // $a has precedence
 
-    if ($a->getSafeTitle() === "") {
-      $title = $b->getSafeTitle();
+    if ($a->getTitle() === "") {
+      $title = $b->getTitle();
+      $safe_title = $b->getSafeTitle();
     } else {
-      $title = $a->getSafeTitle();
+      $title = $a->getTitle();
+      $safe_title = $a->getSafeTitle();
     }
 
     // "Recurse" to album entity
@@ -152,6 +160,7 @@ class TrackEntity extends MusicalEntity
 
     if ($a->isIntrospected() === true && $b->isIntrospected() === true) {
       $c->setIntrospected($a->getExtraInfo()->setAll($b->getExtraInfo()));
+      $c->setSafeTitle($safe_title);
     } // But do not force introspection
 
     return $c;
