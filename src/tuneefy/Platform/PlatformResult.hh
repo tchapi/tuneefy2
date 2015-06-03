@@ -39,33 +39,38 @@ class PlatformResult
   public function mergeWith(PlatformResult $that): this
   {
 
-    if ($this->musical_entity === null || $that->getMusicalEntity() === null) {
-      return $this;
+    $thatMusicalEntity = $that->getMusicalEntity();
+
+    if ($this->musical_entity !== null && $thatMusicalEntity !== null) {
+
+      // Merge musical entities
+      if ($this->musical_entity instanceof TrackEntity) {
+        invariant($thatMusicalEntity instanceof TrackEntity, "must be a TrackEntity");
+        $this->musical_entity = TrackEntity::merge($this->musical_entity, $thatMusicalEntity);
+      } else if ($this->musical_entity instanceof AlbumEntity) {
+        invariant($thatMusicalEntity instanceof AlbumEntity, "must be a AlbumEntity");
+        $this->musical_entity = AlbumEntity::merge($this->musical_entity, $thatMusicalEntity);
+      }
+
+      // Merge score
+      $thatMetadata = $that->getMetadata();
+      if (array_key_exists("score", $this->metadata) && array_key_exists("score", $thatMetadata)) {
+        $this->metadata['score'] = floatval($this->metadata['score']) + floatval($thatMetadata['score']);
+      }
+
+      // Merge other metadata ?
+      // TODO
+
+      if (array_key_exists("merges", $this->metadata)) {
+        $this->metadata['merges'] = intval($this->metadata['merges']) + 1;
+      } else {
+        $this->metadata['merges'] = 1;
+      }
+
     }
-
-    // Merge musical entities
-    if ($this->musical_entity instanceof TrackEntity) {
-      $this->musical_entity = TrackEntity::merge($this->musical_entity, $that->getMusicalEntity());
-    } else if ($this->musical_entity instanceof AlbumEntity) {
-      $this->musical_entity = AlbumEntity::merge($this->musical_entity, $that->getMusicalEntity());
-    }
-
-    // Merge score
-    $thatMetadata = $that->getMetadata();
-    if (array_key_exists("score", $this->metadata) && array_key_exists("score", $thatMetadata)) {
-      $this->metadata['score'] = floatval($this->metadata['score']) + floatval($thatMetadata['score']);
-    }
-
-    // Merge other metadata ?
-    // TODO
-
-    if (array_key_exists("merges", $this->metadata)) {
-      $this->metadata['merges'] = intval($this->metadata['merges']) + 1;
-    } else {
-      $this->metadata['merges'] = 1;
-    }
-
+    
     return $this;
+    
   }
 
   public function finalizeMerge(): this
