@@ -212,6 +212,22 @@ class Application
 
       });
 
+      /*
+        Share via the API
+      */
+      $this->slim_app->get('/share/:intent', function(string $intent) {
+
+        // Intent is a GUID
+        $result = $this->engine->share($intent);
+
+        if ($result === null) {
+          $this->slim_app->render(200, array( 'msg' => "This intent is not correct or has expired" ));
+        } else {
+          $this->slim_app->render(200, array( 'data' => $result ));
+        }
+
+      });
+
     });
 
     /*

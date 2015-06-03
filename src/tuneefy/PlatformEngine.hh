@@ -212,4 +212,9 @@ class PlatformEngine
     return $result;
   }
 
+  public function share(string $intent): ?string
+  {
+    return null;
+  }
+
 }
