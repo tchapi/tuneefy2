@@ -168,6 +168,8 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         $musical_entity = new AlbumEntity($current_item->title, $current_item->artist->name, $current_item->image->small);
         $musical_entity->addLink(static::TAG, $this->getPlayerUrlFromAlbumId("".$current_item->id));
       
+      } else {
+        $musical_entity = null;
       }
       
       $musical_entities->add(new PlatformResult(Map {"score" => Utils::indexScore($i)}, $musical_entity));
