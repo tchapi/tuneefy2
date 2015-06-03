@@ -14,6 +14,8 @@ RUN apt-get update && \
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
     ln -sf /dev/stderr /var/log/nginx/error.log
 
+ENV LOGNAME root
+
 EXPOSE 80
 
 CMD /usr/sbin/nginx -g "daemon off;"

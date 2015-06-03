@@ -18,8 +18,8 @@ All the Docker files are present in the `docker` folder.
 
 To create the images :
 
-    docker build -rm -f ./docker/Dockerfile-nginx -t nginx .
-    docker build -rm -f ./docker/Dockerfile-hhvm -t hhvm .
+    docker build --no-cache=true --rm -f ./docker/Dockerfile-nginx -t nginx .
+    docker build --no-cache=true --rm -f ./docker/Dockerfile-hhvm -t hhvm .
 
 And then :
 
@@ -31,7 +31,7 @@ Then, to tail the logs :
 
 To run the typechecker in the running HHVM container :
 
-    docker exec -it [container_name] /bin/bash -c "cd /var/www/tuneefy/ && hh_client"
+    docker exec -it [container_name] /bin/bash -c "cd /var/www/tuneefy/ && hh_client restart && hh_client"
 
 ### Packages used
 

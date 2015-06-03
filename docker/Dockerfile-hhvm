@@ -8,6 +8,8 @@ RUN apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0x5a16e728
     apt-get install -y software-properties-common python-software-properties && \
     apt-get install -y hhvm curl
 
+ENV LOGNAME root
+
 EXPOSE 9000
 
 CMD hhvm -m server -vServer.Type=fastcgi -vServer.Port=9000 --user www-data
