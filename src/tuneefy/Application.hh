@@ -27,6 +27,9 @@ class Application
   const string APP_PARAMETERS_PATH = "../app/config/parameters.yml";
   const string APP_PLATFORMS_PATH  = "../app/config/platforms.yml";
 
+  private ?array<string,mixed> $parameters = null;
+  private ?array<string,mixed> $platforms = null;
+
   private Slim $slim_app;
   private PlatformEngine $engine;
 
@@ -54,23 +57,23 @@ class Application
     );
 
     // Fetch config files
-    $platforms = null; $parameters = null;
     try {
-      $parameters = Yaml::parse(file_get_contents(self::APP_PARAMETERS_PATH));
-      $platforms  = Yaml::parse(file_get_contents(self::APP_PLATFORMS_PATH));
+      $this->parameters = Yaml::parse(file_get_contents(self::APP_PARAMETERS_PATH));
+      $this->platforms  = Yaml::parse(file_get_contents(self::APP_PLATFORMS_PATH));
     } catch (\Exception $e) {
       // TODO  : translate / template
       $this->slim_app->halt(500, "No config file found");
     }
 
-    if ($platforms === null || $platforms['platforms'] === null || $parameters === null) {
+    if ($this->platforms === null || $this->platforms['platforms'] === null || $this->parameters === null) {
       // TODO  : translate / template
       $this->slim_app->halt(500, "Bad config files");
       return; // This is to make the HH TypeChecker happy
     }
 
-    foreach ($platforms['platforms'] as $key => $platform)
+    foreach ($this->platforms as $key => $platform)
     {
+      invariant(is_array($platform), "must be an array");
       $p = $this->engine->getPlatformByTag($key);
       if ($p === null) { continue; }
 
