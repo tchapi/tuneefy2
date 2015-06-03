@@ -126,7 +126,7 @@ class PlatformEngine
   }
 
   // For TEST purposes
-  public function aggregateSync(int $type, string $query, int $limit, int $mode, Vector<Platform> $platforms): ?Vector<PlatformResult>
+  public function aggregateSync(int $type, string $query, int $limit, int $mode, bool $aggressive, Vector<Platform> $platforms): ?Vector<PlatformResult>
   {
     $output = Vector {};
     foreach ($platforms as $p) {
@@ -142,7 +142,7 @@ class PlatformEngine
       $result->addAll($o);
     }
 
-    return $this->mergeResults($result, $limit);
+    return $this->mergeResults($result, $aggressive, $limit);
 
   }
 
