@@ -20,10 +20,15 @@ To create the images :
 
     docker build --no-cache=true --rm -f ./docker/Dockerfile-nginx -t nginx .
     docker build --no-cache=true --rm -f ./docker/Dockerfile-hhvm -t hhvm .
+    docker pull mysql
 
 And then :
 
     docker-compose up -d  # may differ if you're on a Mac, Linux or Windows PC
+
+And for the fixtures database :
+
+    # TODO 
 
 Then, to tail the logs :
 
