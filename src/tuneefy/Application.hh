@@ -27,8 +27,8 @@ class Application
   const string APP_PARAMETERS_PATH = "../app/config/parameters.yml";
   const string APP_PLATFORMS_PATH  = "../app/config/platforms.yml";
 
-  private ?array<string,mixed> $parameters = null;
-  private ?array<string,mixed> $platforms = null;
+  private array<string,mixed> $parameters = array();
+  private array<string,mixed> $platforms = array();
 
   private Slim $slim_app;
   private PlatformEngine $engine;
@@ -65,7 +65,7 @@ class Application
       $this->slim_app->halt(500, "No config file found");
     }
 
-    if ($this->platforms === null || $this->platforms['platforms'] === null || $this->parameters === null) {
+    if ($this->platforms === null || $this->parameters === null || $this->parameters['database'] === null) {
       // TODO  : translate / template
       $this->slim_app->halt(500, "Bad config files");
       return; // This is to make the HH TypeChecker happy
