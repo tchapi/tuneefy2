@@ -4,13 +4,19 @@ namespace tuneefy\Platform;
 
 use tuneefy\MusicalEntity\MusicalEntity,
     tuneefy\MusicalEntity\Entities\TrackEntity,
-    tuneefy\MusicalEntity\Entities\AlbumEntity;
+    tuneefy\MusicalEntity\Entities\AlbumEntity,
+    tuneefy\DB\DatabaseHandler;
 
 class PlatformResult
 {
-  // Arguments are promoted : 
+
+  private string $intent;
+  
+  // Some arguments are promoted : 
   // http://docs.hhvm.com/manual/en/hack.constructorargumentpromotion.php
-  public function __construct(private Map<string,mixed> $metadata, private ?MusicalEntity $musical_entity) {}
+  public function __construct(private Map<string,mixed> $metadata, private ?MusicalEntity $musical_entity) {
+    $this->intent = uniqid(); // We create it now for later use
+  }
 
   public function getMetadata(): Map<string,mixed>
   {
@@ -31,7 +37,10 @@ class PlatformResult
     } else {
       return Map {
         "musical_entity" => $this->musical_entity->toMap(),
-        "metadata" => $this->metadata
+        "metadata" => $this->metadata,
+        "share" => Map {
+          "intent" => $this->intent
+        }
       };
     }
   }
@@ -71,6 +80,15 @@ class PlatformResult
     
     return $this;
     
+  }
+
+  public function addIntent(): this
+  {
+    // Store guid + serialized platformResult in db
+    $db = DatabaseHandler::getInstance(null);
+    $db->addIntent($this->intent, $this);
+
+    return $this;
   }
 
   public function finalizeMerge(): this

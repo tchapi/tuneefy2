@@ -19,16 +19,14 @@ use Symfony\Component\Yaml\Yaml,
 // Local classes
 use tuneefy\Platform\Platform,
     tuneefy\PlatformEngine,
-    tuneefy\Utils\CustomViewHandler;
+    tuneefy\Utils\CustomViewHandler,
+    tuneefy\DB\DatabaseHandler;
 
 class Application
 {
 
   const string APP_PARAMETERS_PATH = "../app/config/parameters.yml";
   const string APP_PLATFORMS_PATH  = "../app/config/platforms.yml";
-
-  private array<string,mixed> $parameters = array();
-  private array<string,mixed> $platforms = array();
 
   private Slim $slim_app;
   private PlatformEngine $engine;
@@ -58,20 +56,19 @@ class Application
 
     // Fetch config files
     try {
-      $this->parameters = Yaml::parse(file_get_contents(self::APP_PARAMETERS_PATH));
-      $this->platforms  = Yaml::parse(file_get_contents(self::APP_PLATFORMS_PATH));
+      $platforms  = Yaml::parse(file_get_contents(self::APP_PLATFORMS_PATH));
     } catch (\Exception $e) {
       // TODO  : translate / template
       $this->slim_app->halt(500, "No config file found");
     }
 
-    if ($this->platforms === null || $this->parameters === null || $this->parameters['database'] === null) {
+    if ($platforms === null) {
       // TODO  : translate / template
       $this->slim_app->halt(500, "Bad config files");
       return; // This is to make the HH TypeChecker happy
     }
 
-    foreach ($this->platforms as $key => $platform)
+    foreach ($platforms as $key => $platform)
     {
       invariant(is_array($platform), "must be an array");
       $p = $this->engine->getPlatformByTag($key);
@@ -86,6 +83,15 @@ class Application
 
   public function prepare(): mixed
   {
+
+    // Connect to DB
+    try {
+      $this->slim_app->container->singleton('db', function () {
+        return DatabaseHandler::getInstance();
+      });
+    } catch (\Exception $e){
+      $this->slim_app->halt(500, "No DB Connection");
+    }
 
     // Add middleware for checking Oauth when necessary (API)
     //$this->slim_app->add();

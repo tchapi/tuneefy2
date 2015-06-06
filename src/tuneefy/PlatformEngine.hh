@@ -193,7 +193,7 @@ class PlatformEngine
     }
 
     // Gives each element a last chance of doing something useful on its data
-    $merged_results->map($e ==> {$e->finalizeMerge();});
+    $merged_results->map($e ==> {$e->finalizeMerge()->addIntent();});
 
     // Discards the key (hash) that we don't need anymore
     $result = $merged_results->values();
