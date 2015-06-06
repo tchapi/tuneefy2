@@ -1,9 +1,22 @@
+mysql:
+  image: mysql:latest
+  #volumes:
+  #  - ./docker:/var/lib/mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=tuneefy
+    - MYSQL_DATABASE=tuneefy
+    - MYSQL_USER=tuneefy
+    - MYSQL_PASSWORD=tuneefy
+  ports:
+    - "3306:3306"
 hhvm:
   image: hhvm:latest
   volumes:
     - .:/var/www/tuneefy
   ports:
     - "9000:9000"
+  links:
+    - mysql
 nginx:
   image: nginx:latest
   volumes:
