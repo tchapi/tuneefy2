@@ -4,7 +4,22 @@ namespace tuneefy\Utils;
 
 class Utils 
 {
-  
+
+  const int BASE_MULTIPLIER = 11111;
+
+  /*
+    Utility functions to translate the id into a "hash" or "guid" (BASE 36 = [0-9a-z])
+   */
+  public static function toUId(int $baseId): string
+  {
+      return base_convert($baseId * self::BASE_MULTIPLIER, 10, 36);
+  }
+
+  public static function fromUId(string $uid): int
+  {
+      return intval(base_convert($uid, 36, 10) / self::BASE_MULTIPLIER);
+  }
+
   /*
     Sanitizes a string 
     TODO : add doc here
