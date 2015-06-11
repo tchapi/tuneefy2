@@ -1,7 +1,5 @@
 mysql:
   image: mysql:latest
-  #volumes:
-  #  - ./docker:/var/lib/mysql
   environment:
     - MYSQL_ROOT_PASSWORD=tuneefy
     - MYSQL_DATABASE=tuneefy
