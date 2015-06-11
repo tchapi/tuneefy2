@@ -20,6 +20,7 @@ use Symfony\Component\Yaml\Yaml,
 use tuneefy\Platform\Platform,
     tuneefy\PlatformEngine,
     tuneefy\Utils\CustomViewHandler,
+    tuneefy\Utils\Utils,
     tuneefy\DB\DatabaseHandler;
 
 class Application
@@ -279,6 +280,16 @@ class Application
     $this->slim_app->get('/trends', function() {
       // TODO
       $this->slim_app->render('trends.html.twig');
+    });
+
+    // Not found
+    $this->slim_app->notFound(function () {
+      $this->slim_app->render('404.html.twig');
+    });
+
+    // 50X
+    $this->slim_app->error(function (\Exception $e) {
+      $this->slim_app->render('error.html.twig', array("message" => $e->getMessage()));
     });
 
     return $this;
