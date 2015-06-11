@@ -243,15 +243,23 @@ class Application
     /*
       The sharing page
     */
-    $this->slim_app->get('/:type/:id', function(string $type, string $id) {
-      // TODO
-      $this->slim_app->render('item.html.twig', array('id' => $id, 'type' => $type));
+    $this->slim_app->get('/:type/:uid', function(string $type, string $uid) {
+      
+      // Translate into good id
+      $id = Utils::fromUId($uid);
+      $item = $this->slim_app->db->getItem($id)->getWaitHandle()->join();
+
+      if (!is_null($item)) {
+        $this->slim_app->render('item.html.twig', array('item' => $item->toArray()));
+      } else {
+        $this->notFound();
+      }
     });
 
     /*
       Listen to a musical entity => goes to the platform link
     */
-    $this->slim_app->get('/:type/:id/listen/:platform', function(string $type, string $id, string $platform) {
+    $this->slim_app->get('/:type/:uid/listen/:platform', function(string $type, string $uid, string $platform) {
       // TODO
 
       // Eventually, redirect to platform

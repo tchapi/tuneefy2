@@ -2,6 +2,8 @@
 
 {% block content %}
 
-Item page [type {{ type }} - id {{ id }}] (WIP)
+Item page [type {{ type }} - id {{ item.id }}] (WIP)
+
+Created on {{ item.created_at|date }}
 
 {% endblock %}
