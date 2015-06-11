@@ -86,7 +86,7 @@ class PlatformResult
   {
     // Store guid + serialized platformResult in db
     $db = DatabaseHandler::getInstance(null);
-    $db->addIntent($this->intent, $this);
+    $db->addIntent($this->intent, $this)->getWaitHandle()->join();
 
     return $this;
   }

@@ -18,6 +18,19 @@ class DatabaseHandler
   private array<string,mixed> $parameters = array();
   private \AsyncMysqlConnection $connection;
 
+  /*
+    Table and columns names
+  */
+ const string TABLE_ITEMS = "items";
+   const string TABLE_ITEMS_COL_ID = "id";
+   const string TABLE_ITEMS_COL_TYPE = "type";
+   const string TABLE_ITEMS_COL_CREATED_AT = "created_at";
+
+ const string TABLE_INTENTS = "intents";
+   const string TABLE_INTENTS_COL_UID = "uid";
+   const string TABLE_INTENTS_COL_OBJECT = "object";
+   const string TABLE_INTENTS_COL_CREATED_AT = "created_at";
+
   /**
    * Protected constructor to ensure there are no instantiations.
    */
@@ -66,14 +79,48 @@ class DatabaseHandler
       return self::$instance;
   }
 
-  public async function query(): Awaitable<void>
+  public async function getItem(int $item_id): Awaitable<void>
   {
-    $res = await $this->connection->queryf("SELECT * FROM %T WHERE foo = %s", 'junk', 'herp');
-    var_dump($res->vectorRowsTyped());
+    $res = await $this->connection->queryf("SELECT * FROM %T WHERE %C = %d", 
+      self::TABLE_ITEMS,
+      self::TABLE_ITEMS_COL_ID,
+      $item_id);
+
+    if ($res->numRows() !== 1){
+      // Error
+      throw \Exception();
+    }
+
+    $rows = $res->mapRowsTyped();
+
+    return $rows[0];
   }
 
-  public function addIntent(string $uid, PlatformResult $object): this
+  public async function addItem(/* TBC */): Awaitable<void>
   {
+    $res = await $this->connection->queryf("INSERT INTO %T (%C, %C, %C) VALUES (%s, %s, NOW()) ", 
+      self::TABLE_ITEMS,
+      /* TBC*/
+      self::TABLE_ITEMS_COL_CREATED_AT);
+
+    return $this;
+  }
+
+  public async function addIntent(string $uid, PlatformResult $object): Awaitable<this>
+  {
+    // Persist intent and object in DB for a later share if necessary
+    $res = await $this->connection->queryf("INSERT INTO %T (%C, %C, %C) VALUES (%s, %s, NOW()) ", 
+      self::TABLE_INTENTS,
+      self::TABLE_INTENTS_COL_UID,
+      self::TABLE_INTENTS_COL_OBJECT, 
+      self::TABLE_INTENTS_COL_CREATED_AT,
+      $uid,
+      serialize($object));
+
+    if ($res->numRowsAffected() !== 1){
+      // Error
+      throw \Exception("Error adding intent");
+    }
 
     return $this;
   }
