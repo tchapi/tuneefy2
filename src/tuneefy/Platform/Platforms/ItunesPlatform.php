@@ -98,7 +98,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
 
     public function search(int $type, string $query, int $limit, int $mode)//: Awaitable<?Vector<PlatformResult>>
     {
-        $response = $this->fetch($type, $query);
+        $response = $this->fetchSync($type, $query);
 
         if ($response === null || intval($response->data->resultCount) === 0) {
             return null;
@@ -123,7 +123,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
                 $musical_entity->addLink(static::TAG, $current_item->collectionViewUrl);
           }
 
-            $musical_entities->add(new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity));
+            $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity);
         }
 
         return $musical_entities;

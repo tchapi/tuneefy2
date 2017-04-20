@@ -134,7 +134,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
 
     public function search(int $type, string $query, int $limit, int $mode)
     {
-        $response = $this->fetch($type, $query);
+        $response = $this->fetchSync($type, $query);
 
         if ($response === null) {
             return null;

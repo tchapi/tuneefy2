@@ -110,6 +110,7 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
         if ($response === null || !property_exists($response->data, '0')) {
             return null;
         }
+        unset($response->data->version);
         $entities = array_values(get_object_vars($response->data)); // "O" as a key, seriously ?
 
         // -1 since we have this "version" key/value pair that gets in the way
@@ -119,14 +120,11 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
         // Normalizing each track found
         for ($i = 0; $i < $length; ++$i) {
             $current_item = $entities[$i];
-            if (get_class($current_item) !== 'stdClass') {
-                continue;
-            }
 
             if ($type === Platform::SEARCH_TRACK) {
                 $musical_entity = new TrackEntity($current_item->title, new AlbumEntity('', $current_item->artist, ''));
                 $musical_entity->addLink(static::TAG, $this->getPermalinkFromTrackId($current_item->mediaid));
-                $musical_entities->add(new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity));
+                $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity);
             }
         }
 

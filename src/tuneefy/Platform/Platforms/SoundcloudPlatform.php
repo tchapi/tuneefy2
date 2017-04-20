@@ -94,7 +94,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
 
     public function search(int $type, string $query, int $limit, int $mode)//: Awaitable<?Vector<PlatformResult>>
     {
-        $response = $this->fetch($type, $query);
+        $response = $this->fetchSync($type, $query);
 
         if ($response === null || count($response->data) === 0) {
             return null;
