@@ -8,8 +8,8 @@ abstract class MusicalEntity implements MusicalEntityInterface
 
     protected $links;
 
-  // Introspection
-  protected $introspected = false;
+    // Introspection
+    protected $introspected;
     protected $extra_info;
 
     public function __construct()
@@ -22,24 +22,22 @@ abstract class MusicalEntity implements MusicalEntityInterface
     public function toArray(): array
     {
         return [
-      'type' => self::TYPE,
-    ];
+          'type' => self::TYPE,
+        ];
     }
 
-  /*
+    /*
     Links getter and setter
-  */
-  public function addLink(string $platform, string $link): MusicalEntity
-  {
-      $this->links->add(tuple($platform, $link));
-
-      return $this;
-  }
+    */
+    public function addLink(string $platform, string $link): MusicalEntity
+    {
+        $this->links[] = ['platform' => $platform, 'link' => $link];
+        return $this;
+    }
 
     public function addLinks(array $links): MusicalEntity
     {
-        $this->links->addAll($links);
-
+        $this->links = array_merge($this->links, $links);
         return $this;
     }
 
@@ -64,7 +62,6 @@ abstract class MusicalEntity implements MusicalEntityInterface
         if ($extra_info !== null) {
             $this->extra_info = $extra_info;
         }
-
         return $this;
     }
 

@@ -19,36 +19,36 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
     const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
-    Platform::LOOKUP_TRACK => self::API_ENDPOINT.'tracks/%s',
-    Platform::LOOKUP_ALBUM => self::API_ENDPOINT.'albums/%s',
-    Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'artists/%s',
-    Platform::SEARCH_TRACK => self::API_ENDPOINT.'search/tracks',
-    Platform::SEARCH_ALBUM => self::API_ENDPOINT.'search/albums',
-   // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search/artists"
-  ];
+        Platform::LOOKUP_TRACK => self::API_ENDPOINT.'tracks/%s',
+        Platform::LOOKUP_ALBUM => self::API_ENDPOINT.'albums/%s',
+        Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'artists/%s',
+        Platform::SEARCH_TRACK => self::API_ENDPOINT.'search/tracks',
+        Platform::SEARCH_ALBUM => self::API_ENDPOINT.'search/albums',
+       // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search/artists"
+    ];
     protected $terms = [
-    Platform::LOOKUP_TRACK => null,
-    Platform::LOOKUP_ALBUM => null,
-    Platform::LOOKUP_ARTIST => null,
-    Platform::SEARCH_TRACK => 'query',
-    Platform::SEARCH_ALBUM => 'query',
-   // Platform::SEARCH_ARTIST => "query"
-  ];
+        Platform::LOOKUP_TRACK => null,
+        Platform::LOOKUP_ALBUM => null,
+        Platform::LOOKUP_ARTIST => null,
+        Platform::SEARCH_TRACK => 'query',
+        Platform::SEARCH_ALBUM => 'query',
+       // Platform::SEARCH_ARTIST => "query"
+    ];
     protected $options = [
-    Platform::LOOKUP_TRACK => ['countryCode' => 'FR'],
-    Platform::LOOKUP_ALBUM => ['countryCode' => 'FR'],
-    Platform::LOOKUP_ARTIST => ['countryCode' => 'FR'],
-    Platform::SEARCH_TRACK => ['countryCode' => 'FR', 'limit' => Platform::LIMIT],
-    Platform::SEARCH_ALBUM => ['countryCode' => 'FR', 'limit' => Platform::LIMIT],
-   // Platform::SEARCH_ARTIST => Map { "countryCode" => "FR", "limit" => Platform::LIMIT }
-  ];
+        Platform::LOOKUP_TRACK => ['countryCode' => 'FR'],
+        Platform::LOOKUP_ALBUM => ['countryCode' => 'FR'],
+        Platform::LOOKUP_ARTIST => ['countryCode' => 'FR'],
+        Platform::SEARCH_TRACK => ['countryCode' => 'FR', 'limit' => Platform::LIMIT],
+        Platform::SEARCH_ALBUM => ['countryCode' => 'FR', 'limit' => Platform::LIMIT],
+       // Platform::SEARCH_ARTIST => Map { "countryCode" => "FR", "limit" => Platform::LIMIT }
+    ];
 
-  // http://www.tidal.com/track/40358305
-  const REGEX_TIDAL_TRACK = "/track\/(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
-  // http://www.tidal.com/album/571179
-  const REGEX_TIDAL_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
-  // http://www.tidal.com/artist/3528326
-  const REGEX_TIDAL_ARTIST = "/artist\/(?P<artist_id>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    // http://www.tidal.com/track/40358305
+    const REGEX_TIDAL_TRACK = "/track\/(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    // http://www.tidal.com/album/571179
+    const REGEX_TIDAL_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    // http://www.tidal.com/artist/3528326
+    const REGEX_TIDAL_ARTIST = "/artist\/(?P<artist_id>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
     public function hasPermalink(string $permalink): bool
     {
@@ -58,7 +58,6 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
     protected function addContextOptions(array $data): array
     {
         $data['token'] = $this->key;
-
         return $data;
     }
 
@@ -84,8 +83,11 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
             $entity = $response->data;
             $musical_entity = new TrackEntity($entity->title, new AlbumEntity($entity->album->title, $entity->artist->name, $this->getCoverUrlFromCoverHash($entity->album->cover)));
             $musical_entity->addLink(static::TAG, $entity->url);
-
-            $query_words = [$entity->artist->name, $entity->title];
+            
+            $query_words = [
+                $musical_entity->getAlbum()->getArtist(),
+                $musical_entity->getSafeTitle(),
+            ];
         } elseif (preg_match(self::REGEX_TIDAL_ALBUM, $permalink, $match)) {
             $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
 
@@ -96,8 +98,11 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
             $entity = $response->data;
             $musical_entity = new AlbumEntity($entity->title, $entity->artist->name, $this->getCoverUrlFromCoverHash($entity->cover));
             $musical_entity->addLink(static::TAG, $entity->url);
-
-            $query_words = [$entity->artist->name, $entity->title];
+            
+            $query_words = [
+                $musical_entity->getArtist(),
+                $musical_entity->getSafeTitle(),
+            ];
         } elseif (preg_match(self::REGEX_TIDAL_ARTIST, $permalink, $match)) {
             $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_id']);
 
@@ -108,8 +113,8 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
             $query_words = [$response->data->name];
         }
 
-    // Consolidate results
-    $metadata = ['query_words' => $query_words];
+        // Consolidate results
+        $metadata = ['query_words' => $query_words];
 
         if ($musical_entity !== null) {
             $metadata['platform'] = $this->getName();
@@ -127,27 +132,27 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         }
         $entities = $response->data->items;
 
-    // We actually don't pass the limit to the fetch()
-    // request since it's not really useful, in fact
-    $length = min(count($entities), $limit ? $limit : Platform::LIMIT);
+        // We actually don't pass the limit to the fetch()
+        // request since it's not really useful, in fact
+        $length = min(count($entities), $limit ? $limit : Platform::LIMIT);
 
         $musical_entities = [];
 
-    // Normalizing each track found
-    for ($i = 0; $i < $length; ++$i) {
-        $current_item = $entities[$i];
+        // Normalizing each track found
+        for ($i = 0; $i < $length; ++$i) {
+            $current_item = $entities[$i];
 
-        if ($type === Platform::SEARCH_TRACK) {
-            $musical_entity = new TrackEntity($current_item->title, new AlbumEntity($current_item->album->title, $current_item->artist->name, $this->getCoverUrlFromCoverHash($current_item->album->cover)));
-            $musical_entity->addLink(static::TAG, $current_item->url);
-        } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
-        $musical_entity = new AlbumEntity($current_item->title, $current_item->artist->name, $this->getCoverUrlFromCoverHash($current_item->cover));
-        $musical_entity->addLink(static::TAG, $current_item->url);
-      }
+            if ($type === Platform::SEARCH_TRACK) {
+                $musical_entity = new TrackEntity($current_item->title, new AlbumEntity($current_item->album->title, $current_item->artist->name, $this->getCoverUrlFromCoverHash($current_item->album->cover)));
+                $musical_entity->addLink(static::TAG, $current_item->url);
+            } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
+                $musical_entity = new AlbumEntity($current_item->title, $current_item->artist->name, $this->getCoverUrlFromCoverHash($current_item->cover));
+                $musical_entity->addLink(static::TAG, $current_item->url);
+            }
 
-      // Tidal has a $current_item->popularity key, but right now, it's kind of ... empty.
-      $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity);
-    }
+            // Tidal has a $current_item->popularity key, but right now, it's kind of ... empty.
+            $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity);
+        }
 
         return $musical_entities;
     }

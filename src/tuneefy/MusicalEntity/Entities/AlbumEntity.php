@@ -3,6 +3,7 @@
 namespace tuneefy\MusicalEntity\Entities;
 
 use tuneefy\MusicalEntity\MusicalEntity;
+use tuneefy\MusicalEntity\MusicalEntityInterface;
 use tuneefy\Utils\Utils;
 
 class AlbumEntity extends MusicalEntity
@@ -13,8 +14,8 @@ class AlbumEntity extends MusicalEntity
     private $artist;
     private $picture;
 
-  // Introspection
-  private $safe_title;
+    // Introspection
+    private $safe_title;
 
     public function __construct(string $title, string $artist, string $picture)
     {
@@ -23,7 +24,10 @@ class AlbumEntity extends MusicalEntity
         $this->artist = $artist;
         $this->picture = $picture;
 
+        $this->extra_info = null;
         $this->safe_title = $title;
+
+        $this->introspect();
     }
 
   // Getters and setters
@@ -72,7 +76,7 @@ class AlbumEntity extends MusicalEntity
     Strips unnecessary words from an album title
     And extracts extra info
   */
-  public function introspect(): AlbumEntity
+  public function introspect(): MusicalEntityInterface
   {
       if ($this->introspected === false) {
           // What about we strip all dirty addons strings from the title

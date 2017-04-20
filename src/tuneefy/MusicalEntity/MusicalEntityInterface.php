@@ -4,7 +4,7 @@ namespace tuneefy\MusicalEntity;
 
 interface MusicalEntityInterface
 {
-    public function toMap(): array;
+    public function toArray(): array;
 
     public function introspect(): MusicalEntityInterface;
 

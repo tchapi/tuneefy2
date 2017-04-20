@@ -18,35 +18,35 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
     const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
-    Platform::LOOKUP_TRACK => self::API_ENDPOINT.'track/%s',
-    Platform::LOOKUP_ALBUM => null,
-    Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'artist/%s',
-    Platform::SEARCH_TRACK => self::API_ENDPOINT.'search',
-    Platform::SEARCH_ALBUM => null,
-   // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search"
-  ];
+        Platform::LOOKUP_TRACK => self::API_ENDPOINT.'track/%s',
+        Platform::LOOKUP_ALBUM => null,
+        Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'artist/%s',
+        Platform::SEARCH_TRACK => self::API_ENDPOINT.'search',
+        Platform::SEARCH_ALBUM => null,
+       // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search"
+    ];
     protected $terms = [
-    Platform::LOOKUP_TRACK => null,
-    Platform::LOOKUP_ALBUM => null,
-    Platform::LOOKUP_ARTIST => null,
-    Platform::SEARCH_TRACK => 'q',
-    Platform::SEARCH_ALBUM => null,
-   // Platform::SEARCH_ARTIST => "q" // Search for a user, in fact
-  ];
+        Platform::LOOKUP_TRACK => null,
+        Platform::LOOKUP_ALBUM => null,
+        Platform::LOOKUP_ARTIST => null,
+        Platform::SEARCH_TRACK => 'q',
+        Platform::SEARCH_ALBUM => null,
+       // Platform::SEARCH_ARTIST => "q" // Search for a user, in fact
+    ];
     protected $options = [
-    Platform::LOOKUP_TRACK => [],
-    Platform::LOOKUP_ALBUM => [],
-    Platform::LOOKUP_ARTIST => [],
-    Platform::SEARCH_TRACK => ['type' => 'cloudcast', 'limit' => Platform::LIMIT],
-    Platform::SEARCH_ALBUM => [],
-   // Platform::SEARCH_ARTIST => Map { "type" => "user", "limit" => Platform::LIMIT }
-  ];
+        Platform::LOOKUP_TRACK => [],
+        Platform::LOOKUP_ALBUM => [],
+        Platform::LOOKUP_ARTIST => [],
+        Platform::SEARCH_TRACK => ['type' => 'cloudcast', 'limit' => Platform::LIMIT],
+        Platform::SEARCH_ALBUM => [],
+       // Platform::SEARCH_ARTIST => Map { "type" => "user", "limit" => Platform::LIMIT }
+    ];
 
-  // https://www.mixcloud.com/artist/aphex-twin/
-  const REGEX_MIXCLOUD_ARTIST = "/\/artist\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    // https://www.mixcloud.com/artist/aphex-twin/
+    const REGEX_MIXCLOUD_ARTIST = "/\/artist\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
-  // http://api.mixcloud.com/track/michael-jackson/everybody/
-  const REGEX_MIXCLOUD_TRACK = "/\/track\/(?P<track_long_slug>".Platform::REGEX_FULLSTRING."\/".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    // http://api.mixcloud.com/track/michael-jackson/everybody/
+    const REGEX_MIXCLOUD_TRACK = "/\/track\/(?P<track_long_slug>".Platform::REGEX_FULLSTRING."\/".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
     public function hasPermalink(string $permalink): bool
     {
@@ -71,8 +71,11 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
 
             $musical_entity = new TrackEntity($entity->name, new AlbumEntity('', $entity->artist->name, ''));
             $musical_entity->addLink(static::TAG, $entity->url);
-
-            $query_words = [$entity->artist->name, $entity->name];
+            
+            $query_words = [
+                $musical_entity->getAlbum()->getArtist(),
+                $musical_entity->getSafeTitle(),
+            ];
         } elseif (preg_match(self::REGEX_MIXCLOUD_ARTIST, $permalink, $match)) {
             $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_slug']);
 
@@ -83,8 +86,8 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
             $query_words = [$response->data->name];
         }
 
-    // Consolidate results
-    $metadata = ['query_words' => $query_words];
+        // Consolidate results
+        $metadata = ['query_words' => $query_words];
 
         if ($musical_entity !== null) {
             $metadata['platform'] = $this->getName();
@@ -96,49 +99,49 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
     public function search(int $type, string $query, int $limit, int $mode)//: Awaitable<?Vector<PlatformResult>>
     {
         return null;
-    /*
-      Below is the actual working code, but it seems unlikely that we're going
-      to use it since we search "mixes" by "users" and not real tracks from
-      artists. So this doesn't really make sense to merge that with any of
-      the other results from the other platforms, I guess.
-      Still, the following works perfectly.
-    */
-    // $response = await $this->fetch($type, $query);
+        /*
+          Below is the actual working code, but it seems unlikely that we're going
+          to use it since we search "mixes" by "users" and not real tracks from
+          artists. So this doesn't really make sense to merge that with any of
+          the other results from the other platforms, I guess.
+          Still, the following works perfectly.
+        */
+        // $response = await $this->fetch($type, $query);
 
-    // if ($response === null || count($response->data->data) === 0) {
-    //   return null;
-    // }
-    // $entities = $response->data->data;
+        // if ($response === null || count($response->data->data) === 0) {
+        //   return null;
+        // }
+        // $entities = $response->data->data;
 
-    // // We actually don't pass the limit to the fetch()
-    // // request since it's not really useful, in fact
-    // $length = min(count($entities), $limit?$limit:Platform::LIMIT);
+        // // We actually don't pass the limit to the fetch()
+        // // request since it's not really useful, in fact
+        // $length = min(count($entities), $limit?$limit:Platform::LIMIT);
 
-    // $musical_entities = [];
+        // $musical_entities = [];
 
-    // // Tracks bear a "play_count" score
-    // // that we're using to rate the results
-    // $max_play_count = 1;
-    // if ($type === Platform::SEARCH_TRACK) {
-    //   $max_play_count = max(intval($entities[0]->play_count),1);
-    // }
+        // // Tracks bear a "play_count" score
+        // // that we're using to rate the results
+        // $max_play_count = 1;
+        // if ($type === Platform::SEARCH_TRACK) {
+        //   $max_play_count = max(intval($entities[0]->play_count),1);
+        // }
 
-    // // Normalizing each track found
-    // for($i=0; $i<$length; $i++){
+        // // Normalizing each track found
+        // for($i=0; $i<$length; $i++){
 
-    //   $current_item = $entities[$i];
+        //   $current_item = $entities[$i];
 
-    //   if ($type === Platform::SEARCH_TRACK) {
+        //   if ($type === Platform::SEARCH_TRACK) {
 
-    //     $musical_entity = new TrackEntity($current_item->name, new AlbumEntity("", $current_item->user->name, $current_item->pictures->large));
-    //     $musical_entity->addLink(static::TAG, $current_item->url);
+        //     $musical_entity = new TrackEntity($current_item->name, new AlbumEntity("", $current_item->user->name, $current_item->pictures->large));
+        //     $musical_entity->addLink(static::TAG, $current_item->url);
 
-    //     $musical_entities->add(new PlatformResult(Map {"score" => $current_item->play_count/$max_play_count}, $musical_entity));
+        //     $musical_entities->add(new PlatformResult(Map {"score" => $current_item->play_count/$max_play_count}, $musical_entity));
 
-    //   }
+        //   }
 
-    // }
+        // }
 
-    // return $musical_entities;
+        // return $musical_entities;
     }
 }

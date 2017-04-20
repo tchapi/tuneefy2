@@ -19,34 +19,34 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
     const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
-    Platform::LOOKUP_TRACK => self::API_ENDPOINT.'playlist/item/%s/json/1/data.js',
-    Platform::LOOKUP_ALBUM => null,
-    Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'playlist/artist/%s/json/1/data.js',
-    Platform::SEARCH_TRACK => self::API_ENDPOINT.'playlist/search/%s/json/1/data.js',
-    Platform::SEARCH_ALBUM => self::API_ENDPOINT.'playlist/search/%s/json/1/data.js',
-   // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "playlist/search/%s/json/1/data.js"
-  ];
+        Platform::LOOKUP_TRACK => self::API_ENDPOINT.'playlist/item/%s/json/1/data.js',
+        Platform::LOOKUP_ALBUM => null,
+        Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'playlist/artist/%s/json/1/data.js',
+        Platform::SEARCH_TRACK => self::API_ENDPOINT.'playlist/search/%s/json/1/data.js',
+        Platform::SEARCH_ALBUM => self::API_ENDPOINT.'playlist/search/%s/json/1/data.js',
+       // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "playlist/search/%s/json/1/data.js"
+    ];
     protected $terms = [
-    Platform::LOOKUP_TRACK => null,
-    Platform::LOOKUP_ALBUM => null,
-    Platform::LOOKUP_ARTIST => null,
-    Platform::SEARCH_TRACK => null,
-    Platform::SEARCH_ALBUM => null,
-   // Platform::SEARCH_ARTIST => null
-  ];
+        Platform::LOOKUP_TRACK => null,
+        Platform::LOOKUP_ALBUM => null,
+        Platform::LOOKUP_ARTIST => null,
+        Platform::SEARCH_TRACK => null,
+        Platform::SEARCH_ALBUM => null,
+       // Platform::SEARCH_ARTIST => null
+    ];
     protected $options = [
-    Platform::LOOKUP_TRACK => [],
-    Platform::LOOKUP_ALBUM => [],
-    Platform::LOOKUP_ARTIST => [],
-    Platform::SEARCH_TRACK => [],
-    Platform::SEARCH_ALBUM => [],
-   // Platform::SEARCH_ARTIST => []
-  ];
+        Platform::LOOKUP_TRACK => [],
+        Platform::LOOKUP_ALBUM => [],
+        Platform::LOOKUP_ARTIST => [],
+        Platform::SEARCH_TRACK => [],
+        Platform::SEARCH_ALBUM => [],
+       // Platform::SEARCH_ARTIST => []
+    ];
 
-  // http://hypem.com/item/1arwr/Digitalism+-+2+Hearts
-  const REGEX_HYPEM_TRACK = "/\/(?:item|track)\/(?P<track_id>[0-9a-zA-Z]*)(|\/(?P<track_slug>".Platform::REGEX_FULLSTRING."))[\/]?$/";
-  // http://hypem.com/artist/Digitalism
-  const REGEX_HYPEM_ARTIST = "/\/artist\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    // http://hypem.com/item/1arwr/Digitalism+-+2+Hearts
+    const REGEX_HYPEM_TRACK = "/\/(?:item|track)\/(?P<track_id>[0-9a-zA-Z]*)(|\/(?P<track_slug>".Platform::REGEX_FULLSTRING."))[\/]?$/";
+    // http://hypem.com/artist/Digitalism
+    const REGEX_HYPEM_ARTIST = "/\/artist\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
     public function hasPermalink(string $permalink): bool
     {
@@ -74,11 +74,14 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
 
             $entity = array_values(get_object_vars($response->data)); // "O" as a key, seriously ?
 
-      // No cover : on HypeM, covers are not the album's, so they are not relevant
-      $musical_entity = new TrackEntity($entity[1]->title, new AlbumEntity('', $entity[1]->artist, ''));
+            // No cover : on HypeM, covers are not the album's, so they are not relevant
+            $musical_entity = new TrackEntity($entity[1]->title, new AlbumEntity('', $entity[1]->artist, ''));
             $musical_entity->addLink(static::TAG, $permalink);
 
-            $query_words = [$entity[1]->artist, $entity[1]->title];
+            $query_words = [
+                $musical_entity->getAlbum()->getArtist(),
+                $musical_entity->getSafeTitle(),
+            ];
         } elseif (preg_match(self::REGEX_HYPEM_ARTIST, $permalink, $match)) {
             $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_slug']);
 
@@ -90,8 +93,8 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
             $query_words = [$entity[1]->artist];
         }
 
-    // Consolidate results
-    $metadata = ['query_words' => $query_words];
+        // Consolidate results
+        $metadata = ['query_words' => $query_words];
 
         if ($musical_entity !== null) {
             $metadata['platform'] = $this->getName();
@@ -102,30 +105,30 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
 
     public function search(int $type, string $query, int $limit, int $mode)//: Awaitable<?Vector<PlatformResult>>
     {
-        $response = $this->fetch($type, $query);
+        $response = $this->fetchSync($type, $query);
 
         if ($response === null || !property_exists($response->data, '0')) {
             return null;
         }
         $entities = array_values(get_object_vars($response->data)); // "O" as a key, seriously ?
 
-    // -1 since we have this "version" key/value pair that gets in the way
-    $length = min(count($entities), $limit ? $limit : Platform::LIMIT);
+        // -1 since we have this "version" key/value pair that gets in the way
+        $length = min(count($entities), $limit ? $limit : Platform::LIMIT);
 
         $musical_entities = [];
-    // Normalizing each track found
-    for ($i = 0; $i < $length; ++$i) {
-        $current_item = $entities[$i];
-        if (get_class($current_item) !== 'stdClass') {
-            continue;
-        }
+        // Normalizing each track found
+        for ($i = 0; $i < $length; ++$i) {
+            $current_item = $entities[$i];
+            if (get_class($current_item) !== 'stdClass') {
+                continue;
+            }
 
-        if ($type === Platform::SEARCH_TRACK) {
-            $musical_entity = new TrackEntity($current_item->title, new AlbumEntity('', $current_item->artist, ''));
-            $musical_entity->addLink(static::TAG, $this->getPermalinkFromTrackId($current_item->mediaid));
-            $musical_entities->add(new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity));
+            if ($type === Platform::SEARCH_TRACK) {
+                $musical_entity = new TrackEntity($current_item->title, new AlbumEntity('', $current_item->artist, ''));
+                $musical_entity->addLink(static::TAG, $this->getPermalinkFromTrackId($current_item->mediaid));
+                $musical_entities->add(new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity));
+            }
         }
-    }
 
         return $musical_entities;
     }

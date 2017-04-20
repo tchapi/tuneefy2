@@ -10,3 +10,6 @@ app/cache
 # Config files
 parameters.yml
 platforms.yml
+
+var/*
+!var/.gitkeep

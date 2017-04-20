@@ -5,7 +5,7 @@
     "authors": [
         {
             "name": "tchapi",
-            "email": "regbasket@gmail.com"
+            "email": "regbasket+github@gmail.com"
         }
     ],
     "autoload": {
@@ -13,10 +13,11 @@
     },
     "require": {
         "symfony/yaml": "~2.6",
-        "slim/slim": "~2.6",
-        "slim/views": "0.1.*",
+        "slim/slim": "^3.0",
+        "slim/twig-view": "^2.2",
         "twig/twig": "~1.18",
-        "markwilson/xml-to-json": "0.1.*"
+        "markwilson/xml-to-json": "0.1.*",
+        "akrabat/rka-content-type-renderer": "^0.7.3"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.2"
