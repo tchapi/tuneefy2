@@ -117,6 +117,7 @@ abstract class Platform implements GeneralPlatformInterface
     {
         $this->key = $key;
         $this->secret = $secret;
+
         return $this;
     }
 
@@ -124,6 +125,7 @@ abstract class Platform implements GeneralPlatformInterface
     public function setEnables(array $enables): Platform
     {
         $this->enables = $enables;
+
         return $this;
     }
 
@@ -146,6 +148,7 @@ abstract class Platform implements GeneralPlatformInterface
     public function setCapabilities(array $capabilities): Platform
     {
         $this->capabilities = $capabilities;
+
         return $this;
     }
 
@@ -234,7 +237,7 @@ abstract class Platform implements GeneralPlatformInterface
 
             // For some platforms
             $response = Utils::removeBOM($response);
-            
+
             // If there is a problem with the data, we want to return null to gracefully fail as well :
             // "NULL is returned if the json cannot be decoded or if the encoded data is deeper than the recursion limit."
             //

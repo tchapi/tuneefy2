@@ -58,6 +58,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
     protected function addContextOptions(array $data): array
     {
         $data['api_key'] = $this->key;
+
         return $data;
     }
 
@@ -88,7 +89,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
 
             $musical_entity = new TrackEntity($entity->name, new AlbumEntity($entity->album->title, $entity->artist->name, $picture));
             $musical_entity->addLink(static::TAG, $entity->url);
-            
+
             $query_words = [
                 $musical_entity->getAlbum()->getArtist(),
                 $musical_entity->getSafeTitle(),
@@ -114,7 +115,6 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
             $musical_entity = new AlbumEntity($entity->name, $entity->artist, $picture);
             $musical_entity->addLink(static::TAG, $entity->url);
 
-            
             $query_words = [
                 $musical_entity->getArtist(),
                 $musical_entity->getSafeTitle(),

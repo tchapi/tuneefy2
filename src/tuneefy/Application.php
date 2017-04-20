@@ -2,23 +2,22 @@
 
 namespace tuneefy;
 
+use RKA\ContentTypeRenderer\Renderer;
 use Slim\App;
 use Slim\Views\Twig;
 use Symfony\Component\Yaml\Yaml;
 use tuneefy\DB\DatabaseHandler;
 use tuneefy\Platform\Platform;
-use tuneefy\Utils\CustomViewHandler;
 use tuneefy\Utils\CustomErrorHandler;
 use tuneefy\Utils\CustomNotFoundHandler;
 use tuneefy\Utils\Utils;
-use RKA\ContentTypeRenderer\Renderer;
 
 class Application
 {
     const APP_PARAMETERS_PATH = '/../../app/config/parameters.yml';
-    const APP_PLATFORMS_PATH  = '/../../app/config/platforms.yml';
-    const APP_TEMPLATES_PATH  = '/../../app/templates';
-    const APP_CACHE_PATH      = '/../../var/cache';
+    const APP_PLATFORMS_PATH = '/../../app/config/platforms.yml';
+    const APP_TEMPLATES_PATH = '/../../app/templates';
+    const APP_CACHE_PATH = '/../../var/cache';
 
     private $slimApp;
     private $engine;
@@ -33,7 +32,7 @@ class Application
         // Register component on container
         $container['view'] = function ($container) {
             return new Twig(dirname(__FILE__).self::APP_TEMPLATES_PATH, [
-                'cache' => dirname(__FILE__).self::APP_CACHE_PATH
+                'cache' => dirname(__FILE__).self::APP_CACHE_PATH,
             ]);
         };
 
@@ -109,7 +108,6 @@ class Application
 
         // Binds the API, with a custom view handler at the end
         $this->slimApp->group('/api', function () use ($engine, $renderer) {
-
             /*
               Lookup (for a permalink)
             */
@@ -121,6 +119,7 @@ class Application
                 if ($permalink === null || $permalink === '') {
                     // TODO translation
                     $response->write('Missing or empty parameter : q (permalink)');
+
                     return $response->withStatus(400);
                 }
 
@@ -137,6 +136,7 @@ class Application
                 }
 
                 $response = $renderer->render($request, $response, $data);
+
                 return $response->withStatus(200);
             });
 
@@ -152,6 +152,7 @@ class Application
                 if ($query === null || $query === '') {
                     // TODO translation
                     $response->write('Missing or empty parameter : q (query)');
+
                     return $response->withStatus(400);
                 }
 
@@ -159,12 +160,14 @@ class Application
                 if ($platform === null) {
                     // TODO translation
                     $response->write('Invalid parameter : platform '.$args['platform_str'].' does not exist');
+
                     return $response->withStatus(400);
                 }
 
                 if ($real_type === null) {
                     // TODO translation
                     $response->write('Invalid parameter : type '.$args['type'].' does not exist');
+
                     return $response->withStatus(400);
                 }
 
@@ -182,6 +185,7 @@ class Application
                 }
 
                 $response = $renderer->render($request, $response, $data);
+
                 return $response->withStatus(200);
             });
 
@@ -199,6 +203,7 @@ class Application
                 if ($query === null || $query === '') {
                     // TODO translation
                     $response->write('Missing or empty parameter : q (query)');
+
                     return $response->withStatus(400);
                 }
 
@@ -215,6 +220,7 @@ class Application
                 if ($real_type === null) {
                     // TODO translation
                     $response->write('Invalid parameter : type '.$args['type'].' does not exist');
+
                     return $response->withStatus(400);
                 }
 
@@ -233,6 +239,7 @@ class Application
                 }
 
                 $response = $renderer->render($request, $response, $data);
+
                 return $response->withStatus(200);
             });
 
@@ -240,15 +247,15 @@ class Application
               Share via the API
             */
             $this->get('/share/{intent}', function ($request, $response, $args) {
-
                 $intent = $args['intent'];
 
                 if ($intent === null || $intent === '') {
                     // TODO translation
                     $response->write('Missing or empty parameter : intent');
+
                     return $response->withStatus(400);
                 }
-                
+
                 // Intent is a GUID
                 $result = $engine->share($intent);
 
@@ -260,11 +267,10 @@ class Application
                 }
 
                 $response = $renderer->render($request, $response, $data);
+
                 return $response->withStatus(200);
             });
-
         })->add(function ($request, $response, $next) use ($renderer) {
-
             // Accept the 'format' modifier
             $request = $request->withHeader('Accept', 'application/json'); // default
             $format = $request->getParam('format');

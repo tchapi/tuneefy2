@@ -32,12 +32,14 @@ abstract class MusicalEntity implements MusicalEntityInterface
     public function addLink(string $platform, string $link): MusicalEntity
     {
         $this->links[] = ['platform' => $platform, 'link' => $link];
+
         return $this;
     }
 
     public function addLinks(array $links): MusicalEntity
     {
         $this->links = array_merge($this->links, $links);
+
         return $this;
     }
 
@@ -62,6 +64,7 @@ abstract class MusicalEntity implements MusicalEntityInterface
         if ($extra_info !== null) {
             $this->extra_info = $extra_info;
         }
+
         return $this;
     }
 

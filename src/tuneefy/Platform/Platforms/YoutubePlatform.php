@@ -53,6 +53,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
     protected function addContextOptions(array $data): array
     {
         $data['key'] = $this->key;
+
         return $data;
     }
 

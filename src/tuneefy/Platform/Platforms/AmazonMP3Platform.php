@@ -57,6 +57,7 @@ class AmazonMP3Platform extends Platform implements WebStoreInterface
     protected function addContextOptions(array $data): array
     {
         $data['clientid'] = $this->key;
+
         return $data;
     }
 

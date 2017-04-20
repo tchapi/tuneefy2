@@ -80,7 +80,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
             if ($object_type === Platform::LOOKUP_TRACK) {
                 $musical_entity = new TrackEntity($entity->name, new AlbumEntity($entity->album->name, $entity->artists[0]->name, $entity->album->images[1]->url));
                 $musical_entity->addLink(static::TAG, $entity->external_urls->spotify);
-                
+
                 $query_words = [
                     $musical_entity->getAlbum()->getArtist(),
                     $musical_entity->getSafeTitle(),
@@ -88,7 +88,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
             } elseif ($object_type === Platform::LOOKUP_ALBUM) {
                 $musical_entity = new AlbumEntity($entity->name, $entity->artists[0]->name, $entity->images[1]->url);
                 $musical_entity->addLink(static::TAG, $entity->external_urls->spotify);
-                    
+
                 $query_words = [
                     $musical_entity->getArtist(),
                     $musical_entity->getSafeTitle(),
@@ -96,7 +96,6 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
             } elseif ($object_type === Platform::LOOKUP_ARTIST) {
                 $query_words = [$entity->name];
             }
-
         } elseif (preg_match(self::REGEX_SPOTIFY_LOCAL, $permalink, $match)) {
             // We have a nicely formatted local url, but can only retrieve query words
             $query_words = [$match['artist_name'], $match['track_name']];

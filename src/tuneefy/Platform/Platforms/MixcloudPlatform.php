@@ -71,7 +71,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
 
             $musical_entity = new TrackEntity($entity->name, new AlbumEntity('', $entity->artist->name, ''));
             $musical_entity->addLink(static::TAG, $entity->url);
-            
+
             $query_words = [
                 $musical_entity->getAlbum()->getArtist(),
                 $musical_entity->getSafeTitle(),

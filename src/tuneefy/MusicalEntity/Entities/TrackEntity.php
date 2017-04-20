@@ -79,7 +79,7 @@ class TrackEntity extends MusicalEntity
         $result = [
           'type' => self::TYPE,
           'title' => $this->track_title,
-          'album' => $album, 
+          'album' => $album,
         ];
 
         if ($this->countLinks() !== 0) {
@@ -125,12 +125,14 @@ class TrackEntity extends MusicalEntity
 
             $this->introspected = true;
         }
+
         return $this;
     }
 
     public function setSafeTitle(string $safe_title): TrackEntity
     {
         $this->safe_track_title = $safe_title;
+
         return $this;
     }
 

@@ -63,6 +63,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
     protected function addContextOptions(array $data): array
     {
         $data['app_id'] = $this->key;
+
         return $data;
     }
 
@@ -93,7 +94,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
             $entity = $response->data;
             $musical_entity = new TrackEntity($entity->title, new AlbumEntity($entity->album->title, $entity->album->artist->name, $entity->album->image->small));
             $musical_entity->addLink(static::TAG, $this->getPlayerUrlFromTrackId(''.$entity->id));
-            
+
             $query_words = [
                 $musical_entity->getAlbum()->getArtist(),
                 $musical_entity->getSafeTitle(),

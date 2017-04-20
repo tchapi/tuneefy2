@@ -15,7 +15,7 @@ class GrooveMusicPlatform extends Platform implements WebStreamingPlatformInterf
     const TAG = 'groove';
     const COLOR = '007500';
 
-    const API_ENDPOINT = "https://music.xboxlive.com/1/content/";
+    const API_ENDPOINT = 'https://music.xboxlive.com/1/content/';
     const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
@@ -57,8 +57,8 @@ class GrooveMusicPlatform extends Platform implements WebStreamingPlatformInterf
     protected function addContextOptions(array $data): array
     {
         // From the XBOX docs : http://msdn.microsoft.com/en-us/library/dn546688.aspx
-        $serviceauth = "https://login.live.com/accesstoken.srf";
-        $scope = "app.music.xboxlive.com";
+        $serviceauth = 'https://login.live.com/accesstoken.srf';
+        $scope = 'app.music.xboxlive.com';
         $grantType = 'client_credentials';
 
         $requestData = ['client_id' => $this->key, 'client_secret' => $this->secret, 'scope' => $scope, 'grant_type' => $grantType];

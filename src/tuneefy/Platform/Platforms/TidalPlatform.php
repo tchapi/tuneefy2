@@ -58,6 +58,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
     protected function addContextOptions(array $data): array
     {
         $data['token'] = $this->key;
+
         return $data;
     }
 
@@ -83,7 +84,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
             $entity = $response->data;
             $musical_entity = new TrackEntity($entity->title, new AlbumEntity($entity->album->title, $entity->artist->name, $this->getCoverUrlFromCoverHash($entity->album->cover)));
             $musical_entity->addLink(static::TAG, $entity->url);
-            
+
             $query_words = [
                 $musical_entity->getAlbum()->getArtist(),
                 $musical_entity->getSafeTitle(),
@@ -98,7 +99,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
             $entity = $response->data;
             $musical_entity = new AlbumEntity($entity->title, $entity->artist->name, $this->getCoverUrlFromCoverHash($entity->cover));
             $musical_entity->addLink(static::TAG, $entity->url);
-            
+
             $query_words = [
                 $musical_entity->getArtist(),
                 $musical_entity->getSafeTitle(),

@@ -67,6 +67,7 @@ class BeatsMusicPlatform extends Platform implements WebStreamingPlatformInterfa
     protected function addContextOptions(array $data): array
     {
         $data['client_id'] = $this->key;
+
         return $data;
     }
 

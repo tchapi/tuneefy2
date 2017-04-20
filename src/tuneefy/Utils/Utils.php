@@ -56,6 +56,7 @@ class Utils
     public static function removeBOM(string $string): string
     {
         $bom = pack('H*', 'EFBBBF');
+
         return preg_replace("/^$bom/", '', $string);
     }
 
