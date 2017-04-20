@@ -15,7 +15,7 @@ class AmazonMP3Platform extends Platform implements WebStoreInterface
     const TAG = 'amazon';
     const COLOR = 'E47911';
 
-    const API_ENDPOINT = 'http://www.amazon.com/gp/dmusic/aws/';
+    const API_ENDPOINT = 'https://www.amazon.com/gp/dmusic/aws/';
     const API_METHOD = Platform::METHOD_GET;
     const RETURN_CONTENT_TYPE = Platform::RETURN_XML;
 
@@ -39,8 +39,8 @@ class AmazonMP3Platform extends Platform implements WebStoreInterface
         Platform::LOOKUP_TRACK => [],
         Platform::LOOKUP_ALBUM => [],
         Platform::LOOKUP_ARTIST => [],
-        Platform::SEARCH_TRACK => ['type' => 'TRACK', 'pagesize' => Platform::LIMIT],
-        Platform::SEARCH_ALBUM => ['type' => 'ALBUM', 'pagesize' => Platform::LIMIT],
+        Platform::SEARCH_TRACK => ['type' => 'TRACK', 'ie' => 'UTF8', 'pagesize' => Platform::LIMIT],
+        Platform::SEARCH_ALBUM => ['type' => 'ALBUM', 'ie' => 'UTF8', 'pagesize' => Platform::LIMIT],
        // Platform::SEARCH_ARTIST => Map { "type" => "ARTIST", "pagesize" => Platform::LIMIT }
     ];
 

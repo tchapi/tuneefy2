@@ -17,6 +17,7 @@ This project uses [composer](https://getcomposer.org/). Just run :
   - [Slim](http://www.slimframework.com/), a lightweight RESTful framework
   - [Twig](http://twig.sensiolabs.org/), a template engine
   - [XmlToJsonConverter](https://github.com/markwilson/xml-to-json) to convert Amazon XML to correct JSON
+  - [RKA Content-Type renderer](https://github.com/akrabat/rka-content-type-renderer) to output JSON / XML / HTML for the API
 
 ### On the frontend side of things
 
@@ -54,6 +55,10 @@ Here is a pseudo-code process on how to sign your requests :
 #### Web Service Rate Limits
 
 Limits are placed on the number of API requests you may make using your API key. Rate limits may vary by service, but the defaults are 100 requests per hour.
+
+#### Output format
+
+Either pass `format=xml|json|html` or set the Accept header (prefered).
 
 #### Lookup API
 
