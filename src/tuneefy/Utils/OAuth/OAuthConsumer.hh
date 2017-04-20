@@ -1,15 +1,15 @@
-<?hh // strict
+<?php
 // vim: foldmethod=marker
 
 namespace tuneefy\Utils\OAuth;
 
 class OAuthConsumer {
   
-  public string $key;
-  public string $secret;
-  public ?string $callback_url;
+  public $key;
+  public $secret;
+  public $callback_url;
 
-  public function __construct(string $key, string $secret, ?string $callback_url = null)
+  public function __construct(string $key, string $secret, string $callback_url = null)
   {
     $this->key = $key;
     $this->secret = $secret;

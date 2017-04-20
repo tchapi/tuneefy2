@@ -1,6 +1,6 @@
-# tuneefy _(in [hacklang](http://hacklang.org/))_
+# tuneefy _2_
 
-A new version of [tuneefy](http://tuneefy.com) built in Hack, from the ground up.
+A new version of [tuneefy](http://tuneefy.com) built for PHP 7, from the ground up, using the minimal Slim framework.
 
 ### Installing
 
@@ -9,34 +9,6 @@ This project uses [composer](https://getcomposer.org/). Just run :
     composer install
 
  ... and you should be good to go !
-
-### Docker
-
-Tuneefy can be run in two [Docker](https://www.docker.com/) containers, one containing Nginx, and one containing HHVM. The two are linked via a Docker Compose file.
-
-All the Docker files are present in the `docker` folder.
-
-To create the images :
-
-    docker build --no-cache=true --rm -f ./docker/Dockerfile-nginx -t nginx .
-    docker build --no-cache=true --rm -f ./docker/Dockerfile-hhvm -t hhvm .
-    docker pull mysql
-
-And then :
-
-    docker-compose up -d  # may differ if you're on a Mac, Linux or Windows PC
-
-And for the fixtures database :
-
-    # TODO 
-
-Then, to tail the logs :
-
-    docker-compose logs
-
-To run the typechecker in the running HHVM container :
-
-    docker exec -it [container_name] /bin/bash -c "cd /var/www/tuneefy/ && hh_client restart && hh_client"
 
 ### Packages used
 

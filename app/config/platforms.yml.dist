@@ -116,19 +116,6 @@ platforms:
     secret: ""
     default: true
     order: 10
-  rdio:
-    class: tuneefy\Platform\RdioPlatform
-    enable:
-      api: true
-      website: true
-    capabilities:
-      track_search: true
-      album_search: true
-      lookup: true
-    key: ""
-    secret: ""
-    default: true
-    order: 11
   xbox:
     class: tuneefy\Platform\XboxPlatform
     enable:
