@@ -5,7 +5,6 @@ namespace tuneefy;
 use tuneefy\Platform\Platform;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\Platforms\AmazonMP3Platform;
-use tuneefy\Platform\Platforms\BeatsMusicPlatform;
 use tuneefy\Platform\Platforms\DeezerPlatform;
 use tuneefy\Platform\Platforms\GrooveMusicPlatform;
 use tuneefy\Platform\Platforms\HypeMachinePlatform;
@@ -41,7 +40,6 @@ class PlatformEngine
           // Streaming platforms
           'deezer' => DeezerPlatform::getInstance(),
           'spotify' => SpotifyPlatform::getInstance(),
-          'beats' => BeatsMusicPlatform::getInstance(),
           'groove' => GrooveMusicPlatform::getInstance(),
           'qobuz' => QobuzPlatform::getInstance(),
           'soundcloud' => SoundcloudPlatform::getInstance(),
