@@ -90,7 +90,7 @@ abstract class MusicalEntity implements MusicalEntityInterface
         // the strlen part prevents from matching a track named "cover" or "karaoke" only
         // We don't want to remove this from the title since we don't want to mix cover results from normal ones.
         $extra_info['is_cover'] = (
-            preg_match('/[\(\[\-].*(originally\sperformed|cover|tribute|karaoke)/i', $str) === 1 && 
+            preg_match('/[\(\[\-].*(originally\sperformed|cover|tribute|karaoke)/i', $str) === 1 &&
             strlen($str) > 8
         );
 
@@ -102,7 +102,6 @@ abstract class MusicalEntity implements MusicalEntityInterface
         // (we don't remove that from the title neither)
         $extra_info['acoustic'] = true && preg_match("/.*[\-\–].*([\s\(\[]acoustic|[\s\(\[]acoustique)/i", $str);
 
-
         // 4. Any featuring ?
         if (preg_match("/.*f(?:ea)?t(?:uring)?\.?\s?(?P<artist>[^\(\)\[\]\-]*)/i", $str, $matches_feat)) {
             $extra_info['featuring'] = trim($matches_feat['artist']);
@@ -111,7 +110,7 @@ abstract class MusicalEntity implements MusicalEntityInterface
         // 5. It's a special edit ? NOT a special edition, mind you !
         // We add the space at the end of the search string to avoid missing a string ending with 'edit'
         // (we don't remove that from the title neither)
-        if (preg_match("/.*[\-\–\(\[]\s?(?P<edit>.*)edit[^i]/i", $str." ", $matches_edit)) {
+        if (preg_match("/.*[\-\–\(\[]\s?(?P<edit>.*)edit[^i]/i", $str.' ', $matches_edit)) {
             $extra_info['edit'] = trim($matches_edit['edit']);
         }
         // NOW we modify the string perhaps
@@ -121,15 +120,15 @@ abstract class MusicalEntity implements MusicalEntityInterface
         preg_match_all("/(?P<removables>[\(\{\[\-\—](?P<meta>[^\]\}\)]*)[\)\}\]])/i", $str, $matches);
 
         if (array_key_exists('meta', $matches)) {
-            $extra_info['context'] = array_map(function($e) { return trim($e); }, $matches['meta']);
+            $extra_info['context'] = array_map(function ($e) { return trim($e); }, $matches['meta']);
 
             // Remove the context strings from the string
             foreach ($matches['removables'] as $key => $value) {
-               $str = str_replace($value, " ", $str);
+                $str = str_replace($value, ' ', $str);
             }
 
             // Remove n-uple spaces
-            $str = preg_replace("/\s+/i", " ", $str);
+            $str = preg_replace("/\s+/i", ' ', $str);
         }
 
         return [

@@ -38,7 +38,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_TRACK => ['part' => 'snippet'],
         Platform::LOOKUP_ALBUM => [],
         Platform::LOOKUP_ARTIST => [],
-        Platform::SEARCH_TRACK => ['part' => 'snippet', 'order' => 'relevance', "topicId" => "/m/04rlf", 'type' => 'video', 'videoCategoryId' => '10', 'maxResults' => Platform::LIMIT], // Music category
+        Platform::SEARCH_TRACK => ['part' => 'snippet', 'order' => 'relevance', 'topicId' => '/m/04rlf', 'type' => 'video', 'videoCategoryId' => '10', 'maxResults' => Platform::LIMIT], // Music category
         Platform::SEARCH_ALBUM => [],
        // Platform::SEARCH_ARTIST => []
     ];

@@ -326,7 +326,7 @@ class Application
             // TODO
 
             // Eventually, redirect to platform
-            return $response->withStatus(303)->withHeader("Location", 'http://the/link/on/the/platform'); // "See Other"
+            return $response->withStatus(303)->withHeader('Location', 'http://the/link/on/the/platform'); // "See Other"
         });
 
         /*
