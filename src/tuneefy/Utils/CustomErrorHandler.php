@@ -4,7 +4,7 @@ namespace tuneefy\Utils;
 
 class CustomErrorHandler
 {
-    public function __invoke($request, $response, $args)
+    public function __invoke($request, $response, $exceptionOrError)
     {
         return $response
             ->withStatus(500)

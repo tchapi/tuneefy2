@@ -43,9 +43,13 @@ class Application
         $container['notFoundHandler'] = function ($container) {
             return new CustomNotFoundHandler();
         };
-        // FIXME
+        // FIXME remove comments
         // $container['errorHandler'] = function ($container) {
         //     return new CustomErrorHandler();
+        // };
+
+        // $container['phpErrorHandler'] = function ($container) {
+        //     return $container['errorHandler'];
         // };
 
         // JSON / XML renderer
