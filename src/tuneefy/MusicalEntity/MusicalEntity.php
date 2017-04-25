@@ -72,4 +72,69 @@ abstract class MusicalEntity implements MusicalEntityInterface
     {
         return $this->extra_info;
     }
+
+    /*
+      Parse a musical entity title
+    */
+    public static function parse(string $str): array
+    {
+        $extra_info = [];
+        $matches = [];
+        $matches_feat = [];
+        $matches_edit = [];
+
+        // NON-destructive tests first
+        // ---------------------------
+
+        // 1. Is this a cover / tribute or karaoke version ?
+        // the strlen part prevents from matching a track named "cover" or "karaoke" only
+        // We don't want to remove this from the title since we don't want to mix cover results from normal ones.
+        $extra_info['is_cover'] = (
+            preg_match('/[\(\[\-].*(originally\sperformed|cover|tribute|karaoke)/i', $str) === 1 && 
+            strlen($str) > 8
+        );
+
+        // 2. It's a special remix ?
+        // (we don't remove that from the title neither)
+        $extra_info['is_remix'] = true && preg_match("/.*[\-\–].*(\smix|\sremix)/i", $str);
+
+        // 3. It's acoustic ?
+        // (we don't remove that from the title neither)
+        $extra_info['acoustic'] = true && preg_match("/.*[\-\–].*([\s\(\[]acoustic|[\s\(\[]acoustique)/i", $str);
+
+
+        // 4. Any featuring ?
+        if (preg_match("/.*f(?:ea)?t(?:uring)?\.?\s?(?P<artist>[^\(\)\[\]\-]*)/i", $str, $matches_feat)) {
+            $extra_info['featuring'] = trim($matches_feat['artist']);
+        }
+
+        // 5. It's a special edit ? NOT a special edition, mind you !
+        // We add the space at the end of the search string to avoid missing a string ending with 'edit'
+        // (we don't remove that from the title neither)
+        if (preg_match("/.*[\-\–\(\[]\s?(?P<edit>.*)edit[^i]/i", $str." ", $matches_edit)) {
+            $extra_info['edit'] = trim($matches_edit['edit']);
+        }
+        // NOW we modify the string perhaps
+        // --------------------------------
+
+        // 6. Extract added context info
+        preg_match_all("/(?P<removables>[\(\{\[\-\—](?P<meta>[^\]\}\)]*)[\)\}\]])/i", $str, $matches);
+
+        if (array_key_exists('meta', $matches)) {
+            $extra_info['context'] = array_map(function($e) { return trim($e); }, $matches['meta']);
+
+            // Remove the context strings from the string
+            foreach ($matches['removables'] as $key => $value) {
+               $str = str_replace($value, " ", $str);
+            }
+
+            // Remove n-uple spaces
+            $str = preg_replace("/\s+/i", " ", $str);
+        }
+
+        return [
+            'title' => trim($str),
+            'extra_info' => $extra_info,
+        ];
+    }
 }
