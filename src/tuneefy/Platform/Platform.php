@@ -175,6 +175,14 @@ abstract class Platform implements GeneralPlatformInterface
         return $data;
     }
 
+    // This function, or its children class' counterpart,
+    // is called in the fetch method to give the child
+    // class a chance to add other contextual headers
+    protected function addContextHeaders(): array
+    {
+        return [];
+    }
+
     protected function fetchSync(int $type, string $query)
     {
         $url = $this->endpoints[$type];
@@ -186,10 +194,11 @@ abstract class Platform implements GeneralPlatformInterface
             $data = array_merge([$this->terms[$type] => $query], $this->options[$type]);
         }
 
-        // Gives the child class a chance to add options that are
+        // Gives the child class a chance to add options and headers that are
         // contextual to the request, eg. for Xbox, a token, or
         // just simply the API key ...
         $data = $this->addContextOptions($data);
+        $headers = $this->addContextHeaders();
 
         if (static::NEEDS_OAUTH) {
             // We add the signature to the request data
@@ -204,7 +213,7 @@ abstract class Platform implements GeneralPlatformInterface
         $ch = curl_init();
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_HEADER => 0,
+            CURLOPT_HTTPHEADER => $headers,
             CURLOPT_FOLLOWLOCATION => 1, // Some APIs redirect to content with a 3XX code
         ]);
 
