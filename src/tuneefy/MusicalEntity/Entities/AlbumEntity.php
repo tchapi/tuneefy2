@@ -30,11 +30,11 @@ class AlbumEntity extends MusicalEntity
         $this->introspect();
     }
 
-  // Getters and setters
-  public function getArtist(): string
-  {
-      return $this->artist;
-  }
+    // Getters and setters
+    public function getArtist(): string
+    {
+        return $this->artist;
+    }
 
     public function getTitle(): string
     {
@@ -54,11 +54,11 @@ class AlbumEntity extends MusicalEntity
     public function toArray(): array
     {
         $result = [
-      'type' => self::TYPE,
-      'title' => $this->title,
-      'artist' => $this->artist,
-      'picture' => $this->picture,
-    ];
+          'type' => self::TYPE,
+          'title' => $this->title,
+          'artist' => $this->artist,
+          'picture' => $this->picture,
+        ];
 
         if ($this->countLinks() !== 0) {
             $result['links'] = $this->links;
@@ -80,7 +80,7 @@ class AlbumEntity extends MusicalEntity
   {
       if ($this->introspected === false) {
           // What about we strip all dirty addons strings from the title
-      $matches = [];
+          $matches = [];
           if (preg_match("/(?P<title>.*?)\s?[\(\[\-\—]\s*(?P<meta>.*)/i", $this->title, $matches)) {
               $this->safe_title = trim($matches['title']);
               if (array_key_exists('meta', $matches)) {
@@ -114,13 +114,13 @@ class AlbumEntity extends MusicalEntity
     {
         // $a has precedence
 
-    if ($a->getTitle() === '') {
-        $title = $b->getTitle();
-        $safe_title = $b->getSafeTitle();
-    } else {
-        $title = $a->getTitle();
-        $safe_title = $a->getSafeTitle();
-    }
+        if ($a->getTitle() === '') {
+            $title = $b->getTitle();
+            $safe_title = $b->getSafeTitle();
+        } else {
+            $title = $a->getTitle();
+            $safe_title = $a->getSafeTitle();
+        }
 
         if ($a->getArtist() === '') {
             $artist = $b->getArtist();
@@ -134,8 +134,8 @@ class AlbumEntity extends MusicalEntity
             $picture = $a->getPicture();
         }
 
-    // Create the result
-    $c = new self($title, $artist, $picture);
+        // Create the result
+        $c = new self($title, $artist, $picture);
         $c->addLinks($a->getLinks()->addAll($b->getLinks()));
 
         if ($a->isIntrospected() === true && $b->isIntrospected() === true) {
@@ -143,6 +143,6 @@ class AlbumEntity extends MusicalEntity
             $c->setSafeTitle($safe_title);
         } // But do not force introspection
 
-    return $c;
+        return $c;
     }
 }

@@ -1,38 +1,35 @@
-parameters:
+database:
+  server: "localhost"
+  name: "tuneefy"
+  user: "tuneefy"
+  password: "ChangeMe"
+  table_link_prefix: "L"
 
-  database:
-    server: "localhost"
-    port: 3306
-    name: "tuneefy"
-    user: "tuneefy"
-    password: "ChangeMe"
-    table_link_prefix: "L"
+website:
+  max_results: 100
 
-  website:
-    max_results: 100
+urls:
+  base: 12345678
 
-  urls:
-    base: 12345678
+mail:
+  smtp_server: "tuneefy.com"
+  smtp_user: "user"
+  smtp_password: "pwd"
+  contact_email: "contact@tuneefy.com"
+  team_email: "team@tuneefy.com"
 
-  mail:
-    smtp_server: "tuneefy.com"
-    smtp_user: "user"
-    smtp_password: "pwd"
-    contact_email: "contact@tuneefy.com"
-    team_email: "team@tuneefy.com"
+statistics:
+  ga_tracker_id: 0
 
-  statistics:
-    ga_tracker_id: 0
+uservoice:
+  enabled: false
+  client_id: 0 
 
-  uservoice:
-    enabled: false
-    client_id: 0 
+facebook:
+  admin_user: ""
+  app_id: 0
+  app_secret: ""
+  page_id: 0
 
-  facebook:
-    admin_user: ""
-    app_id: 0
-    app_secret: ""
-    page_id: 0
-
-  google_plus:
-    publisher_id: "https://..."
+google_plus:
+  publisher_id: "https://..."

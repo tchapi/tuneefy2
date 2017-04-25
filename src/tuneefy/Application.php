@@ -14,10 +14,12 @@ use tuneefy\Utils\Utils;
 
 class Application
 {
-    const APP_PARAMETERS_PATH = '/../../app/config/parameters.yml';
-    const APP_PLATFORMS_PATH = '/../../app/config/platforms.yml';
-    const APP_TEMPLATES_PATH = '/../../app/templates';
-    const APP_CACHE_PATH = '/../../var/cache';
+    const PATHS = [
+        'parameters' => '/../../app/config/parameters.yml',
+        'platforms' => '/../../app/config/platforms.yml',
+        'templates' => '/../../app/templates',
+        'cache' => '/../../var/cache',
+    ];
 
     private $slimApp;
     private $engine;
@@ -31,8 +33,8 @@ class Application
 
         // Register component on container
         $container['view'] = function ($container) {
-            return new Twig(dirname(__FILE__).self::APP_TEMPLATES_PATH, [
-                'cache' => dirname(__FILE__).self::APP_CACHE_PATH,
+            return new Twig(self::getPath('templates'), [
+                'cache' => self::getPath('cache'),
             ]);
         };
 
@@ -53,6 +55,11 @@ class Application
         $this->engine = new PlatformEngine();
     }
 
+    public static function getPath(string $which)
+    {
+        return dirname(__FILE__).self::PATHS[$which];
+    }
+
     public function run()
     {
         $this->slimApp->run();
@@ -62,16 +69,15 @@ class Application
     {
         // Fetch config files
         try {
-            $platforms = Yaml::parse(file_get_contents(dirname(__FILE__).self::APP_PLATFORMS_PATH));
-            $platforms = $platforms['platforms'];
+            $platforms = Yaml::parse(file_get_contents(self::getPath('platforms')));
         } catch (\Exception $e) {
-            // TODO  : translate / template
-            $this->slimApp->halt(500, 'No config file found');
+            // TODO  : translate / template : this will not happen in Slim's run loop, handle differently
+            throw new \Exception('No config file found');
         }
 
         if ($platforms === null) {
-            // TODO  : translate / template
-            $this->slimApp->halt(500, 'Bad config files');
+            // TODO  : translate / template : this will not happen in Slim's run loop, handle differently
+            throw new \Exception('Bad config files');
         }
 
         foreach ($platforms as $key => $platform) {
@@ -92,12 +98,11 @@ class Application
         // Connect to DB
         try {
             $container = $this->slimApp->getContainer();
-            $container['db'] = function () {
-                return DatabaseHandler::getInstance();
-            };
+            $container['db'] = DatabaseHandler::getInstance();
+            // TODO : instantiate DB once FIXME
         } catch (\Exception $e) {
             // TODO  : translate / template
-            $this->slimApp->halt(500, 'No DB Connection');
+            $this->slimApp->halt(500, 'Problem with database instantiation : '.$e->getMesage());
         }
 
         $engine = $this->engine;
@@ -306,7 +311,7 @@ class Application
             if (!is_null($item)) {
                 return $this->view->render($response, 'item.html.twig', ['item' => $item->toArray()]);
             } else {
-                return $this->notFound();
+                return $response->withStatus(404);
             }
         });
 
@@ -317,7 +322,7 @@ class Application
             // TODO
 
             // Eventually, redirect to platform
-            return $this->redirect('http://the/link/on/the/platform', 303); // "See Other"
+            return $response->withStatus(303)->withHeader("Location", 'http://the/link/on/the/platform'); // "See Other"
         });
 
         /*

@@ -1,6 +1,6 @@
 # tuneefy _2_
 
-A new version of [tuneefy](http://tuneefy.com) built for PHP 7, from the ground up, using the minimal Slim framework.
+A new version of [tuneefy](http://tuneefy.com) built for PHP 7, from the ground up, using the minimal Slim framework and a few helper libraries.
 
 ### Installing
 
@@ -32,6 +32,14 @@ The source is in `src/tuneefy` and is organised as such :
   * **Platform** includes all the platform-related code
   * **Utils** includes various utilities such as a very stripped-down OAuth client class and a custom Slim View handler for JSON
   * and two top-level classes : **Application** and **PlatformEngine** that deal with the application itself and how it interacts with the platforms
+
+### Tests
+
+The tests are under the `./tests` folder and I use PHPUnit 6.1 to run them.
+Just run :
+
+    vendor/bin/phpunit -v
+
 
 ### API Documentation
 (_This will move to somewhere more appropriate afterwards_)

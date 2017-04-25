@@ -1,170 +1,169 @@
-platforms:
-  deezer:
-    class: tuneefy\Platform\DeezerPlatform
-    enable:
-      api: true
-      website: true
-    capabilities:
-      track_search: true
-      album_search: true
-      lookup: true
-    key: ""
-    secret: ""
-    default: true
-    order: 1
-  spotify:
-    class: tuneefy\Platform\SpotifyPlatform
-    enable:
-      api: true
-      website: true
-    capabilities:
-      track_search: true
-      album_search: true
-      lookup: true
-    key: ""
-    secret: ""
-    default: true
-    order: 2
-  qobuz:
-    class: tuneefy\Platform\QobuzPlatform
-    enable:
-      api: true
-      website: true
-    capabilities:
-      track_search: true
-      album_search: true
-      lookup: true
-    key: ""
-    secret: ""
-    default: true
-    order: 3
-  lastfm:
-    class: tuneefy\Platform\LastFMPlatform
-    enable:
-      api: true
-      website: true
-    capabilities:
-      track_search: true
-      album_search: true
-      lookup: true
-    key: ""
-    secret: ""
-    default: true
-    order: 4
-  soundcloud:
-    class: tuneefy\Platform\SoundcloudPlatform
-    enable:
-      api: true
-      website: true
-    capabilities:
-      track_search: true
-      album_search: false
-      lookup: true
-    key: ""
-    secret: ""
-    default: false
-    order: 6
-  hypem:
-    class: tuneefy\Platform\HypemachinePlatform
-    enable:
-      api: true
-      website: true
-    capabilities:
-      track_search: true
-      album_search: false
-      lookup: true
-    key: ""
-    secret: ""
-    default: false
-    order: 7
-  youtube:
-    class: tuneefy\Platform\YoutubePlatform
-    enable:
-      api: true
-      website: true
-    capabilities:
-      track_search: true
-      album_search: false
-      lookup: true
-    key: ""
-    secret: ""
-    default: false
-    order: 8
-  mixcloud:
-    class: tuneefy\Platform\MixcloudPlatform
-    enable:
-      api: true
-      website: true
-    capabilities:
-      track_search: false
-      album_search: false
-      lookup: true
-    key: ""
-    secret: ""
-    default: false
-    order: 9
-  itunes:
-    class: tuneefy\Platform\ItunesPlatform
-    enable:
-      api: true
-      website: true
-    capabilities:
-      track_search: true
-      album_search: true
-      lookup: false
-    key: ""
-    secret: ""
-    default: true
-    order: 10
-  xbox:
-    class: tuneefy\Platform\XboxPlatform
-    enable:
-      api: true
-      website: true
-    capabilities:
-      track_search: true
-      album_search: true
-      lookup: true
-    key: ""
-    secret: ""
-    default: true
-    order: 12
-  beats:
-    class: tuneefy\Platform\BeatsPlatform
-    enable:
-      api: true
-      website: true
-    capabilities:
-      track_search: true
-      album_search: true
-      lookup: true
-    key: ""
-    secret: ""
-    default: true
-    order: 13
-  tidal:
-    class: tuneefy\Platform\TidalPlatform
-    enable:
-      api: true
-      website: true
-    capabilities:
-      track_search: true
-      album_search: true
-      lookup: true
-    key: ""
-    secret: ""
-    default: false
-    order: 14
-  amazon:
-    class: tuneefy\Platform\AmazonMP3Platform
-    enable:
-      api: true
-      website: true
-    capabilities:
-      track_search: true
-      album_search: true
-      lookup: true
-    key: ""
-    secret: ""
-    default: false
-    order: 15
+deezer:
+  class: tuneefy\Platform\DeezerPlatform
+  enable:
+    api: true
+    website: true
+  capabilities:
+    track_search: true
+    album_search: true
+    lookup: true
+  key: ""
+  secret: ""
+  default: true
+  order: 1
+spotify:
+  class: tuneefy\Platform\SpotifyPlatform
+  enable:
+    api: true
+    website: true
+  capabilities:
+    track_search: true
+    album_search: true
+    lookup: true
+  key: ""
+  secret: ""
+  default: true
+  order: 2
+qobuz:
+  class: tuneefy\Platform\QobuzPlatform
+  enable:
+    api: true
+    website: true
+  capabilities:
+    track_search: true
+    album_search: true
+    lookup: true
+  key: ""
+  secret: ""
+  default: true
+  order: 3
+lastfm:
+  class: tuneefy\Platform\LastFMPlatform
+  enable:
+    api: true
+    website: true
+  capabilities:
+    track_search: true
+    album_search: true
+    lookup: true
+  key: ""
+  secret: ""
+  default: true
+  order: 4
+soundcloud:
+  class: tuneefy\Platform\SoundcloudPlatform
+  enable:
+    api: true
+    website: true
+  capabilities:
+    track_search: true
+    album_search: false
+    lookup: true
+  key: ""
+  secret: ""
+  default: false
+  order: 6
+hypem:
+  class: tuneefy\Platform\HypemachinePlatform
+  enable:
+    api: true
+    website: true
+  capabilities:
+    track_search: true
+    album_search: false
+    lookup: true
+  key: ""
+  secret: ""
+  default: false
+  order: 7
+youtube:
+  class: tuneefy\Platform\YoutubePlatform
+  enable:
+    api: true
+    website: true
+  capabilities:
+    track_search: true
+    album_search: false
+    lookup: true
+  key: ""
+  secret: ""
+  default: false
+  order: 8
+mixcloud:
+  class: tuneefy\Platform\MixcloudPlatform
+  enable:
+    api: true
+    website: true
+  capabilities:
+    track_search: false
+    album_search: false
+    lookup: true
+  key: ""
+  secret: ""
+  default: false
+  order: 9
+itunes:
+  class: tuneefy\Platform\ItunesPlatform
+  enable:
+    api: true
+    website: true
+  capabilities:
+    track_search: true
+    album_search: true
+    lookup: false
+  key: ""
+  secret: ""
+  default: true
+  order: 10
+xbox:
+  class: tuneefy\Platform\XboxPlatform
+  enable:
+    api: true
+    website: true
+  capabilities:
+    track_search: true
+    album_search: true
+    lookup: true
+  key: ""
+  secret: ""
+  default: true
+  order: 12
+beats:
+  class: tuneefy\Platform\BeatsPlatform
+  enable:
+    api: true
+    website: true
+  capabilities:
+    track_search: true
+    album_search: true
+    lookup: true
+  key: ""
+  secret: ""
+  default: true
+  order: 13
+tidal:
+  class: tuneefy\Platform\TidalPlatform
+  enable:
+    api: true
+    website: true
+  capabilities:
+    track_search: true
+    album_search: true
+    lookup: true
+  key: ""
+  secret: ""
+  default: false
+  order: 14
+amazon:
+  class: tuneefy\Platform\AmazonMP3Platform
+  enable:
+    api: true
+    website: true
+  capabilities:
+    track_search: true
+    album_search: true
+    lookup: true
+  key: ""
+  secret: ""
+  default: false
+  order: 15

@@ -20,6 +20,8 @@
         "akrabat/rka-content-type-renderer": "^0.7.3"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.2"
+        "friendsofphp/php-cs-fixer": "^2.2",
+        "phpunit/phpunit": "^6.1",
+        "deployer/deployer": "^4.2.1"
     }
 }
