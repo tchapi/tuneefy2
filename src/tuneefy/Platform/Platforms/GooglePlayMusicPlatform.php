@@ -44,14 +44,14 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
     ];
 
     // https://play.google.com/store/music/album?id=Btktawogfpi7yye5w3zxj2ykc6m
-    const ALBUM_LINK = "https://play.google.com/store/music/album?id=%s";
-    const ARTIST_LINK = "https://play.google.com/store/music/artist?id=A%s";
-    const TRACK_LINK = "https://play.google.com/store/music/album?id=%s&tid=song-%s";
+    const ALBUM_LINK = 'https://play.google.com/store/music/album?id=%s';
+    const ARTIST_LINK = 'https://play.google.com/store/music/artist?id=A%s';
+    const TRACK_LINK = 'https://play.google.com/store/music/album?id=%s&tid=song-%s';
 
     // https://play.google.com/store/music/album/James_McAlister_Planetarium?id=Bew3avws2eysvwcmkxwgu5s3rhm
     const REGEX_GOOGLE_PLAY_ALBUM = "/store\/music\/album\/".Platform::REGEX_FULLSTRING."\?id\=(?P<album_id>".Platform::REGEX_FULLSTRING.").*[\/]?$/";
     // https://play.google.com/store/music/album?id=Bbebqssprhgc27hq6xlqzrm45g4&tid=song-Ttbq3os2bblfjndnztz43sf2c2i
-    const REGEX_GOOGLE_PLAY_TRACK = "/store\/music\/album\?id\=(?P<album_id>".Platform::REGEX_FULLSTRING.")\&tid\=song\-(?P<track_id>".Platform::REGEX_FULLSTRING.")$/";
+    const REGEX_GOOGLE_PLAY_TRACK = "/store\/music\/album\?id\=(?P<album_id>".Platform::REGEX_FULLSTRING.")\&tid\=song\-(?P<track_id>".Platform::REGEX_FULLSTRING.')$/';
     // https://play.google.com/store/music/artist/James_McAlister?id=Anop7xijqkhvkjc4q7mo6drwyu4
     const REGEX_GOOGLE_PLAY_ARTIST = "/store\/music\/artist\/".Platform::REGEX_FULLSTRING."\?id\=A(?P<artist_id>".Platform::REGEX_FULLSTRING.").*[\/]?$/";
 
@@ -66,18 +66,18 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         $serviceauth = 'https://android.clients.google.com/auth';
 
         $requestData = [
-            "accountType" => "HOSTED_OR_GOOGLE",
-            "has_permission" => 1,
-            "service" => "sj",
-            "source" => "android",
-            "androidId" => random_bytes(8),
-            "app" => "com.google.android.music",
-            "device_country" => "us",
-            "operatorCountry" => "us",
-            "lang" => "en",
-            "sdk_version" => "17",
-            "Email" => $this->key,
-            "Passwd" => $this->secret,
+            'accountType' => 'HOSTED_OR_GOOGLE',
+            'has_permission' => 1,
+            'service' => 'sj',
+            'source' => 'android',
+            'androidId' => random_bytes(8),
+            'app' => 'com.google.android.music',
+            'device_country' => 'us',
+            'operatorCountry' => 'us',
+            'lang' => 'en',
+            'sdk_version' => '17',
+            'Email' => $this->key,
+            'Passwd' => $this->secret,
         ];
 
         $ch = curl_init();
@@ -93,10 +93,11 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         curl_close($ch);
 
         $params = explode("\n", $result);
-        $token = array_reduce($params, function($carry, $e) {
-            if (substr($e, 0, 5) === "Auth=") {
+        $token = array_reduce($params, function ($carry, $e) {
+            if (substr($e, 0, 5) === 'Auth=') {
                 return substr($e, 5);
             }
+
             return $carry;
         }, null);
 
@@ -111,7 +112,6 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         $match = [];
 
         if (preg_match(self::REGEX_GOOGLE_PLAY_TRACK, $permalink, $match)) {
-
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
 
             if ($response === null || !property_exists($response, 'data')) {
@@ -135,7 +135,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
 
             $entity = $response->data;
             $musical_entity = new AlbumEntity($entity->name, $entity->artist, $entity->albumArtRef);
-                $musical_entity->addLink(static::TAG, sprintf(self::ALBUM_LINK, $match['album_id']));
+            $musical_entity->addLink(static::TAG, sprintf(self::ALBUM_LINK, $match['album_id']));
 
             $query_words = [
                 $musical_entity->getArtist(),

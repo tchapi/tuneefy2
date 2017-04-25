@@ -48,8 +48,8 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
     const REGEX_NAPSTER_ALBUM = "/\/artist\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/album\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
     const REGEX_NAPSTER_TRACK = "/\/artist\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/album\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")\/track\/(?P<track_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
-    const PICTURE_PATH = "http://direct.rhapsody.com/imageserver/v2/albums/%s/images/400x400.jpg";
-    const WEB_LINK = "http://napster.com/%s";
+    const PICTURE_PATH = 'http://direct.rhapsody.com/imageserver/v2/albums/%s/images/400x400.jpg';
+    const WEB_LINK = 'http://napster.com/%s';
 
     protected function addContextOptions(array $data): array
     {
@@ -71,23 +71,22 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
 
         if (preg_match(self::REGEX_NAPSTER_ARTIST, $permalink, $match)) {
             $query_words = [
-                str_replace("-", " ", $match['artist_slug'])
+                str_replace('-', ' ', $match['artist_slug']),
             ];
-        } else if (preg_match(self::REGEX_NAPSTER_ALBUM, $permalink, $match)) {
+        } elseif (preg_match(self::REGEX_NAPSTER_ALBUM, $permalink, $match)) {
             $query_words = [
-                str_replace("-", " ", $match['artist_slug']),
-                str_replace("-", " ", $match['album_slug'])
+                str_replace('-', ' ', $match['artist_slug']),
+                str_replace('-', ' ', $match['album_slug']),
             ];
-        } else if (preg_match(self::REGEX_NAPSTER_TRACK, $permalink, $match)) {
+        } elseif (preg_match(self::REGEX_NAPSTER_TRACK, $permalink, $match)) {
             $query_words = [
-                str_replace("-", " ", $match['track_slug']),
-                str_replace("-", " ", $match['artist_slug'])
+                str_replace('-', ' ', $match['track_slug']),
+                str_replace('-', ' ', $match['artist_slug']),
             ];
         }
 
         // Consolidate results
         $metadata = ['query_words' => $query_words];
-
 
         return new PlatformResult($metadata, null);
     }

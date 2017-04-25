@@ -6,18 +6,18 @@ use tuneefy\Platform\Platform;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\Platforms\AmazonMP3Platform;
 use tuneefy\Platform\Platforms\DeezerPlatform;
+use tuneefy\Platform\Platforms\GooglePlayMusicPlatform;
 use tuneefy\Platform\Platforms\GrooveMusicPlatform;
 use tuneefy\Platform\Platforms\HypeMachinePlatform;
 use tuneefy\Platform\Platforms\ItunesPlatform;
 use tuneefy\Platform\Platforms\LastFMPlatform;
 use tuneefy\Platform\Platforms\MixcloudPlatform;
+use tuneefy\Platform\Platforms\NapsterPlatform;
 use tuneefy\Platform\Platforms\QobuzPlatform;
 use tuneefy\Platform\Platforms\SoundcloudPlatform;
 use tuneefy\Platform\Platforms\SpotifyPlatform;
 use tuneefy\Platform\Platforms\TidalPlatform;
 use tuneefy\Platform\Platforms\YoutubePlatform;
-use tuneefy\Platform\Platforms\NapsterPlatform;
-use tuneefy\Platform\Platforms\GooglePlayMusicPlatform;
 use tuneefy\Platform\ScrobblingPlatformInterface;
 use tuneefy\Platform\WebStoreInterface;
 use tuneefy\Platform\WebStreamingPlatformInterface;
@@ -68,7 +68,7 @@ class PlatformEngine
 
     public function getPlatformByTag(string $tag)//: Platform
     {
-        return isset($this->platforms[$tag])?$this->platforms[$tag]:null;
+        return isset($this->platforms[$tag]) ? $this->platforms[$tag] : null;
     }
 
     public function getPlatformsByTags(array $tags) //: ?array
