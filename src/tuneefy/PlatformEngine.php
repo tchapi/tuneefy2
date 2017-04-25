@@ -17,6 +17,7 @@ use tuneefy\Platform\Platforms\SpotifyPlatform;
 use tuneefy\Platform\Platforms\TidalPlatform;
 use tuneefy\Platform\Platforms\YoutubePlatform;
 use tuneefy\Platform\Platforms\NapsterPlatform;
+use tuneefy\Platform\Platforms\GooglePlayMusicPlatform;
 use tuneefy\Platform\ScrobblingPlatformInterface;
 use tuneefy\Platform\WebStoreInterface;
 use tuneefy\Platform\WebStreamingPlatformInterface;
@@ -48,6 +49,7 @@ class PlatformEngine
           'tidal' => TidalPlatform::getInstance(),
           'youtube' => YoutubePlatform::getInstance(),
           'napster' => NapsterPlatform::getInstance(),
+          'googleplay' => GooglePlayMusicPlatform::getInstance(),
 
           // Blogs / Scrobbling
           'lastfm' => LastFMPlatform::getInstance(),
