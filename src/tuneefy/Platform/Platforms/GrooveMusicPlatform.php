@@ -54,9 +54,10 @@ class GrooveMusicPlatform extends Platform implements WebStreamingPlatformInterf
         return strpos($permalink, 'music.xbox.') !== false;
     }
 
-    protected function addContextOptions(array $data): array
+    protected function addContextHeaders(): array
     {
         // From the XBOX docs : http://msdn.microsoft.com/en-us/library/dn546688.aspx
+        // and then from https://docs.microsoft.com/en-us/groove/getting-started
         $serviceauth = 'https://login.live.com/accesstoken.srf';
         $scope = 'app.music.xboxlive.com';
         $grantType = 'client_credentials';
@@ -66,6 +67,7 @@ class GrooveMusicPlatform extends Platform implements WebStreamingPlatformInterf
         $ch = curl_init();
         curl_setopt_array($ch, [
           CURLOPT_URL => $serviceauth,
+          CURLOPT_HTTPHEADER => ['Content-Type: application/x-www-form-urlencoded'],
           CURLOPT_POST => 1,
           CURLOPT_RETURNTRANSFER => 1,
           CURLOPT_POSTFIELDS => http_build_query($requestData),
@@ -74,9 +76,7 @@ class GrooveMusicPlatform extends Platform implements WebStreamingPlatformInterf
         $result = json_decode(curl_exec($ch), true);
         curl_close($ch);
 
-        $data['accessToken'] = 'Bearer '.$result['access_token'];
-
-        return $data;
+        return ['Authorization: Bearer '.$result['access_token']];
     }
 
     public function expandPermalink(string $permalink, int $mode)//: ?PlatformResult
