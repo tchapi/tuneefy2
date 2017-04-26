@@ -5,6 +5,9 @@ database:
   password: "ChangeMe"
   table_link_prefix: "L"
 
+api:
+  use_oauth: false # for testing purposes
+
 website:
   max_results: 100
 
