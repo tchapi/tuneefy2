@@ -177,6 +177,16 @@ final class MusicalEntityTest extends TestCase
                 'context' => [],
             ],
         ],
+        "Josephine - Radio Edit (Acoustique)" => [
+            "safe_title" => "Josephine",
+            "extra_info" => [
+                'is_cover' => false,
+                'is_remix' => false,
+                'acoustic' => true,
+                'edit' => 'Radio Edit',
+                'context' => [ 'Radio Edit', 'Acoustique'],
+            ],
+        ],
     ];
 
     public function testParse()

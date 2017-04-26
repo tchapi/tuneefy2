@@ -117,7 +117,7 @@ abstract class MusicalEntity implements MusicalEntityInterface
         // --------------------------------
 
         // 6. Extract added context info
-        preg_match_all("/(?P<removables>[\(\{\[\-\—\–](?P<meta>[^\]\}\)]*)[\)\}\]]?)/iu", $str, $matches);
+        preg_match_all("/(?P<removables>[\(\{\[\-\—\–](?P<meta>[^\]\}\)\(\[\{)]*)[\)\}\]]?)/iu", $str, $matches);
 
         if (array_key_exists('meta', $matches)) {
             $extra_info['context'] = array_map(function ($e) { return trim($e); }, $matches['meta']);
