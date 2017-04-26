@@ -5,6 +5,7 @@ namespace tuneefy\Platform\Platforms;
 use tuneefy\MusicalEntity\Entities\AlbumEntity;
 use tuneefy\MusicalEntity\Entities\TrackEntity;
 use tuneefy\Platform\Platform;
+use tuneefy\Platform\PlatformException;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\WebStoreInterface;
 use tuneefy\Utils\Utils;
@@ -54,7 +55,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         return strpos($permalink, 'itunes.apple.') !== false;
     }
 
-    public function expandPermalink(string $permalink, int $mode)//: ?PlatformResult
+    public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
         $query_words = [$permalink];
@@ -64,26 +65,30 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         if (preg_match(self::REGEX_ITUNES_ALBUM, $permalink, $match)) {
             $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
 
-            if ($response === null || intval($response->data->resultCount) === 0) {
-                return null;
+            if ($response === null) {
+                throw new PlatformException();
             }
 
-            $entity = $response->data->results[0];
-            $musical_entity = new AlbumEntity($entity->collectionName, $entity->artistName, $entity->artworkUrl100);
-            $musical_entity->addLink(static::TAG, $entity->collectionViewUrl);
+            if (intval($response->data->resultCount) > 0) {
+                $entity = $response->data->results[0];
+                $musical_entity = new AlbumEntity($entity->collectionName, $entity->artistName, $entity->artworkUrl100);
+                $musical_entity->addLink(static::TAG, $entity->collectionViewUrl);
 
-            $query_words = [
-                $musical_entity->getArtist(),
-                $musical_entity->getSafeTitle(),
-            ];
+                $query_words = [
+                    $musical_entity->getArtist(),
+                    $musical_entity->getSafeTitle(),
+                ];
+            }
         } elseif (preg_match(self::REGEX_ITUNES_ARTIST, $permalink, $match)) {
             $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_id']);
 
-            if ($response === null || intval($response->data->resultCount) === 0) {
-                return null;
+            if ($response === null) {
+                throw new PlatformException();
             }
 
-            $query_words = [$response->data->results[0]->artistName];
+            if (intval($response->data->resultCount) > 0) {
+                $query_words = [$response->data->results[0]->artistName];
+            }
         }
 
         // Consolidate results
@@ -96,12 +101,12 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode)//: Awaitable<?Vector<PlatformResult>>
+    public function search(int $type, string $query, int $limit, int $mode): array
     {
         $response = $this->fetchSync($type, $query);
 
-        if ($response === null || intval($response->data->resultCount) === 0) {
-            return null;
+        if ($response === null) {
+            throw new PlatformException();
         }
         $entities = $response->data->results;
 

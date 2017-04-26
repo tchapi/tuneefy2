@@ -5,6 +5,7 @@ namespace tuneefy\Platform\Platforms;
 use tuneefy\MusicalEntity\Entities\AlbumEntity;
 use tuneefy\MusicalEntity\Entities\TrackEntity;
 use tuneefy\Platform\Platform;
+use tuneefy\Platform\PlatformException;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\WebStreamingPlatformInterface;
 use tuneefy\Utils\Utils;
@@ -58,7 +59,7 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
         return sprintf('http://hypem.com/track/%s', $track_id);
     }
 
-    public function expandPermalink(string $permalink, int $mode)//: ?PlatformResult
+    public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
         $query_words = [$permalink];
@@ -69,7 +70,7 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
 
             if ($response === null || !property_exists($response->data, '0')) {
-                return null;
+                throw new PlatformException();
             }
 
             $entity = array_values(get_object_vars($response->data)); // "O" as a key, seriously ?
@@ -86,7 +87,7 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
             $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_slug']);
 
             if ($response === null || !property_exists($response->data, '0')) {
-                return null;
+                throw new PlatformException();
             }
 
             $entity = array_values(get_object_vars($response->data));
@@ -103,17 +104,16 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode)//: Awaitable<?Vector<PlatformResult>>
+    public function search(int $type, string $query, int $limit, int $mode): array
     {
         $response = $this->fetchSync($type, $query);
 
         if ($response === null || !property_exists($response->data, '0')) {
-            return null;
+            throw new PlatformException();
         }
         unset($response->data->version);
         $entities = array_values(get_object_vars($response->data)); // "O" as a key, seriously ?
 
-        // -1 since we have this "version" key/value pair that gets in the way
         $length = min(count($entities), $limit ? $limit : Platform::LIMIT);
 
         $musical_entities = [];

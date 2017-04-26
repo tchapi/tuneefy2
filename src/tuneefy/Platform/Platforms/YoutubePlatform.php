@@ -5,6 +5,7 @@ namespace tuneefy\Platform\Platforms;
 use tuneefy\MusicalEntity\Entities\AlbumEntity;
 use tuneefy\MusicalEntity\Entities\TrackEntity;
 use tuneefy\Platform\Platform;
+use tuneefy\Platform\PlatformException;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\WebStreamingPlatformInterface;
 use tuneefy\Utils\Utils;
@@ -62,7 +63,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         return sprintf('https://www.youtube.com/watch?v=%s', $video_id);
     }
 
-    public function expandPermalink(string $permalink, int $mode)//: ?PlatformResult
+    public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
         $query_words = [$permalink];
@@ -72,15 +73,17 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         if (preg_match(self::REGEX_YOUTUBE_ALL, $permalink, $match)) {
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['video_id']);
 
-            if ($response === null || count($response->data->items) === 0) {
-                return null;
+            if ($response === null) {
+                throw new PlatformException();
             }
 
-            $entity = $response->data->items[0];
-            $musical_entity = new TrackEntity($entity->snippet->title, new AlbumEntity('', '', $entity->snippet->thumbnails->medium->url));
-            $musical_entity->addLink(static::TAG, $this->getPermalinkFromTrackId($entity->id));
+            if (count($response->data->items) > 0) {
+                $entity = $response->data->items[0];
+                $musical_entity = new TrackEntity($entity->snippet->title, new AlbumEntity('', '', $entity->snippet->thumbnails->medium->url));
+                $musical_entity->addLink(static::TAG, $this->getPermalinkFromTrackId($entity->id));
 
-            $query_words = [$musical_entity->getSafeTitle()];
+                $query_words = [$musical_entity->getSafeTitle()];
+            }
         }
 
         // Consolidate results
@@ -93,12 +96,12 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode)//: Awaitable<?Vector<PlatformResult>>
+    public function search(int $type, string $query, int $limit, int $mode): array
     {
         $response = $this->fetchSync($type, $query);
 
-        if ($response === null || count($response->data->items) === 0) {
-            return null;
+        if ($response === null) {
+            throw new PlatformException();
         }
         $entities = $response->data->items;
 

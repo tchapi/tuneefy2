@@ -5,6 +5,7 @@ namespace tuneefy\Platform\Platforms;
 use tuneefy\MusicalEntity\Entities\AlbumEntity;
 use tuneefy\MusicalEntity\Entities\TrackEntity;
 use tuneefy\Platform\Platform;
+use tuneefy\Platform\PlatformException;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\WebStreamingPlatformInterface;
 use tuneefy\Utils\Utils;
@@ -96,15 +97,12 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
         $response = $this->fetchSync($type, $query);
 
         if ($response === null) {
-            return null;
+            throw new PlatformException();
         }
         $results = $response->data;
 
         $length = min(count($results->data), $limit ? $limit : Platform::LIMIT);
 
-        if ($length === 0) {
-            return null;
-        }
         $musical_entities = [];
 
         // Normalizing each track found

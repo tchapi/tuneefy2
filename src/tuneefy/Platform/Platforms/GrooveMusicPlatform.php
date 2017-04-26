@@ -5,6 +5,7 @@ namespace tuneefy\Platform\Platforms;
 use tuneefy\MusicalEntity\Entities\AlbumEntity;
 use tuneefy\MusicalEntity\Entities\TrackEntity;
 use tuneefy\Platform\Platform;
+use tuneefy\Platform\PlatformException;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\WebStreamingPlatformInterface;
 use tuneefy\Utils\Utils;
@@ -79,7 +80,7 @@ class GrooveMusicPlatform extends Platform implements WebStreamingPlatformInterf
         return ['Authorization: Bearer '.$result['access_token']];
     }
 
-    public function expandPermalink(string $permalink, int $mode)//: ?PlatformResult
+    public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
         $query_words = [$permalink];
@@ -90,7 +91,7 @@ class GrooveMusicPlatform extends Platform implements WebStreamingPlatformInterf
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
 
             if ($response === null || property_exists($response->data, 'Error')) {
-                return null;
+                throw new PlatformException();
             }
 
             $entity = $response->data->Tracks->Items[0];
@@ -105,7 +106,7 @@ class GrooveMusicPlatform extends Platform implements WebStreamingPlatformInterf
             $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
 
             if ($response === null || property_exists($response->data, 'Error')) {
-                return null;
+                throw new PlatformException();
             }
 
             $entity = $response->data->Albums->Items[0];
@@ -128,12 +129,12 @@ class GrooveMusicPlatform extends Platform implements WebStreamingPlatformInterf
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode)//: Awaitable<?Vector<PlatformResult>>
+    public function search(int $type, string $query, int $limit, int $mode): array
     {
         $response = $this->fetchSync($type, $query);
 
         if ($response === null || property_exists($response->data, 'Error')) {
-            return null;
+            throw new PlatformException();
         }
         $entities = $response->data;
 
@@ -146,10 +147,6 @@ class GrooveMusicPlatform extends Platform implements WebStreamingPlatformInterf
                 break;
         }
         $length = min(count($results), $limit ? $limit : Platform::LIMIT);
-
-        if ($length === 0) {
-            return null;
-        }
 
         $musical_entities = [];
 

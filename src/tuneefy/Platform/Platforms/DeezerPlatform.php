@@ -5,6 +5,7 @@ namespace tuneefy\Platform\Platforms;
 use tuneefy\MusicalEntity\Entities\AlbumEntity;
 use tuneefy\MusicalEntity\Entities\TrackEntity;
 use tuneefy\Platform\Platform;
+use tuneefy\Platform\PlatformException;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\WebStreamingPlatformInterface;
 use tuneefy\Utils\Utils;
@@ -59,7 +60,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         return strpos($permalink, 'deezer.') !== false;
     }
 
-    public function expandPermalink(string $permalink, int $mode)//: ?PlatformResult
+    public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
         $query_words = [$permalink];
@@ -70,7 +71,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
 
             if ($response === null || property_exists($response->data, 'error')) {
-                return null;
+                throw new PlatformException();
             }
 
             $entity = $response->data;
@@ -85,7 +86,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
 
             if ($response === null || property_exists($response->data, 'error')) {
-                return null;
+                throw new PlatformException();
             }
 
             $entity = $response->data;
@@ -100,7 +101,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_id']);
 
             if ($response === null || property_exists($response->data, 'error')) {
-                return null;
+                throw new PlatformException();
             }
 
             $query_words = [$response->data->name];
@@ -116,12 +117,12 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode)//: Awaitable<?Vector<PlatformResult>>
+    public function search(int $type, string $query, int $limit, int $mode): array
     {
         $response = $this->fetchSync($type, $query);
 
-        if ($response === null || intval($response->data->total) === 0) {
-            return null;
+        if ($response === null) {
+                throw new PlatformException();
         }
         $entities = $response->data;
 

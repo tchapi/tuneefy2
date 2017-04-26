@@ -5,6 +5,7 @@ namespace tuneefy\Platform\Platforms;
 use tuneefy\MusicalEntity\Entities\AlbumEntity;
 use tuneefy\MusicalEntity\Entities\TrackEntity;
 use tuneefy\Platform\Platform;
+use tuneefy\Platform\PlatformException;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\WebStreamingPlatformInterface;
 
@@ -53,7 +54,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
         return strpos($permalink, 'mixcloud.') !== false;
     }
 
-    public function expandPermalink(string $permalink, int $mode)//: ?PlatformResult
+    public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
         $query_words = [$permalink];
@@ -64,7 +65,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_long_slug']);
 
             if ($response === null || property_exists($response->data, 'error')) {
-                return null;
+                throw new PlatformException();
             }
 
             $entity = $response->data;
@@ -80,7 +81,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_slug']);
 
             if ($response === null || property_exists($response->data, 'error')) {
-                return null;
+                throw new PlatformException();
             }
 
             $query_words = [$response->data->name];
@@ -96,9 +97,9 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode)//: Awaitable<?Vector<PlatformResult>>
+    public function search(int $type, string $query, int $limit, int $mode): array
     {
-        return null;
+        throw new PlatformException();
         /*
           Below is the actual working code, but it seems unlikely that we're going
           to use it since we search "mixes" by "users" and not real tracks from

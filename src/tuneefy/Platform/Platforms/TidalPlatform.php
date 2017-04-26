@@ -5,6 +5,7 @@ namespace tuneefy\Platform\Platforms;
 use tuneefy\MusicalEntity\Entities\AlbumEntity;
 use tuneefy\MusicalEntity\Entities\TrackEntity;
 use tuneefy\Platform\Platform;
+use tuneefy\Platform\PlatformException;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\WebStreamingPlatformInterface;
 use tuneefy\Utils\Utils;
@@ -67,7 +68,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         return sprintf('http://resources.wimpmusic.com/images/%s/320x320.jpg', str_replace('-', '/', $cover_hash));
     }
 
-    public function expandPermalink(string $permalink, int $mode)//: ?PlatformResult
+    public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
         $query_words = [$permalink];
@@ -78,7 +79,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
 
             if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
-                return null;
+                throw new PlatformException();
             }
 
             $entity = $response->data;
@@ -93,7 +94,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
 
             if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
-                return null;
+                throw new PlatformException();
             }
 
             $entity = $response->data;
@@ -108,7 +109,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_id']);
 
             if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
-                return null;
+                throw new PlatformException();
             }
 
             $query_words = [$response->data->name];
@@ -124,13 +125,14 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode)//: Awaitable<?Vector<PlatformResult>>
+    public function search(int $type, string $query, int $limit, int $mode): array
     {
         $response = $this->fetchSync($type, $query);
 
-        if ($response === null || intval($response->data->items) === 0) {
-            return null;
+        if ($response === null) {
+            throw new PlatformException();
         }
+
         $entities = $response->data->items;
 
         // We actually don't pass the limit to the fetch()

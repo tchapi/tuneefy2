@@ -5,6 +5,7 @@ namespace tuneefy\Platform\Platforms;
 use tuneefy\MusicalEntity\Entities\AlbumEntity;
 use tuneefy\MusicalEntity\Entities\TrackEntity;
 use tuneefy\Platform\Platform;
+use tuneefy\Platform\PlatformException;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\ScrobblingPlatformInterface;
 use tuneefy\Utils\Utils;
@@ -62,7 +63,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         return $data;
     }
 
-    public function expandPermalink(string $permalink, int $mode)//: ?PlatformResult
+    public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
         $query_words = [$permalink];
@@ -75,7 +76,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_slug']);
 
             if ($response === null || property_exists($response->data, 'error')) {
-                return null;
+                throw new PlatformException();
             }
 
             $entity = $response->data->track;
@@ -100,7 +101,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_slug']);
 
             if ($response === null || property_exists($response->data, 'error')) {
-                return null;
+                throw new PlatformException();
             }
 
             $entity = $response->data->album;
@@ -123,7 +124,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_slug']);
 
             if ($response === null || property_exists($response->data, 'error')) {
-                return null;
+                throw new PlatformException();
             }
 
             $query_words = [$response->data->artist->name];
@@ -139,13 +140,14 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode)//: Awaitable<?Vector<PlatformResult>>
+    public function search(int $type, string $query, int $limit, int $mode): array
     {
         $response = $this->fetchSync($type, $query);
 
         if ($response === null) {
-            return null;
+                throw new PlatformException();
         }
+
         $entities = $response->data;
 
         switch ($type) {

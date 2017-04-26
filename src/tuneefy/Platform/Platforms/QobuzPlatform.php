@@ -5,6 +5,7 @@ namespace tuneefy\Platform\Platforms;
 use tuneefy\MusicalEntity\Entities\AlbumEntity;
 use tuneefy\MusicalEntity\Entities\TrackEntity;
 use tuneefy\Platform\Platform;
+use tuneefy\Platform\PlatformException;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\WebStreamingPlatformInterface;
 use tuneefy\Utils\Utils;
@@ -77,7 +78,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         return sprintf('http://player.qobuz.com/#!/album/%s', $id);
     }
 
-    public function expandPermalink(string $permalink, int $mode)//: ?PlatformResult
+    public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
         $query_words = [$permalink];
@@ -88,7 +89,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
 
             if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
-                return null;
+                throw new PlatformException();
             }
 
             $entity = $response->data;
@@ -102,7 +103,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         } elseif (preg_match(self::REGEX_QOBUZ_ALBUM, $permalink, $match) || preg_match(self::REGEX_QOBUZ_ALBUM_SITE, $permalink, $match)) {
             $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
             if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
-                return null;
+                throw new PlatformException();
             }
 
             $entity = $response->data;
@@ -116,7 +117,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         } elseif (preg_match(self::REGEX_QOBUZ_ARTIST, $permalink, $match)) {
             $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_id']);
             if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
-                return null;
+                throw new PlatformException();
             }
 
             $query_words = [$response->data->name];
@@ -132,12 +133,12 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode)
+    public function search(int $type, string $query, int $limit, int $mode): array
     {
         $response = $this->fetchSync($type, $query);
 
         if ($response === null) {
-            return null;
+            throw new PlatformException();
         }
         $entities = $response->data;
 
@@ -151,9 +152,6 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         }
         $length = min(count($results), $limit ? $limit : Platform::LIMIT);
 
-        if ($length === 0) {
-            return null;
-        }
         $musical_entities = [];
 
         // Normalizing each track found

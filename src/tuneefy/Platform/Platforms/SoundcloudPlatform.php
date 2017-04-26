@@ -5,6 +5,7 @@ namespace tuneefy\Platform\Platforms;
 use tuneefy\MusicalEntity\Entities\AlbumEntity;
 use tuneefy\MusicalEntity\Entities\TrackEntity;
 use tuneefy\Platform\Platform;
+use tuneefy\Platform\PlatformException;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\WebStreamingPlatformInterface;
 
@@ -57,7 +58,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         return $data;
     }
 
-    public function expandPermalink(string $permalink, int $mode)//: ?PlatformResult
+    public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
         $query_words = [$permalink];
@@ -68,7 +69,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $permalink);
 
             if ($response === null || property_exists($response->data, 'errors')) {
-                return null;
+                throw new PlatformException();
             }
 
             $entity = $response->data;
@@ -92,13 +93,14 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode)//: Awaitable<?Vector<PlatformResult>>
+    public function search(int $type, string $query, int $limit, int $mode): array
     {
         $response = $this->fetchSync($type, $query);
 
-        if ($response === null || count($response->data) === 0) {
-            return null;
+        if ($response === null) {
+            throw new PlatformException();
         }
+
         $entities = $response->data;
 
         // We actually don't pass the limit to the fetch()
