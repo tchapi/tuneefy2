@@ -62,7 +62,7 @@ soundcloud:
   key: ""
   secret: ""
   default: false
-  order: 6
+  order: 5
 hypem:
   class: tuneefy\Platform\HypemachinePlatform
   enable:
@@ -75,7 +75,7 @@ hypem:
   key: ""
   secret: ""
   default: false
-  order: 7
+  order: 6
 youtube:
   class: tuneefy\Platform\YoutubePlatform
   enable:
@@ -88,7 +88,7 @@ youtube:
   key: ""
   secret: ""
   default: false
-  order: 8
+  order: 7
 mixcloud:
   class: tuneefy\Platform\MixcloudPlatform
   enable:
@@ -101,7 +101,7 @@ mixcloud:
   key: ""
   secret: ""
   default: false
-  order: 9
+  order: 8
 itunes:
   class: tuneefy\Platform\ItunesPlatform
   enable:
@@ -114,7 +114,7 @@ itunes:
   key: ""
   secret: ""
   default: true
-  order: 10
+  order: 9
 xbox:
   class: tuneefy\Platform\XboxPlatform
   enable:
@@ -127,7 +127,7 @@ xbox:
   key: ""
   secret: ""
   default: true
-  order: 12
+  order: 10
 beats:
   class: tuneefy\Platform\BeatsPlatform
   enable:
@@ -140,7 +140,7 @@ beats:
   key: ""
   secret: ""
   default: true
-  order: 13
+  order: 11
 tidal:
   class: tuneefy\Platform\TidalPlatform
   enable:
@@ -153,9 +153,35 @@ tidal:
   key: ""
   secret: ""
   default: false
-  order: 14
+  order: 12
 amazon:
   class: tuneefy\Platform\AmazonMP3Platform
+  enable:
+    api: true
+    website: true
+  capabilities:
+    track_search: true
+    album_search: true
+    lookup: true
+  key: ""
+  secret: ""
+  default: false
+  order: 13
+napster:
+  class: tuneefy\Platform\NapsterPlatform
+  enable:
+    api: true
+    website: true
+  capabilities:
+    track_search: true
+    album_search: true
+    lookup: true
+  key: ""
+  secret: ""
+  default: false
+  order: 14
+googleplay:
+  class: tuneefy\Platform\GooglePlayMusicPlatform
   enable:
     api: true
     website: true

@@ -8,6 +8,7 @@ use Slim\Views\Twig;
 use Symfony\Component\Yaml\Yaml;
 use tuneefy\DB\DatabaseHandler;
 use tuneefy\Platform\Platform;
+use tuneefy\Platform\PlatformException;
 use tuneefy\Utils\CustomErrorHandler;
 use tuneefy\Utils\CustomNotFoundHandler;
 use tuneefy\Utils\Utils;
@@ -135,12 +136,16 @@ class Application
                 if ($real_mode === null) {
                     $real_mode = Platform::MODE_LAZY;
                 }
+                
+                try {
+                    $result = $engine->lookup($permalink, $real_mode);
+                } catch (PlatformException $e) {
+                    $data = ['msg' => 'There was a problem while fetching data from the platform'];
+                }
 
-                $result = $engine->lookup($permalink, $real_mode);
-
-                if ($result === null) {
+                if ($result === []) {
                     $data = ['msg' => 'No match was found for this permalink'];
-                } else {
+                } else if ($result !== null) {
                     $data = ['results' => $result->toArray()];
                 }
 
@@ -184,12 +189,16 @@ class Application
                     $real_mode = Platform::MODE_LAZY;
                 }
 
-                $result = $engine->search($platform, $real_type, $query, intval($limit), $real_mode);
+                try {
+                    $result = $engine->search($platform, $real_type, $query, intval($limit), $real_mode);
+                } catch (PlatformException $e) {
+                    $data = ['msg' => 'There was a problem while fetching data from the platform'];
+                }
 
-                if ($result === null) {
+                if ($result === []) {
                     // TODO translation
                     $data = ['msg' => 'No match was found for this search on this platform'];
-                } else {
+                } else if ($result !== null) {
                     $data = ['results' => array_map(function ($e) { return $e->toArray(); }, $result)];
                 }
 
@@ -205,7 +214,7 @@ class Application
                 $query = $request->getQueryParam('q');
                 $limit = $request->getQueryParam('limit');
                 $include = $request->getQueryParam('include'); // Included platforms?
-                $aggressive = ($request->getQueryParam('aggressive') && $request->getQueryParam('aggressive') == 'true') ? true : false; // If aggressive, merge more (actual behaviour depends on the type)
+                $aggressive = true && ($request->getQueryParam('aggressive') && $request->getQueryParam('aggressive') == 'true'); // If aggressive, merge more (actual behaviour depends on the type)
                 $real_type = $engine->translateFlag('type', $args['type']);
                 $real_mode = $engine->translateFlag('mode', $request->getQueryParam('mode'));
 
@@ -218,11 +227,11 @@ class Application
 
                 // TODO FIXME: it's a bit cumbersome, should refactor
                 if ($include === null || $include === '') { // If empty, include all.
-                  $platforms = $engine->getAllPlatforms();
+                    $platforms = $engine->getAllPlatforms();
                 } else {
                     $platforms = $engine->getPlatformsByTags(explode(',', strtolower($include)));
                     if ($platforms === null) { // Silently fails if a name is invalid, that's ok
-                    $platforms = $engine->getAllPlatforms();
+                        $platforms = $engine->getAllPlatforms();
                     }
                 }
 
@@ -237,14 +246,17 @@ class Application
                     $real_mode = Platform::MODE_LAZY;
                 }
 
-                $result = $engine->aggregate($real_type, $query, intval($limit), $real_mode, $aggressive, $platforms);
-                // For TEST purposes : $result = $engine->aggregateSync($type, $query, intval($limit), $platforms);
+                try {
+                    $result = $engine->aggregate($real_type, $query, intval($limit), $real_mode, $aggressive, $platforms);
+                } catch (PlatformException $e) {
+                    $data = ['msg' => 'There was a problem while fetching data from the platforms'];
+                }
 
                 if ($result === null) {
                     // TODO translation
                     $data = ['msg' => 'No match was found for this search'];
                 } else {
-                    $data = ['data' => $result->map(function ($e) { return $e->toArray(); })];
+                    $data = ['results' => array_map(function ($e) { return $e->toArray(); }, $result)];
                 }
 
                 $response = $renderer->render($request, $response, $data);
