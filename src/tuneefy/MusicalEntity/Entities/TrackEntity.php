@@ -4,6 +4,7 @@ namespace tuneefy\MusicalEntity\Entities;
 
 use tuneefy\MusicalEntity\MusicalEntity;
 use tuneefy\MusicalEntity\MusicalEntityInterface;
+use tuneefy\MusicalEntity\MusicalEntityMergeException;
 use tuneefy\Utils\Utils;
 
 class TrackEntity extends MusicalEntity
@@ -114,17 +115,24 @@ class TrackEntity extends MusicalEntity
         return $this;
     }
 
-    public function getHash(bool $aggressive): string
+    public function getHash(bool $aggressive = false): string
     {
         if ($aggressive === true) {
-            return Utils::flatten([$this->album->getArtist(), $this->safe_track_title]);
+            return Utils::flatten([$this->getExtraInfoHash(), $this->album->getArtist(), $this->safe_track_title]);
         } else {
-            return Utils::flatten([$this->album->getArtist(), $this->album->getSafeTitle(), $this->safe_track_title]);
+            return Utils::flatten([$this->getExtraInfoHash(), $this->album->getArtist(), $this->album->getSafeTitle(), $this->safe_track_title]);
         }
     }
 
-    public static function merge(TrackEntity $a, TrackEntity $b): TrackEntity
+    public static function merge(TrackEntity $a, TrackEntity $b, bool $force = false): TrackEntity
     {
+        // We should only merge tracks that are both covers, acoustic or remixes together 
+        if (!$force && ($a->isCover() !== $b->isCover() ||
+            $a->isRemix() !== $b->isRemix() ||
+            $a->isAcoustic() !== $b->isAcoustic())) {
+            throw new MusicalEntityMergeException('Impossible to merge tracks - not forced.');
+        }
+
         // $a has precedence
         if ($a->getTitle() === '') {
             $title = $b->getTitle();

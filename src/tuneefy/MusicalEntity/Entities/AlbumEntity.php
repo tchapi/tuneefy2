@@ -4,6 +4,7 @@ namespace tuneefy\MusicalEntity\Entities;
 
 use tuneefy\MusicalEntity\MusicalEntity;
 use tuneefy\MusicalEntity\MusicalEntityInterface;
+use tuneefy\MusicalEntity\MusicalEntityMergeException;
 use tuneefy\Utils\Utils;
 
 class AlbumEntity extends MusicalEntity
@@ -97,17 +98,24 @@ class AlbumEntity extends MusicalEntity
         return $this;
     }
 
-    public function getHash(bool $aggressive): string
+    public function getHash(bool $aggressive = false): string
     {
         if ($aggressive === true) {
-            return Utils::flatten([$this->safe_title]);
+            return Utils::flatten([$this->getExtraInfoHash(), $this->safe_title]);
         } else {
-            return Utils::flatten([$this->artist, $this->safe_title]);
+            return Utils::flatten([$this->getExtraInfoHash(), $this->artist, $this->safe_title]);
         }
     }
 
-    public static function merge(AlbumEntity $a, AlbumEntity $b): AlbumEntity
+    public static function merge(AlbumEntity $a, AlbumEntity $b, bool $force = false): AlbumEntity
     {
+        // We should only merge tracks that are both covers, acoustic or remixes together 
+        if (!$force && ($a->isCover() !== $b->isCover() ||
+            $a->isRemix() !== $b->isRemix() ||
+            $a->isAcoustic() !== $b->isAcoustic())) {
+            throw new MusicalEntityMergeException('Impossible to merge album - not forced.');
+        }
+
         // $a has precedence
 
         if ($a->getTitle() === '') {
