@@ -90,34 +90,34 @@ abstract class MusicalEntity implements MusicalEntityInterface
         // the strlen part prevents from matching a track named "cover" or "karaoke" only
         // We don't want to remove this from the title since we don't want to mix cover results from normal ones.
         $extra_info['is_cover'] = (
-            preg_match('/[\(\[\-].*(originally\sperformed|cover|tribute|karaoke)/i', $str) === 1 &&
+            preg_match('/[\-\—\–\(\[].*(originally\sperformed|cover|tribute|karaoke)/iu', $str) === 1 &&
             strlen($str) > 8
         );
 
         // 2. It's a special remix ?
         // (we don't remove that from the title neither)
-        $extra_info['is_remix'] = true && preg_match("/.*[\-\–].*(\smix|\sremix)/i", $str);
+        $extra_info['is_remix'] = true && preg_match("/.*[\-\—\–\(\[].*(mix|remix)/iu", $str);
 
         // 3. It's acoustic ?
         // (we don't remove that from the title neither)
-        $extra_info['acoustic'] = true && preg_match("/.*[\-\–].*([\s\(\[]acoustic|[\s\(\[]acoustique)/i", $str);
+        $extra_info['acoustic'] = true && preg_match("/.*[\-\—\–\(\[].*(acoustic|acoustique)/iu", $str);
 
         // 4. Any featuring ?
-        if (preg_match("/.*f(?:ea)?t(?:uring)?\.?\s?(?P<artist>[^\(\)\[\]\-]*)/i", $str, $matches_feat)) {
+        if (preg_match("/.*f(?:ea)?t(?:uring)?\.?\s?(?P<artist>[^\(\)\[\]\-]*)/iu", $str, $matches_feat)) {
             $extra_info['featuring'] = trim($matches_feat['artist']);
         }
 
         // 5. It's a special edit ? NOT a special edition, mind you !
         // We add the space at the end of the search string to avoid missing a string ending with 'edit'
         // (we don't remove that from the title neither)
-        if (preg_match("/.*[\-\–\(\[]\s?(?P<edit>.*)edit[^i]/i", $str.' ', $matches_edit)) {
+        if (preg_match("/.*[\-\—\–\(\[]\s?(?P<edit>.*edit)[^i]/iu", $str.' ', $matches_edit)) {
             $extra_info['edit'] = trim($matches_edit['edit']);
         }
         // NOW we modify the string perhaps
         // --------------------------------
 
         // 6. Extract added context info
-        preg_match_all("/(?P<removables>[\(\{\[\-\—](?P<meta>[^\]\}\)]*)[\)\}\]])/i", $str, $matches);
+        preg_match_all("/(?P<removables>[\(\{\[\-\—\–](?P<meta>[^\]\}\)]*)[\)\}\]]?)/iu", $str, $matches);
 
         if (array_key_exists('meta', $matches)) {
             $extra_info['context'] = array_map(function ($e) { return trim($e); }, $matches['meta']);
@@ -132,7 +132,7 @@ abstract class MusicalEntity implements MusicalEntityInterface
         }
 
         return [
-            'title' => trim($str),
+            'safe_title' => trim($str),
             'extra_info' => $extra_info,
         ];
     }

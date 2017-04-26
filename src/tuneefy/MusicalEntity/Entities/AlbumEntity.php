@@ -24,7 +24,6 @@ class AlbumEntity extends MusicalEntity
         $this->artist = $artist;
         $this->picture = $picture;
 
-        $this->extra_info = null;
         $this->safe_title = $title;
 
         $this->introspect();
@@ -79,14 +78,11 @@ class AlbumEntity extends MusicalEntity
   public function introspect(): MusicalEntityInterface
   {
       if ($this->introspected === false) {
-          // What about we strip all dirty addons strings from the title
-          $matches = [];
-          if (preg_match("/(?P<title>.*?)\s?[\(\[\-\—]\s*(?P<meta>.*)/i", $this->title, $matches)) {
-              $this->safe_title = trim($matches['title']);
-              if (array_key_exists('meta', $matches)) {
-                  $this->extra_info['context'] = str_replace("/\(\[\-\—/g", ' ', $matches['meta']);
-              }
-          }
+
+          // https://secure.php.net/manual/en/function.extract.php
+          extract(parent::parse($this->title));
+          $this->safe_title = $safe_title;
+          $this->extra_info = $extra_info;
 
           $this->introspected = true;
       }
@@ -136,10 +132,10 @@ class AlbumEntity extends MusicalEntity
 
         // Create the result
         $c = new self($title, $artist, $picture);
-        $c->addLinks($a->getLinks()->addAll($b->getLinks()));
+        $c->addLinks(array_merge($a->getLinks(), $b->getLinks()));
 
         if ($a->isIntrospected() === true && $b->isIntrospected() === true) {
-            $c->setIntrospected($a->getExtraInfo()->setAll($b->getExtraInfo()));
+            $c->setIntrospected(array_merge($a->getExtraInfo(), $b->getExtraInfo()));
             $c->setSafeTitle($safe_title);
         } // But do not force introspection
 

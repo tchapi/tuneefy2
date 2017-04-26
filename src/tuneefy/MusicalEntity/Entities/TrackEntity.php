@@ -24,7 +24,6 @@ class TrackEntity extends MusicalEntity
         $this->album = $album;
 
         $this->is_cover = false;
-        $this->extra_info = null;
         $this->safe_track_title = $track_title;
 
         $this->introspect();
@@ -102,25 +101,12 @@ class TrackEntity extends MusicalEntity
     public function introspect(): MusicalEntityInterface
     {
         if ($this->introspected === false) {
-            // Is this a cover or karaoke version ?
-            // the strlen part prevents from matching a track named "cover" or "karaoke"
-            $this->is_cover = (preg_match('/[\(\[\-].*(originally\sperformed|cover|tribute|karaoke)/i', $this->track_title) === 1 && strlen($this->track_title) > 8);
+            
+            // https://secure.php.net/manual/en/function.extract.php
+            extract(parent::parse($this->title));
+            $this->safe_track_title = $safe_title;
+            $this->extra_info = $extra_info;
 
-            // What about we strip all dirty addons strings from the title
-            $matches = [];
-            if (preg_match("/(?P<title>[^\[\(]*)(?:\s?[\(\[](?P<meta>.*)[\)\]]\s?)?/i", $this->track_title, $matches)) {
-                $this->safe_track_title = trim($matches['title']);
-                if (array_key_exists('meta', $matches)) {
-                    $this->extra_info['context'] = str_replace("/\(\[\-\—/g", ' ', $matches['meta']);
-                }
-            }
-
-            $matches_feat = [];
-            if (preg_match("/.*f(?:ea)?t(?:uring)?\.?\s?(?P<artist>[^\(\)\[\]\-]*)/i", $this->track_title, $matches_feat)) {
-                $this->extra_info['featuring'] = trim($matches_feat['artist']);
-            }
-
-            // The underlying album should be introspected too
             $this->album->introspect();
 
             $this->introspected = true;
@@ -161,10 +147,10 @@ class TrackEntity extends MusicalEntity
 
         // Create the result
         $c = new self($title, $album);
-        $c->addLinks($a->getLinks()->addAll($b->getLinks()));
+        $c->addLinks(array_merge($a->getLinks(), $b->getLinks()));
 
         if ($a->isIntrospected() === true && $b->isIntrospected() === true) {
-            $c->setIntrospected($a->getExtraInfo()->setAll($b->getExtraInfo()));
+            $c->setIntrospected(array_merge($a->getExtraInfo(), $b->getExtraInfo()));
             $c->setSafeTitle($safe_title);
         } // But do not force introspection
 
