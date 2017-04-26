@@ -69,7 +69,7 @@ class PlatformResult
             // TODO
 
             if (array_key_exists('merges', $this->metadata)) {
-                $this->metadata['merges'] = intval($this->metadata['merges']) + 1;
+                $this->metadata['merges'] = $this->metadata['merges'] + 1;
             } else {
                 $this->metadata['merges'] = 1;
             }

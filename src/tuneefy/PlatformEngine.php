@@ -117,51 +117,21 @@ class PlatformEngine
     public function search(Platform $platform, int $type, string $query, int $limit, int $mode) //: ?array
     {
         if (($platform->isCapableOfSearchingTracks() && $type === Platform::SEARCH_TRACK)
-      || ($platform->isCapableOfSearchingAlbums() && $type === Platform::SEARCH_ALBUM)) {
+         || ($platform->isCapableOfSearchingAlbums() && $type === Platform::SEARCH_ALBUM)) {
             return $platform->search($type, $query, $limit, $mode);
         } else {
             return null;
         }
     }
 
-    // For TEST purposes
-    public function aggregateSync(int $type, string $query, int $limit, int $mode, bool $aggressive, array $platforms) //: ?array
-    {
-        $output = [];
-        foreach ($platforms as $p) {
-            if (($p->isCapableOfSearchingTracks() && $type === Platform::SEARCH_TRACK)
-        || ($p->isCapableOfSearchingAlbums() && $type === Platform::SEARCH_ALBUM)) {
-                $output[] = $p->search($type, $query, Platform::AGGREGATE_LIMIT, $mode);
-            }
-        }
-
-        // Let's flatten it out first
-        $result = [];
-        foreach ($output as $o) {
-            $result->addAll($o);
-        }
-
-        return $this->mergeResults($result, $aggressive, $limit);
-    }
-
     public function aggregate(int $type, string $query, int $limit, int $mode, bool $aggressive, array $platforms) //: ?array
     {
-        $asyncs = [];
+        $result = [];
         foreach ($platforms as $p) {
-            $asyncs[] = $p->search($type, $query, Platform::AGGREGATE_LIMIT, $mode)->getWaitHandle();
-        }
-
-    // Calling the functions
-    $asyncCall = GenVectorWaitHandle::create($asyncs);
-
-    // Now requesting that async finishes
-    $output = $asyncCall->join();
-
-    // We now have a Vector of 15 (or more) Vectors containing each 10 (or more) PlatformResult results, we now want to merge that
-    // Let's flatten it out first
-    $result = [];
-        foreach ($output as $o) {
-            $result->addAll($o);
+            if (($p->isCapableOfSearchingTracks() && $type === Platform::SEARCH_TRACK)
+             || ($p->isCapableOfSearchingAlbums() && $type === Platform::SEARCH_ALBUM)) {
+                $result = array_merge($result, $p->search($type, $query, Platform::AGGREGATE_LIMIT, $mode));
+            }
         }
 
         return $this->mergeResults($result, $aggressive, $limit);
@@ -181,8 +151,8 @@ class PlatformEngine
             // Run introspection and get hash
             $key = $current_entity->introspect()->getHash($aggressive);
 
-            // Then merges with the actual Map we already have
-            if (!$merged_results->containsKey($key)) {
+            // Then merges with the actual array we already have
+            if (!array_key_exists($key, $merged_results)) {
                 $merged_results[$key] = $result;
             } else {
                 $merged_results[$key]->mergeWith($result);
