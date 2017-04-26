@@ -38,12 +38,12 @@ class DatabaseHandler
             $params = Yaml::parse(file_get_contents(Application::getPath('parameters')));
         } catch (\Exception $e) {
             // TODO  : translate
-            throw \Exception('No config file found');
+            throw new \Exception('No config file found');
         }
 
         if ($params['database'] === null) {
             // TODO  : translate
-            throw \Exception('No DB parameters');
+            throw new \Exception('No DB parameters');
         }
 
         $this->parameters = $params['database'];
@@ -76,15 +76,17 @@ class DatabaseHandler
 
     public function getItem(int $item_id): array
     {
-        $res = $this->connection->query('SELECT * FROM %T WHERE %C = %d',
-          self::TABLE_ITEMS,
-          self::TABLE_ITEMS_COL_ID,
-          $item_id
+        $query = sprintf('SELECT * FROM `%s` WHERE `%s` = %d',
+            self::TABLE_ITEMS,
+            self::TABLE_ITEMS_COL_ID,
+            $item_id
         );
 
-        if ($res->numRows() !== 1) {
+        $res = $this->connection->query($query);
+
+        if ($res === false) {
             // Error
-            throw \Exception('Error getting item');
+            throw new \Exception('Error getting item : '.$this->connection->error);
         }
 
         $rows = $res->mapRowsTyped();
@@ -104,19 +106,21 @@ class DatabaseHandler
 
     public function addIntent(string $uid, PlatformResult $object): DatabaseHandler
     {
-        // Persist intent and object in DB for a later share if necessary
-        $res = $this->connection->query('INSERT INTO %T (%C, %C, %C) VALUES (%s, %s, NOW()) ',
+        $query = sprintf('INSERT INTO `%s` (`%s`, `%s`, `%s`) VALUES ("%s", "%s", NOW()) ',
           self::TABLE_INTENTS,
           self::TABLE_INTENTS_COL_UID,
           self::TABLE_INTENTS_COL_OBJECT,
           self::TABLE_INTENTS_COL_CREATED_AT,
-          $uid,
-          serialize($object)
+          $this->connection->real_escape_string($uid),
+          $this->connection->real_escape_string(serialize($object))
         );
+        
+        // Persist intent and object in DB for a later share if necessary
+        $res = $this->connection->query($query);
 
-        if ($res->numRowsAffected() !== 1) {
+        if ($res === false || $this->connection->affected_rows !== 1) {
             // Error
-            throw \Exception('Error adding intent');
+            throw new \Exception('Error adding intent : '.$this->connection->error);
         }
 
         return $this;
