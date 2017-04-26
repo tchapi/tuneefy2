@@ -17,7 +17,7 @@ class AlbumEntity extends MusicalEntity
     // Introspection
     private $safe_title;
 
-    public function __construct(string $title, string $artist, string $picture)
+    public function __construct(string $title = '', string $artist = '', string $picture = '')
     {
         parent::__construct();
         $this->title = $title;
@@ -134,10 +134,16 @@ class AlbumEntity extends MusicalEntity
         $c = new self($title, $artist, $picture);
         $c->addLinks(array_merge($a->getLinks(), $b->getLinks()));
 
-        if ($a->isIntrospected() === true && $b->isIntrospected() === true) {
-            $c->setIntrospected(array_merge($a->getExtraInfo(), $b->getExtraInfo()));
-            $c->setSafeTitle($safe_title);
-        } // But do not force introspection
+        $c->setExtraInfo([
+            'is_cover' => $a->isCover() || $b->isCover(),
+            'is_remix' => $a->isRemix() || $b->isRemix(),
+            'acoustic' => $a->isAcoustic() || $b->isAcoustic(),
+            'context' => array_unique(array_merge(
+                    $a->getExtraInfo()['context'],
+                    $b->getExtraInfo()['context']
+                ), SORT_REGULAR)
+        ]);
+        $c->setSafeTitle($safe_title);
 
         return $c;
     }

@@ -58,12 +58,10 @@ abstract class MusicalEntity implements MusicalEntityInterface
         return $this->introspected;
     }
 
-    public function setIntrospected(array $extra_info = null): MusicalEntity
+    public function setExtraInfo(array $extra_info = null): MusicalEntity
     {
         $this->introspected = true;
-        if ($extra_info !== null) {
-            $this->extra_info = $extra_info;
-        }
+        $this->extra_info = $extra_info;
 
         return $this;
     }
@@ -71,6 +69,31 @@ abstract class MusicalEntity implements MusicalEntityInterface
     public function getExtraInfo(): array
     {
         return $this->extra_info;
+    }
+
+    public function isCover(): bool
+    {
+        return isset($this->extra_info['is_cover']) && $this->extra_info['is_cover'];
+    }
+
+    public function isAcoustic(): bool
+    {
+        return isset($this->extra_info['acoustic']) && $this->extra_info['acoustic'];
+    }
+
+    public function isRemix(): bool
+    {
+        return isset($this->extra_info['is_remix']) && $this->extra_info['is_remix'];
+    }
+
+    public function isEdit(): bool
+    {
+        return isset($this->extra_info['edit']) && $this->extra_info['edit'] !== "";
+    }
+
+    public function getExtraInfoHash(): string
+    {
+        return (0+$this->isCover()).(0+$this->isAcoustic()).(0+$this->isRemix()).(0+$this->isEdit());
     }
 
     /*
@@ -113,6 +136,7 @@ abstract class MusicalEntity implements MusicalEntityInterface
         if (preg_match("/.*[\-\—\–\(\[]\s?(?P<edit>.*edit)[^i]/iu", $str.' ', $matches_edit)) {
             $extra_info['edit'] = trim($matches_edit['edit']);
         }
+
         // NOW we modify the string perhaps
         // --------------------------------
 

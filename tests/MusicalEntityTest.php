@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use tuneefy\MusicalEntity\MusicalEntity;
+use tuneefy\MusicalEntity\Entities\AlbumEntity;
+use tuneefy\MusicalEntity\Entities\TrackEntity;
+use tuneefy\MusicalEntity\MusicalEntityMergeException;
 
 /**
  * @covers MusicalEntity
@@ -197,6 +200,382 @@ final class MusicalEntityTest extends TestCase
               MusicalEntity::parse($key)
             );
         }
+    }
+
+    public function testSetIntrospectedTrack()
+    {
+        $album_entity = new AlbumEntity('test album (extra album)');
+        $entity = new TrackEntity('test title (extra)', $album_entity);
+
+        $this->assertEquals(
+            [
+                'type' => 'track',
+                'title' => 'test title (extra)',
+                'album' => [
+                    'title' => 'test album (extra album)',
+                    'artist' => '',
+                    'picture' => '',
+                    'safe_title' => 'test album',
+                    'extra_info' => [
+                        'is_cover' => false,
+                        'is_remix' => false,
+                        'acoustic' => false,
+                        'context' => ['extra album'],
+                    ],
+                ],
+                'safe_title' => 'test title',
+                'extra_info' => [
+                    'is_cover' => false,
+                    'is_remix' => false,
+                    'acoustic' => false,
+                    'context' => ['extra'],
+                ],
+            ],
+            $entity->toArray()
+        );
+
+        $this->assertTrue(
+            $entity->isIntrospected()
+        );
+
+        $entity->introspect(['context' => ['test']]);
+
+        // Should not change since it's already introspected
+        $this->assertEquals(
+            [
+                'type' => 'track',
+                'title' => 'test title (extra)',
+                'album' => [
+                    'title' => 'test album (extra album)',
+                    'artist' => '',
+                    'picture' => '',
+                    'safe_title' => 'test album',
+                    'extra_info' => [
+                        'is_cover' => false,
+                        'is_remix' => false,
+                        'acoustic' => false,
+                        'context' => ['extra album'],
+                    ],
+                ],
+                'safe_title' => 'test title',
+                'extra_info' => [
+                    'is_cover' => false,
+                    'is_remix' => false,
+                    'acoustic' => false,
+                    'context' => ['extra'],
+                ],
+            ],
+            $entity->toArray()
+        );
+
+        $this->assertEquals(
+            [
+                'is_cover' => false,
+                'is_remix' => false,
+                'acoustic' => false,
+                'context' => ['extra'],
+            ],
+            $entity->getExtraInfo()
+        );
+
+        $this->assertFalse(
+            $entity->isCover()
+        );
+
+        $this->assertFalse(
+            $entity->isAcoustic()
+        );
+
+        $this->assertFalse(
+            $entity->isRemix()
+        );
+
+        $this->assertFalse(
+            $entity->isEdit()
+        );
+
+    }
+
+    public function testSetIntrospectedAlbum()
+    {
+        $entity = new AlbumEntity('test title (extra)');
+
+        $this->assertEquals(
+            [
+                'type' => 'album',
+                'title' => 'test title (extra)',
+                'artist' => '',
+                'picture' => '',
+                'safe_title' => 'test title',
+                'extra_info' => [
+                    'is_cover' => false,
+                    'is_remix' => false,
+                    'acoustic' => false,
+                    'context' => ['extra'],
+                ],
+            ],
+            $entity->toArray()
+        );
+
+        $this->assertTrue(
+            $entity->isIntrospected()
+        );
+
+        $entity->introspect(['context' => ['test']]);
+
+        // Should not change since it's already introspected
+        $this->assertEquals(
+            [
+                'type' => 'album',
+                'title' => 'test title (extra)',
+                'artist' => '',
+                'picture' => '',
+                'safe_title' => 'test title',
+                'extra_info' => [
+                    'is_cover' => false,
+                    'is_remix' => false,
+                    'acoustic' => false,
+                    'context' => ['extra'],
+                ],
+            ],
+            $entity->toArray()
+        );
+
+        $this->assertEquals(
+            [
+                'is_cover' => false,
+                'is_remix' => false,
+                'acoustic' => false,
+                'context' => ['extra'],
+            ],
+            $entity->getExtraInfo()
+        );
+
+        $this->assertFalse(
+            $entity->isCover()
+        );
+
+        $this->assertFalse(
+            $entity->isAcoustic()
+        );
+
+        $this->assertFalse(
+            $entity->isRemix()
+        );
+
+        $this->assertFalse(
+            $entity->isEdit()
+        );
+    }
+
+    public function testLinks()
+    {
+        $entity = new AlbumEntity('test title (extra)');
+
+        $entity->addLink('platform','link');
+
+        $this->assertEquals(
+            [['platform' => 'platform', 'link' => 'link']],
+            $entity->getLinks()
+        );
+
+        $this->assertEquals(
+            1,
+            $entity->countLinks()
+        );
+
+        $entity->addLinks([['platform' => 'platform1', 'link' => 'link1'], ['platform' => 'platform2', 'link' => 'link2']]);
+
+        $this->assertEquals(
+            [
+                ['platform' => 'platform', 'link' => 'link'],
+                ['platform' => 'platform1', 'link' => 'link1'],
+                ['platform' => 'platform2', 'link' => 'link2']
+            ],
+            $entity->getLinks()
+        );
+
+        $this->assertEquals(
+            3,
+            $entity->countLinks()
+        );
+    }
+
+    public function testMergeAlbum()
+    {
+        $a = new AlbumEntity('test title a (extra)');
+        $b = new AlbumEntity('test title b (extra)');
+
+        $c = AlbumEntity::merge($a,$b);
+
+        $this->assertEquals(
+            [
+                'type' => 'album',
+                'title' => 'test title a (extra)',
+                'artist' => '',
+                'picture' => '',
+                'safe_title' => 'test title a',
+                'extra_info' => [
+                    'is_cover' => false,
+                    'is_remix' => false,
+                    'acoustic' => false,
+                    'context' => ['extra'],
+                ],
+            ],
+            $c->toArray()
+        );
+    }
+
+    public function testMergeTrack()
+    {
+        $a_album = new AlbumEntity('test title a album (extra)');
+        $a = new TrackEntity('test title a (extra)', $a_album);
+        $b_album = new AlbumEntity('test title b album (extra)');
+        $b = new TrackEntity('test title b (extra)', $b_album);
+
+        $c = TrackEntity::merge($a,$b);
+
+        $this->assertEquals(
+            [
+                'type' => 'track',
+                'title' => 'test title a (extra)',
+                'album' => [
+                    'title' => 'test title a album (extra)',
+                    'artist' => '',
+                    'picture' => '',
+                    'safe_title' => 'test title a album',
+                    'extra_info' => [
+                        'is_cover' => false,
+                        'is_remix' => false,
+                        'acoustic' => false,
+                        'context' => ['extra'],
+                    ],
+                ],
+                'safe_title' => 'test title a',
+                'extra_info' => [
+                    'is_cover' => false,
+                    'is_remix' => false,
+                    'acoustic' => false,
+                    'context' => ['extra'],
+                ],
+            ],
+            $c->toArray()
+        );
+    }
+
+    /**
+     * @expectedException tuneefy\MusicalEntity\MusicalEntityMergeException
+     */
+    public function testMergeTrackNotForced1()
+    {
+        $a_album = new AlbumEntity('test title a album (extra)');
+        $a = new TrackEntity('test title a (acoustic)', $a_album);
+        $b_album = new AlbumEntity('test title b album (extra)');
+        $b = new TrackEntity('test title b (extra)', $b_album);
+
+        $c = TrackEntity::merge($a,$b);
+    }
+
+    /**
+     * @expectedException tuneefy\MusicalEntity\MusicalEntityMergeException
+     */
+    public function testMergeTrackNotForced2()
+    {
+        $a_album = new AlbumEntity('test title a album (extra)');
+        $a = new TrackEntity('test title a', $a_album);
+        $b_album = new AlbumEntity('test title b album (extra)');
+        $b = new TrackEntity('test title b (cover)', $b_album);
+
+        $c = TrackEntity::merge($a,$b);
+    }
+
+    /**
+     * @expectedException tuneefy\MusicalEntity\MusicalEntityMergeException
+     */
+    public function testMergeTrackNotForced3()
+    {
+        $a_album = new AlbumEntity('test title a album (cover)');
+        $a = new TrackEntity('test title a (extra)', $a_album);
+        $b_album = new AlbumEntity('test title b album (extra)');
+        $b = new TrackEntity('test title b (extra)', $b_album);
+
+        $c = TrackEntity::merge($a,$b);
+    }
+
+    /**
+     * @expectedException tuneefy\MusicalEntity\MusicalEntityMergeException
+     */
+    public function testMergeTrackNotForced4()
+    {
+        $a_album = new AlbumEntity('test title a album (remix)');
+        $a = new TrackEntity('test title a (extra)', $a_album);
+        $b_album = new AlbumEntity('test title b album (extra)');
+        $b = new TrackEntity('test title b (extra)', $b_album);
+
+        $c = TrackEntity::merge($a,$b);
+    }
+
+    public function testMergeTrackForced()
+    {
+        $a_album = new AlbumEntity('test title a album (remix)');
+        $a = new TrackEntity('test title a (extra)', $a_album);
+        $b_album = new AlbumEntity('test title b album (extra)');
+        $b = new TrackEntity('test title b (cover)', $b_album);
+
+        $c = TrackEntity::merge($a, $b, true);
+
+        $this->assertEquals(
+            [
+                'type' => 'track',
+                'title' => 'test title a (extra)',
+                'album' => [
+                    'title' => 'test title a album (remix)',
+                    'artist' => '',
+                    'picture' => '',
+                    'safe_title' => 'test title a album',
+                    'extra_info' => [
+                        'is_cover' => false,
+                        'is_remix' => true,
+                        'acoustic' => false,
+                        'context' => ['remix', 'extra'],
+                    ],
+                ],
+                'safe_title' => 'test title a',
+                'extra_info' => [
+                    'is_cover' => true,
+                    'is_remix' => false,
+                    'acoustic' => false,
+                    'context' => ['extra', 'cover'],
+                ],
+            ],
+            $c->toArray()
+        );
+    }
+
+    public function testMatchingHash()
+    {
+        $a_album = new AlbumEntity(' The Test Album');
+        $a = new TrackEntity('My song (Explicit)', $a_album);
+        $b_album = new AlbumEntity('the test album');
+        $b = new TrackEntity('my song', $b_album);
+
+        $this->assertEquals(
+            $a->getHash(),
+            $b->getHash()
+        );
+    }
+
+    public function testNonMatchingHash()
+    {
+        $a_album = new AlbumEntity(' The Test Album');
+        $a = new TrackEntity('My song (Explicit)', $a_album);
+        $b_album = new AlbumEntity('my song');
+        $b = new TrackEntity('the test album', $b_album);
+
+        $this->assertNotEquals(
+            $a->getHash(),
+            $b->getHash()
+        );
     }
 }
 

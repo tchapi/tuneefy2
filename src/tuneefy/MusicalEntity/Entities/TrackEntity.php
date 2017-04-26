@@ -14,16 +14,14 @@ class TrackEntity extends MusicalEntity
     private $album;
 
     // Introspection
-    private $is_cover;
     private $safe_track_title;
 
-    public function __construct(string $track_title, AlbumEntity $album)
+    public function __construct(string $track_title = '', AlbumEntity $album)
     {
         parent::__construct();
         $this->track_title = $track_title;
         $this->album = $album;
 
-        $this->is_cover = false;
         $this->safe_track_title = $track_title;
 
         $this->introspect();
@@ -65,11 +63,6 @@ class TrackEntity extends MusicalEntity
         return $this->album->getPicture();
     }
 
-    public function isCover(): bool
-    {
-        return $this->is_cover;
-    }
-
     public function toArray(): array
     {
         $album = $this->album->toArray();
@@ -86,7 +79,6 @@ class TrackEntity extends MusicalEntity
         }
 
         if ($this->introspected === true) {
-            $result['cover'] = $this->is_cover;
             $result['safe_title'] = $this->safe_track_title;
             $result['extra_info'] = $this->extra_info;
         }
@@ -103,7 +95,7 @@ class TrackEntity extends MusicalEntity
         if ($this->introspected === false) {
             
             // https://secure.php.net/manual/en/function.extract.php
-            extract(parent::parse($this->title));
+            extract(parent::parse($this->track_title));
             $this->safe_track_title = $safe_title;
             $this->extra_info = $extra_info;
 
@@ -143,16 +135,22 @@ class TrackEntity extends MusicalEntity
         }
 
         // "Recurse" to album entity
-        $album = AlbumEntity::merge($a->getAlbum(), $b->getAlbum());
+        $album = AlbumEntity::merge($a->getAlbum(), $b->getAlbum(), $force);
 
         // Create the result
         $c = new self($title, $album);
         $c->addLinks(array_merge($a->getLinks(), $b->getLinks()));
 
-        if ($a->isIntrospected() === true && $b->isIntrospected() === true) {
-            $c->setIntrospected(array_merge($a->getExtraInfo(), $b->getExtraInfo()));
-            $c->setSafeTitle($safe_title);
-        } // But do not force introspection
+        $c->setExtraInfo([
+            'is_cover' => $a->isCover() || $b->isCover(),
+            'is_remix' => $a->isRemix() || $b->isRemix(),
+            'acoustic' => $a->isAcoustic() || $b->isAcoustic(),
+            'context' => array_unique(array_merge(
+                    $a->getExtraInfo()['context'],
+                    $b->getExtraInfo()['context']
+                ), SORT_REGULAR)
+        ]);
+        $c->setSafeTitle($safe_title);
 
         return $c;
     }
