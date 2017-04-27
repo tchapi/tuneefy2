@@ -65,9 +65,15 @@ class Application
         return dirname(__FILE__).self::PATHS[$which];
     }
 
-    public function run()
+    public function set(string $key, $value)
     {
-        $this->slimApp->run();
+        $container = $this->slimApp->getContainer();
+        $container[$key] = $value;
+    }
+
+    public function run(bool $returnObject = false)
+    {
+        return $this->slimApp->run($returnObject);
     }
 
     public function configure()
