@@ -31,15 +31,18 @@ abstract class MusicalEntity implements MusicalEntityInterface
     */
     public function addLink(string $platform, string $link): MusicalEntity
     {
-        $this->links[] = ['platform' => $platform, 'link' => $link];
+        if (!isset($this->links[$platform])) {
+            $this->links[$platform] = [];
+        }
+
+        $this->links[$platform][] = $link;
 
         return $this;
     }
 
-    public function addLinks(array $links): MusicalEntity
+    public function setLinks(array $links): MusicalEntity
     {
-        $this->links = array_merge($this->links, $links);
-
+        $this->links = $links;
         return $this;
     }
 
@@ -48,7 +51,7 @@ abstract class MusicalEntity implements MusicalEntityInterface
         return $this->links;
     }
 
-    public function countLinks(): int
+    public function countLinkedPlatforms(): int
     {
         return count($this->links);
     }

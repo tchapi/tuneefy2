@@ -60,7 +60,7 @@ class AlbumEntity extends MusicalEntity
           'picture' => $this->picture,
         ];
 
-        if ($this->countLinks() !== 0) {
+        if ($this->countLinkedPlatforms() !== 0) {
             $result['links'] = $this->links;
         }
 
@@ -140,8 +140,14 @@ class AlbumEntity extends MusicalEntity
 
         // Create the result
         $c = new self($title, $artist, $picture);
-        $c->addLinks(array_merge($a->getLinks(), $b->getLinks()));
 
+        foreach ($b->getLinks() as $platform => $links) {
+            foreach ($links as $link) {
+                $a->addLink($platform, $link);
+            }
+        }
+        
+        $c->setLinks($a->getLinks());
         $c->setExtraInfo([
             'is_cover' => $a->isCover() || $b->isCover(),
             'is_remix' => $a->isRemix() || $b->isRemix(),

@@ -375,29 +375,29 @@ final class MusicalEntityTest extends TestCase
         $entity->addLink('platform','link');
 
         $this->assertEquals(
-            [['platform' => 'platform', 'link' => 'link']],
+            ['platform' => ['link']],
             $entity->getLinks()
         );
 
         $this->assertEquals(
             1,
-            $entity->countLinks()
+            $entity->countLinkedPlatforms()
         );
 
-        $entity->addLinks([['platform' => 'platform1', 'link' => 'link1'], ['platform' => 'platform2', 'link' => 'link2']]);
+        $entity->addLink('platform','link2');
+        $entity->addLink('platform2','link');
 
         $this->assertEquals(
             [
-                ['platform' => 'platform', 'link' => 'link'],
-                ['platform' => 'platform1', 'link' => 'link1'],
-                ['platform' => 'platform2', 'link' => 'link2']
+                'platform' => ['link', 'link2'],
+                'platform2' => ['link'],
             ],
             $entity->getLinks()
         );
 
         $this->assertEquals(
-            3,
-            $entity->countLinks()
+            2,
+            $entity->countLinkedPlatforms()
         );
     }
 
