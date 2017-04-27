@@ -110,6 +110,10 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
 
         $musical_entities = [];
 
+        if (count($entities) === 0) {
+            return [];
+        }
+        
         // Tracks bear a "playback_count" score
         // that we're using to rate the results
         $max_playback_count = 1;

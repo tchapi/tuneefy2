@@ -106,6 +106,25 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         return ['Authorization: GoogleLogin auth='.$token];
     }
 
+    // This API is VERY inconsistent : ids sometimes contains the B or T indicators, 
+    // sometimes not.
+    private function createAlbumOrTrackLink(string $albumId, string $trackId = null): string
+    {
+        if ($trackId && $trackId[0] !== 'T') {
+            $trackId = 'T'.$trackId;
+        }
+
+        if ($albumId[0] !== 'B') {
+            $albumId = 'B'.$albumId;
+        }
+
+        if ($trackId) {
+            return sprintf(self::TRACK_LINK, $albumId, $trackId);
+        }
+
+        return sprintf(self::ALBUM_LINK, $albumId);
+    }
+
     public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
@@ -122,7 +141,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
 
             $entity = $response->data;
             $musical_entity = new TrackEntity($entity->title, new AlbumEntity($entity->album, $entity->artist, $entity->albumArtRef[0]->url));
-            $musical_entity->addLink(static::TAG, sprintf(self::TRACK_LINK, $match['album_id'], $match['track_id']));
+            $musical_entity->addLink(static::TAG, $this->createAlbumOrTrackLink($match['album_id'], $match['track_id']));
 
             $query_words = [
                 $musical_entity->getAlbum()->getArtist(),
@@ -137,7 +156,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
 
             $entity = $response->data;
             $musical_entity = new AlbumEntity($entity->name, $entity->artist, $entity->albumArtRef);
-            $musical_entity->addLink(static::TAG, sprintf(self::ALBUM_LINK, $match['album_id']));
+            $musical_entity->addLink(static::TAG, $this->createAlbumOrTrackLink($match['album_id']));
 
             $query_words = [
                 $musical_entity->getArtist(),
@@ -167,7 +186,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
     {
         $response = $this->fetchSync($type, $query);
 
-        if ($response === null || property_exists($response->data, 'Error')) {
+        if ($response === null || property_exists($response->data, 'Error') || !property_exists($response->data, 'entries')) {
                 throw new PlatformException();
         }
         $results = $response->data->entries;
@@ -182,10 +201,10 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
 
             if ($type === Platform::SEARCH_TRACK) {
                 $musical_entity = new TrackEntity($current_item->track->title, new AlbumEntity($current_item->track->album, $current_item->track->artist, $current_item->track->albumArtRef[0]->url));
-                $musical_entity->addLink(static::TAG, sprintf(self::TRACK_LINK, $current_item->track->albumId, $current_item->track->storeId));
+                $musical_entity->addLink(static::TAG, $this->createAlbumOrTrackLink($current_item->track->albumId, $current_item->track->storeId));
             } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
                 $musical_entity = new AlbumEntity($current_item->album->name, $current_item->album->artist, $current_item->album->albumArtRef);
-                $musical_entity->addLink(static::TAG, sprintf(self::ALBUM_LINK, $current_item->album->albumId));
+                $musical_entity->addLink(static::TAG, $this->createAlbumOrTrackLink($current_item->album->albumId));
           }
 
             $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity);

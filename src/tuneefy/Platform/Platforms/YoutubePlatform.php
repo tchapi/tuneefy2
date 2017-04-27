@@ -97,6 +97,22 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
+    // We want title like "ARTIST - TITLE [Official Video]" only
+    private function parseYoutubeMusicVideoTitle(string $string): array
+    {
+        $parts = explode(" - ", $string);
+
+        // Check if parts[2] is something like "official video"
+        if (count($parts) > 1) {
+            if (preg_match("/(?P<title>.*)[\(\[](.*official.*video.*)[\)\]]/iu", $parts[1], $matches)) {
+                $title = trim($matches['title']);
+                return [$title, trim($parts[0])];
+            }
+        }
+
+        return [null, null];
+    }
+
     public function search(int $type, string $query, int $limit, int $mode): array
     {
         $response = $this->fetchSync($type, $query);
@@ -117,7 +133,14 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
             $current_item = $entities[$i];
 
             if ($type === Platform::SEARCH_TRACK) {
-                $musical_entity = new TrackEntity($current_item->snippet->title, new AlbumEntity('', '', $current_item->snippet->thumbnails->medium->url));
+
+                // Extract title and author
+                list($title, $artist) = $this->parseYoutubeMusicVideoTitle($current_item->snippet->title);
+                if ($title === null || $artist === null) {
+                    continue;
+                }
+
+                $musical_entity = new TrackEntity($title, new AlbumEntity('', $artist, $current_item->snippet->thumbnails->medium->url));
                 $musical_entity->addLink(static::TAG, $this->getPermalinkFromTrackId($current_item->id->videoId));
                 $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity);
             }

@@ -134,6 +134,9 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
 
         $musical_entities = [];
 
+        if (!isset($results[0])) {
+            return [];
+        }
         // Tracks bear a popularity score
         // that we're using to rate the results
         $max_track_popularity = 1;
