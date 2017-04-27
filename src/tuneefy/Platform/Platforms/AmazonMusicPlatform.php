@@ -10,9 +10,10 @@ use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\WebStoreInterface;
 use tuneefy\Utils\Utils;
 
-class AmazonMP3Platform extends Platform implements WebStoreInterface
+class AmazonMusicPlatform extends Platform implements WebStoreInterface
 {
-    const NAME = 'Amazon MP3';
+    const NAME = 'Amazon Music';
+    const HOMEPAGE = 'https://music.amazon.com/home';
     const TAG = 'amazon';
     const COLOR = 'E47911';
 
@@ -118,9 +119,13 @@ class AmazonMP3Platform extends Platform implements WebStoreInterface
     public function search(int $type, string $query, int $limit, int $mode): array
     {
         $response = $this->fetchSync($type, $query);
-        if ($response === null || !property_exists($response->data->results, 'result')) {
+
+        if ($response === null) {
             throw new PlatformException();
+        } else if (!property_exists($response->data->results, 'result') || $response->data->results->stats->totalCount === 0) {
+            return [];
         }
+
         $entities = $response->data->results->result;
 
         // We actually don't pass the limit to the fetch()
@@ -131,17 +136,23 @@ class AmazonMP3Platform extends Platform implements WebStoreInterface
 
         // Normalizing each track found
         for ($i = 0; $i < $length; ++$i) {
+            if ($response->data->results->stats->totalCount == 1) {
+                $entity = $entities;
+            } else {
+                $entity = $entities[$i];
+            }
+
             if ($type === Platform::SEARCH_TRACK) {
-                $current_item = $entities[$i]->track;
+                $current_item = $entity->track;
 
                 $musical_entity = new TrackEntity($current_item->title, new AlbumEntity($current_item->album, $current_item->creator, $current_item->imageMedium));
                 $musical_entity->addLink(static::TAG, $this->getPermalinkFromASIN($current_item->ASIN));
             } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
-            $current_item = $entities[$i]->album;
+                $current_item = $entity->album;
 
-            $musical_entity = new AlbumEntity($current_item->title, $current_item->creator, $current_item->imageMedium);
-            $musical_entity->addLink(static::TAG, $this->getPermalinkFromASIN($current_item->ASIN));
-          }
+                $musical_entity = new AlbumEntity($current_item->title, $current_item->creator, $current_item->imageMedium);
+                $musical_entity->addLink(static::TAG, $this->getPermalinkFromASIN($current_item->ASIN));
+            }
 
             $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity);
         }

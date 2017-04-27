@@ -4,7 +4,7 @@ namespace tuneefy;
 
 use tuneefy\Platform\Platform;
 use tuneefy\Platform\PlatformResult;
-use tuneefy\Platform\Platforms\AmazonMP3Platform;
+use tuneefy\Platform\Platforms\AmazonMusicPlatform;
 use tuneefy\Platform\Platforms\DeezerPlatform;
 use tuneefy\Platform\Platforms\GooglePlayMusicPlatform;
 use tuneefy\Platform\Platforms\GrooveMusicPlatform;
@@ -57,7 +57,7 @@ class PlatformEngine
 
           // Stores
           'itunes' => ItunesPlatform::getInstance(),
-          'amazon' => AmazonMP3Platform::getInstance(),
+          'amazon' => AmazonMusicPlatform::getInstance(),
         ];
     }
 

@@ -155,7 +155,7 @@ tidal:
   default: false
   order: 12
 amazon:
-  class: tuneefy\Platform\AmazonMP3Platform
+  class: tuneefy\Platform\AmazonMusicPlatform
   enable:
     api: true
     website: true
