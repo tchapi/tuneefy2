@@ -13,6 +13,7 @@ use tuneefy\Utils\Utils;
 class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
 {
     const NAME = 'Spotify';
+    const HOMEPAGE = 'https://www.spotify.com/';
     const TAG = 'spotify';
     const COLOR = '4DA400';
 

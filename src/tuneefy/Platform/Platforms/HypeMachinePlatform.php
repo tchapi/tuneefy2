@@ -13,6 +13,7 @@ use tuneefy\Utils\Utils;
 class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterface
 {
     const NAME = 'Hype Machine';
+    const HOMEPAGE = 'https://hypem.com/';
     const TAG = 'hypem';
     const COLOR = '83C441';
 

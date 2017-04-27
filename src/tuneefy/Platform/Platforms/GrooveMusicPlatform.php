@@ -13,6 +13,7 @@ use tuneefy\Utils\Utils;
 class GrooveMusicPlatform extends Platform implements WebStreamingPlatformInterface
 {
     const NAME = 'Groove Music';
+    const HOMEPAGE = 'https://music.microsoft.com/';
     const TAG = 'groove';
     const COLOR = '007500';
 

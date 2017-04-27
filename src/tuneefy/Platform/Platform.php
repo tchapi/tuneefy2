@@ -12,6 +12,7 @@ abstract class Platform implements GeneralPlatformInterface
 {
     const NAME = '';
     const TAG = '';
+    const HOMEPAGE = '';
     const COLOR = 'FFFFFF';
 
     // Helper Regexes
@@ -181,6 +182,20 @@ abstract class Platform implements GeneralPlatformInterface
     protected function addContextHeaders(): array
     {
         return [];
+    }
+
+    public function toArray(): array
+    {
+        $result = [
+            'name' => static::NAME,
+            'homepage' => static::HOMEPAGE,
+            'tag' => static::TAG,
+            'mainColorAccent' => static::COLOR,
+            'enabled' => $this->enables,
+            'capabilities' => $this->capabilities,
+        ];
+
+        return $result;
     }
 
     protected function fetchSync(int $type, string $query)

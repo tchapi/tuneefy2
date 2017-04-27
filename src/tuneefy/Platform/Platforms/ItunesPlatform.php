@@ -13,6 +13,7 @@ use tuneefy\Utils\Utils;
 class ItunesPlatform extends Platform implements WebStoreInterface
 {
     const NAME = 'iTunes';
+    const HOMEPAGE = 'https://itunes.apple.com';
     const TAG = 'itunes';
     const COLOR = '216be4';
 

@@ -13,6 +13,7 @@ use tuneefy\Utils\Utils;
 class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
 {
     const NAME = 'Deezer';
+    const HOMEPAGE = 'https://www.deezer.com/';
     const TAG = 'deezer';
     const COLOR = '181818';
 

@@ -13,6 +13,7 @@ use tuneefy\Utils\Utils;
 class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
 {
     const NAME = 'Napster';
+    const HOMEPAGE = 'http://napster.com';
     const TAG = 'napster';
     const COLOR = '0682AA';
 

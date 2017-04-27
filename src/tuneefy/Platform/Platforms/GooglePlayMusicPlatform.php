@@ -13,6 +13,7 @@ use tuneefy\Utils\Utils;
 class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformInterface
 {
     const NAME = 'Google Play';
+    const HOMEPAGE = 'https://play.google.com/music';
     const TAG = 'googleplay';
     const COLOR = 'ef6c00';
 

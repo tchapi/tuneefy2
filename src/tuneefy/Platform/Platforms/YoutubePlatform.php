@@ -13,6 +13,7 @@ use tuneefy\Utils\Utils;
 class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
 {
     const NAME = 'Youtube';
+    const HOMEPAGE = 'https://youtube.com/';
     const TAG = 'youtube';
     const COLOR = 'c8120b';
 

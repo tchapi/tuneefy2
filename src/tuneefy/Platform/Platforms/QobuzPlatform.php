@@ -13,6 +13,7 @@ use tuneefy\Utils\Utils;
 class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
 {
     const NAME = 'Qobuz';
+    const HOMEPAGE = 'http://www.qobuz.com/';
     const TAG = 'qobuz';
     const COLOR = '2C8FAE';
 

@@ -12,6 +12,7 @@ use tuneefy\Platform\WebStreamingPlatformInterface;
 class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterface
 {
     const NAME = 'Soundcloud';
+    const HOMEPAGE = 'https://soundcloud.com/';
     const TAG = 'soundcloud';
     const COLOR = 'ff6600';
 

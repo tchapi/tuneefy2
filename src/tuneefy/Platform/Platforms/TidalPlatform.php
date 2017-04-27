@@ -13,6 +13,7 @@ use tuneefy\Utils\Utils;
 class TidalPlatform extends Platform implements WebStreamingPlatformInterface
 {
     const NAME = 'Tidal';
+    const HOMEPAGE = 'http://tidal.com/';
     const TAG = 'tidal';
     const COLOR = '00FFFF';
 

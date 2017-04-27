@@ -12,6 +12,7 @@ use tuneefy\Platform\WebStreamingPlatformInterface;
 class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
 {
     const NAME = 'Mixcloud';
+    const HOMEPAGE = 'https://www.mixcloud.com/';
     const TAG = 'mixcloud';
     const COLOR = 'afd8db';
 

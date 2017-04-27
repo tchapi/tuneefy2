@@ -13,6 +13,7 @@ use tuneefy\Utils\Utils;
 class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
 {
     const NAME = 'Last.fm';
+    const HOMEPAGE = 'https://www.last.fm/';
     const TAG = 'lastfm';
     const COLOR = 'e41c1c';
 
