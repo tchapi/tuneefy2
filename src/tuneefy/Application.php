@@ -332,6 +332,27 @@ class Application
 
                 return $response->withStatus(200);
             });
+
+            /*
+              List all available platforms of the API
+              with their configuration (capable of X, Y, etc ...)
+            */
+            $this->get('/platforms', function ($request, $response, $args) use ($engine, $renderer) {
+                
+                $platforms = $engine->getAllPlatforms();
+                $data = [ 'platforms' => array_map(function($e) { return $e->toArray(); }, $platforms) ];
+                $response = $renderer->render($request, $response, $data);
+
+                return $response->withStatus(200);
+            });
+
+            /*
+              Documentation of the API
+            */
+            $this->get('/', function ($request, $response, $args) {
+                // TODO
+                return $this->view->render($response, 'api.html.twig');
+            });
         })->add(function ($request, $response, $next) use ($renderer) {
             // Accept the 'format' modifier
             $request = $request->withHeader('Accept', 'application/json'); // default
@@ -360,7 +381,7 @@ class Application
         /*
           The sharing page
         */
-        $this->slimApp->get('/{type}/{uid}', function ($request, $response, $args) {
+        $this->slimApp->get('/s/{type}/{uid}', function ($request, $response, $args) {
             // Translate into good id
             $id = Utils::fromUId($args['uid']);
             $item = $this->db->getItem($id);
@@ -375,7 +396,7 @@ class Application
         /*
           Listen to a musical entity => goes to the platform link
         */
-        $this->slimApp->get('/{type}/{uid}/listen/{platform}', function ($request, $response, $args) {
+        $this->slimApp->get('/s/{type}/{uid}/listen/{platform}', function ($request, $response, $args) {
             // TODO
 
             // Eventually, redirect to platform
