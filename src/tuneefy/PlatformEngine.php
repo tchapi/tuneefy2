@@ -20,6 +20,7 @@ use tuneefy\Platform\Platforms\TidalPlatform;
 use tuneefy\Platform\Platforms\YoutubePlatform;
 use tuneefy\Platform\ScrobblingPlatformInterface;
 use tuneefy\Platform\WebStoreInterface;
+use tuneefy\Platform\PlatformException;
 use tuneefy\Platform\WebStreamingPlatformInterface;
 
 class PlatformEngine
@@ -107,34 +108,44 @@ class PlatformEngine
         }
 
         if ($platform === null) {
-            return null;
+            return ['errors' => ['This permalink does not belong to any known platform']];
         }
 
         // Initiate a lookup on this platform
-        return $platform->expandPermalink($permalink, $mode);
+        return ['result' => $platform->expandPermalink($permalink, $mode)];
     }
 
     public function search(Platform $platform, int $type, string $query, int $limit, int $mode) //: ?array
     {
         if (($platform->isCapableOfSearchingTracks() && $type === Platform::SEARCH_TRACK)
          || ($platform->isCapableOfSearchingAlbums() && $type === Platform::SEARCH_ALBUM)) {
-            return $platform->search($type, $query, $limit, $mode);
-        } else {
-            return null;
+            return ['results' => $platform->search($type, $query, $limit, $mode)];
+        } else if ($type === Platform::SEARCH_TRACK) {
+            return ['errors' => ['This platform is not capable of searching tracks']];
+        } else if ($type === Platform::SEARCH_ALBUM) {
+            return ['errors' => ['This platform is not capable of searching albums']];
         }
     }
 
-    public function aggregate(int $type, string $query, int $limit, int $mode, bool $aggressive, array $platforms) //: ?array
+    public function aggregate(int $type, string $query, int $limit, int $mode, bool $aggressive, array $platforms): array
     {
         $result = [];
+        $errors = [];
+
         foreach ($platforms as $p) {
             if (($p->isCapableOfSearchingTracks() && $type === Platform::SEARCH_TRACK)
              || ($p->isCapableOfSearchingAlbums() && $type === Platform::SEARCH_ALBUM)) {
-                $result = array_merge($result, $p->search($type, $query, Platform::AGGREGATE_LIMIT, $mode));
+
+                // We try/catch here so we can still retrieve results from other platforms
+                try {
+                    $result = array_merge($result, $p->search($type, $query, Platform::AGGREGATE_LIMIT, $mode));
+                } catch (PlatformException $e) {
+                    $errors[] = $e->getMessage();
+                    continue;
+                }
             }
         }
-
-        return $this->mergeResults($result, $aggressive, $limit);
+        return ['results' => $this->mergeResults($result, $aggressive, $limit), 'errors' => $errors];
     }
 
     public function mergeResults(array $results, bool $aggressive, int $limit) //: ?array

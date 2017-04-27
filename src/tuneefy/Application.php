@@ -146,13 +146,27 @@ class Application
                 try {
                     $result = $engine->lookup($permalink, $real_mode);
                 } catch (PlatformException $e) {
-                    $data = ['msg' => 'There was a problem while fetching data from the platform'];
+                    $result = false;
                 }
 
-                if ($result === []) {
-                    $data = ['msg' => 'No match was found for this permalink'];
-                } else if ($result !== null) {
-                    $data = ['results' => $result->toArray()];
+                // From the try/catch up there
+                if ($result === false) {
+                    $data = ['errors' => ['There was a problem while fetching data from the platform']];
+                // If we have a result
+                } else if (isset($result['result'])) {
+                    if ($result['result']->getMusicalEntity()) {  
+                        $data = [
+                            'result' => $result['result']->toArray()
+                        ];
+                    } else {
+                        $data = [
+                            'errors' => ['No match was found for this permalink'],
+                            'result' => $result['result']->toArray()
+                        ];
+                    }
+                // Result is only an error message
+                } else {
+                    $data = $result;
                 }
 
                 $response = $renderer->render($request, $response, $data);
@@ -198,14 +212,24 @@ class Application
                 try {
                     $result = $engine->search($platform, $real_type, $query, intval($limit), $real_mode);
                 } catch (PlatformException $e) {
-                    $data = ['msg' => 'There was a problem while fetching data from the platform'];
+                    $result = false;
                 }
 
-                if ($result === []) {
-                    // TODO translation
-                    $data = ['msg' => 'No match was found for this search on this platform'];
-                } else if ($result !== null) {
-                    $data = ['results' => array_map(function ($e) { return $e->toArray(); }, $result)];
+                // From the try/catch up there
+                if ($result === false) {
+                    $data = ['errors' => ['There was a problem while fetching data from the platform']];
+                // If we have a result
+                } else if (isset($result['results'])) {
+                    if (count($result['results']) > 0) {  
+                        $data = [
+                            'results' => array_map(function ($e) { return $e->toArray(); }, $result['results'])
+                        ];
+                    } else {
+                        $data = ['errors' => ['No match was found for this search on this platform']];
+                    }
+                // Result is only an error message
+                } else {
+                    $data = $result;
                 }
 
                 $response = $renderer->render($request, $response, $data);
@@ -255,14 +279,25 @@ class Application
                 try {
                     $result = $engine->aggregate($real_type, $query, intval($limit), $real_mode, $aggressive, $platforms);
                 } catch (PlatformException $e) {
-                    $data = ['msg' => 'There was a problem while fetching data from the platforms'];
+                    $result = false;
                 }
 
-                if ($result === null) {
-                    // TODO translation
-                    $data = ['msg' => 'No match was found for this search'];
+                // From the try/catch up there
+                if ($result === false) {
+                    $data = ['errors' => ['There was a problem while fetching data from the platforms']];
+                // If we have a result
+                } else if (isset($result['results'])) {
+                    if (count($result['results']) > 0) {  
+                        $data = [
+                            'errors' => $result['errors'],
+                            'results' => array_map(function ($e) { return $e->toArray(); }, $result['results'])
+                        ];
+                    } else {
+                        $data = ['errors' => ['No match was found for this search']];
+                    }
+                // Result is only an error message
                 } else {
-                    $data = ['results' => array_map(function ($e) { return $e->toArray(); }, $result)];
+                    $data = $result;
                 }
 
                 $response = $renderer->render($request, $response, $data);
@@ -316,7 +351,7 @@ class Application
 
             // If we have an error (Bad request), handle it
             if (400 === $response->getStatusCode()) {
-                $response = $renderer->render($request, $response, ['error' => $response->getBody()->__toString()]);
+                $response = $renderer->render($request, $response, ['errors' => [$response->getBody()->__toString()]]);
             }
 
             return $response;
