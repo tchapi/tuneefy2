@@ -57,6 +57,15 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
     // http://www.qobuz.com/fr-fr/album/mon-premier-ep-salut-cest-cool/0060254728859
     const REGEX_QOBUZ_ALBUM_SITE = "/\/album\/".Platform::REGEX_FULLSTRING."\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
+    // http://play.qobuz.com/album/0724384260958?track=1065478
+    const NEW_REGEX_QOBUZ_TRACK = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")\?track\=(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+
+    // http://play.qobuz.com/album/0724384260958
+    const NEW_REGEX_QOBUZ_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+
+    // http://play.qobuz.com/artist/36819
+    const NEW_REGEX_QOBUZ_ARTIST = "/\/artist\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+
     public function hasPermalink(string $permalink): bool
     {
         return strpos($permalink, 'qobuz.com') !== false;
@@ -71,12 +80,12 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
 
     private function getPlayerUrlFromTrackId(string $id): string
     {
-        return sprintf('http://player.qobuz.com/#!/track/%s', $id);
+        return sprintf('http://open.qobuz.com/track/%s', $id);
     }
 
     private function getPlayerUrlFromAlbumId(string $id): string
     {
-        return sprintf('http://player.qobuz.com/#!/album/%s', $id);
+        return sprintf('http://open.qobuz.com/album/%s', $id);
     }
 
     public function expandPermalink(string $permalink, int $mode): PlatformResult
@@ -86,11 +95,11 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
 
         $match = [];
 
-        if (preg_match(self::REGEX_QOBUZ_TRACK, $permalink, $match)) {
+        if (preg_match(self::REGEX_QOBUZ_TRACK, $permalink, $match) || preg_match(self::NEW_REGEX_QOBUZ_TRACK, $permalink, $match)) {
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
 
             if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $entity = $response->data;
@@ -101,10 +110,10 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
                 $musical_entity->getAlbum()->getArtist(),
                 $musical_entity->getSafeTitle(),
             ];
-        } elseif (preg_match(self::REGEX_QOBUZ_ALBUM, $permalink, $match) || preg_match(self::REGEX_QOBUZ_ALBUM_SITE, $permalink, $match)) {
+        } elseif (preg_match(self::REGEX_QOBUZ_ALBUM, $permalink, $match) || preg_match(self::REGEX_QOBUZ_ALBUM_SITE, $permalink, $match) || preg_match(self::NEW_REGEX_QOBUZ_ALBUM, $permalink, $match)) {
             $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
             if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $entity = $response->data;
@@ -115,10 +124,10 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
                 $musical_entity->getArtist(),
                 $musical_entity->getSafeTitle(),
             ];
-        } elseif (preg_match(self::REGEX_QOBUZ_ARTIST, $permalink, $match)) {
+        } elseif (preg_match(self::REGEX_QOBUZ_ARTIST, $permalink, $match) || preg_match(self::NEW_REGEX_QOBUZ_ARTIST, $permalink, $match)) {
             $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_id']);
             if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $query_words = [$response->data->name];
