@@ -47,7 +47,6 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
     ];
 
     // http://www.amazon.com/gp/product/B00GLQQ07E/whatever
-    // http://www.amazon.fr/Reine-Neiges-Bande-Originale-Fran%C3%A7aise/dp/B00GMHCPVC/ref=sr_1_1?s=dmusic&ie=UTF8&qid=1429567463&sr=1-1&keywords=frozen
     // http://www.amazon.com/dp/B00GLQQ0JW/ref=dm_ws_tlw_trk1
     const REGEX_AMAZON_ALL = "/\/(?:gp\/product|dp)\/(?P<asin>".Platform::REGEX_FULLSTRING.")[\/]?.*$/";
 
