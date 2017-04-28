@@ -30,6 +30,8 @@ class Utils
     */
     public static function sanitize(string $string): string
     {
+        $string = transliterator_transliterate('Any-Latin; Latin-ASCII', $string);
+
         return strtolower(preg_replace('/[^\w\-]+/u', '-', $string));
     }
 
