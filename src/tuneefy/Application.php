@@ -81,15 +81,19 @@ class Application
         // Fetch config files
         try {
             $platforms = Yaml::parse(file_get_contents(self::getPath('platforms')));
+            $params = Yaml::parse(file_get_contents(self::getPath('parameters')));
         } catch (\Exception $e) {
             // TODO  : translate / template : this will not happen in Slim's run loop, handle differently
             throw new \Exception('No config file found');
         }
 
-        if ($platforms === null) {
+        if ($platforms === null || $params === null) {
             // TODO  : translate / template : this will not happen in Slim's run loop, handle differently
             throw new \Exception('Bad config files');
         }
+
+        // Sets the base for the urls
+        Utils::setBase($params['urls']['base']);
 
         foreach ($platforms as $key => $platform) {
             $p = $this->engine->getPlatformByTag($key);
