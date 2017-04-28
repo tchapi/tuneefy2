@@ -44,7 +44,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
        // Platform::SEARCH_ARTIST => Map { "limit" => Platform::LIMIT }
     ];
 
-    // http://soundcloud.com/mariecolonna/eminem-feat-tricky-welcome-to
+    // https://soundcloud.com/robbabicz/pink-trees-1
     const REGEX_SOUNDCLOUD_ALL = "/\/".Platform::REGEX_FULLSTRING."\/".Platform::REGEX_FULLSTRING."[\/]?$/";
 
     public function hasPermalink(string $permalink): bool

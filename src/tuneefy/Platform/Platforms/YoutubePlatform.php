@@ -45,6 +45,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
        // Platform::SEARCH_ARTIST => []
     ];
 
+    // https://www.youtube.com/watch?v=FNdC_3LR2AI
     const REGEX_YOUTUBE_ALL = "/\/watch\?v\=(?P<video_id>[a-zA-Z0-9\-\_]*)(|\&(.*))$/";
 
     public function hasPermalink(string $permalink): bool
@@ -75,15 +76,26 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['video_id']);
 
             if ($response === null) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             if (count($response->data->items) > 0) {
                 $entity = $response->data->items[0];
-                $musical_entity = new TrackEntity($entity->snippet->title, new AlbumEntity('', '', $entity->snippet->thumbnails->medium->url));
-                $musical_entity->addLink(static::TAG, $this->getPermalinkFromTrackId($entity->id));
 
-                $query_words = [$musical_entity->getSafeTitle()];
+                // Extract title and author
+                list($title, $artist) = $this->parseYoutubeMusicVideoTitle($entity->snippet->title);
+                if ($title !== null && $artist !== null) {
+                    $musical_entity = new TrackEntity($title, new AlbumEntity('', $artist, $entity->snippet->thumbnails->medium->url));
+
+                    $musical_entity->addLink(static::TAG, $this->getPermalinkFromTrackId($entity->id));
+
+                    $query_words = [
+                        $musical_entity->getSafeTitle(),
+                        $musical_entity->getAlbum()->getArtist()
+                    ];
+                } else {
+                    $query_words = [$entity->snippet->title];
+                }
             }
         }
 
