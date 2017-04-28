@@ -20,9 +20,9 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
     const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
-        Platform::LOOKUP_TRACK => self::API_ENDPOINT.'track/%s',
+        Platform::LOOKUP_TRACK => self::API_ENDPOINT.'%s',
         Platform::LOOKUP_ALBUM => null,
-        Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'artist/%s',
+        Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'%s',
         Platform::SEARCH_TRACK => self::API_ENDPOINT.'search',
         Platform::SEARCH_ALBUM => null,
        // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search"
@@ -44,11 +44,11 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
        // Platform::SEARCH_ARTIST => Map { "type" => "user", "limit" => Platform::LIMIT }
     ];
 
-    // https://www.mixcloud.com/artist/aphex-twin/
-    const REGEX_MIXCLOUD_ARTIST = "/\/artist\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    // https://www.mixcloud.com/aphex-twin/
+    const REGEX_MIXCLOUD_ARTIST = "/mixcloud\.com\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
-    // http://api.mixcloud.com/track/michael-jackson/everybody/
-    const REGEX_MIXCLOUD_TRACK = "/\/track\/(?P<track_long_slug>".Platform::REGEX_FULLSTRING."\/".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    // https://www.mixcloud.com/LeFtOoO/678-new-section-boyz-onra-romare-drake-roman-rauch-clap-clap/
+    const REGEX_MIXCLOUD_TRACK = "/mixcloud\.com\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/(?P<track_long_slug>".Platform::REGEX_FULLSTRING."\/".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
     public function hasPermalink(string $permalink): bool
     {
