@@ -52,9 +52,8 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
     // NOT VALID ANYMORE http://www.deezer.com/fr/music/rjd2/deadringer-144183
     // http://www.deezer.com/fr/album/955330
     const REGEX_DEEZER_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
-    // http://www.deezer.com/fr/music/radiohead
     // http://www.deezer.com/fr/artist/16948
-    const REGEX_DEEZER_ARTIST = "/\/(?:music|artist)\/(?P<artist_id>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    const REGEX_DEEZER_ARTIST = "/\/artist\/(?P<artist_id>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
     public function hasPermalink(string $permalink): bool
     {
