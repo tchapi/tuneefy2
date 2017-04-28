@@ -45,15 +45,14 @@ class Utils
         }
 
         // Cut the string
-        $out = substr($text, 0, $max);
+        $out = trim(substr($text, 0, $max));
 
         if (strpos($text, ' ') === false) {
             // If it's a single word, just return with the suffix
             return $out.$append;
         } else {
             // Else, we replace the last word with the suffix
-            // TODO : Fixme because \w doesn't work with accented characters
-            return preg_replace('/\w+$/', $append, $out);
+            return substr($out, 0, strrpos($out, " ")+1).$append;
         }
     }
 
