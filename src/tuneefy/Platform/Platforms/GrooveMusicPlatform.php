@@ -92,7 +92,7 @@ class GrooveMusicPlatform extends Platform implements WebStreamingPlatformInterf
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
 
             if ($response === null || property_exists($response->data, 'Error')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $entity = $response->data->Tracks->Items[0];
@@ -107,7 +107,7 @@ class GrooveMusicPlatform extends Platform implements WebStreamingPlatformInterf
             $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
 
             if ($response === null || property_exists($response->data, 'Error')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $entity = $response->data->Albums->Items[0];
@@ -135,7 +135,7 @@ class GrooveMusicPlatform extends Platform implements WebStreamingPlatformInterf
         $response = $this->fetchSync($type, $query);
 
         if ($response === null || property_exists($response->data, 'Error')) {
-            throw new PlatformException();
+            throw new PlatformException($this);
         }
         $entities = $response->data;
 

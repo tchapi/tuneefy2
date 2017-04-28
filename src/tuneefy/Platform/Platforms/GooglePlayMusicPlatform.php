@@ -136,7 +136,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
 
             if ($response === null || !property_exists($response, 'data')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $entity = $response->data;
@@ -151,7 +151,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
             $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
 
             if ($response === null || !property_exists($response, 'data')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $entity = $response->data;
@@ -166,7 +166,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
             $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_id']);
 
             if ($response === null || !property_exists($response, 'data')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $query_words = [$response->data->name];
@@ -187,7 +187,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         $response = $this->fetchSync($type, $query);
 
         if ($response === null || property_exists($response->data, 'Error') || !property_exists($response->data, 'entries')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
         }
         $results = $response->data->entries;
 

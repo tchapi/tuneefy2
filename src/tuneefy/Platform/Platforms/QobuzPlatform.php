@@ -42,7 +42,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => [],
         Platform::SEARCH_TRACK => ['limit' => Platform::LIMIT],
         Platform::SEARCH_ALBUM => ['limit' => Platform::LIMIT],
-       // Platform::SEARCH_ARTIST => Map { "limit" => Platform::LIMIT }
+       // Platform::SEARCH_ARTIST => ['limit' => Platform::LIMIT]
     ];
 
     // http://player.qobuz.com/#!/track/23860968
@@ -139,7 +139,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         $response = $this->fetchSync($type, $query);
 
         if ($response === null) {
-            throw new PlatformException();
+            throw new PlatformException($this);
         }
         $entities = $response->data;
 

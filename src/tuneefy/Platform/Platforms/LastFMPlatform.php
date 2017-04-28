@@ -77,10 +77,14 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_slug']);
 
             if ($response === null || property_exists($response->data, 'error')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $entity = $response->data->track;
+
+            if (!property_exists($entity, 'album')) {
+                throw new PlatformException($this);
+            }
 
             if (property_exists($entity->album, 'image')) {
                 $picture = get_object_vars($entity->album->image[2]);
@@ -102,7 +106,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_slug']);
 
             if ($response === null || property_exists($response->data, 'error')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $entity = $response->data->album;
@@ -125,7 +129,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_slug']);
 
             if ($response === null || property_exists($response->data, 'error')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $query_words = [$response->data->artist->name];
@@ -146,7 +150,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         $response = $this->fetchSync($type, $query);
 
         if ($response === null) {
-                throw new PlatformException();
+                throw new PlatformException($this);
         }
 
         $entities = $response->data;

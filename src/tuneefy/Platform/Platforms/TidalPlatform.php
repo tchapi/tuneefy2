@@ -80,7 +80,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
 
             if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $entity = $response->data;
@@ -95,7 +95,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
 
             if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $entity = $response->data;
@@ -110,7 +110,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_id']);
 
             if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $query_words = [$response->data->name];
@@ -131,7 +131,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         $response = $this->fetchSync($type, $query);
 
         if ($response === null) {
-            throw new PlatformException();
+            throw new PlatformException($this);
         }
 
         $entities = $response->data->items;

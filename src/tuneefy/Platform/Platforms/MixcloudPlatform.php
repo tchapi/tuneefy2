@@ -63,15 +63,15 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
         $match = [];
 
         if (preg_match(self::REGEX_MIXCLOUD_TRACK, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_long_slug']);
+            $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['artist_slug'].'/'.$match['track_long_slug']);
 
             if ($response === null || property_exists($response->data, 'error')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $entity = $response->data;
 
-            $musical_entity = new TrackEntity($entity->name, new AlbumEntity('', $entity->artist->name, ''));
+            $musical_entity = new TrackEntity($entity->name, new AlbumEntity('', $entity->user->name, ''));
             $musical_entity->addLink(static::TAG, $entity->url);
 
             $query_words = [
@@ -82,7 +82,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
             $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_slug']);
 
             if ($response === null || property_exists($response->data, 'error')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $query_words = [$response->data->name];
@@ -100,7 +100,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
 
     public function search(int $type, string $query, int $limit, int $mode): array
     {
-        throw new PlatformException();
+        throw new PlatformException($this);
         /*
           Below is the actual working code, but it seems unlikely that we're going
           to use it since we search "mixes" by "users" and not real tracks from

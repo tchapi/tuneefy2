@@ -67,7 +67,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
             $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
 
             if ($response === null) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             if (intval($response->data->resultCount) > 0) {
@@ -84,7 +84,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
             $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_id']);
 
             if ($response === null) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             if (intval($response->data->resultCount) > 0) {
@@ -107,7 +107,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         $response = $this->fetchSync($type, $query);
 
         if ($response === null) {
-            throw new PlatformException();
+            throw new PlatformException($this);
         }
         $entities = $response->data->results;
 

@@ -80,7 +80,7 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['asin']);
 
             if ($response === null) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             if (property_exists($response->data, 'trackList')) { // It's a track then
@@ -121,7 +121,7 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
         $response = $this->fetchSync($type, $query);
 
         if ($response === null) {
-            throw new PlatformException();
+            throw new PlatformException($this);
         } else if (!property_exists($response->data->results, 'result') || $response->data->results->stats->totalCount === 0) {
             return [];
         }

@@ -70,7 +70,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $permalink);
 
             if ($response === null || property_exists($response->data, 'errors')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $entity = $response->data;
@@ -99,7 +99,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         $response = $this->fetchSync($type, $query);
 
         if ($response === null) {
-            throw new PlatformException();
+            throw new PlatformException($this);
         }
 
         $entities = $response->data;

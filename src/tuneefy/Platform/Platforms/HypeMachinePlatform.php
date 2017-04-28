@@ -71,7 +71,7 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
             $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
 
             if ($response === null || !property_exists($response->data, '0')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $entity = array_values(get_object_vars($response->data)); // "O" as a key, seriously ?
@@ -88,7 +88,7 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
             $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_slug']);
 
             if ($response === null || !property_exists($response->data, '0')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
 
             $entity = array_values(get_object_vars($response->data));
@@ -110,7 +110,7 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
         $response = $this->fetchSync($type, $query);
 
         if ($response === null || !property_exists($response->data, '0')) {
-            throw new PlatformException();
+            throw new PlatformException($this);
         }
         unset($response->data->version);
         $entities = array_values(get_object_vars($response->data)); // "O" as a key, seriously ?

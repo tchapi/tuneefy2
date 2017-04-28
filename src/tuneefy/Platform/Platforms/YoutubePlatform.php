@@ -118,7 +118,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         $response = $this->fetchSync($type, $query);
 
         if ($response === null) {
-            throw new PlatformException();
+            throw new PlatformException($this);
         }
         $entities = $response->data->items;
 

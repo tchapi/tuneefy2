@@ -98,7 +98,7 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
         $response = $this->fetchSync($type, $query);
 
         if ($response === null) {
-            throw new PlatformException();
+            throw new PlatformException($this);
         }
         $results = $response->data;
 

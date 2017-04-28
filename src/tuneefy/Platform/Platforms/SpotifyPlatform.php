@@ -75,7 +75,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
             $response = $this->fetchSync($object_type, $match['item_id']);
 
             if ($response === null || property_exists($response->data, 'error')) {
-                throw new PlatformException();
+                throw new PlatformException($this);
             }
             $entity = $response->data;
 
@@ -118,7 +118,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
         $response = $this->fetchSync($type, $query);
 
         if ($response === null) {
-                throw new PlatformException();
+                throw new PlatformException($this);
         }
         $entities = $response->data;
 
