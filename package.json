@@ -7,7 +7,8 @@
     "test": "tests"
   },
   "scripts": {
-    "aglio": "./node_modules/aglio/bin/aglio.js --theme-full-width --theme-template triple --theme-variables flatly -i app/templates/api/main.apib -o app/templates/api.html"
+    "build-assets": "echo 'TODO'",
+    "api-documentation": "./node_modules/aglio/bin/aglio.js --theme-full-width --theme-template triple --theme-variables flatly -i app/templates/api/main.apib -o app/templates/api.html"
   },
   "repository": {
     "type": "git",

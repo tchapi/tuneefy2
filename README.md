@@ -10,6 +10,13 @@ This project uses [composer](https://getcomposer.org/). Just run :
 
  ... and you should be good to go !
 
+### Building assets & API doc
+
+To build the assets and the API documentation, I use **npm** and some modules.
+
+    npm run build-assets
+    npm run api-documentation
+
 ### Packages used
 
   - [Composer](https://getcomposer.org/), providing a nice package manager *and* a practical PSR-4 autoloader
