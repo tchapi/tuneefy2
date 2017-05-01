@@ -17,7 +17,8 @@
         "slim/twig-view": "^2.2",
         "twig/twig": "~1.18",
         "markwilson/xml-to-json": "0.1.*",
-        "akrabat/rka-content-type-renderer": "^0.7.3"
+        "akrabat/rka-content-type-renderer": "^0.7.3",
+        "chadicus/slim-oauth2": "^3.1"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.2",

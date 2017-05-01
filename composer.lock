@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "34d3ca484b8a98e908f66c77bb869dc2",
+    "hash": "fb6fcfc4f2dcdc8c599bef13f8c2ea6d",
+    "content-hash": "f2dee595632ebe773629f19b8a72e0be",
     "packages": [
         {
             "name": "akrabat/rka-content-type-renderer",
@@ -59,7 +60,322 @@
                 "psr7",
                 "xml"
             ],
-            "time": "2017-01-28T22:07:35+00:00"
+            "time": "2017-01-28 22:07:35"
+        },
+        {
+            "name": "bshaffer/oauth2-server-php",
+            "version": "v1.9.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bshaffer/oauth2-server-php.git",
+                "reference": "8856aed1a98d6da596ae3f9b8095b5c7a1581697"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bshaffer/oauth2-server-php/zipball/8856aed1a98d6da596ae3f9b8095b5c7a1581697",
+                "reference": "8856aed1a98d6da596ae3f9b8095b5c7a1581697",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "aws/aws-sdk-php": "~2.8",
+                "firebase/php-jwt": "~2.2",
+                "mongodb/mongodb": "^1.1",
+                "predis/predis": "dev-master",
+                "thobbs/phpcassa": "dev-master"
+            },
+            "suggest": {
+                "aws/aws-sdk-php": "~2.8 is required to use DynamoDB storage",
+                "firebase/php-jwt": "~1.1 is required to use MondoDB storage",
+                "predis/predis": "Required to use Redis storage",
+                "thobbs/phpcassa": "Required to use Cassandra storage"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "OAuth2": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brent Shaffer",
+                    "email": "bshafs@gmail.com",
+                    "homepage": "http://brentertainment.com"
+                }
+            ],
+            "description": "OAuth2 Server for PHP",
+            "homepage": "http://github.com/bshaffer/oauth2-server-php",
+            "keywords": [
+                "auth",
+                "oauth",
+                "oauth2"
+            ],
+            "time": "2017-01-06 23:20:00"
+        },
+        {
+            "name": "chadicus/psr-middleware",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chadicus/psr-middleware.git",
+                "reference": "8a5a9b409bebba6a8feaddeea4766f7a0eca9214"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chadicus/psr-middleware/zipball/8a5a9b409bebba6a8feaddeea4766f7a0eca9214",
+                "reference": "8a5a9b409bebba6a8feaddeea4766f7a0eca9214",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.6 || ^7.0",
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "chadicus/coding-standard": "^1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Chadicus\\Psr\\Middleware\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chad Gray",
+                    "email": "chadwickgray@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Foundational interface for PSR-7 middleware",
+            "keywords": [
+                "middleware",
+                "psr"
+            ],
+            "time": "2016-09-29 15:29:40"
+        },
+        {
+            "name": "chadicus/slim-oauth2",
+            "version": "v3.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chadicus/slim-oauth2.git",
+                "reference": "ac649e409d5cf0528deebebe50f61d806e74a540"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chadicus/slim-oauth2/zipball/ac649e409d5cf0528deebebe50f61d806e74a540",
+                "reference": "ac649e409d5cf0528deebebe50f61d806e74a540",
+                "shasum": ""
+            },
+            "require": {
+                "chadicus/slim-oauth2-http": "^3.1",
+                "chadicus/slim-oauth2-middleware": "^3.1",
+                "chadicus/slim-oauth2-routes": "^3.1"
+            },
+            "type": "metapackage",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chad Gray",
+                    "email": "chadwickgray@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "OAuth2 routes, middleware and utilities for use within a Slim Framework API",
+            "keywords": [
+                "api",
+                "http",
+                "middleware",
+                "oauth2",
+                "psr7",
+                "routes",
+                "slim"
+            ],
+            "time": "2017-01-03 13:50:21"
+        },
+        {
+            "name": "chadicus/slim-oauth2-http",
+            "version": "v3.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chadicus/slim-oauth2-http.git",
+                "reference": "31f9c3da26c40080da29421be2138f9ad0dc0d77"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chadicus/slim-oauth2-http/zipball/31f9c3da26c40080da29421be2138f9ad0dc0d77",
+                "reference": "31f9c3da26c40080da29421be2138f9ad0dc0d77",
+                "shasum": ""
+            },
+            "require": {
+                "bshaffer/oauth2-server-php": "^1.8",
+                "php": "^5.6 || ^7.0",
+                "zendframework/zend-diactoros": "^1.3"
+            },
+            "require-dev": {
+                "chadicus/coding-standard": "^1.2",
+                "humbug/humbug": "1.0.0-alpha2",
+                "phpunit/phpunit": "^5.5",
+                "satooshi/php-coveralls": "^1.0"
+            },
+            "suggest": {
+                "chadicus/slim-oauth2-middleware": "Adds OAuth2 middleware for API requests.",
+                "chadicus/slim-oauth2-routes": "Offers standard OAuth2 routes for slim applications"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Chadicus\\Slim\\OAuth2\\Http\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chad Gray",
+                    "email": "chadwickgray@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Bridge components for PSR-7 and bshaffer's OAuth2 Server http messages.",
+            "keywords": [
+                "Bridge",
+                "http",
+                "message",
+                "oauth2",
+                "psr7",
+                "request",
+                "response",
+                "slim"
+            ],
+            "time": "2017-01-10 18:33:55"
+        },
+        {
+            "name": "chadicus/slim-oauth2-middleware",
+            "version": "v3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chadicus/slim-oauth2-middleware.git",
+                "reference": "a57f5e3e4914b3ae13ad96bd12eec6bdeb1876db"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chadicus/slim-oauth2-middleware/zipball/a57f5e3e4914b3ae13ad96bd12eec6bdeb1876db",
+                "reference": "a57f5e3e4914b3ae13ad96bd12eec6bdeb1876db",
+                "shasum": ""
+            },
+            "require": {
+                "bshaffer/oauth2-server-php": "^1.8",
+                "chadicus/psr-middleware": "^1.0",
+                "chadicus/slim-oauth2-http": "^3.1",
+                "container-interop/container-interop": "^1.1",
+                "php": "^5.6 || ^7.0",
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "chadicus/coding-standard": "^1.0",
+                "php-di/php-di": "^5.4",
+                "phpunit/phpunit": "^5.0",
+                "satooshi/php-coveralls": "^1.0",
+                "zendframework/zend-diactoros": "^1.3"
+            },
+            "suggest": {
+                "chadicus/slim-oauth2-routes": "Offers standard OAuth2 routes for slim applications"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Chadicus\\Slim\\OAuth2\\Middleware\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chad Gray",
+                    "email": "chadwickgray@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "OAuth2 middleware for use within a Slim Framework API",
+            "keywords": [
+                "middleware",
+                "oauth2",
+                "slim"
+            ],
+            "time": "2017-01-10 19:03:30"
+        },
+        {
+            "name": "chadicus/slim-oauth2-routes",
+            "version": "v3.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/chadicus/slim-oauth2-routes.git",
+                "reference": "2928cd083822bf80cd139eb09a3054e6caf39a84"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/chadicus/slim-oauth2-routes/zipball/2928cd083822bf80cd139eb09a3054e6caf39a84",
+                "reference": "2928cd083822bf80cd139eb09a3054e6caf39a84",
+                "shasum": ""
+            },
+            "require": {
+                "bshaffer/oauth2-server-php": "^1.8",
+                "chadicus/slim-oauth2-http": "^3.1",
+                "php": "^5.6 || ^7.0"
+            },
+            "require-dev": {
+                "chadicus/coding-standard": "^1.0",
+                "phpunit/phpunit": "^5.0",
+                "satooshi/php-coveralls": "^1.0",
+                "slim/php-view": "^2.0",
+                "zendframework/zend-diactoros": "^1.3"
+            },
+            "suggest": {
+                "chadicus/slim-oauth2-middleware": "Adds OAuth2 middleware for API requests.",
+                "slim/php-view": "Simple template rendering"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Chadicus\\Slim\\OAuth2\\Routes\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chad Gray",
+                    "email": "chadwickgray@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "OAuth2 routes for use within a Slim Framework API",
+            "keywords": [
+                "oauth2",
+                "routing",
+                "slim"
+            ],
+            "time": "2017-01-10 19:21:04"
         },
         {
             "name": "container-interop/container-interop",
@@ -90,7 +406,7 @@
             ],
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
-            "time": "2017-02-14T19:40:03+00:00"
+            "time": "2017-02-14 19:40:03"
         },
         {
             "name": "markwilson/xml-to-json",
@@ -125,7 +441,7 @@
                     "email": "mark@89allport.co.uk"
                 }
             ],
-            "time": "2015-04-08T07:52:43+00:00"
+            "time": "2015-04-08 07:52:43"
         },
         {
             "name": "nikic/fast-route",
@@ -168,7 +484,7 @@
                 "router",
                 "routing"
             ],
-            "time": "2017-01-19T11:35:12+00:00"
+            "time": "2017-01-19 11:35:12"
         },
         {
             "name": "pimple/pimple",
@@ -214,7 +530,7 @@
                 "container",
                 "dependency injection"
             ],
-            "time": "2015-09-11T15:10:35+00:00"
+            "time": "2015-09-11 15:10:35"
         },
         {
             "name": "psr/container",
@@ -263,7 +579,7 @@
                 "container-interop",
                 "psr"
             ],
-            "time": "2017-02-14T16:28:37+00:00"
+            "time": "2017-02-14 16:28:37"
         },
         {
             "name": "psr/http-message",
@@ -313,7 +629,7 @@
                 "request",
                 "response"
             ],
-            "time": "2016-08-06T14:39:51+00:00"
+            "time": "2016-08-06 14:39:51"
         },
         {
             "name": "slim/slim",
@@ -384,7 +700,7 @@
                 "micro",
                 "router"
             ],
-            "time": "2017-03-19T17:55:20+00:00"
+            "time": "2017-03-19 17:55:20"
         },
         {
             "name": "slim/twig-view",
@@ -434,7 +750,7 @@
                 "twig",
                 "view"
             ],
-            "time": "2017-01-25T20:38:39+00:00"
+            "time": "2017-01-25 20:38:39"
         },
         {
             "name": "symfony/yaml",
@@ -483,7 +799,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2017-03-20T09:41:44+00:00"
+            "time": "2017-03-20 09:41:44"
         },
         {
             "name": "twig/twig",
@@ -545,7 +861,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-04-20T17:39:48+00:00"
+            "time": "2017-04-20 17:39:48"
         },
         {
             "name": "willdurand/negotiation",
@@ -597,7 +913,59 @@
                 "header",
                 "negotiation"
             ],
-            "time": "2016-10-14T09:17:47+00:00"
+            "time": "2016-10-14 09:17:47"
+        },
+        {
+            "name": "zendframework/zend-diactoros",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-diactoros.git",
+                "reference": "b03f285a333f51e58c95cce54109a4a9ed691436"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-diactoros/zipball/b03f285a333f51e58c95cce54109a4a9ed691436",
+                "reference": "b03f285a333f51e58c95cce54109a4a9ed691436",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.4 || ^7.0",
+                "psr/http-message": "~1.0"
+            },
+            "provide": {
+                "psr/http-message-implementation": "1.0"
+            },
+            "require-dev": {
+                "ext-dom": "*",
+                "ext-libxml": "*",
+                "phpunit/phpunit": "^4.6 || ^5.5",
+                "zendframework/zend-coding-standard": "~1.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4-dev",
+                    "dev-develop": "1.5-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Diactoros\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "description": "PSR HTTP Message implementations",
+            "homepage": "https://github.com/zendframework/zend-diactoros",
+            "keywords": [
+                "http",
+                "psr",
+                "psr-7"
+            ],
+            "time": "2017-04-06 16:18:34"
         }
     ],
     "packages-dev": [
@@ -657,7 +1025,7 @@
             ],
             "description": "Deployment Tool",
             "homepage": "https://deployer.org",
-            "time": "2017-03-12T07:28:14+00:00"
+            "time": "2017-03-12 07:28:14"
         },
         {
             "name": "doctrine/annotations",
@@ -725,7 +1093,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2017-02-24T16:22:25+00:00"
+            "time": "2017-02-24 16:22:25"
         },
         {
             "name": "doctrine/instantiator",
@@ -779,7 +1147,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2015-06-14T21:17:01+00:00"
+            "time": "2015-06-14 21:17:01"
         },
         {
             "name": "doctrine/lexer",
@@ -833,7 +1201,7 @@
                 "lexer",
                 "parser"
             ],
-            "time": "2014-09-09T13:34:57+00:00"
+            "time": "2014-09-09 13:34:57"
         },
         {
             "name": "elfet/pure",
@@ -880,7 +1248,7 @@
                 }
             ],
             "description": "Pure PHP key-value storage",
-            "time": "2016-03-19T14:26:03+00:00"
+            "time": "2016-03-19 14:26:03"
         },
         {
             "name": "evenement/evenement",
@@ -926,7 +1294,7 @@
                 "event-dispatcher",
                 "event-emitter"
             ],
-            "time": "2012-11-02T14:49:47+00:00"
+            "time": "2012-11-02 14:49:47"
         },
         {
             "name": "friendsofphp/php-cs-fixer",
@@ -1003,7 +1371,7 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
-            "time": "2017-04-25T20:50:30+00:00"
+            "time": "2017-04-25 20:50:30"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -1068,7 +1436,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2017-03-20T17:10:46+00:00"
+            "time": "2017-03-20 17:10:46"
         },
         {
             "name": "ircmaxell/password-compat",
@@ -1110,7 +1478,7 @@
                 "hashing",
                 "password"
             ],
-            "time": "2014-11-20T16:49:30+00:00"
+            "time": "2014-11-20 16:49:30"
         },
         {
             "name": "monolog/monolog",
@@ -1188,7 +1556,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2017-03-13T07:08:03+00:00"
+            "time": "2017-03-13 07:08:03"
         },
         {
             "name": "myclabs/deep-copy",
@@ -1230,7 +1598,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2017-04-12T18:52:22+00:00"
+            "time": "2017-04-12 18:52:22"
         },
         {
             "name": "paragonie/random_compat",
@@ -1278,7 +1646,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2017-03-13T16:27:32+00:00"
+            "time": "2017-03-13 16:27:32"
         },
         {
             "name": "phar-io/manifest",
@@ -1333,7 +1701,7 @@
                 }
             ],
             "description": "Component for reading phar.io manifest information from a PHP Archive (PHAR)",
-            "time": "2017-03-05T18:14:27+00:00"
+            "time": "2017-03-05 18:14:27"
         },
         {
             "name": "phar-io/version",
@@ -1380,7 +1748,7 @@
                 }
             ],
             "description": "Library for handling version information and constraints",
-            "time": "2017-03-05T17:38:23+00:00"
+            "time": "2017-03-05 17:38:23"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -1434,7 +1802,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2015-12-27T11:43:31+00:00"
+            "time": "2015-12-27 11:43:31"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -1479,7 +1847,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2016-09-30T07:12:33+00:00"
+            "time": "2016-09-30 07:12:33"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -1526,7 +1894,7 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
-            "time": "2016-11-25T06:54:22+00:00"
+            "time": "2016-11-25 06:54:22"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -1618,7 +1986,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2016-10-04T00:57:04+00:00"
+            "time": "2016-10-04 00:57:04"
         },
         {
             "name": "phpspec/prophecy",
@@ -1681,7 +2049,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2017-03-02T20:05:34+00:00"
+            "time": "2017-03-02 20:05:34"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1745,7 +2113,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-04-21T08:03:57+00:00"
+            "time": "2017-04-21 08:03:57"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -1792,7 +2160,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2016-10-03T07:40:28+00:00"
+            "time": "2016-10-03 07:40:28"
         },
         {
             "name": "phpunit/php-text-template",
@@ -1833,7 +2201,7 @@
             "keywords": [
                 "template"
             ],
-            "time": "2015-06-21T13:50:34+00:00"
+            "time": "2015-06-21 13:50:34"
         },
         {
             "name": "phpunit/php-timer",
@@ -1882,7 +2250,7 @@
             "keywords": [
                 "timer"
             ],
-            "time": "2017-02-26T11:10:40+00:00"
+            "time": "2017-02-26 11:10:40"
         },
         {
             "name": "phpunit/php-token-stream",
@@ -1931,7 +2299,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2017-02-27T10:12:30+00:00"
+            "time": "2017-02-27 10:12:30"
         },
         {
             "name": "phpunit/phpunit",
@@ -2015,7 +2383,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-04-25T21:30:13+00:00"
+            "time": "2017-04-25 21:30:13"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -2074,7 +2442,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2017-03-03T06:30:20+00:00"
+            "time": "2017-03-03 06:30:20"
         },
         {
             "name": "psr/cache",
@@ -2120,7 +2488,7 @@
                 "psr",
                 "psr-6"
             ],
-            "time": "2016-08-06T20:24:11+00:00"
+            "time": "2016-08-06 20:24:11"
         },
         {
             "name": "psr/log",
@@ -2167,7 +2535,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10T12:19:37+00:00"
+            "time": "2016-10-10 12:19:37"
         },
         {
             "name": "react/cache",
@@ -2201,7 +2569,7 @@
             "keywords": [
                 "cache"
             ],
-            "time": "2016-02-25T18:17:16+00:00"
+            "time": "2016-02-25 18:17:16"
         },
         {
             "name": "react/child-process",
@@ -2241,7 +2609,7 @@
             "keywords": [
                 "process"
             ],
-            "time": "2017-03-14T13:23:20+00:00"
+            "time": "2017-03-14 13:23:20"
         },
         {
             "name": "react/dns",
@@ -2283,7 +2651,7 @@
                 "dns",
                 "dns-resolver"
             ],
-            "time": "2017-04-16T11:20:57+00:00"
+            "time": "2017-04-16 11:20:57"
         },
         {
             "name": "react/event-loop",
@@ -2327,7 +2695,7 @@
                 "asynchronous",
                 "event-loop"
             ],
-            "time": "2016-03-08T02:09:32+00:00"
+            "time": "2016-03-08 02:09:32"
         },
         {
             "name": "react/http",
@@ -2367,7 +2735,7 @@
             "keywords": [
                 "http"
             ],
-            "time": "2017-02-13T14:12:50+00:00"
+            "time": "2017-02-13 14:12:50"
         },
         {
             "name": "react/http-client",
@@ -2410,7 +2778,7 @@
             "keywords": [
                 "http"
             ],
-            "time": "2017-03-20T09:55:48+00:00"
+            "time": "2017-03-20 09:55:48"
         },
         {
             "name": "react/promise",
@@ -2456,7 +2824,7 @@
                 "promise",
                 "promises"
             ],
-            "time": "2017-03-25T12:08:31+00:00"
+            "time": "2017-03-25 12:08:31"
         },
         {
             "name": "react/promise-timer",
@@ -2506,7 +2874,7 @@
                 "timeout",
                 "timer"
             ],
-            "time": "2016-12-27T08:12:19+00:00"
+            "time": "2016-12-27 08:12:19"
         },
         {
             "name": "react/react",
@@ -2559,7 +2927,7 @@
                 "event-loop",
                 "reactor"
             ],
-            "time": "2014-12-11T02:06:55+00:00"
+            "time": "2014-12-11 02:06:55"
         },
         {
             "name": "react/socket",
@@ -2601,7 +2969,7 @@
             "keywords": [
                 "Socket"
             ],
-            "time": "2017-01-26T09:23:38+00:00"
+            "time": "2017-01-26 09:23:38"
         },
         {
             "name": "react/socket-client",
@@ -2643,7 +3011,7 @@
             "keywords": [
                 "Socket"
             ],
-            "time": "2016-12-06T10:54:49+00:00"
+            "time": "2016-12-06 10:54:49"
         },
         {
             "name": "react/stream",
@@ -2687,7 +3055,7 @@
                 "pipe",
                 "stream"
             ],
-            "time": "2017-01-25T14:44:14+00:00"
+            "time": "2017-01-25 14:44:14"
         },
         {
             "name": "ringcentral/psr7",
@@ -2745,7 +3113,7 @@
                 "stream",
                 "uri"
             ],
-            "time": "2016-03-25T17:36:49+00:00"
+            "time": "2016-03-25 17:36:49"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -2790,7 +3158,7 @@
             ],
             "description": "Looks up which function or method a line of code belongs to",
             "homepage": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/",
-            "time": "2017-03-04T06:30:41+00:00"
+            "time": "2017-03-04 06:30:41"
         },
         {
             "name": "sebastian/comparator",
@@ -2854,7 +3222,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2017-03-03T06:26:08+00:00"
+            "time": "2017-03-03 06:26:08"
         },
         {
             "name": "sebastian/diff",
@@ -2906,7 +3274,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2015-12-08T07:14:41+00:00"
+            "time": "2015-12-08 07:14:41"
         },
         {
             "name": "sebastian/environment",
@@ -2956,7 +3324,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2017-04-21T14:40:32+00:00"
+            "time": "2017-04-21 14:40:32"
         },
         {
             "name": "sebastian/exporter",
@@ -3023,7 +3391,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2017-04-03T13:19:02+00:00"
+            "time": "2017-04-03 13:19:02"
         },
         {
             "name": "sebastian/global-state",
@@ -3074,7 +3442,7 @@
             "keywords": [
                 "global state"
             ],
-            "time": "2015-10-12T03:26:01+00:00"
+            "time": "2015-10-12 03:26:01"
         },
         {
             "name": "sebastian/object-enumerator",
@@ -3121,7 +3489,7 @@
             ],
             "description": "Traverses array structures and object graphs to enumerate all referenced objects",
             "homepage": "https://github.com/sebastianbergmann/object-enumerator/",
-            "time": "2017-03-12T15:17:29+00:00"
+            "time": "2017-03-12 15:17:29"
         },
         {
             "name": "sebastian/object-reflector",
@@ -3166,7 +3534,7 @@
             ],
             "description": "Allows reflection of object attributes, including inherited and non-public ones",
             "homepage": "https://github.com/sebastianbergmann/object-reflector/",
-            "time": "2017-03-29T09:07:27+00:00"
+            "time": "2017-03-29 09:07:27"
         },
         {
             "name": "sebastian/recursion-context",
@@ -3219,7 +3587,7 @@
             ],
             "description": "Provides functionality to recursively process PHP variables",
             "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
-            "time": "2017-03-03T06:23:57+00:00"
+            "time": "2017-03-03 06:23:57"
         },
         {
             "name": "sebastian/resource-operations",
@@ -3261,7 +3629,7 @@
             ],
             "description": "Provides a list of PHP built-in functions that operate on resources",
             "homepage": "https://www.github.com/sebastianbergmann/resource-operations",
-            "time": "2015-07-28T20:34:47+00:00"
+            "time": "2015-07-28 20:34:47"
         },
         {
             "name": "sebastian/version",
@@ -3304,7 +3672,7 @@
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
-            "time": "2016-10-03T07:35:21+00:00"
+            "time": "2016-10-03 07:35:21"
         },
         {
             "name": "symfony/cache",
@@ -3371,7 +3739,7 @@
                 "caching",
                 "psr6"
             ],
-            "time": "2017-03-28T21:38:24+00:00"
+            "time": "2017-03-28 21:38:24"
         },
         {
             "name": "symfony/console",
@@ -3434,7 +3802,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2017-04-04T14:33:42+00:00"
+            "time": "2017-04-04 14:33:42"
         },
         {
             "name": "symfony/debug",
@@ -3491,7 +3859,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2017-03-28T21:38:24+00:00"
+            "time": "2017-03-28 21:38:24"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -3551,7 +3919,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2017-04-04T07:26:27+00:00"
+            "time": "2017-04-04 07:26:27"
         },
         {
             "name": "symfony/expression-language",
@@ -3601,7 +3969,7 @@
             ],
             "description": "Symfony ExpressionLanguage Component",
             "homepage": "https://symfony.com",
-            "time": "2017-04-04T07:26:27+00:00"
+            "time": "2017-04-04 07:26:27"
         },
         {
             "name": "symfony/filesystem",
@@ -3650,7 +4018,7 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2017-03-26T15:47:15+00:00"
+            "time": "2017-03-26 15:47:15"
         },
         {
             "name": "symfony/finder",
@@ -3699,7 +4067,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2017-03-20T09:32:19+00:00"
+            "time": "2017-03-20 09:32:19"
         },
         {
             "name": "symfony/options-resolver",
@@ -3753,7 +4121,7 @@
                 "configuration",
                 "options"
             ],
-            "time": "2017-03-21T21:44:32+00:00"
+            "time": "2017-03-21 21:44:32"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -3812,7 +4180,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+00:00"
+            "time": "2016-11-14 01:06:16"
         },
         {
             "name": "symfony/polyfill-php54",
@@ -3870,7 +4238,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+00:00"
+            "time": "2016-11-14 01:06:16"
         },
         {
             "name": "symfony/polyfill-php55",
@@ -3926,7 +4294,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+00:00"
+            "time": "2016-11-14 01:06:16"
         },
         {
             "name": "symfony/polyfill-php70",
@@ -3985,7 +4353,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+00:00"
+            "time": "2016-11-14 01:06:16"
         },
         {
             "name": "symfony/polyfill-xml",
@@ -4043,7 +4411,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+00:00"
+            "time": "2016-11-14 01:06:16"
         },
         {
             "name": "symfony/process",
@@ -4092,7 +4460,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2017-03-27T18:07:02+00:00"
+            "time": "2017-03-27 18:07:02"
         },
         {
             "name": "symfony/stopwatch",
@@ -4141,7 +4509,7 @@
             ],
             "description": "Symfony Stopwatch Component",
             "homepage": "https://symfony.com",
-            "time": "2017-02-18T17:28:00+00:00"
+            "time": "2017-02-18 17:28:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -4181,7 +4549,7 @@
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
-            "time": "2017-04-07T12:08:54+00:00"
+            "time": "2017-04-07 12:08:54"
         },
         {
             "name": "webmozart/assert",
@@ -4231,7 +4599,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2016-11-23T20:04:58+00:00"
+            "time": "2016-11-23 20:04:58"
         }
     ],
     "aliases": [],

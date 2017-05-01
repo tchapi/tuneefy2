@@ -2,13 +2,17 @@
 
 namespace tuneefy;
 
+use Chadicus\Slim\OAuth2\Middleware;
+use Chadicus\Slim\OAuth2\Routes;
+use OAuth2;
 use RKA\ContentTypeRenderer\Renderer;
 use Slim\App;
 use Slim\Views\Twig;
 use Symfony\Component\Yaml\Yaml;
+use tuneefy\Controller\ApiController;
+use tuneefy\Controller\FrontendController;
 use tuneefy\DB\DatabaseHandler;
 use tuneefy\Platform\Platform;
-use tuneefy\Platform\PlatformException;
 use tuneefy\Utils\CustomErrorHandler;
 use tuneefy\Utils\CustomNotFoundHandler;
 use tuneefy\Utils\Utils;
@@ -106,208 +110,28 @@ class Application
               ->setCapabilities($platform['capabilities'])
               ->setCredentials($platform['key'], $platform['secret']);
         }
-    }
 
-    public function prepare()//: mixed
-    {
         // Connect to DB
         try {
-            $container = $this->slimApp->getContainer();
-            $container['db'] = DatabaseHandler::getInstance();
-            // TODO : instantiate DB once FIXME
+            $db = new DatabaseHandler($params);
         } catch (\Exception $e) {
             // TODO  : translate / template
-            $this->slimApp->halt(500, 'Problem with database instantiation : '.$e->getMesage());
+            throw new \Exception('Problem with database instantiation : '.$e->getMesage());
         }
 
+        $container = $this->slimApp->getContainer();
         $engine = $this->engine;
         $renderer = $this->renderer;
 
-        // Add middleware for checking Oauth when necessary (API)
-        //$this->slimApp->add();
+        /* Documentation for the API, has to go first */
+        $this->slimApp->get('/api', FrontendController::class.':api');
 
-        // Binds the API, with a custom view handler at the end
-        $this->slimApp->group('/api', function () use ($engine, $renderer) {
-            /*
-              Lookup (for a permalink)
-            */
-            $this->get('/lookup', function ($request, $response, $args) use ($engine, $renderer) {
-                $permalink = $request->getQueryParam('q');
-                $real_mode = $engine->translateFlag('mode', $request->getQueryParam('mode'));
-
-                // Permalink could be null, but we don't accept that
-                if ($permalink === null || $permalink === '') {
-                    // TODO translation
-                    $response->write('Missing or empty parameter : q (permalink)');
-
-                    return $response->withStatus(400);
-                }
-
-                if ($real_mode === null) {
-                    $real_mode = Platform::MODE_LAZY;
-                }
-                
-                try {
-                    $result = $engine->lookup($permalink, $real_mode);
-                } catch (PlatformException $e) {
-                    $result = false;
-                }
-
-                // From the try/catch up there
-                if ($result === false) {
-                    $data = ['errors' => ['There was a problem while fetching data from the platform']];
-                // If we have a result
-                } else if (isset($result['result'])) {
-                    if ($result['result']->getMusicalEntity()) {  
-                        $data = [
-                            'result' => $result['result']->toArray()
-                        ];
-                    } else {
-                        $data = [
-                            'errors' => ['No match was found for this permalink'],
-                            'result' => $result['result']->toArray()
-                        ];
-                    }
-                // Result is only an error message
-                } else {
-                    $data = $result;
-                }
-
-                $response = $renderer->render($request, $response, $data);
-
-                return $response->withStatus(200);
-            });
-
-            /*
-              Search (on one platform only)
-            */
-            $this->get('/search/{type}/{platform_str}', function ($request, $response, $args) use ($engine, $renderer) {
-                $query = $request->getQueryParam('q');
-                $limit = $request->getQueryParam('limit');
-                $real_type = $engine->translateFlag('type', $args['type']);
-                $real_mode = $engine->translateFlag('mode', $request->getQueryParam('mode'));
-
-                if ($query === null || $query === '') {
-                    // TODO translation
-                    $response->write('Missing or empty parameter : q (query)');
-
-                    return $response->withStatus(400);
-                }
-
-                $platform = $engine->getPlatformByTag($args['platform_str']);
-                if ($platform === null) {
-                    // TODO translation
-                    $response->write('Invalid parameter : platform '.$args['platform_str'].' does not exist');
-
-                    return $response->withStatus(400);
-                }
-
-                if ($real_type === null) {
-                    // TODO translation
-                    $response->write('Invalid parameter : type '.$args['type'].' does not exist');
-
-                    return $response->withStatus(400);
-                }
-
-                if ($real_mode === null) {
-                    $real_mode = Platform::MODE_LAZY;
-                }
-
-                try {
-                    $result = $engine->search($platform, $real_type, $query, intval($limit), $real_mode);
-                } catch (PlatformException $e) {
-                    $result = false;
-                }
-
-                // From the try/catch up there
-                if ($result === false) {
-                    $data = ['errors' => ['There was a problem while fetching data from the platform']];
-                // If we have a result
-                } else if (isset($result['results'])) {
-                    if (count($result['results']) > 0) {  
-                        $data = [
-                            'results' => array_map(function ($e) { return $e->toArray(); }, $result['results'])
-                        ];
-                    } else {
-                        $data = ['errors' => ['No match was found for this search on this platform']];
-                    }
-                // Result is only an error message
-                } else {
-                    $data = $result;
-                }
-
-                $response = $renderer->render($request, $response, $data);
-
-                return $response->withStatus(200);
-            });
-
-            /*
-              Aggregate (all platforms)
-            */
-            $this->get('/aggregate/{type}', function ($request, $response, $args) use ($engine, $renderer) {
-                $query = $request->getQueryParam('q');
-                $limit = $request->getQueryParam('limit');
-                $include = $request->getQueryParam('include'); // Included platforms?
-                $aggressive = true && ($request->getQueryParam('aggressive') && $request->getQueryParam('aggressive') == 'true'); // If aggressive, merge more (actual behaviour depends on the type)
-                $real_type = $engine->translateFlag('type', $args['type']);
-                $real_mode = $engine->translateFlag('mode', $request->getQueryParam('mode'));
-
-                if ($query === null || $query === '') {
-                    // TODO translation
-                    $response->write('Missing or empty parameter : q (query)');
-
-                    return $response->withStatus(400);
-                }
-
-                // TODO FIXME: it's a bit cumbersome, should refactor
-                if ($include === null || $include === '') { // If empty, include all.
-                    $platforms = $engine->getAllPlatforms();
-                } else {
-                    $platforms = $engine->getPlatformsByTags(explode(',', strtolower($include)));
-                    if ($platforms === null) { // Silently fails if a name is invalid, that's ok
-                        $platforms = $engine->getAllPlatforms();
-                    }
-                }
-
-                if ($real_type === null) {
-                    // TODO translation
-                    $response->write('Invalid parameter : type '.$args['type'].' does not exist');
-
-                    return $response->withStatus(400);
-                }
-
-                if ($real_mode === null) {
-                    $real_mode = Platform::MODE_LAZY;
-                }
-
-                try {
-                    $result = $engine->aggregate($real_type, $query, intval($limit), $real_mode, $aggressive, $platforms);
-                } catch (PlatformException $e) {
-                    $result = false;
-                }
-
-                // From the try/catch up there
-                if ($result === false) {
-                    $data = ['errors' => ['There was a problem while fetching data from the platforms']];
-                // If we have a result
-                } else if (isset($result['results'])) {
-                    if (count($result['results']) > 0) {  
-                        $data = [
-                            'errors' => $result['errors'],
-                            'results' => array_map(function ($e) { return $e->toArray(); }, $result['results'])
-                        ];
-                    } else {
-                        $data = ['errors' => ['No match was found for this search']];
-                    }
-                // Result is only an error message
-                } else {
-                    $data = $result;
-                }
-
-                $response = $renderer->render($request, $response, $data);
-
-                return $response->withStatus(200);
-            });
+        /* The API group, behind an (optional) OAuth2 Server */
+        $api = $this->slimApp->group('/api', function () use ($engine, $renderer) {
+            $this->get('/platforms', ApiController::class.':getAllPlatforms');
+            $this->get('/lookup', ApiController::class.':lookup');
+            $this->get('/search/{type}/{platform_str}', ApiController::class.':search');
+            $this->get('/aggregate/{type}', ApiController::class.':aggregate');
 
             /*
               Share via the API
@@ -336,27 +160,28 @@ class Application
 
                 return $response->withStatus(200);
             });
+        });
 
-            /*
-              List all available platforms of the API
-              with their configuration (capable of X, Y, etc ...)
-            */
-            $this->get('/platforms', function ($request, $response, $args) use ($engine, $renderer) {
-                
-                $platforms = $engine->getAllPlatforms();
-                $data = [ 'platforms' => array_map(function($e) { return $e->toArray(); }, $platforms) ];
-                $response = $renderer->render($request, $response, $data);
+        if ($params['api']['use_oauth'] === true) {
+            /* Set up storage (tokens, credentials) for OAuth2 server */
+            $storage = new OAuth2\Storage\Pdo($db->getConnection());
 
-                return $response->withStatus(200);
-            });
+            /* Create the oauth2 server */
+            $this->oauth2Server = new OAuth2\Server(
+                $storage,
+                ['access_lifetime' => $params['api']['access_lifetime']],
+                [new OAuth2\GrantType\ClientCredentials($storage)]
+            );
 
-            /*
-              Documentation for the API
-            */
-            $this->get('/', function ($request, $response, $args) {
-                return $this->view->render($response, 'api.html');
-            });
-        })->add(function ($request, $response, $next) use ($renderer) {
+            /* OAuth2 Middleware for the API */
+            $api->add(new Middleware\Authorization($this->oauth2Server, $container));
+
+            /* The token route for OAuth */
+            $this->slimApp->post('/api'.Routes\Token::ROUTE, new Routes\Token($this->oauth2Server))->setName('token');
+        }
+
+        /* The API renderer */
+        $api->add(function ($request, $response, $next) use ($renderer) {
             // Accept the 'format' modifier
             $request = $request->withHeader('Accept', 'application/json'); // default
             $format = $request->getParam('format');
@@ -378,57 +203,24 @@ class Application
                 $response = $renderer->render($request, $response, ['errors' => [$response->getBody()->__toString()]]);
             }
 
+            // If we have an authentication error (401), handle it
+            if (401 === $response->getStatusCode()) {
+                $response = $renderer->render($request, $response, ['errors' => ['Not Authorized']]);
+            }
+
             return $response;
         });
 
-        /*
-          The sharing page
-        */
-        $this->slimApp->get('/s/{type}/{uid}', function ($request, $response, $args) {
-            // Translate into good id
-            $id = Utils::fromUId($args['uid']);
-            $item = $this->db->getItem($id);
+        /* The sharing page */
+        $this->slimApp->get('/s/{type}/{uid}', FrontendController::class.':share');
 
-            if (!is_null($item)) {
-                return $this->view->render($response, 'item.html.twig', ['item' => $item->toArray()]);
-            } else {
-                return $response->withStatus(404);
-            }
-        });
+        /* Listen to a musical entity => goes to the platform link */
+        $this->slimApp->get('/s/{type}/{uid}/listen/{platform}', FrontendController::class.':listen');
 
-        /*
-          Listen to a musical entity => goes to the platform link
-        */
-        $this->slimApp->get('/s/{type}/{uid}/listen/{platform}', function ($request, $response, $args) {
-            // TODO
-
-            // Eventually, redirect to platform
-            return $response->withStatus(303)->withHeader('Location', 'http://the/link/on/the/platform'); // "See Other"
-        });
-
-        /*
-          The home page
-        */
-        $this->slimApp->get('/', function ($request, $response, $args) use ($engine) {
-            // TODO
-            return $this->view->render($response, 'home.html.twig', ['platforms' => $engine->getAllPlatforms()]);
-        });
-
-        /*
-          The about page
-        */
-        $this->slimApp->get('/about', function ($request, $response, $args) {
-            // TODO
-            return $this->view->render($response, 'about.html.twig');
-        });
-
-        /*
-          The trends page
-        */
-        $this->slimApp->get('/trends', function ($request, $response, $args) {
-            // TODO
-            return $this->view->render($response, 'trends.html.twig');
-        });
+        /* The other frontend routes */
+        $this->slimApp->get('/', FrontendController::class.':home');
+        $this->slimApp->get('/about', FrontendController::class.':about');
+        $this->slimApp->get('/trends', FrontendController::class.':trends');
 
         return $this;
     }

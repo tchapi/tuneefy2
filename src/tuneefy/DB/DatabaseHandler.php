@@ -2,8 +2,6 @@
 
 namespace tuneefy\DB;
 
-use Symfony\Component\Yaml\Yaml;
-use tuneefy\Application;
 use tuneefy\Platform\PlatformResult;
 
 class DatabaseHandler
@@ -29,36 +27,29 @@ class DatabaseHandler
     const TABLE_INTENTS_COL_OBJECT = 'object';
     const TABLE_INTENTS_COL_CREATED_AT = 'created_at';
 
-    /**
-     * Protected constructor to ensure there are no instantiations.
-     */
-    protected function __construct()
+    public function __construct(array $params)
     {
-        try {
-            $params = Yaml::parse(file_get_contents(Application::getPath('parameters')));
-        } catch (\Exception $e) {
-            // TODO  : translate
-            throw new \Exception('No config file found');
-        }
-
-        if ($params['database'] === null) {
-            // TODO  : translate
-            throw new \Exception('No DB parameters');
-        }
-
         $this->parameters = $params['database'];
         $this->connect();
+
+        self::$instance = $this;
     }
 
-    private function connect(): \mysqli
+    private function connect(): \PDO
     {
-        $this->connection = new \mysqli(
-            $this->parameters['server'],
-            $this->parameters['user'],
-            $this->parameters['password'],
-            $this->parameters['name']
-        );
+        if (is_null($this->connection)) {
+            $this->connection = new \PDO(
+                'mysql:host='.$this->parameters['server'].';dbname='.$this->parameters['name'],
+                $this->parameters['user'],
+                $this->parameters['password']
+            );
+        }
 
+        return $this->connection;
+    }
+
+    public function getConnection(): \PDO
+    {
         return $this->connection;
     }
 
@@ -67,10 +58,6 @@ class DatabaseHandler
      */
     public static function getInstance(): DatabaseHandler
     {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-
         return self::$instance;
     }
 
@@ -114,7 +101,7 @@ class DatabaseHandler
           $this->connection->real_escape_string($uid),
           $this->connection->real_escape_string(serialize($object))
         );
-        
+
         // Persist intent and object in DB for a later share if necessary
         $res = $this->connection->query($query);
 

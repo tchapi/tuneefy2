@@ -7,7 +7,8 @@ database:
 
 api:
   use_oauth: false # for testing purposes
-
+  access_lifetime: 3600
+  
 website:
   max_results: 100
 

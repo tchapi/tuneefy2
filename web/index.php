@@ -6,5 +6,4 @@
 
   $app = new tuneefy\Application();
   $app->configure();
-  $app->prepare();
   $app->run();
