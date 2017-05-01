@@ -1,0 +1,26 @@
+{
+  "name": "tuneefy",
+  "version": "1.0.0",
+  "description": "A new version of [tuneefy](http://tuneefy.com) built for PHP 7, from the ground up, using the minimal Slim framework and a few helper libraries.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "aglio": "./node_modules/aglio/bin/aglio.js --theme-full-width --theme-template triple --theme-variables flatly -i app/templates/api/main.apib -o app/templates/api.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tchapi/tuneefy2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tchapi/tuneefy2/issues"
+  },
+  "homepage": "https://github.com/tchapi/tuneefy2#readme",
+  "devDependencies": {
+    "aglio": "^2.3.0"
+  },
+  "dependencies": {}
+}

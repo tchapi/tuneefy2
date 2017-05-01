@@ -351,11 +351,10 @@ class Application
             });
 
             /*
-              Documentation of the API
+              Documentation for the API
             */
             $this->get('/', function ($request, $response, $args) {
-                // TODO
-                return $this->view->render($response, 'api.html.twig');
+                return $this->view->render($response, 'api.html');
             });
         })->add(function ($request, $response, $next) use ($renderer) {
             // Accept the 'format' modifier

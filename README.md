@@ -18,6 +18,7 @@ This project uses [composer](https://getcomposer.org/). Just run :
   - [Twig](http://twig.sensiolabs.org/), a template engine
   - [XmlToJsonConverter](https://github.com/markwilson/xml-to-json) to convert Amazon XML to correct JSON
   - [RKA Content-Type renderer](https://github.com/akrabat/rka-content-type-renderer) to output JSON / XML / HTML for the API
+  - [Aglio](https://github.com/danielgtaylor/aglio) for generating the API docs
 
 ### On the frontend side of things
 
@@ -35,11 +36,14 @@ The source is in `src/tuneefy` and is organised as such :
 
 ### Tests
 
-The tests are under the `./tests` folder and I use PHPUnit 6.1 to run them.
+The tests are under the `./tests` folder and I use **PHPUnit 6.1** to run them.
 Just run :
 
     vendor/bin/phpunit -v
 
+There should be 29 tests containing 599 assertions.
+
+> Sometimes a platform fails to respond correctly due to network latencies or such. Re-run the tests in this case, it should pass fine the second time.
 
 ### API Documentation
 (_This will move to somewhere more appropriate afterwards_)
@@ -82,7 +86,9 @@ Either pass `format=xml|json|html` or set the Accept header (prefered).
 
 ##### Merging aggressively
 
-The `aggressive` parameter allows to merge tracks without taking the album name into account. This works for a majority of scenarios since it's quite rare that an artist released two tracks with exactly the same name, but it can confuse **live** or **acoustic** versions, for instance.
+The `aggressive` parameter allows to merge tracks without taking the album name into account. This works for a majority of scenarios since it's quite rare that an artist released two tracks with exactly the same name, but it can sometimes confuse **live** or **edit** versions, for instance.
+
+Acoustic versions, covers or remix should be correctly differentiated even if you merge aggressively.
 
 
 - - -
