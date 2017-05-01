@@ -8,7 +8,11 @@ This project uses [composer](https://getcomposer.org/). Just run :
 
     composer install
 
- ... and you should be good to go !
+### Creating tables
+
+Tuneefy needs a variety of tables to work properly; you can populate your database with the following :
+
+    mysql -u user -p database_name < ./structure.sql
 
 ### Building assets & API doc
 
@@ -37,8 +41,9 @@ This project is a very basic composer project with a PSR-4 autoloader.
 The source is in `src/tuneefy` and is organised as such :
 
   * **MusicalEntity** includes the model for a musical entity (_album or track_)
-  * **Platform** includes all the platform-related code
-  * **Utils** includes various utilities such as a very stripped-down OAuth client class and a custom Slim View handler for JSON
+  * **Controller** includes the controllers for the various routes (api and frontend)
+  * **Platform** includes all the platform-related code, especially the specific methods for each remote API call
+  * **Utils** includes various utilities such as custom Slim error handlers
   * and two top-level classes : **Application** and **PlatformEngine** that deal with the application itself and how it interacts with the platforms
 
 ### Tests
