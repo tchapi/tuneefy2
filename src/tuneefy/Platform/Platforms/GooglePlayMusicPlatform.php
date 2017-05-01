@@ -106,7 +106,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         return ['Authorization: GoogleLogin auth='.$token];
     }
 
-    // This API is VERY inconsistent : ids sometimes contains the B or T indicators, 
+    // This API is VERY inconsistent : ids sometimes contains the B or T indicators,
     // sometimes not.
     private function createAlbumOrTrackLink(string $albumId, string $trackId = null): string
     {
@@ -187,7 +187,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         $response = $this->fetchSync($type, $query);
 
         if ($response === null || property_exists($response->data, 'Error') || !property_exists($response->data, 'entries')) {
-                throw new PlatformException($this);
+            throw new PlatformException($this);
         }
         $results = $response->data->entries;
 

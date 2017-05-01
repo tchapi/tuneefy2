@@ -2,4 +2,6 @@
 
 namespace tuneefy\MusicalEntity;
 
-class MusicalEntityMergeException extends \Exception {}
+class MusicalEntityMergeException extends \Exception
+{
+}

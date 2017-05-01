@@ -43,6 +43,7 @@ abstract class MusicalEntity implements MusicalEntityInterface
     public function setLinks(array $links): MusicalEntity
     {
         $this->links = $links;
+
         return $this;
     }
 
@@ -91,12 +92,12 @@ abstract class MusicalEntity implements MusicalEntityInterface
 
     public function isEdit(): bool
     {
-        return isset($this->extra_info['edit']) && $this->extra_info['edit'] !== "";
+        return isset($this->extra_info['edit']) && $this->extra_info['edit'] !== '';
     }
 
     public function getExtraInfoHash(): string
     {
-        return (0+$this->isCover()).(0+$this->isAcoustic()).(0+$this->isRemix()).(0+$this->isEdit());
+        return (0 + $this->isCover()).(0 + $this->isAcoustic()).(0 + $this->isRemix()).(0 + $this->isEdit());
     }
 
     /*

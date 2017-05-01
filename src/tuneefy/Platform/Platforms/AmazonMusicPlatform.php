@@ -121,7 +121,7 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
 
         if ($response === null) {
             throw new PlatformException($this);
-        } else if (!property_exists($response->data->results, 'result') || $response->data->results->stats->totalCount === 0) {
+        } elseif (!property_exists($response->data->results, 'result') || $response->data->results->stats->totalCount === 0) {
             return [];
         }
 

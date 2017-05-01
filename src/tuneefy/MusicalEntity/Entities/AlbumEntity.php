@@ -79,7 +79,6 @@ class AlbumEntity extends MusicalEntity
   public function introspect(): MusicalEntityInterface
   {
       if ($this->introspected === false) {
-
           // https://secure.php.net/manual/en/function.extract.php
           extract(parent::parse($this->title));
           $this->safe_title = $safe_title;
@@ -109,7 +108,7 @@ class AlbumEntity extends MusicalEntity
 
     public static function merge(AlbumEntity $a, AlbumEntity $b, bool $force = false): AlbumEntity
     {
-        // We should only merge tracks that are both covers, acoustic or remixes together 
+        // We should only merge tracks that are both covers, acoustic or remixes together
         if (!$force && ($a->isCover() !== $b->isCover() ||
             $a->isRemix() !== $b->isRemix() ||
             $a->isAcoustic() !== $b->isAcoustic())) {
@@ -146,7 +145,7 @@ class AlbumEntity extends MusicalEntity
                 $a->addLink($platform, $link);
             }
         }
-        
+
         $c->setLinks($a->getLinks());
         $c->setExtraInfo([
             'is_cover' => $a->isCover() || $b->isCover(),
@@ -155,7 +154,7 @@ class AlbumEntity extends MusicalEntity
             'context' => array_unique(array_merge(
                     $a->getExtraInfo()['context'],
                     $b->getExtraInfo()['context']
-                ), SORT_REGULAR)
+                ), SORT_REGULAR),
         ]);
         $c->setSafeTitle($safe_title);
 

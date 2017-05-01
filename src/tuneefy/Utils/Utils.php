@@ -4,7 +4,7 @@ namespace tuneefy\Utils;
 
 class Utils
 {
-    static $base = 11111;
+    public static $base = 11111;
 
     public static function setBase(int $base)
     {
@@ -52,7 +52,7 @@ class Utils
             return $out.$append;
         } else {
             // Else, we replace the last word with the suffix
-            return substr($out, 0, strrpos($out, " ")+1).$append;
+            return substr($out, 0, strrpos($out, ' ') + 1).$append;
         }
     }
 

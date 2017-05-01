@@ -94,7 +94,6 @@ class TrackEntity extends MusicalEntity
     public function introspect(): MusicalEntityInterface
     {
         if ($this->introspected === false) {
-            
             // https://secure.php.net/manual/en/function.extract.php
             extract(parent::parse($this->track_title));
             $this->safe_track_title = $safe_title;
@@ -126,7 +125,7 @@ class TrackEntity extends MusicalEntity
 
     public static function merge(TrackEntity $a, TrackEntity $b, bool $force = false): TrackEntity
     {
-        // We should only merge tracks that are both covers, acoustic or remixes together 
+        // We should only merge tracks that are both covers, acoustic or remixes together
         if (!$force && ($a->isCover() !== $b->isCover() ||
             $a->isRemix() !== $b->isRemix() ||
             $a->isAcoustic() !== $b->isAcoustic())) {
@@ -162,7 +161,7 @@ class TrackEntity extends MusicalEntity
             'context' => array_unique(array_merge(
                     $a->getExtraInfo()['context'],
                     $b->getExtraInfo()['context']
-                ), SORT_REGULAR)
+                ), SORT_REGULAR),
         ]);
         $c->setSafeTitle($safe_title);
 

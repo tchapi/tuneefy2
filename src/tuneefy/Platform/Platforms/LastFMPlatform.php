@@ -150,7 +150,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         $response = $this->fetchSync($type, $query);
 
         if ($response === null) {
-                throw new PlatformException($this);
+            throw new PlatformException($this);
         }
 
         $entities = $response->data;

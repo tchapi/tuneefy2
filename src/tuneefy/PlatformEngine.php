@@ -3,6 +3,7 @@
 namespace tuneefy;
 
 use tuneefy\Platform\Platform;
+use tuneefy\Platform\PlatformException;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\Platforms\AmazonMusicPlatform;
 use tuneefy\Platform\Platforms\DeezerPlatform;
@@ -20,7 +21,6 @@ use tuneefy\Platform\Platforms\TidalPlatform;
 use tuneefy\Platform\Platforms\YoutubePlatform;
 use tuneefy\Platform\ScrobblingPlatformInterface;
 use tuneefy\Platform\WebStoreInterface;
-use tuneefy\Platform\PlatformException;
 use tuneefy\Platform\WebStreamingPlatformInterface;
 
 class PlatformEngine
@@ -120,9 +120,9 @@ class PlatformEngine
         if (($platform->isCapableOfSearchingTracks() && $type === Platform::SEARCH_TRACK)
          || ($platform->isCapableOfSearchingAlbums() && $type === Platform::SEARCH_ALBUM)) {
             return ['results' => $platform->search($type, $query, $limit, $mode)];
-        } else if ($type === Platform::SEARCH_TRACK) {
+        } elseif ($type === Platform::SEARCH_TRACK) {
             return ['errors' => ['This platform is not capable of searching tracks']];
-        } else if ($type === Platform::SEARCH_ALBUM) {
+        } elseif ($type === Platform::SEARCH_ALBUM) {
             return ['errors' => ['This platform is not capable of searching albums']];
         }
     }
@@ -135,7 +135,6 @@ class PlatformEngine
         foreach ($platforms as $p) {
             if (($p->isCapableOfSearchingTracks() && $type === Platform::SEARCH_TRACK)
              || ($p->isCapableOfSearchingAlbums() && $type === Platform::SEARCH_ALBUM)) {
-
                 // We try/catch here so we can still retrieve results from other platforms
                 try {
                     $result = array_merge($result, $p->search($type, $query, Platform::AGGREGATE_LIMIT, $mode));
@@ -145,6 +144,7 @@ class PlatformEngine
                 }
             }
         }
+
         return ['results' => $this->mergeResults($result, $aggressive, $limit), 'errors' => $errors];
     }
 
@@ -171,7 +171,7 @@ class PlatformEngine
         }
 
         // Gives each element a last chance of doing something useful on its data
-        array_map(function($e) { return $e->finalizeMerge()->addIntent();}, $merged_results);
+        array_map(function ($e) { return $e->finalizeMerge()->addIntent(); }, $merged_results);
 
         // Discards the key (hash) that we don't need anymore
         $result = array_values($merged_results);
