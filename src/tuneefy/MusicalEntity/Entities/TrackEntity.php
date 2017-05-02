@@ -141,8 +141,8 @@ class TrackEntity extends MusicalEntity
             $safe_title = $a->getSafeTitle();
         }
 
-        // "Recurse" to album entity
-        $album = AlbumEntity::merge($a->getAlbum(), $b->getAlbum(), $force);
+        // "Recurse" to album entity - we force it since the primary important element is the track
+        $album = AlbumEntity::merge($a->getAlbum(), $b->getAlbum(), true);
 
         // Create the result
         $c = new self($title, $album);

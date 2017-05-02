@@ -495,7 +495,7 @@ final class MusicalEntityTest extends TestCase
     public function testMergeTrackNotForced3()
     {
         $a_album = new AlbumEntity('test title a album (cover)');
-        $a = new TrackEntity('test title a (extra)', $a_album);
+        $a = new TrackEntity('test title a (acoustic)', $a_album);
         $b_album = new AlbumEntity('test title b album (extra)');
         $b = new TrackEntity('test title b (extra)', $b_album);
 
@@ -510,7 +510,7 @@ final class MusicalEntityTest extends TestCase
         $a_album = new AlbumEntity('test title a album (remix)');
         $a = new TrackEntity('test title a (extra)', $a_album);
         $b_album = new AlbumEntity('test title b album (extra)');
-        $b = new TrackEntity('test title b (extra)', $b_album);
+        $b = new TrackEntity('test title b (remix)', $b_album);
 
         $c = TrackEntity::merge($a,$b);
     }

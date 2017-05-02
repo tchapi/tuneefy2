@@ -824,7 +824,6 @@ final class ApiTest extends TestCase
     {
         $this->app = new tuneefy\Application();
         $this->app->configure();
-        $this->app->prepare();
     }
 
     private function get(string $endpoint) {
@@ -842,7 +841,7 @@ final class ApiTest extends TestCase
 
     public function testDocumentation()
     {
-        $response = $this->get('/');
+        $response = $this->get(''); // "/api"
         $this->assertSame($response->getStatusCode(), 200);
     }
 
