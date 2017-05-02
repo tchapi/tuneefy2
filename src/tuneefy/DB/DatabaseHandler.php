@@ -3,6 +3,7 @@
 namespace tuneefy\DB;
 
 use tuneefy\Platform\PlatformResult;
+use tuneefy\Utils\Utils;
 
 class DatabaseHandler
 {
@@ -13,19 +14,6 @@ class DatabaseHandler
 
     private $parameters = [];
     private $connection;
-
-    /*
-      Table and columns names
-    */
-    const TABLE_ITEMS = 'items';
-    const TABLE_ITEMS_COL_ID = 'id';
-    const TABLE_ITEMS_COL_TYPE = 'type';
-    const TABLE_ITEMS_COL_CREATED_AT = 'created_at';
-
-    const TABLE_INTENTS = 'intents';
-    const TABLE_INTENTS_COL_UID = 'uid';
-    const TABLE_INTENTS_COL_OBJECT = 'object';
-    const TABLE_INTENTS_COL_CREATED_AT = 'created_at';
 
     public function __construct(array $params)
     {
@@ -63,53 +51,82 @@ class DatabaseHandler
 
     public function getItem(int $item_id): array
     {
-        $query = sprintf('SELECT * FROM `%s` WHERE `%s` = %d',
-            self::TABLE_ITEMS,
-            self::TABLE_ITEMS_COL_ID,
-            $item_id
-        );
+        $statement = $this->connection->prepare('SELECT * FROM `items` WHERE `id` = :id');
 
-        $res = $this->connection->query($query);
+        $res = $statement->execute([
+          ':id' => $item_id,
+        ]);
 
         if ($res === false) {
-            // Error
-            throw new \Exception('Error getting item : '.$this->connection->error);
+            throw new \Exception('Error getting item : '.$statement->errorInfo()[2]);
         }
 
-        $rows = $res->mapRowsTyped();
-
-        return $rows[0];
+        return $statement->fetch(\PDO::FETCH_ASSOC);
     }
 
-    public function addItem(/* TBC */): DatabaseHandler
+    public function addItem(PlatformResult $result): string
     {
-        $res = $this->connection->query('INSERT INTO %T (%C, %C, %C) VALUES (%s, %s, NOW()) ',
-        self::TABLE_ITEMS,
-        /* TBC*/
-        self::TABLE_ITEMS_COL_CREATED_AT);
+        $statement = $this->connection->prepare('INSERT INTO `items` (`type`, `created_at`) VALUES (:type, NOW()) ');
 
-        return $this;
+        $res = $statement->execute([
+          ':type' => $result->getMusicalEntity()->getType(),
+          //':object' => serialize($object),
+        ]);
+
+        // Get last insert id
+        $lastId = $this->connection->lastInsertId();
+
+        if ($lastId == 0) {
+            throw new \Exception('Error creating item : '.$statement->errorInfo()[2]);
+        }
+
+        return Utils::toUId($lastId);
     }
 
     public function addIntent(string $uid, PlatformResult $object): DatabaseHandler
     {
-        $query = sprintf('INSERT INTO `%s` (`%s`, `%s`, `%s`) VALUES ("%s", "%s", NOW()) ',
-          self::TABLE_INTENTS,
-          self::TABLE_INTENTS_COL_UID,
-          self::TABLE_INTENTS_COL_OBJECT,
-          self::TABLE_INTENTS_COL_CREATED_AT,
-          $this->connection->real_escape_string($uid),
-          $this->connection->real_escape_string(serialize($object))
-        );
+        // FIX ME expires_at et signature
+        $statement = $this->connection->prepare('INSERT INTO `intents` (`uid`, `object`, `created_at`, `expires_at`) VALUES (:uid, :object, NOW(), NOW())');
 
         // Persist intent and object in DB for a later share if necessary
-        $res = $this->connection->query($query);
+        $res = $statement->execute([
+          ':uid' => $uid,
+          ':object' => serialize($object),
+          //':signature' => hash_hmac("md5", data, key)
+        ]);
 
-        if ($res === false || $this->connection->affected_rows !== 1) {
-            // Error
-            throw new \Exception('Error adding intent : '.$this->connection->error);
+        if ($res === false) {
+            throw new \Exception('Error adding intent : '.$statement->errorInfo()[2]);
         }
 
         return $this;
+    }
+
+    public function getIntent(string $uid): PlatformResult
+    {
+        $statement = $this->connection->prepare('SELECT * FROM `intents` WHERE `uid` = :uid');
+
+        $res = $statement->execute([
+          ':uid' => $uid,
+        ]);
+
+        if ($res === false) {
+            throw new \Exception('Error getting intent : '.$statement->errorInfo()[2]);
+        }
+
+        $serializedObject = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        if ($serializedObject === false) {
+            throw new \Exception('No intent with the requested uid : '.$uid.' or this intent has expired.');
+        }
+
+        $result = unserialize($serializedObject['object'], ['allowed_classes' => PlatformResult::class]);
+
+        // FIX ME verify signature
+        if ($result === false || !($result instanceof PlatformResult)) {
+            throw new \Exception('Stored object is not unserializable');
+        }
+
+        return $result;
     }
 }
