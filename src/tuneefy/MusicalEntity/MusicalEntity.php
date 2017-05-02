@@ -26,6 +26,11 @@ abstract class MusicalEntity implements MusicalEntityInterface
         ];
     }
 
+    public function getType(): string
+    {
+        return self::TYPE;
+    }
+
     /*
     Links getter and setter
     */
