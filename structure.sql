@@ -1,4 +1,21 @@
 /* Tuneefy tables */
+-- Create syntax for TABLE 'intents'
+CREATE TABLE `intents` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` varchar(50) DEFAULT NULL,
+  `object` text,
+  `created_at` datetime DEFAULT NULL,
+  `expires_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+
+-- Create syntax for TABLE 'items'
+CREATE TABLE `items` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `type` varchar(30) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /* OAuth tables */
 CREATE TABLE oauth_clients (client_id VARCHAR(80) NOT NULL, client_secret VARCHAR(80), redirect_uri VARCHAR(2000) NOT NULL, grant_types VARCHAR(80), scope VARCHAR(100), user_id VARCHAR(80), CONSTRAINT clients_client_id_pk PRIMARY KEY (client_id));
