@@ -1,0 +1,16 @@
+Todo :
+
+ - fonctionnel share page
+ - Implémenter une limite pour l'API
+ - tests aggregate
+ - expires_at et signature pour les intents
+ - intent, ajouter from : "api" ou "tuneefy.com"
+
+ - doc api
+   - blueprint apib
+   - faire une doc postman
+   - exemples JS PHP Python Ruby
+
+Bugs:
+
+  - mauvais message de oauth2 : { "errors": [ "Not Authorized" ] }access token provided has expired"}
