@@ -134,34 +134,7 @@ class Application
             $this->get('/lookup', ApiController::class.':lookup');
             $this->get('/search/{type}/{platform_str}', ApiController::class.':search');
             $this->get('/aggregate/{type}', ApiController::class.':aggregate');
-
-            /*
-              Share via the API
-            */
-            $this->get('/share/{intent}', function ($request, $response, $args) {
-                $intent = $args['intent'];
-
-                if ($intent === null || $intent === '') {
-                    // TODO translation
-                    $response->write('Missing or empty parameter : intent');
-
-                    return $response->withStatus(400);
-                }
-
-                // Intent is a GUID
-                $result = $engine->share($intent);
-
-                if ($result === null) {
-                    // TODO translation
-                    $data = ['msg' => 'This intent is not correct or has expired'];
-                } else {
-                    $data = ['data' => $result];
-                }
-
-                $response = $renderer->render($request, $response, $data);
-
-                return $response->withStatus(200);
-            });
+            $this->get('/share/{intent}', ApiController::class.':share');
         });
 
         if ($params['api']['use_oauth'] === true) {
@@ -214,10 +187,10 @@ class Application
         });
 
         /* The sharing page */
-        $this->slimApp->get('/s/{type}/{uid}', FrontendController::class.':share');
+        $this->slimApp->get($params['urls']['format'], FrontendController::class.':share');
 
         /* Listen to a musical entity => goes to the platform link */
-        $this->slimApp->get('/s/{type}/{uid}/listen/{platform}', FrontendController::class.':listen');
+        $this->slimApp->get($params['urls']['format'].'/listen/{platform}', FrontendController::class.':listen');
 
         /* The other frontend routes */
         $this->slimApp->get('/', FrontendController::class.':home');
