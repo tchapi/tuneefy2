@@ -116,10 +116,12 @@ class Application
             $db = new DatabaseHandler($params);
         } catch (\Exception $e) {
             // TODO  : translate / template
-            throw new \Exception('Problem with database instantiation : '.$e->getMesage());
+            throw new \Exception('Problem with database instantiation : '.$e->getMessage());
         }
 
         $container = $this->slimApp->getContainer();
+        $container['params'] = $params;
+
         $engine = $this->engine;
         $renderer = $this->renderer;
 
