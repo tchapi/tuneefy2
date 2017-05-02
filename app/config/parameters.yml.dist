@@ -13,6 +13,8 @@ website:
 
 urls:
   base: 12345678
+  front: https://tuneefy.com
+  format: /s/{type}/{uid}
 
 mail:
   smtp_server: "tuneefy.com"
