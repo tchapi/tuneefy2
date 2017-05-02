@@ -74,7 +74,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         if (preg_match(self::REGEX_LASTFM_TRACK, $permalink, $match)) {
             // This is a bit dirty, I must admit.
             $this->options[Platform::LOOKUP_TRACK]['artist'] = $match['artist_slug'];
-            $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_slug']);
+            $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['track_slug']);
 
             if ($response === null || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
@@ -103,7 +103,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         } elseif (preg_match(self::REGEX_LASTFM_ALBUM, $permalink, $match)) {
             // This is a bit dirty, I must admit.
             $this->options[Platform::LOOKUP_ALBUM]['artist'] = $match['artist_slug'];
-            $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_slug']);
+            $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_slug']);
 
             if ($response === null || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
@@ -126,7 +126,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
                 $musical_entity->getSafeTitle(),
             ];
         } elseif (preg_match(self::REGEX_LASTFM_ARTIST, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_slug']);
+            $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_slug']);
 
             if ($response === null || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
@@ -145,14 +145,8 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode): array
+    public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
-        $response = $this->fetchSync($type, $query);
-
-        if ($response === null) {
-            throw new PlatformException($this);
-        }
-
         $entities = $response->data;
 
         switch ($type) {

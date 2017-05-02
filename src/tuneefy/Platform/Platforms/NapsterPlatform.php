@@ -5,7 +5,6 @@ namespace tuneefy\Platform\Platforms;
 use tuneefy\MusicalEntity\Entities\AlbumEntity;
 use tuneefy\MusicalEntity\Entities\TrackEntity;
 use tuneefy\Platform\Platform;
-use tuneefy\Platform\PlatformException;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\WebStreamingPlatformInterface;
 use tuneefy\Utils\Utils;
@@ -93,13 +92,8 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
         return new PlatformResult($metadata, null);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode): array
+    public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
-        $response = $this->fetchSync($type, $query);
-
-        if ($response === null) {
-            throw new PlatformException($this);
-        }
         $results = $response->data;
 
         $length = min(count($results->data), $limit ? $limit : Platform::LIMIT);

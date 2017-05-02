@@ -96,7 +96,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         $match = [];
 
         if (preg_match(self::REGEX_QOBUZ_TRACK, $permalink, $match) || preg_match(self::NEW_REGEX_QOBUZ_TRACK, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
+            $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['track_id']);
 
             if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
                 throw new PlatformException($this);
@@ -111,7 +111,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
                 $musical_entity->getSafeTitle(),
             ];
         } elseif (preg_match(self::REGEX_QOBUZ_ALBUM, $permalink, $match) || preg_match(self::REGEX_QOBUZ_ALBUM_SITE, $permalink, $match) || preg_match(self::NEW_REGEX_QOBUZ_ALBUM, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
+            $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_id']);
             if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
                 throw new PlatformException($this);
             }
@@ -125,7 +125,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
                 $musical_entity->getSafeTitle(),
             ];
         } elseif (preg_match(self::REGEX_QOBUZ_ARTIST, $permalink, $match) || preg_match(self::NEW_REGEX_QOBUZ_ARTIST, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_id']);
+            $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_id']);
             if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
                 throw new PlatformException($this);
             }
@@ -143,13 +143,8 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode): array
+    public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
-        $response = $this->fetchSync($type, $query);
-
-        if ($response === null) {
-            throw new PlatformException($this);
-        }
         $entities = $response->data;
 
         switch ($type) {

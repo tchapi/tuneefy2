@@ -76,7 +76,7 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
         $match = [];
 
         if (preg_match(self::REGEX_AMAZON_ALL, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['asin']);
+            $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['asin']);
 
             if ($response === null) {
                 throw new PlatformException($this);
@@ -115,13 +115,9 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode): array
+    public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
-        $response = $this->fetchSync($type, $query);
-
-        if ($response === null) {
-            throw new PlatformException($this);
-        } elseif (!property_exists($response->data->results, 'result') || $response->data->results->stats->totalCount === 0) {
+        if (!property_exists($response->data->results, 'result') || $response->data->results->stats->totalCount === 0) {
             return [];
         }
 

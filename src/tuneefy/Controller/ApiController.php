@@ -4,6 +4,7 @@ namespace tuneefy\Controller;
 
 use Interop\Container\ContainerInterface;
 use RKA\ContentTypeRenderer\Renderer;
+use tuneefy\DB\DatabaseHandler;
 use tuneefy\PlatformEngine;
 
 class ApiController
@@ -148,30 +149,30 @@ class ApiController
         $query = $request->getQueryParam('q');
         $limit = $request->getQueryParam('limit');
         $include = $request->getQueryParam('include'); // Included platforms?
-                $aggressive = true && ($request->getQueryParam('aggressive') && $request->getQueryParam('aggressive') == 'true'); // If aggressive, merge more (actual behaviour depends on the type)
-                $real_type = $this->engine->translateFlag('type', $args['type']);
+        $aggressive = true && ($request->getQueryParam('aggressive') && $request->getQueryParam('aggressive') == 'true'); // If aggressive, merge more (actual behaviour depends on the type)
+        $real_type = $this->engine->translateFlag('type', $args['type']);
         $real_mode = $this->engine->translateFlag('mode', $request->getQueryParam('mode'));
 
         if ($query === null || $query === '') {
             // TODO translation
-                    $response->write('Missing or empty parameter : q (query)');
+            $response->write('Missing or empty parameter : q (query)');
 
             return $response->withStatus(400);
         }
 
-                // TODO FIXME: it's a bit cumbersome, should refactor
-                if ($include === null || $include === '') { // If empty, include all.
-                    $platforms = $this->engine->getAllPlatforms();
-                } else {
-                    $platforms = $this->engine->getPlatformsByTags(explode(',', strtolower($include)));
-                    if ($platforms === null) { // Silently fails if a name is invalid, that's ok
-                        $platforms = $this->engine->getAllPlatforms();
-                    }
-                }
+        // TODO FIXME: it's a bit cumbersome, should refactor
+        if ($include === null || $include === '') { // If empty, include all.
+            $platforms = $this->engine->getAllPlatforms();
+        } else {
+            $platforms = $this->engine->getPlatformsByTags(explode(',', strtolower($include)));
+            if ($platforms === null) { // Silently fails if a name is invalid, that's ok
+                $platforms = $this->engine->getAllPlatforms();
+            }
+        }
 
         if ($real_type === null) {
             // TODO translation
-                    $response->write('Invalid parameter : type '.$args['type'].' does not exist');
+            $response->write('Invalid parameter : type '.$args['type'].' does not exist');
 
             return $response->withStatus(400);
         }
@@ -181,28 +182,61 @@ class ApiController
         }
 
         try {
-            $result = $this->engine->aggregate($real_type, $query, intval($limit), $real_mode, $aggressive, $platforms);
+            $result = $this->engine->aggregate($platforms, $real_type, $query, intval($limit), $real_mode, $aggressive);
         } catch (PlatformException $e) {
             $result = false;
         }
 
-                // From the try/catch up there
-                if ($result === false) {
-                    $data = ['errors' => ['There was a problem while fetching data from the platforms']];
-                // If we have a result
-                } elseif (isset($result['results'])) {
-                    if (count($result['results']) > 0) {
-                        $data = [
-                            'errors' => $result['errors'],
-                            'results' => array_map(function ($e) { return $e->toArray(); }, $result['results']),
-                        ];
-                    } else {
-                        $data = ['errors' => ['No match was found for this search']];
-                    }
-                // Result is only an error message
-                } else {
-                    $data = $result;
-                }
+        // From the try/catch up there
+        if ($result === false) {
+            $data = ['errors' => ['There was a problem while fetching data from the platforms']];
+        // If we have a result
+        } elseif (isset($result['results'])) {
+            if (count($result['results']) > 0) {
+                $data = [
+                    'errors' => $result['errors'],
+                    'results' => array_map(function ($e) { return $e->toArray(); }, $result['results']),
+                ];
+            } else {
+                $data = ['errors' => ['No match was found for this search']];
+            }
+        // Result is only an error message
+        } else {
+            $data = $result;
+        }
+
+        $response = $this->renderer->render($request, $response, $data);
+
+        return $response->withStatus(200);
+    }
+
+    public function share($request, $response, $args)
+    {
+        $intent = $args['intent'];
+
+        if ($intent === null || $intent === '') {
+            // TODO translation
+            $response->write('Missing or empty parameter : intent');
+
+            return $response->withStatus(400);
+        }
+
+        $db = DatabaseHandler::getInstance(null);
+        // Retrieve the intent
+        try {
+            $result = $db->getIntent($intent);
+            $uid = $db->addItem($result);
+        } catch (\Exception $e) {
+            $response->write($e->getMessage());
+
+            return $response->withStatus(400);
+        }
+
+        $data = [
+            'uid' => $uid,
+            'link' => $this->container->get('params')['urls']['front'].
+                      str_replace('{uid}', $uid, $this->container->get('params')['urls']['format']),
+        ];
 
         $response = $this->renderer->render($request, $response, $data);
 

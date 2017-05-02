@@ -89,7 +89,7 @@ class GrooveMusicPlatform extends Platform implements WebStreamingPlatformInterf
         $match = [];
 
         if (preg_match(self::REGEX_GROOVE_TRACK, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
+            $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['track_id']);
 
             if ($response === null || property_exists($response->data, 'Error')) {
                 throw new PlatformException($this);
@@ -104,7 +104,7 @@ class GrooveMusicPlatform extends Platform implements WebStreamingPlatformInterf
                 $musical_entity->getSafeTitle(),
             ];
         } elseif (preg_match(self::REGEX_GROOVE_ALBUM, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
+            $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_id']);
 
             if ($response === null || property_exists($response->data, 'Error')) {
                 throw new PlatformException($this);
@@ -130,12 +130,10 @@ class GrooveMusicPlatform extends Platform implements WebStreamingPlatformInterf
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode): array
+    public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
-        $response = $this->fetchSync($type, $query);
-
-        if ($response === null || property_exists($response->data, 'Error')) {
-            throw new PlatformException($this);
+        if (property_exists($response->data, 'Error')) {
+            return [];
         }
         $entities = $response->data;
 

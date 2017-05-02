@@ -64,7 +64,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         $match = [];
 
         if (preg_match(self::REGEX_ITUNES_ALBUM, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
+            $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_id']);
 
             if ($response === null) {
                 throw new PlatformException($this);
@@ -81,7 +81,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
                 ];
             }
         } elseif (preg_match(self::REGEX_ITUNES_ARTIST, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_id']);
+            $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_id']);
 
             if ($response === null) {
                 throw new PlatformException($this);
@@ -102,13 +102,8 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode): array
+    public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
-        $response = $this->fetchSync($type, $query);
-
-        if ($response === null) {
-            throw new PlatformException($this);
-        }
         $entities = $response->data->results;
 
         // We actually don't pass the limit to the fetch()

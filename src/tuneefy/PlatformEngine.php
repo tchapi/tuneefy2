@@ -3,8 +3,6 @@
 namespace tuneefy;
 
 use tuneefy\Platform\Platform;
-use tuneefy\Platform\PlatformException;
-use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\Platforms\AmazonMusicPlatform;
 use tuneefy\Platform\Platforms\DeezerPlatform;
 use tuneefy\Platform\Platforms\GooglePlayMusicPlatform;
@@ -86,7 +84,7 @@ class PlatformEngine
         return $this->flags[$namespace.'/'.$flag];
     }
 
-    public function lookup(string $permalink, int $mode) //: ?PlatformResult
+    public function lookup(string $permalink, int $mode): array
     {
         // Which platform is this permalink from ?
         $platform = null;
@@ -115,11 +113,14 @@ class PlatformEngine
         return ['result' => $platform->expandPermalink($permalink, $mode)];
     }
 
-    public function search(Platform $platform, int $type, string $query, int $limit, int $mode) //: ?array
+    public function search(Platform $platform, int $type, string $query, int $limit, int $mode): array
     {
         if (($platform->isCapableOfSearchingTracks() && $type === Platform::SEARCH_TRACK)
          || ($platform->isCapableOfSearchingAlbums() && $type === Platform::SEARCH_ALBUM)) {
-            return ['results' => $platform->search($type, $query, $limit, $mode)];
+            $results = Platform::search($platform, $type, $query, $limit, $mode);
+            array_map(function ($e) { return $e->addIntent(); }, $results);
+
+            return ['results' => $results];
         } elseif ($type === Platform::SEARCH_TRACK) {
             return ['errors' => ['This platform is not capable of searching tracks']];
         } elseif ($type === Platform::SEARCH_ALBUM) {
@@ -127,25 +128,18 @@ class PlatformEngine
         }
     }
 
-    public function aggregate(int $type, string $query, int $limit, int $mode, bool $aggressive, array $platforms): array
+    public function aggregate(array $platforms, int $type, string $query, int $limit, int $mode, bool $aggressive): array
     {
         $result = [];
-        $errors = [];
 
-        foreach ($platforms as $p) {
-            if (($p->isCapableOfSearchingTracks() && $type === Platform::SEARCH_TRACK)
-             || ($p->isCapableOfSearchingAlbums() && $type === Platform::SEARCH_ALBUM)) {
-                // We try/catch here so we can still retrieve results from other platforms
-                try {
-                    $result = array_merge($result, $p->search($type, $query, Platform::AGGREGATE_LIMIT, $mode));
-                } catch (PlatformException $e) {
-                    $errors[] = $e->getMessage();
-                    continue;
-                }
-            }
-        }
+        $filtered_platforms = array_filter($platforms, function ($p) use ($type) {
+            return ($p->isCapableOfSearchingTracks() && $type === Platform::SEARCH_TRACK)
+             || ($p->isCapableOfSearchingAlbums() && $type === Platform::SEARCH_ALBUM);
+        });
 
-        return ['results' => $this->mergeResults($result, $aggressive, $limit), 'errors' => $errors];
+        $resultArray = Platform::aggregate($filtered_platforms, $type, $query, Platform::AGGREGATE_LIMIT, $mode);
+
+        return ['results' => $this->mergeResults($resultArray['results'], $aggressive, $limit), 'errors' => $resultArray['errors']];
     }
 
     public function mergeResults(array $results, bool $aggressive, int $limit) //: ?array
@@ -170,14 +164,8 @@ class PlatformEngine
             }
         }
 
-        // Gives each element a last chance of doing something useful on its data
-        array_map(function ($e) { return $e->finalizeMerge()->addIntent(); }, $merged_results);
-
-        // Discards the key (hash) that we don't need anymore
-        $result = array_values($merged_results);
-
         // Sorts by score
-        usort($result, function ($a, $b) {
+        usort($merged_results, function ($a, $b) {
             $am = $a->getMetadata();
             $bm = $b->getMetadata();
             if ($am['score'] == $bm['score']) {
@@ -188,11 +176,12 @@ class PlatformEngine
         });
 
         // Resizes to keep only the wanted number of elements
-        return array_splice($result, $limit);
-    }
+        array_splice($merged_results, $limit);
 
-    public function share(string $intent) //: ?string
-    {
-        return null;
+        // Gives each element a last chance of doing something useful on its data
+        array_map(function ($e) { return $e->finalizeMerge()->addIntent(); }, $merged_results);
+
+        // Discards the key (hash) that we don't need anymore
+        return array_values($merged_results);
     }
 }

@@ -63,7 +63,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
         $match = [];
 
         if (preg_match(self::REGEX_MIXCLOUD_TRACK, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['artist_slug'].'/'.$match['track_long_slug']);
+            $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['artist_slug'].'/'.$match['track_long_slug']);
 
             if ($response === null || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
@@ -79,7 +79,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
                 $musical_entity->getSafeTitle(),
             ];
         } elseif (preg_match(self::REGEX_MIXCLOUD_ARTIST, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_slug']);
+            $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_slug']);
 
             if ($response === null || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
@@ -98,9 +98,9 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode): array
+    public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
-        throw new PlatformException($this);
+        return [];
         /*
           Below is the actual working code, but it seems unlikely that we're going
           to use it since we search "mixes" by "users" and not real tracks from
@@ -108,7 +108,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
           the other results from the other platforms, I guess.
           Still, the following works perfectly.
         */
-        // $response = await $this->fetch($type, $query);
+        // $response = await self::fetch($this, $type, $query);
 
         // if ($response === null || count($response->data->data) === 0) {
         //   return null;

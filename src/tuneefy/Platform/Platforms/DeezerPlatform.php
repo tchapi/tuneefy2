@@ -68,7 +68,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         $match = [];
 
         if (preg_match(self::REGEX_DEEZER_TRACK, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
+            $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['track_id']);
 
             if ($response === null || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
@@ -83,7 +83,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
                 $musical_entity->getSafeTitle(),
             ];
         } elseif (preg_match(self::REGEX_DEEZER_ALBUM, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
+            $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_id']);
 
             if ($response === null || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
@@ -98,7 +98,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
                 $musical_entity->getSafeTitle(),
             ];
         } elseif (preg_match(self::REGEX_DEEZER_ARTIST, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_id']);
+            $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_id']);
 
             if ($response === null || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
@@ -117,13 +117,8 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode): array
+    public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
-        $response = $this->fetchSync($type, $query);
-
-        if ($response === null) {
-            throw new PlatformException($this);
-        }
         $entities = $response->data;
 
         // We actually don't pass the limit to the fetch()

@@ -133,7 +133,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         $match = [];
 
         if (preg_match(self::REGEX_GOOGLE_PLAY_TRACK, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
+            $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['track_id']);
 
             if ($response === null || !property_exists($response, 'data')) {
                 throw new PlatformException($this);
@@ -148,7 +148,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
                 $musical_entity->getSafeTitle(),
             ];
         } elseif (preg_match(self::REGEX_GOOGLE_PLAY_ALBUM, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_ALBUM, $match['album_id']);
+            $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_id']);
 
             if ($response === null || !property_exists($response, 'data')) {
                 throw new PlatformException($this);
@@ -163,7 +163,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
                 $musical_entity->getSafeTitle(),
             ];
         } elseif (preg_match(self::REGEX_GOOGLE_PLAY_ARTIST, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_id']);
+            $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_id']);
 
             if ($response === null || !property_exists($response, 'data')) {
                 throw new PlatformException($this);
@@ -182,12 +182,11 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode): array
+    public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
-        $response = $this->fetchSync($type, $query);
-
-        if ($response === null || property_exists($response->data, 'Error') || !property_exists($response->data, 'entries')) {
-            throw new PlatformException($this);
+        if (property_exists($response->data, 'Error') || !property_exists($response->data, 'entries')) {
+            //throw new PlatformException($this);
+            return [];
         }
         $results = $response->data->entries;
 

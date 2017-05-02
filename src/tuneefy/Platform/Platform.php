@@ -198,7 +198,7 @@ abstract class Platform implements GeneralPlatformInterface
         return $result;
     }
 
-    protected function fetchSync(int $type, string $query)
+    private function prepareCall(int $type, string $query)
     {
         $url = $this->endpoints[$type];
 
@@ -240,9 +240,11 @@ abstract class Platform implements GeneralPlatformInterface
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
         }
 
-        $response = curl_exec($ch);
-        curl_close($ch);
+        return $ch;
+    }
 
+    private function postProcessResult(string $response)
+    {
         if ($response === false) {
             // Error in the request, we should gracefully fail returning null
             // FIXME
@@ -272,5 +274,72 @@ abstract class Platform implements GeneralPlatformInterface
         }
     }
 
-    abstract public function search(int $type, string $query, int $limit, int $mode);
+    protected static function fetch(Platform $platform, int $type, string $query)
+    {
+        $ch = $platform->prepareCall($type, $query);
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        return $platform->postProcessResult($response);
+    }
+
+    public static function search(Platform $platform, int $type, string $query, int $limit, int $mode)
+    {
+        $response = self::fetch($platform, $type, $query);
+
+        if ($response === null) {
+            throw new PlatformException($platform);
+        }
+
+        return $platform->extractSearchResults($response, $type, $query, $limit, $mode);
+    }
+
+    public static function aggregate(array $platforms, int $type, string $query, int $limit, int $mode): array
+    {
+        // Create the multiple cURL handle
+        $mh = curl_multi_init();
+        $handles = [];
+
+        foreach ($platforms as $platform) {
+            $ch = $platform->prepareCall($type, $query);
+            curl_multi_add_handle($mh, $ch);
+            $handles[] = [
+                'handle' => $ch,
+                'platform' => $platform,
+            ];
+        }
+
+        $running = null;
+        do {
+            curl_multi_exec($mh, $running);
+        } while ($running > 0);
+
+        // Get the actual content
+        $results = [];
+        $errors = [];
+        foreach ($handles as $object) {
+            $response = curl_multi_getcontent($object['handle']); // get the content
+            curl_multi_remove_handle($mh, $object['handle']); // remove the handle
+
+            $response = $object['platform']->postProcessResult($response);
+
+            if ($response === null) {
+                $errors[] = (new PlatformException($object['platform']))->getMessage();
+                continue;
+            }
+
+            $result = $object['platform']->extractSearchResults($response, $type, $query, $limit, $mode);
+
+            $results = array_merge($results, $result);
+        }
+
+        curl_multi_close($mh);
+
+        return [
+            'results' => $results,
+            'errors' => $errors,
+        ];
+    }
+
+    abstract public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode);
 }

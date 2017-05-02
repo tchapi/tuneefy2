@@ -67,7 +67,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         $match = [];
 
         if (preg_match(self::REGEX_SOUNDCLOUD_ALL, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_TRACK, $permalink);
+            $response = self::fetch($this, Platform::LOOKUP_TRACK, $permalink);
 
             if ($response === null || property_exists($response->data, 'errors')) {
                 throw new PlatformException($this);
@@ -94,14 +94,8 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode): array
+    public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
-        $response = $this->fetchSync($type, $query);
-
-        if ($response === null) {
-            throw new PlatformException($this);
-        }
-
         $entities = $response->data;
 
         // We actually don't pass the limit to the fetch()

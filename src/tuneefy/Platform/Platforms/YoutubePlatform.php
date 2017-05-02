@@ -73,7 +73,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         $match = [];
 
         if (preg_match(self::REGEX_YOUTUBE_ALL, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['video_id']);
+            $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['video_id']);
 
             if ($response === null) {
                 throw new PlatformException($this);
@@ -126,13 +126,8 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         return [null, null];
     }
 
-    public function search(int $type, string $query, int $limit, int $mode): array
+    public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
-        $response = $this->fetchSync($type, $query);
-
-        if ($response === null) {
-            throw new PlatformException($this);
-        }
         $entities = $response->data->items;
 
         // We actually don't pass the limit to the fetch()

@@ -68,7 +68,7 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
         $match = [];
 
         if (preg_match(self::REGEX_HYPEM_TRACK, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_TRACK, $match['track_id']);
+            $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['track_id']);
 
             if ($response === null || !property_exists($response->data, '0')) {
                 throw new PlatformException($this);
@@ -85,7 +85,7 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
                 $musical_entity->getSafeTitle(),
             ];
         } elseif (preg_match(self::REGEX_HYPEM_ARTIST, $permalink, $match)) {
-            $response = $this->fetchSync(Platform::LOOKUP_ARTIST, $match['artist_slug']);
+            $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_slug']);
 
             if ($response === null || !property_exists($response->data, '0')) {
                 throw new PlatformException($this);
@@ -105,12 +105,11 @@ class HypeMachinePlatform extends Platform implements WebStreamingPlatformInterf
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode): array
+    public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
-        $response = $this->fetchSync($type, $query);
-
-        if ($response === null || !property_exists($response->data, '0')) {
-            throw new PlatformException($this);
+        if (!property_exists($response->data, '0')) {
+            //throw new PlatformException($this);
+            return [];
         }
         unset($response->data->version);
         $entities = array_values(get_object_vars($response->data)); // "O" as a key, seriously ?

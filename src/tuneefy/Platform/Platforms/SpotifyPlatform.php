@@ -72,7 +72,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
             // We have a nicely formatted share url
 
             $object_type = $this->lookup_type_correspondance[$match['type']];
-            $response = $this->fetchSync($object_type, $match['item_id']);
+            $response = self::fetch($this, $object_type, $match['item_id']);
 
             if ($response === null || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
@@ -113,13 +113,8 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
-    public function search(int $type, string $query, int $limit, int $mode): array
+    public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
-        $response = $this->fetchSync($type, $query);
-
-        if ($response === null) {
-            throw new PlatformException($this);
-        }
         $entities = $response->data;
 
         switch ($type) {
@@ -159,7 +154,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
                 $artist = '';
                 if ($mode === Platform::MODE_EAGER) {
                     // We need to fetch the artist of the album
-                  $album_response = $this->fetch(Platform::LOOKUP_ALBUM, $current_item->id);
+                  $album_response = self::fetch($this, Platform::LOOKUP_ALBUM, $current_item->id);
                     if ($album_response !== null && !property_exists($album_response, 'error')) {
                         $artist = $album_response->artists[0]->name;
                     }
