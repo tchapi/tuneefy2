@@ -35,6 +35,23 @@ class ApiController
         return $response->withStatus(200);
     }
 
+
+    public function getPlatform($request, $response, $args)
+    {
+        $platform = $this->engine->getPlatformByTag($args['tag']);
+
+        if (!$platform) {
+            // TODO translation
+            $response->write('This platform does not exist');
+
+            return $response->withStatus(404);
+        }
+
+        $response = $this->renderer->render($request, $response, $platform->toArray());
+
+        return $response->withStatus(200);
+    }
+
     public function lookup($request, $response, $args)
     {
         $permalink = $request->getQueryParam('q');

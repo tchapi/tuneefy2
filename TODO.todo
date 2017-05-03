@@ -5,12 +5,15 @@ Todo :
  - tests aggregate
  - expires_at et signature pour les intents
  - intent, ajouter from : "api" ou "tuneefy.com"
+ - Ajouter [Explicit]
+ - 404 si type platforme non trouvé
 
  - doc api
-   - blueprint apib
+   - blueprint apib [EN Cours]
    - faire une doc postman
    - exemples JS PHP Python Ruby
 
 Bugs:
 
   - mauvais message de oauth2 : { "errors": [ "Not Authorized" ] }access token provided has expired"}
+  - when shared once :> remove from intents ? Convert intent (=delete object, put new column redirect ?)

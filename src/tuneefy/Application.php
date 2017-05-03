@@ -131,6 +131,7 @@ class Application
         /* The API group, behind an (optional) OAuth2 Server */
         $api = $this->slimApp->group('/api', function () use ($engine, $renderer) {
             $this->get('/platforms', ApiController::class.':getAllPlatforms');
+            $this->get('/platform/{tag}', ApiController::class.':getPlatform');
             $this->get('/lookup', ApiController::class.':lookup');
             $this->get('/search/{type}/{platform_str}', ApiController::class.':search');
             $this->get('/aggregate/{type}', ApiController::class.':aggregate');
@@ -152,7 +153,7 @@ class Application
             $api->add(new Middleware\Authorization($this->oauth2Server, $container));
 
             /* The token route for OAuth */
-            $this->slimApp->post('/api'.Routes\Token::ROUTE, new Routes\Token($this->oauth2Server))->setName('token');
+            $this->slimApp->post('/api/auth/'.Routes\Token::ROUTE, new Routes\Token($this->oauth2Server))->setName('token');
         }
 
         /* The API renderer */
