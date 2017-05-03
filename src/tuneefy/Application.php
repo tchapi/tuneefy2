@@ -175,13 +175,19 @@ class Application
             $response = $next($request, $response);
 
             // If we have an error (Bad request), handle it
-            if (400 === $response->getStatusCode()) {
-                $response = $renderer->render($request, $response, ['errors' => [$response->getBody()->__toString()]]);
+            if (400 === $response->getStatusCode() || 404 === $response->getStatusCode()) {
+                $response = $renderer->render($request, $response, [
+                    'errors' => [$response->getBody()->__toString()],
+                    'code' => $response->getStatusCode(),
+                ]);
             }
 
             // If we have an authentication error (401), handle it
             if (401 === $response->getStatusCode()) {
-                $response = $renderer->render($request, $response, ['errors' => ['Not Authorized']]);
+                $response = $renderer->render($request, $response, [
+                    'errors' => ['Not Authorized'],
+                    'code' => $response->getStatusCode(),
+                ]);
             }
 
             return $response;
