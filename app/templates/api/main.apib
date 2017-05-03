@@ -1,94 +1,119 @@
 FORMAT: 1A
 HOST: https://api.tuneefy.com
 
-# The tuneefy API
+The tuneefy API
+===
 Welcome to the **tuneefy** API. This API provides access to the **tuneefy.com** service and exposes endpoints to search and aggregate music links.
 
 
-# Data Structures
-
-## Platform
-
-- tag: `deezer` (string)
-- name: `Deezer` (string)
-- mainAccentColor: `181818` (string)
-- type: `streaming` (string)
-
-
-## Authentication
-
-The API endpoints require an OAuth access token. The token is necessary to authenticate requests, but as tuneefy does not have any user account, it is not used to authenticate third parties or other end users.
-
-### OAUTH
-
-The tuneefy API currently supports the OAuth 2 draft specification. All OAuth2 requests MUST use the SSL endpoint available at https://api.tuneefy.com/.
-
-OAuth 2.0 is a simple and secure authentication mechanism. It allows applications to acquire an access token for tuneefy via a POST request to a token endpoint. Authentication with OAuth can be accomplished in the following steps:
-
-  1. Register for an API key by sending a mail to ....
-  2. Exchange your client id and secret for an access token
-  3. Make requests passin the token in the Authorization header
-  4. When your token expires, you can get a new one
-
-### In short
-
-+ This API uses OAuth2 for authentication,
-+ A token MUST be retrieved from the authentication endpoint before issuing any request,
-+ Token MUST be provided in a `Authorization` header, or via the `access_token` parameter,
-+ Token MUST be provided for each request that requires authentication,
-
-
-
-
-## Pagination
-
-The API can limit the number of results returned (for `search` and `aggregate` methods).
-
-TODO
-
-
-
-
-
-
-## Response format
-
-This API uses `Accept-Content` header to identify the locale.
-
-`Accept-Language: en`
-
-This header SHOULD be present in every request. If not, API MUST use the **english** language/locale.
-
-Alternatively, all tuneefy methods support an optional return format parameter `format=json`. Note that **json** is the default response format, but **xml** and **html** are also available.
-
-The API does *not* support **JSONP**.
-
-
-
-
-
-
-
+<br>
 ## Notational Conventions
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119](https://www.ietf.org/rfc/rfc2119).
 
 
-
-
-
-
+<br>
 ## Representation of Date and Time
 
-All exchange of date and time-related data MUST be done according to ISO 8601 standard and stored in UTC.
+All exchange of date and time-related data, if applicable, MUST be done according to **ISO 8601** standard and stored in UTC.
 
-When returning date and time-related data `YYYY-MM-DDThh:mm:ss.SSSZ` format MUST be used.
-
-
+When returning date and time-related data, the `YYYY-MM-DDThh:mm:ss.SSSZ` format MUST be used.
 
 
 
+<br>
+## Authentication
 
+The API endpoints require an OAuth access token. The token is necessary to authenticate **all** requests to the API.
+
+<br>
+### OAuth
+
+The tuneefy API currently supports the [OAuth 2 draft](https://oauth.net/2/) specification. All OAuth2 requests MUST use the SSL endpoint available at https://api.tuneefy.com/.
+
+OAuth 2.0 is a simple and secure authentication mechanism. It allows applications to acquire an access token for tuneefy via a POST request to a token endpoint. Authentication with OAuth can be accomplished in the following steps:
+
+  1. Register for an API key by sending a mail to api@tuneefy.com
+  2. Exchange your customer id and secret for an access token
+  3. Make requests by passing the token in the Authorization header
+  4. When your token expires, you can get a new one 
+
+<br>
+### Getting an authorization token
+
+Use the `/auth/token` endpoint to get a valid token. You will need your consumer key and secret.
+
+> The only accepted grant type is `client_credentials`. See further down for more info.
+
+<br>
+### Passing the authorization token
+
+You can either use the **Authorization** header, as such :
+
+```http
+Authorization: bearer 5262d64b892e8d4341000001
+```
+
+Or you can pass the `access_token` parameter with all your requests.
+
+```http
+GET test?access_token=5262d64b892e8d4341000001
+```
+
+The header method is RECOMMENDED.
+
+
+::: note
+## In short
+
+* This API uses OAuth2 for authentication
+* A token MUST be retrieved from the authentication endpoint before issuing any request
+* Token MUST be provided in a `Authorization` header, or via the `access_token` parameter
+* Token MUST be provided for each request
+:::
+
+
+
+<br>
+## Pagination
+
+The API can limit the number of results returned (for `search` and `aggregate` methods) via the `limit` parameter.
+
+This is not _strictly speaking_ pagination since there is no way to pass an offset to the API to retrieve the subsequent results, are they are fetched from different platforms that do not all support pagination.
+
+
+
+<br>
+## Response format
+
+This API uses the `Accept` header to identify the data type it should return.
+
+```http
+Accept: application/json
+```
+
+This header SHOULD be present in every request. If not, the API will use the default response format.
+
+Alternatively, all API methods support an optional return format parameter `format=json`. Note that **json** is the default response format, but **xml** and **html** are also available.
+
+| Return type |        Accept header       | format parameter |
+|-------------|----------------------------|--------------------|
+| JSON        | `Accept: application/json` | `format=json`      |
+| XML         | `Accept: application/xml`  | `format=xml`       |
+| XML (alt)   | `Accept: text/xml`         | `format=xml`       |
+| HTML        | `Accept: text/html`        | `format=html`      |
+
+
+::: note
+## Info
+The API does *not* support **JSONP**.
+:::
+
+
+
+
+
+<br>
 ## Status Codes and Errors
 
 This API uses HTTP status codes to communicate with the API consumer.
@@ -104,30 +129,45 @@ This API uses HTTP status codes to communicate with the API consumer.
 
 
 
-### Error response
+<br>
+## Error response
 
-This API returns both, machine-readable error codes and human-readable error messages in response body when an error is encountered.
-
-
-
+This API returns both machine-readable error codes and human-readable error messages in response body when an error is encountered.
 
 
-## Versioning
 
-This API uses `Api-Version` header to identify requested version. Every **minor** version SHOULD be backward compatible. However, **major** versions MAY introduce *breaking changes*.
 
-`Api-Version: 1.0.0`
+# Data Structures
 
-This header SHOULD be present in every request. If not, API MUST use the newest available major release.
+## Platform
 
-If requested version is not available, API SHOULD try to fall back to the next available minor release.
+- name: `Deezer` (string)
+- homepage: `https://www.deezer.com/` (string)
+- tag: `deezer` (string)
+- mainAccentColor: `181818` (string)
+- type: `streaming` (string)
+- enabled (object)
+    + api: `true` (boolean)
+    + website: `true` (boolean)
+- capabilities (object)
+    + track_search: `true` (boolean)
+    + album_search: `true` (boolean)
+    + lookup: `true` (boolean)
+
+
+## OAuth valid response (object)
++ `access_token`: `5262d64b892e8d4341000001` (string, required) - valid Token
++ scope: all (string, required) - scopes of current token
++ `expires_in`: 3600 (number, required)
++ `token_type`: Bearer (string, required)
+
 
 
 
 
 # Group Authentication
 
-## OAuth Access token [/token]
+## OAuth Access token [/auth/token]
 
 A valid token MUST be provided for each request that requires authentication.
 
@@ -135,28 +175,27 @@ A valid token MUST be provided for each request that requires authentication.
 
 Allows to retrieve a valid OAuth token for your application, using the application consumer key and secret.
 
-**Endpoint information**
+> This endpoint is not protected
 
-|                         |     |
-|-------------------------|-----|
-| Requires authentication | No  |
-| Has restricted scope    | No  |
++ Request Get a token
+    + Body
 
-
-+ Request
-    + Attributes
-        + client_id (required, string) ...  your application's tuneefy client id.
-        + client_secret (required, string) ...  your application's tuneefy client secret.
-        + grant_type (required, string) ... must be `client_credentials`.
+            {
+                "client_id": "Your application customer key",
+                "client_secret": "Your application customer secret",
+                "grant_type": "client_credentials"
+            }
 
 + Response 200 (application/json)
+    + Attributes (OAuth valid response)
 
-    + Headers
++ Response 400 (application/json)
 
-            X-Api-Version: 2
+    + Body
 
-    + Attributes
-        - token TODO
+            {
+                TODO
+            }
 
 
 
@@ -168,20 +207,53 @@ Allows to retrieve a valid OAuth token for your application, using the applicati
 ### Retrieve all Platforms [GET]
 Retrieves the list of available **Platforms**
 
-+ Parameters
-    + type (optional, string) ... The type of platform to retrieve
+**List of available types**
 
-+ Response 200 (application/json)
+| Type | Underlying interface |
+| --- | ---- |
+| streaming | Platform\WebStreamingPlatformInterface  |
+| store | Platform\WebStoreInterface  |
+| scrobbling | Platform\ScrobblingPlatformInterface  |
+
++ Parameters
+    + type: `streaming` (optional, string) ... The type of platform to retrieve
+
++ Request Valid Authentication
 
     + Headers
 
-            X-Api-Version: 2
+            Accept: "application/json"
+            Authorization: "Bearer 5262d64b892e8d4341000001"
 
-    + Attributes
++ Response 200 (application/json)
+
+    + Attributes (object)
         - platforms (array[Platform])
 
++ Response 404 (application/json)
 
+    + Body
 
+            {
+                "errors": ["This platform type does not exist"],
+                "code": 404
+            }
+
++ Request Invalid token
+
+    + Headers
+
+            Accept: "application/json"
+            Authorization: "Bearer invalid_token"
+
++ Response 401 (application/json)
+
+    + Body
+
+            {
+                "errors": ["Not authorized"],
+                "code": 401
+            }
 
 ## Platform detail [/platform/{tag}]
 
@@ -189,24 +261,33 @@ Retrieves the list of available **Platforms**
 Retrieves a specific **Platform** and its details
 
 + Parameters
-    + tag (required, string) ... The tag of the platform to retrieve
+    + tag: `deezer` (required, string) ... The tag of the platform to retrieve
 
-+ Response 200 (application/json)
++ Request Example
 
     + Headers
 
-            X-Api-Version: 2
+            Accept: "application/json"
+            Authorization: "Bearer 5262d64b892e8d4341000001"
+
++ Response 200 (application/json)
 
     + Attributes (Platform)
 
 + Response 404 (application/json)
 
-    + Headers
-
-            X-Api-Version: 2
-
     + Body
 
             {
-                "errors": ["This platform does not exist"]
+                "errors": ["This platform does not exist"],
+                "code": 404
             }
+
+
+
+
+
+
+
+
+
