@@ -7,7 +7,8 @@ Todo :
  - intent, ajouter from : "api" ou "tuneefy.com"
  - Ajouter [Explicit]
  - 404 si type platforme non trouvé
-
+ - getallPlatforms : ajouter le type
+ 
  - doc api
    - blueprint apib [EN Cours]
    - faire une doc postman

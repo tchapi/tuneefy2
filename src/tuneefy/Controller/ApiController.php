@@ -26,8 +26,12 @@ class ApiController
         $this->container = $container;
     }
 
-    public function getAllPlatforms($request, $response, $id)
+    public function getAllPlatforms($request, $response, $args)
     {
+        $type = $request->getQueryParam('type');
+
+        // FIX ME TODO
+
         $platforms = $this->engine->getAllPlatforms();
         $data = ['platforms' => array_map(function ($e) { return $e->toArray(); }, $platforms)];
         $response = $this->renderer->render($request, $response, $data);
