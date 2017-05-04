@@ -190,6 +190,7 @@ class Application
 
             // If we have an authentication error (401), handle it
             if (401 === $response->getStatusCode()) {
+                // TODO FIX ME CLEAR THE RESPONSE BEFORE HAND ?
                 $response = $renderer->render($request, $response, [
                     'errors' => ['Not Authorized'],
                     'code' => $response->getStatusCode(),
