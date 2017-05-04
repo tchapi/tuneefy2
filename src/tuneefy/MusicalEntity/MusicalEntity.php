@@ -22,25 +22,25 @@ abstract class MusicalEntity implements MusicalEntityInterface
     public function toArray(): array
     {
         return [
-          'type' => self::TYPE,
+          'type' => static::TYPE,
         ];
     }
 
     public function getType(): string
     {
-        return self::TYPE;
+        return static::TYPE;
     }
 
     /*
     Links getter and setter
     */
-    public function addLink(string $platform, string $link): MusicalEntity
+    public function addLink(string $platformTag, string $link): MusicalEntity
     {
-        if (!isset($this->links[$platform])) {
-            $this->links[$platform] = [];
+        if (!isset($this->links[$platformTag])) {
+            $this->links[$platformTag] = [];
         }
 
-        $this->links[$platform][] = $link;
+        $this->links[$platformTag][] = $link;
 
         return $this;
     }
