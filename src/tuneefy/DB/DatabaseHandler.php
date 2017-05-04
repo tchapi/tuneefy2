@@ -137,34 +137,34 @@ class DatabaseHandler
         return $this;
     }
 
-    public function getItemByIntent(string $intent): PlatformResult
-    {
-        $statement = $this->connection->prepare('SELECT `object`, `signature` FROM `items` WHERE `intent` = :intent AND `expires_at` > NOW()');
+    // public function getItemByIntent(string $intent): PlatformResult
+    // {
+    //     $statement = $this->connection->prepare('SELECT `object`, `signature` FROM `items` WHERE `intent` = :intent AND `expires_at` > NOW()');
 
-        $res = $statement->execute([
-          ':intent' => $intent,
-        ]);
+    //     $res = $statement->execute([
+    //       ':intent' => $intent,
+    //     ]);
 
-        if ($res === false) {
-            throw new \Exception('Error getting intent : '.$statement->errorInfo()[2]);
-        }
+    //     if ($res === false) {
+    //         throw new \Exception('Error getting intent : '.$statement->errorInfo()[2]);
+    //     }
 
-        $row = $statement->fetch(\PDO::FETCH_ASSOC);
+    //     $row = $statement->fetch(\PDO::FETCH_ASSOC);
 
-        if ($row === false) {
-            throw new \Exception('No intent with the requested uid : '.$intent.' or this intent has expired.');
-        }
+    //     if ($row === false) {
+    //         throw new \Exception('No intent with the requested uid : '.$intent.' or this intent has expired.');
+    //     }
 
-        if ($row['signature'] !== hash_hmac('md5', $row['object'], $this->parameters['intents']['secret'])) {
-            throw new \Exception('Data for intent : '.$intent.' has been tampered with, the signature is not valid.');
-        }
+    //     if ($row['signature'] !== hash_hmac('md5', $row['object'], $this->parameters['intents']['secret'])) {
+    //         throw new \Exception('Data for intent : '.$intent.' has been tampered with, the signature is not valid.');
+    //     }
 
-        $result = unserialize($row['object'], ['allowed_classes' => PlatformResult::class]);
+    //     $result = unserialize($row['object'], ['allowed_classes' => PlatformResult::class]);
 
-        if ($result === false || !($result instanceof PlatformResult)) {
-            throw new \Exception('Stored object is not unserializable');
-        }
+    //     if ($result === false || !($result instanceof PlatformResult)) {
+    //         throw new \Exception('Stored object is not unserializable');
+    //     }
 
-        return $result;
-    }
+    //     return $result;
+    // }
 }
