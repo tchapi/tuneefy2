@@ -11,7 +11,7 @@
     <li><strong>{{ key }}</strong>
         <ul>
         {% for i, link in links %}
-            <li>{{ link }} - <a href="{{ path_for('listen', { 'type': 'album', 'uid': uid, 'platform': key, 'i': i }) }}">Josh</a></li>
+            <li>{{ link }} - <a href="{{ path_for('listen', { 'type': 'album', 'uid': uid, 'platform': key, 'i': i }) }}">listen</a></li>
         {% endfor %}
         </ul>
     </li>
