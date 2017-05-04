@@ -18,6 +18,8 @@ final class ApiTest extends TestCase
     const TRACK_QUERY_ERROR = "xzqwqsxws";
     const ALBUM_QUERY = "radiohead+computer";
     const ALBUM_QUERY_ERROR = "xzqwqsxws";
+    const TRACK_AGGREGATE_QUERY = "bruno+mars+24K";
+    const TRACK_AGGREGATE_QUERY_ERROR = "ZERTHJYUKIKHUazzfdegrh";
 
     const PERMALINKS = [
         'deezer' => [
@@ -1066,5 +1068,43 @@ final class ApiTest extends TestCase
 
             $response->getBody()->close(); // Else the stream is reused (php://temp)
         }
+    }
+
+    public function testAggregateTrack()
+    {
+        $engine = new PlatformEngine();
+
+        $response = $this->get('/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY.'&limit=1');
+        $this->assertSame($response->getStatusCode(), 200);
+
+        $result = json_decode($response->getBody()->__toString(), true);
+        $this->assertArrayHasKey('results', $result);
+        $this->assertCount(1, $result['results']);
+
+
+        $this->assertArrayHasKey('musical_entity', $result['results'][0]);
+        $this->assertGreaterThan(7, $result['results'][0]['musical_entity']['links']);
+        $this->assertGreaterThan(7, $result['results'][0]['metadata']['merges']);
+
+        $response->getBody()->close(); // Else the stream is reused (php://temp)
+    }
+
+    public function testAggregateTrackBadQuery()
+    {
+        $engine = new PlatformEngine();
+
+        $response = $this->get('/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY_ERROR.'&limit=1');
+        $this->assertSame($response->getStatusCode(), 200);
+
+        $result = json_decode($response->getBody()->__toString(), true);
+        $this->assertArrayHasKey('results', $result);
+        $this->assertCount(1, $result['results']);
+
+        $this->assertArrayHasKey('musical_entity', $result['results'][0]);
+        $this->assertCount(1, $result['results'][0]['musical_entity']['links']);
+        // Only the Napster platform returns a result
+        $this->assertArrayHasKey('napster', $result['results'][0]['musical_entity']['links']);
+
+        $response->getBody()->close(); // Else the stream is reused (php://temp)
     }
 }
