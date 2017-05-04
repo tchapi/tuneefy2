@@ -255,8 +255,7 @@ class ApiController
         $db = DatabaseHandler::getInstance(null);
         // Retrieve the intent
         try {
-            $result = $db->getIntent($intent);
-            $uid = $db->addItem($result);
+            $uid = $db->fixItemWithIntent($intent);
         } catch (\Exception $e) {
             $response->write($e->getMessage());
 
