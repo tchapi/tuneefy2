@@ -113,6 +113,19 @@ abstract class Platform implements GeneralPlatformInterface
         return static::COLOR;
     }
 
+    public function getType(): string
+    {
+        if ($this instanceof WebStreamingPlatformInterface){
+            return "streaming";
+        } else if ($this instanceof WebStoreInterface){
+            return "store";
+        } else if ($this instanceof ScrobblingPlatformInterface){
+            return "scrobbling";
+        } else {
+            return "general";
+        }
+    }
+
     // Credentials
     public function setCredentials(string $key, string $secret): Platform
     {
@@ -188,6 +201,7 @@ abstract class Platform implements GeneralPlatformInterface
     {
         $result = [
             'name' => static::NAME,
+            'type' => $this->getType(),
             'homepage' => static::HOMEPAGE,
             'tag' => static::TAG,
             'mainColorAccent' => static::COLOR,

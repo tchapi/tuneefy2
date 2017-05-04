@@ -860,13 +860,45 @@ final class ApiTest extends TestCase
         $this->assertEquals(count($result), 14);
 
         foreach ($result as $key => $platform) {
-           $this->assertCount(6, $platform);
+           $this->assertCount(7, $platform);
            $this->assertNotEquals('', $platform['tag']);
+           $this->assertNotEquals('', $platform['type']);
            $this->assertNotEquals('', $platform['name']);
            $this->assertNotEquals('', $platform['homepage']);
            $this->assertNotEquals('', $platform['mainColorAccent']);
            $this->assertCount(2, $platform['enabled']);
            $this->assertCount(3, $platform['capabilities']);
+        }
+    }
+
+    public function testListPlatformsWithBadType()
+    {
+        $response = $this->get('/platforms?type=coucou');
+        $this->assertSame($response->getStatusCode(), 400);
+
+        $result = json_decode($response->getBody()->__toString(), true);
+
+        $this->assertArrayHasKey('errors', $result);
+
+    }
+
+    public function testListPlatformsWithType()
+    {
+        $response = $this->get('/platforms?type=streaming');
+        $this->assertSame($response->getStatusCode(), 200);
+
+        $result = json_decode($response->getBody()->__toString(), true);
+
+        $this->assertArrayHasKey('platforms', $result);
+
+        $result = $result['platforms'];
+
+        // 14 platforms
+        $this->assertEquals(count($result), 11);
+
+        foreach ($result as $key => $platform) {
+           $this->assertCount(7, $platform);
+           $this->assertEquals('streaming', $platform['type']);
         }
     }
 

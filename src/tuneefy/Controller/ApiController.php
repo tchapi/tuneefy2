@@ -28,11 +28,21 @@ class ApiController
 
     public function getAllPlatforms($request, $response, $args)
     {
-        $type = $request->getQueryParam('type');
-
-        // FIX ME TODO
+        $type = strtolower($request->getQueryParam('type'));
 
         $platforms = $this->engine->getAllPlatforms();
+
+        if ($type != "") {
+            $platforms = array_filter($platforms, function($e) use ($type) {
+                return $e->getType() === $type;
+            });
+
+            if (count($platforms) === 0) {
+                $response->write('This type of platform does not exist');
+                return $response->withStatus(400);
+            }
+        }
+
         $data = ['platforms' => array_map(function ($e) { return $e->toArray(); }, $platforms)];
         $response = $this->renderer->render($request, $response, $data);
 

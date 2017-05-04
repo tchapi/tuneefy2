@@ -142,10 +142,10 @@ This API returns both machine-readable error codes and human-readable error mess
 ## Platform
 
 - name: `Deezer` (string)
+- type: `streaming` (string)
 - homepage: `https://www.deezer.com/` (string)
 - tag: `deezer` (string)
 - mainAccentColor: `181818` (string)
-- type: `streaming` (string)
 - enabled (object)
     + api: `true` (boolean)
     + website: `true` (boolean)
@@ -211,9 +211,9 @@ Retrieves the list of available **Platforms**
 
 | Type | Underlying interface |
 | --- | ---- |
-| streaming | Platform\WebStreamingPlatformInterface  |
-| store | Platform\WebStoreInterface  |
-| scrobbling | Platform\ScrobblingPlatformInterface  |
+| `streaming` | [Platform\WebStreamingPlatformInterface](https://github.com/tchapi/tuneefy2/blob/master/src/tuneefy/Platform/WebStreamingPlatformInterface.php)  |
+| `store` | [Platform\WebStoreInterface](https://github.com/tchapi/tuneefy2/blob/master/src/tuneefy/Platform/WebStoreInterface.php)  |
+| `scrobbling` | [Platform\ScrobblingPlatformInterface](https://github.com/tchapi/tuneefy2/blob/master/src/tuneefy/Platform/ScrobblingPlatformInterface.php)  |
 
 + Parameters
     + type: `streaming` (optional, string) ... The type of platform to retrieve
