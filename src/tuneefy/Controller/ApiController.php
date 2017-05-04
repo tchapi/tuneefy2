@@ -32,13 +32,14 @@ class ApiController
 
         $platforms = $this->engine->getAllPlatforms();
 
-        if ($type != "") {
-            $platforms = array_filter($platforms, function($e) use ($type) {
+        if ($type != '') {
+            $platforms = array_filter($platforms, function ($e) use ($type) {
                 return $e->getType() === $type;
             });
 
             if (count($platforms) === 0) {
                 $response->write('This type of platform does not exist');
+
                 return $response->withStatus(400);
             }
         }
@@ -48,7 +49,6 @@ class ApiController
 
         return $response->withStatus(200);
     }
-
 
     public function getPlatform($request, $response, $args)
     {

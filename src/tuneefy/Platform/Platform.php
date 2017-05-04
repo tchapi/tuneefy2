@@ -115,14 +115,14 @@ abstract class Platform implements GeneralPlatformInterface
 
     public function getType(): string
     {
-        if ($this instanceof WebStreamingPlatformInterface){
-            return "streaming";
-        } else if ($this instanceof WebStoreInterface){
-            return "store";
-        } else if ($this instanceof ScrobblingPlatformInterface){
-            return "scrobbling";
+        if ($this instanceof WebStreamingPlatformInterface) {
+            return 'streaming';
+        } elseif ($this instanceof WebStoreInterface) {
+            return 'store';
+        } elseif ($this instanceof ScrobblingPlatformInterface) {
+            return 'scrobbling';
         } else {
-            return "general";
+            return 'general';
         }
     }
 
