@@ -1,0 +1,21 @@
+{% extends '_base.html.twig' %}
+
+{% block content %}
+
+<div><img src="{{ item.getAlbumPicture }}" width="100px" height="100px"</div>
+<div><strong>{{ item.getSafeTitle }}</strong></div>
+<div><em>{{ item.getArtist }} — {{ item.getAlbumSafeTitle }}</em></div>
+
+<ul>
+{% for key, links in item.links %}
+    <li><strong>{{ key }}</strong>
+        <ul>
+        {% for i, link in links %}
+            <li>{{ link }} - <a href="{{ path_for('listen', { 'type': 'track', 'uid': uid, 'platform': key, 'i': i }) }}">listen</a></li>
+        {% endfor %}
+        </ul>
+    </li>
+{% endfor %}
+</ul>
+
+{% endblock %}
