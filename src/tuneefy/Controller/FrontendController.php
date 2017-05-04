@@ -4,7 +4,9 @@ namespace tuneefy\Controller;
 
 use Interop\Container\ContainerInterface;
 use RKA\ContentTypeRenderer\Renderer;
+use tuneefy\DB\DatabaseHandler;
 use tuneefy\PlatformEngine;
+use tuneefy\Utils\Utils;
 
 class FrontendController
 {
@@ -46,14 +48,33 @@ class FrontendController
         ]);
     }
 
-    public function share($request, $response, $args)
+    public function show($request, $response, $args)
     {
+        if ($args['uid'] === null || $args['uid'] === '') {
+            return $response->withStatus(404);
+        }
+
+        $db = DatabaseHandler::getInstance(null);
+
         // Translate into good id
         $id = Utils::fromUId($args['uid']);
-        $item = $this->db->getItem($id);
+        $item = $db->getItemById($id);
+
+        // Check the type and redirect if necessary
+        if ($item->getType() !== $args['type']) {
+            $route = $this->container->get('router')->pathFor('show', [
+                'type' => $item->getType(),
+                'uid' => $args['uid'],
+            ]);
+
+            return $response->withStatus(301)->withHeader('Location', $route);
+        }
 
         if (!is_null($item)) {
-            return $this->container->get('view')->render($response, 'item.html.twig', ['item' => $item->toArray()]);
+            return $this->container->get('view')->render($response, 'item.'.$args['type'].'.html.twig', [
+                'uid' => $args['uid'],
+                'item' => $item,
+            ]);
         } else {
             return $response->withStatus(404);
         }
@@ -61,10 +82,27 @@ class FrontendController
 
     public function listen($request, $response, $args)
     {
-        // TODO
+        if ($args['uid'] === null || $args['uid'] === '') {
+            return $response->withStatus(404);
+        }
+
+        $db = DatabaseHandler::getInstance(null);
+
+        // Translate into good id
+        $id = Utils::fromUId($args['uid']);
+        $item = $db->getItemById($id);
+
+        // Check we have a 'platform' link
+        $links = $item->getLinksForPlatform($args['platform']);
+
+        $index = intval($args['i'] ?? 0);
+
+        if (count($links) <= $index) {
+            return $response->withStatus(404);
+        }
 
         // Eventually, redirect to platform
-        return $response->withStatus(303)->withHeader('Location', 'http://the/link/on/the/platform'); // "See Other"
+        return $response->withStatus(303)->withHeader('Location', $links[$index]);
     }
 
     public function api($request, $response, $args)

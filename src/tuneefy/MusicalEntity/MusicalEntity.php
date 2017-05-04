@@ -57,6 +57,15 @@ abstract class MusicalEntity implements MusicalEntityInterface
         return $this->links;
     }
 
+    public function getLinksForPlatform(string $platformTag): array
+    {
+        if (!isset($this->links[$platformTag])) {
+            return [];
+        }
+
+        return $this->links[$platformTag];
+    }
+
     public function countLinkedPlatforms(): int
     {
         return count($this->links);

@@ -8,6 +8,7 @@ use OAuth2;
 use RKA\ContentTypeRenderer\Renderer;
 use Slim\App;
 use Slim\Views\Twig;
+use Slim\Views\TwigExtension;
 use Symfony\Component\Yaml\Yaml;
 use tuneefy\Controller\ApiController;
 use tuneefy\Controller\FrontendController;
@@ -38,9 +39,14 @@ class Application
 
         // Register component on container
         $container['view'] = function ($container) {
-            return new Twig(self::getPath('templates'), [
-                'cache' => self::getPath('cache'),
+            $view = new Twig(self::getPath('templates'), [
+                //'cache' => self::getPath('cache'),
             ]);
+
+            $basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
+            $view->addExtension(new TwigExtension($container['router'], $basePath));
+
+            return $view;
         };
 
         // Custom 404 and 500 handlers
@@ -193,11 +199,11 @@ class Application
             return $response;
         });
 
-        /* The sharing page */
-        $this->slimApp->get($params['urls']['format'], FrontendController::class.':share');
+        /* The display/show page for a musical entity */
+        $this->slimApp->get($params['urls']['format'], FrontendController::class.':show')->setName('show');
 
         /* Listen to a musical entity => goes to the platform link */
-        $this->slimApp->get($params['urls']['format'].'/listen/{platform}', FrontendController::class.':listen');
+        $this->slimApp->get($params['urls']['format'].'/listen/{platform}[/{i:[0-9]+}]', FrontendController::class.':listen')->setName('listen');
 
         /* The other frontend routes */
         $this->slimApp->get('/', FrontendController::class.':home');

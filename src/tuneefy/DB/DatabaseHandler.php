@@ -2,6 +2,7 @@
 
 namespace tuneefy\DB;
 
+use tuneefy\MusicalEntity\MusicalEntityInterface;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Utils\Utils;
 
@@ -49,9 +50,9 @@ class DatabaseHandler
         return self::$instance;
     }
 
-    public function getItemById(int $id): array
+    public function getItemById(int $id): MusicalEntityInterface
     {
-        $statement = $this->connection->prepare('SELECT * FROM `items` WHERE `id` = :id AND `expires_at` IS NULL AND `intent` IS NULL');
+        $statement = $this->connection->prepare('SELECT `object`, `signature` FROM `items` WHERE `id` = :id AND `expires_at` IS NULL AND `intent` IS NULL');
 
         $res = $statement->execute([
           ':id' => $id,
@@ -61,7 +62,23 @@ class DatabaseHandler
             throw new \Exception('Error getting item : '.$statement->errorInfo()[2]);
         }
 
-        return $statement->fetch(\PDO::FETCH_ASSOC);
+        $row = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        if ($row === false) {
+            throw new \Exception('No item with the requested id : '.$id);
+        }
+
+        if ($row['signature'] !== hash_hmac('md5', $row['object'], $this->parameters['intents']['secret'])) {
+            throw new \Exception('Data for id : '.$id.' has been tampered with, the signature is not valid.');
+        }
+
+        $result = unserialize($row['object'], ['allowed_classes' => PlatformResult::class]);
+
+        if ($result === false || !($result instanceof MusicalEntityInterface)) {
+            throw new \Exception('Stored object is not unserializable');
+        }
+
+        return $result;
     }
 
     public function fixItemWithIntent(string $intent): string
@@ -93,19 +110,24 @@ class DatabaseHandler
         return Utils::toUId($row['id']);
     }
 
-    public function addItemWithIntent(string $intent, PlatformResult $object): DatabaseHandler
+    public function addItemWithIntent(string $intent, PlatformResult $result): DatabaseHandler
     {
         $statement = $this->connection->prepare('INSERT INTO `items` (`intent`, `object`, `created_at`, `expires_at`, `signature`) VALUES (:intent, :object, NOW(), :expires, :signature)');
 
         // Persist intent and object in DB for a later share if necessary
-        $objectAsString = serialize($object);
+        $entity = $result->getMusicalEntity();
+        if (!$entity) {
+            throw new \Exception('Error adding intent : this result does not have a musical entity bound to it.');
+        }
+
+        $entityAsString = serialize($entity);
         $expires = new \DateTime('now');
         $expires->add(new \DateInterval('PT'.$this->parameters['intents']['lifetime'].'S'));
         $res = $statement->execute([
           ':intent' => $intent,
-          ':object' => $objectAsString,
+          ':object' => $entityAsString,
           ':expires' => $expires->format('Y-m-d H:i:s'),
-          ':signature' => hash_hmac('md5', $objectAsString, $this->parameters['intents']['secret']),
+          ':signature' => hash_hmac('md5', $entityAsString, $this->parameters['intents']['secret']),
         ]);
 
         if ($res === false) {
