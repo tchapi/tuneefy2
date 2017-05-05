@@ -207,9 +207,9 @@ class Application
         $this->slimApp->get($params['urls']['format'].'/listen/{platform}[/{i:[0-9]+}]', FrontendController::class.':listen')->setName('listen');
 
         /* The other frontend routes */
-        $this->slimApp->get('/', FrontendController::class.':home');
-        $this->slimApp->get('/about', FrontendController::class.':about');
-        $this->slimApp->get('/trends', FrontendController::class.':trends');
+        $this->slimApp->get('/', FrontendController::class.':home')->setName('home');
+        $this->slimApp->get('/about', FrontendController::class.':about')->setName('about');
+        $this->slimApp->get('/trends', FrontendController::class.':trends')->setName('trends');
 
         return $this;
     }
