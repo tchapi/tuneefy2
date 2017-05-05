@@ -156,12 +156,44 @@ This API returns both machine-readable error codes and human-readable error mess
 
 
 ## OAuth valid response (object)
-+ `access_token`: `5262d64b892e8d4341000001` (string, required) - valid Token
-+ `scope: all (string, required) - scopes of current token
-+ `expires_in`: 3600 (number, required)
-+ `token_type`: Bearer (string, required)
++ `access_token`: `5262d64b892e8d4341000001` (string) - valid Token
++ `scope`: all (string) - scopes of current token
++ `expires_in`: 3600 (number)
++ `token_type`: Bearer (string)
 
 
+## Platform Result
++ musical_entity (Musical Entity)
++ metadata (object)
+  + score: 0.97 (number)
+  + merges: 1 (number, optional)
++ share (object)
+  + intent: `590c6c8320b1b` (string)
+      
+## Musical Entity
+
++ type: `track` (string)
++ title: `Karma Police` (string)
++ album (object)
+  + title: `OK Computer` (string)
+  + artist: `Radiohead` (string)
+  + picture: `https://api.deezer.com/album/14879699/image` (string)
+  + safe_title: `OK Computer` (string)
+  + extra_info (object)
+    + is_cover: `false` (boolean)
+    + is_remix: `false` (boolean)
+    + acoustic: `false` (boolean)
+    + context (array[string])
+        + `Deluxe Edition`
++ links (object)
+  + deezer (array[string])
+      + `http\://www.deezer.com/track/138539981`
++ safe_title: `Karma Police` (string)
++ extra_info (object)
+  + is_cover: `false` (boolean)
+  + is_remix: `false` (boolean)
+  + acoustic: `false` (boolean)
+  + context (array[string])
 
 
 
@@ -194,13 +226,14 @@ Allows to retrieve a valid OAuth token for your application, using the applicati
     + Body
 
             {
-                TODO
+                TODO FIXME
             }
 
 
 
 
 
+# Group Platforms
 
 ## Platforms list [/platforms{?type}]
 
@@ -260,6 +293,8 @@ Retrieves the list of available **Platforms**
 ### Retrieve a Platform [GET]
 Retrieves a specific **Platform** and its details
 
+> See `/platforms` to get a list of all available platforms
+
 + Parameters
     + tag: `deezer` (required, string) ... The tag of the platform to retrieve
 
@@ -286,8 +321,149 @@ Retrieves a specific **Platform** and its details
 
 
 
+# Group Search
+
+## Search [/search/{type}/{tag}{?q}]
+
+### Search a specific platform [GET]
+Search for tracks or albums on a specific platform
+
+**Capabilities**
+
+To be able to search on a platform, the platform must have the **track\_search** or **album\_search** capability.
+
+> Don't forget to url-encode the query (`q`) if necessary
+
++ Parameters
+    + type: `track` (required, string) ... The type of musical entity to search for. Can be **track** or **album** for now.
+    + tag: `deezer` (required, string) ... The tag of the platform to search on
+    + q: `ok+computer` (required, string) ... The text to search for
+
++ Request Track
+    + Parameters
+        + type: `track` 
+        + tag: `deezer` 
+        + q: `ok+computer`
+
+    + Headers
+
+            Accept: "application/json"
+            Authorization: "Bearer 5262d64b892e8d4341000001"
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + results (array[Musical Entity])
+    
+
++ Request Album
+    + Parameters
+        + type: `album` 
+        + tag: `deezer` 
+        + q: `ok+computer`
+
+    + Headers
+
+            Accept: "application/json"
+            Authorization: "Bearer 5262d64b892e8d4341000001"
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + results (array[Platform Result])
+    
++ Request Without `q` parameter
+
+    + Headers
+
+            Accept: "application/json"
+            Authorization: "Bearer 5262d64b892e8d4341000001"
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "errors": ["Missing or empty parameter : q (query)"],
+                "code": 400
+            }
+
+## Lookup [/lookup{?q}]
+
+### Lookup a permalink [GET]
+Lookup a permalink to retrieve the info about the track or album
+
+**Capabilities**
+
+To be able to lookup on a platform, the platform must have the **lookup** capability.
 
 
++ Parameters
+    + q: `https://open.spotify.com/track/6IWxHgVbdKyUMydhVGXRaT` (required, string) ... The permalink to search for
 
++ Request Example
+
+    + Headers
+
+            Accept: "application/json"
+            Authorization: "Bearer 5262d64b892e8d4341000001"
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + result (object)
+            * musical_entity (object)
+                * type: `track` (string)
+                * title: `On The Road Again` (string)
+                * album (object)
+                  * title: `The Best Of Canned Heat` (string)
+                  * artist: `Canned Heat` (string)
+                  * picture: `https://i.scdn.co/image/b83f79c17a44a9aa24a49748d489c52d80c36fb5` (string)
+                  * safe_title: `The Best Of Canned Heat` (string)
+                  * extra_info (object)
+                    * is_cover: `false` (boolean)
+                    * is_remix: `false` (boolean)
+                    * acoustic: `false` (boolean)
+                    * context (array[string])
+                * links (object)
+                  * spotify (array[string])
+                      * `https://open.spotify.com/track/6IWxHgVbdKyUMydhVGXRaT`
+                * safe_title: `On The Road Again` (string)
+                * extra_info (object)
+                  * is_cover: `false` (boolean)
+                  * is_remix: `false` (boolean)
+                  * acoustic: `false` (boolean)
+                  * context (array[string])
+            * metadata (object)
+                * query_words (array[string])
+                    - `Canned Heat`
+                    - `On The Road Again`
+                * platform: `Spotify` (string)
+            * share (object)
+                * intent: `590c6c8320b1b` (string)
+                    
+
+## Aggregate [/aggregate/{type}{?q}]
+
+### Search on multiple platforms at once [GET]
+Search for tracks or albums on multiple platforms
+
+
++ Parameters
+    + type: `track` (required, string) ... The type of musical entity to search for. Can be **track** or **album** for now.
+    + q: `ok+computer` (required, string) ... The text to search for
+
++ Request Example
+
+    + Headers
+
+            Accept: "application/json"
+            Authorization: "Bearer 5262d64b892e8d4341000001"
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + results (array[Platform Result])
+    
 
 
