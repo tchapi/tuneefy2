@@ -2,7 +2,8 @@ Todo :
 
  - Implémenter une limite pour l'API
  - intent, ajouter from : "api" ou "tuneefy.com"
-
+ - differentier 404/405 pour api et frontend
+ 
  - doc api
    - blueprint apib [EN Cours]
    - faire une doc postman

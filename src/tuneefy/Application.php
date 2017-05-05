@@ -49,10 +49,13 @@ class Application
             return $view;
         };
 
-        // Custom 404 and 500 handlers
-        // Override the default Not Found Handler
+        // Custom 404, 405 and 500 handlers
+        // Override the default handlers
         $container['notFoundHandler'] = function ($container) {
-            return new CustomNotFoundHandler();
+            return new CustomNotFoundHandler($container->get('view'), 404, "Not Found");
+        };
+        $container['notAllowedHandler'] = function ($container) {
+            return new CustomNotFoundHandler($container->get('view'), 405, "Method not Allowed");
         };
         // FIXME remove comments
         // $container['errorHandler'] = function ($container) {
@@ -180,19 +183,15 @@ class Application
 
             $response = $next($request, $response);
 
-            // If we have an error (Bad request), handle it
-            if (400 === $response->getStatusCode() || 404 === $response->getStatusCode()) {
-                $response = $renderer->render($request, $response, [
-                    'errors' => [$response->getBody()->__toString()],
-                    'code' => $response->getStatusCode(),
-                ]);
-            }
-
             // If we have an authentication error (401), handle it
             if (401 === $response->getStatusCode()) {
-                // TODO FIX ME CLEAR THE RESPONSE BEFORE HAND ?
                 $response = $renderer->render($request, $response, [
-                    'errors' => ['Not Authorized'],
+                    'errors' => ['Not authorized'],
+                    'code' => $response->getStatusCode(),
+                ]);
+            } else if (4 === intval($response->getStatusCode()/100)) {
+                $response = $renderer->render($request, $response, [
+                    'errors' => [$response->getBody()->__toString()],
                     'code' => $response->getStatusCode(),
                 ]);
             }
