@@ -255,7 +255,7 @@ class ApiController
         $db = DatabaseHandler::getInstance(null);
         // Retrieve the intent
         try {
-            $uid = $db->fixItemWithIntent($intent);
+            list($type, $uid) = $db->fixItemWithIntent($intent);
         } catch (\Exception $e) {
             $response->write($e->getMessage());
 
@@ -265,7 +265,7 @@ class ApiController
         $data = [
             'uid' => $uid,
             'link' => $this->container->get('params')['urls']['front'].
-                      str_replace('{uid}', $uid, $this->container->get('params')['urls']['format']),
+                      str_replace(['{type}', '{uid}'], [$type, $uid], $this->container->get('params')['urls']['format']),
         ];
 
         $response = $this->renderer->render($request, $response, $data);

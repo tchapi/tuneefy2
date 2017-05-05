@@ -72,7 +72,7 @@ class DatabaseHandler
             throw new \Exception('Data for id : '.$id.' has been tampered with, the signature is not valid.');
         }
 
-        $result = unserialize($row['object'], ['allowed_classes' => PlatformResult::class]);
+        $result = unserialize($row['object'], ['allowed_classes' => MusicalEntityInterface::class]);
 
         if ($result === false || !($result instanceof MusicalEntityInterface)) {
             throw new \Exception('Stored object is not unserializable');
@@ -81,7 +81,7 @@ class DatabaseHandler
         return $result;
     }
 
-    public function fixItemWithIntent(string $intent): string
+    public function fixItemWithIntent(string $intent): array
     {
         /*
             To make an item permanent, we remove its intent, and remove its expiration date.
@@ -89,7 +89,7 @@ class DatabaseHandler
             cannot be shared as an intent anymore.
         */
 
-        $statementSelect = $this->connection->prepare('SELECT `id` FROM `items` WHERE `intent` = :intent');
+        $statementSelect = $this->connection->prepare('SELECT `id`, `object`, `signature` FROM `items` WHERE `intent` = :intent');
         $statementUpdate = $this->connection->prepare('UPDATE `items` SET `expires_at` = NULL, `intent` = NULL WHERE `intent` = :intent');
 
         $this->connection->beginTransaction();
@@ -107,7 +107,17 @@ class DatabaseHandler
             throw new \Exception('No intent with the requested uid : '.$intent);
         }
 
-        return Utils::toUId($row['id']);
+        if ($row['signature'] !== hash_hmac('md5', $row['object'], $this->parameters['intents']['secret'])) {
+            throw new \Exception('Data for id : '.$id.' has been tampered with, the signature is not valid.');
+        }
+
+        $result = unserialize($row['object'], ['allowed_classes' => MusicalEntityInterface::class]);
+
+        if ($result === false || !($result instanceof MusicalEntityInterface)) {
+            throw new \Exception('Stored object is not unserializable');
+        }
+
+        return [$result->getType(), Utils::toUId($row['id'])];
     }
 
     public function addItemWithIntent(string $intent, PlatformResult $result): DatabaseHandler
@@ -159,7 +169,7 @@ class DatabaseHandler
     //         throw new \Exception('Data for intent : '.$intent.' has been tampered with, the signature is not valid.');
     //     }
 
-    //     $result = unserialize($row['object'], ['allowed_classes' => PlatformResult::class]);
+    //     $result = unserialize($row['object'], ['allowed_classes' => MusicalEntityInterface::class]);
 
     //     if ($result === false || !($result instanceof PlatformResult)) {
     //         throw new \Exception('Stored object is not unserializable');
