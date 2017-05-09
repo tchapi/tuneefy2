@@ -17,7 +17,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 All exchange of date and time-related data, if applicable, MUST be done according to **ISO 8601** standard and stored in UTC.
 
-When returning date and time-related data, the `YYYY-MM-DDThh:mm:ss` format MUST be used.
+When returning date and time-related data, the `YYYY-MM-DDThh:mm:ss+P` format MUST be used.
 
 
 
@@ -169,6 +169,12 @@ This means that each result can be shared easily until the intent expires.
 
 On our side, this allows for a practical way to create tuneefy link without cluttering the database and creating many links for each search result. As well, you don't necessarily need a tuneefy link when using the tuneefy API, hence the design choice.
 
+To get the tuneefy link from the intent, just call the `/share` endpoint with this intent. It will consume the intent and return the tuneefy link corresponding to the search result.
+
+> Once an intent is consumed, it is no longer available and calling the `/share` with a consumed or expired intent will result in a **400**.
+
+
+
 
 
 # Data Structures
@@ -258,10 +264,22 @@ Allows to retrieve a valid OAuth token for your application, using the applicati
 + Response 400 (application/json)
 
     + Body
+    
+            {"error":"invalid_client","error_description":"The client credentials are invalid"}
+
++ Request Missing info
+    + Body
 
             {
-                TODO FIXME
+                "client_id": "Your application customer key",
+                "client_secret": "Your application customer secret",
             }
+
++ Response 400 (application/json)
+
+    + Body
+    
+            {"error":"invalid_request","error_description":"The grant type was not specified in the request"}
 
 
 

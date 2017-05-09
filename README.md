@@ -53,54 +53,34 @@ Just run :
 
     vendor/bin/phpunit -v
 
-There should be 29 tests containing 599 assertions.
+There should be 33 tests containing 652 assertions.
 
 > Sometimes a platform fails to respond correctly due to network latencies or such. Re-run the tests in this case, it should pass fine the second time.
 
-### API Documentation
-(_This will move to somewhere more appropriate afterwards_)
+### API
 
-#### Introduction
+The API endpoints require an OAuth access token. The token is necessary to authenticate **all** requests to the API.
 
-TBC
+The tuneefy API currently supports the [OAuth 2 draft](https://oauth.net/2/) specification. All OAuth2 requests MUST use the SSL endpoint available at https://api.tuneefy.com/.
+
+OAuth 2.0 is a simple and secure authentication mechanism. It allows applications to acquire an access token for tuneefy via a POST request to a token endpoint. Authentication with OAuth can be accomplished in the following steps:
+
+  1. Register for an API key by sending a mail to api@tuneefy.com
+  2. Exchange your customer id and secret for an access token
+  3. Make requests by passing the token in the Authorization header
+  4. When your token expires, you can get a new one 
 
 #### Apply for an API key
 
 You can get an API key and associated secret by sending an email to api@tuneefy.com.
 
-#### Authentication / Signature
-
-You will need to authenticate in order to use the tuneefy API. All requests must be **signed** with **1-legged OAuth** (_often refered as 2-legged OAuth, but it's not_).
-
-Here is a pseudo-code process on how to sign your requests :
-
-> TBC
-
 #### Web Service Rate Limits
 
 Limits are placed on the number of API requests you may make using your API key. Rate limits may vary by service, but the defaults are 100 requests per hour.
 
-#### Output format
+#### Full documentation
 
-Either pass `format=xml|json|html` or set the Accept header (prefered).
-
-#### Lookup API
-
-> TBC
-
-#### Search API
-
-> TBC
-
-#### Aggregate API
-
-> TBC
-
-##### Merging aggressively
-
-The `aggressive` parameter allows to merge tracks without taking the album name into account. This works for a majority of scenarios since it's quite rare that an artist released two tracks with exactly the same name, but it can sometimes confuse **live** or **edit** versions, for instance.
-
-Acoustic versions, covers or remix should be correctly differentiated even if you merge aggressively.
+The full documentation is available at https://api.tuneefy.com. An API blueprint is also available [here](https://github.com/tchapi/tuneefy2/blob/master/app/templates/api/main.apib) — use your preferred renderer to build it. We use Aglio.
 
 
 - - -
