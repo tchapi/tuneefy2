@@ -250,13 +250,15 @@ Allows to retrieve a valid OAuth token for your application, using the applicati
 > This endpoint is not protected
 
 + Request Get a token
+    + Headers
+
+            Content-Type: application/x-www-form-urlencoded;charset=UTF-8
+
     + Body
 
-            {
-                "client_id": "Your application customer key",
-                "client_secret": "Your application customer secret",
-                "grant_type": "client_credentials"
-            }
+            client_id=Your application customer key
+            &client_secret=Your application customer secret
+            &grant_type=client_credentials
 
 + Response 200 (application/json)
     + Attributes (OAuth valid response)
@@ -268,12 +270,15 @@ Allows to retrieve a valid OAuth token for your application, using the applicati
             {"error":"invalid_client","error_description":"The client credentials are invalid"}
 
 + Request Missing info
+
+    + Headers
+
+            Content-Type: application/x-www-form-urlencoded;charset=UTF-8
+
     + Body
 
-            {
-                "client_id": "Your application customer key",
-                "client_secret": "Your application customer secret",
-            }
+            client_id=Your application customer key
+            &client_secret=Your application customer secret
 
 + Response 400 (application/json)
 
