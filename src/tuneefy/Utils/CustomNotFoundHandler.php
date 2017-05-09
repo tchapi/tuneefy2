@@ -2,8 +2,8 @@
 
 namespace tuneefy\Utils;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Slim\Handlers\NotFound;
 use Slim\Views\Twig;
 
@@ -31,7 +31,7 @@ class CustomNotFoundHandler extends NotFound
         //$this->view->render($response, '404.html.twig');
 
         return $response
-            ->withStatus($this->status);
+            ->withStatus($this->status)
             ->withHeader('Content-Type', 'text/html')
             ->write($this->message);
     }

@@ -52,10 +52,10 @@ class Application
         // Custom 404, 405 and 500 handlers
         // Override the default handlers
         $container['notFoundHandler'] = function ($container) {
-            return new CustomNotFoundHandler($container->get('view'), 404, "Not Found");
+            return new CustomNotFoundHandler($container->get('view'), 404, 'Not Found');
         };
         $container['notAllowedHandler'] = function ($container) {
-            return new CustomNotFoundHandler($container->get('view'), 405, "Method not Allowed");
+            return new CustomNotFoundHandler($container->get('view'), 405, 'Method not Allowed');
         };
         // FIXME remove comments
         // $container['errorHandler'] = function ($container) {
