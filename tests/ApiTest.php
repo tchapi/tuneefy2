@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Slim\Http\Environment;
 use Slim\Http\Request;
+use Slim\Http\Response;
 use PHPUnit\Framework\TestCase;
 use tuneefy\PlatformEngine;
 
@@ -837,6 +838,7 @@ final class ApiTest extends TestCase
             ]);
         $req = Request::createFromEnvironment($env);
         $this->app->set('request', $req);
+        $this->app->set('response', new Response());
 
         return $this->app->run(true);
     }
@@ -943,7 +945,6 @@ final class ApiTest extends TestCase
                     $this->assertArrayHasKey('errors', $result);
                 }
                 //error_log($permalink.' ✅');
-                $response->getBody()->close(); // Else the stream is reused (php://temp)
             }
             
         }
@@ -978,7 +979,6 @@ final class ApiTest extends TestCase
                 $this->assertArrayHasKey('results', $result);
                 $this->assertCount(1, $result['results']);
             }
-            $response->getBody()->close(); // Else the stream is reused (php://temp)
         }
     }
 
@@ -1012,7 +1012,6 @@ final class ApiTest extends TestCase
             } else {
                 $this->assertArrayHasKey('errors', $result);
             }
-            $response->getBody()->close(); // Else the stream is reused (php://temp)
         }
     }
 
@@ -1036,7 +1035,6 @@ final class ApiTest extends TestCase
                 $this->assertArrayHasKey('results', $result);
                 $this->assertCount(1, $result['results']);
             }
-            $response->getBody()->close(); // Else the stream is reused (php://temp)
         }
     }
 
@@ -1065,8 +1063,6 @@ final class ApiTest extends TestCase
 
             $result = json_decode($response->getBody()->__toString(), true);
             $this->assertArrayHasKey('errors', $result);
-
-            $response->getBody()->close(); // Else the stream is reused (php://temp)
         }
     }
 
@@ -1085,8 +1081,6 @@ final class ApiTest extends TestCase
         $this->assertArrayHasKey('musical_entity', $result['results'][0]);
         $this->assertGreaterThan(7, $result['results'][0]['musical_entity']['links']);
         $this->assertGreaterThan(7, $result['results'][0]['metadata']['merges']);
-
-        $response->getBody()->close(); // Else the stream is reused (php://temp)
     }
 
     public function testAggregateTrackBadQuery()
@@ -1104,7 +1098,5 @@ final class ApiTest extends TestCase
         $this->assertCount(1, $result['results'][0]['musical_entity']['links']);
         // Only the Napster platform returns a result
         $this->assertArrayHasKey('napster', $result['results'][0]['musical_entity']['links']);
-
-        $response->getBody()->close(); // Else the stream is reused (php://temp)
     }
 }
