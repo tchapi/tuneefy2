@@ -10,6 +10,7 @@ use tuneefy\MusicalEntity\MusicalEntity;
 class PlatformResult
 {
     private $intent;
+    private $expires;
     private $musical_entity;
     private $metadata;
 
@@ -18,6 +19,7 @@ class PlatformResult
         $this->musical_entity = $musical_entity;
         $this->metadata = $metadata;
         $this->intent = uniqid(); // We create it now for later use
+        $this->expires = null;
     }
 
     public function getMetadata(): array
@@ -42,6 +44,7 @@ class PlatformResult
                 'metadata' => $this->metadata,
                 'share' => [
                     'intent' => $this->intent,
+                    'expires' => $this->expires?$this->expires->format(\DateTime::ATOM):null,
                 ],
             ];
         }
@@ -82,7 +85,7 @@ class PlatformResult
     {
         // Store guid + serialized platformResult in db
         $db = DatabaseHandler::getInstance(null);
-        $db->addItemWithIntent($this->intent, $this);
+        $this->expires = $db->addItemWithIntent($this->intent, $this);
 
         return $this;
     }

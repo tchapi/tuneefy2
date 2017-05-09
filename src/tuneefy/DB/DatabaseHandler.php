@@ -120,7 +120,7 @@ class DatabaseHandler
         return [$result->getType(), Utils::toUId($row['id'])];
     }
 
-    public function addItemWithIntent(string $intent, PlatformResult $result): DatabaseHandler
+    public function addItemWithIntent(string $intent, PlatformResult $result): \DateTime
     {
         $statement = $this->connection->prepare('INSERT INTO `items` (`intent`, `object`, `created_at`, `expires_at`, `signature`) VALUES (:intent, :object, NOW(), :expires, :signature)');
 
@@ -144,6 +144,6 @@ class DatabaseHandler
             throw new \Exception('Error adding intent : '.$statement->errorInfo()[2]);
         }
 
-        return $this;
+        return $expires;
     }
 }
