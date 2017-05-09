@@ -57,7 +57,7 @@ Authorization: bearer 5262d64b892e8d4341000001
 Or you can pass the `access_token` parameter with all your requests.
 
 ```http
-GET test?access_token=5262d64b892e8d4341000001
+GET platforms?access_token=5262d64b892e8d4341000001
 ```
 
 The header method is RECOMMENDED.
@@ -79,8 +79,13 @@ The header method is RECOMMENDED.
 
 The API can limit the number of results returned (for `search` and `aggregate` methods) via the `limit` parameter.
 
+```http
+GET search/track/qobuz?q=chopin&limit=2
+```
+
 This is not _strictly speaking_ pagination since there is no way to pass an offset to the API to retrieve the subsequent results, are they are fetched from different platforms that do not all support pagination.
 
+The default limit is `10` results.
 
 
 <br>
@@ -383,7 +388,7 @@ Retrieves a specific **Platform** and its details
 
 # Group Search
 
-## Search [/search/{type}/{tag}{?q}]
+## Search [/search/{type}/{tag}{?q,mode}]
 
 ### Search a specific platform [GET]
 Search for tracks or albums on a specific platform
@@ -392,12 +397,17 @@ Search for tracks or albums on a specific platform
 
 To be able to search on a platform, the platform must have the **track\_search** or **album\_search** capability.
 
+**Mode**
+
+The **mode** indicates whether we're going to eagerly fetch data when it's missing from the platform response. For instance, Spotify only returns the track but not the album when getting a track. In `eager` mode, we will make a supplementary call to get the album info.
+
 > Don't forget to url-encode the query (`q`) if necessary
 
 + Parameters
     + type: `track` (required, string) ... The type of musical entity to search for. Can be **track** or **album** for now.
     + tag: `deezer` (required, string) ... The tag of the platform to search on
     + q: `ok+computer` (required, string) ... The text to search for
+    + mode: `lazy` (optional, string) ... The search mode, defaults to `lazy`
 
 + Request Track
     + Parameters
@@ -413,7 +423,7 @@ To be able to search on a platform, the platform must have the **track\_search**
 + Response 200 (application/json)
 
     + Attributes (object)
-        + results (array[Musical Entity])
+        + results (array[Platform Result])
     
 
 + Request Album
@@ -449,7 +459,7 @@ To be able to search on a platform, the platform must have the **track\_search**
                 ]
             }
 
-## Lookup [/lookup{?q}]
+## Lookup [/lookup{?q,mode}]
 
 ### Lookup a permalink [GET]
 Lookup a permalink to retrieve the info about the track or album
@@ -458,9 +468,13 @@ Lookup a permalink to retrieve the info about the track or album
 
 To be able to lookup on a platform, the platform must have the **lookup** capability.
 
+**Mode**
+
+_See search_
 
 + Parameters
     + q: `https://open.spotify.com/track/6IWxHgVbdKyUMydhVGXRaT` (required, string) ... The permalink to search for
+    + mode: `eager` (optional, string) ... The lookup mode, defaults to `lazy`
 
 + Request Example
 
@@ -522,15 +536,32 @@ To be able to lookup on a platform, the platform must have the **lookup** capabi
                 ]
             }
 
-## Aggregate [/aggregate/{type}{?q}]
+## Aggregate [/aggregate/{type}{?q,mode,aggressive,include}]
 
 ### Search on multiple platforms at once [GET]
 Search for tracks or albums on multiple platforms
 
+**Mode**
+
+_See search_
+
+**Include**
+
+TODO
+If it is empty or not provided, the api aggregates all the available platforms.
+
+**Merging aggressively (tracks only)**
+
+The `aggressive` parameter allows to merge tracks without taking the album name into account. This works for a majority of scenarios since it's quite rare that an artist released two tracks with exactly the same name, but it can sometimes confuse **live** or **edit** versions, for instance.
+
+Acoustic versions, covers or remix should be correctly differentiated even if you merge aggressively.
 
 + Parameters
     + type: `track` (required, string) ... The type of musical entity to search for. Can be **track** or **album** for now.
     + q: `ok+computer` (required, string) ... The text to search for
+    + mode: `eager` (optional, string) ... The lookup mode, defaults to `lazy`
+    + aggressive: `false` (optional, boolean) ... Whether to merge tracks without looking at the album name. Defaults to `false`
+    + include: `deeezer, spotify, groove` (optional, string) ... A list of comma separated platform tags from which to aggregate results.
 
 + Request Example
 
@@ -605,3 +636,151 @@ Share a previous result as a tuneefy url, using the provided intent.
                 }
               ]
             }
+
+# Group API client examples
+
+Here are very simple (and not optimized) examples to get you started. You can find these examples on github in the [examples](https://github.com/tchapi/tuneefy2/tree/master/examples) folder.
+
+### PHP
+
+We use **curl** to retrieve the token and then perform a basic search.
+
+```php
+<?php
+
+$key = 'administrator';
+$secret = 'password';
+
+$host = 'https://api.tuneefy.com';
+$tokenEndpoint = $host.'/auth/token';
+$searchEndpoint = $host.'/search/track/spotify?q=amon+tobin&limit=1';
+
+// 1. Request token
+$tk = curl_init($tokenEndpoint);
+curl_setopt($tk, CURLOPT_HTTPHEADER, [
+    'Content-Type: application/x-www-form-urlencoded;'.
+    'charset=UTF-8'
+]);
+curl_setopt($tk, CURLOPT_POSTFIELDS, 
+    'grant_type=client_credentials'.
+    '&client_id='.$key.
+    '&client_secret='.$secret
+);
+curl_setopt($tk, CURLOPT_RETURNTRANSFER, true);
+$token = json_decode(curl_exec($tk));
+curl_close($tk);
+
+// 2. Use token for search on Spotify
+if (isset($token->token_type) && $token->token_type === 'Bearer') {
+    $br = curl_init($searchEndpoint);
+    curl_setopt($br, CURLOPT_HTTPHEADER, [
+        'Authorization: Bearer '.$token->access_token,
+        'Accept: application/json',
+    ]);
+    curl_setopt($br, CURLOPT_RETURNTRANSFER, true);
+    $data = curl_exec($br);
+    curl_close($br);
+  
+    // 3. Tada ! 
+    echo "🎉\n";
+    var_dump($data);
+} else {
+    echo "Wrong key/secret pair";
+}
+```
+
+### Shell
+
+We use **curl** too in a very simple fashion.
+
+```bash
+#!/bin/bash
+
+response=$(curl -X POST --silent -d client_id=administrator -d client_secret=password -d grant_type=client_credentials https://api.tuneefy.com/auth/token)
+
+token=$(echo $response | jq --raw-output '.access_token')
+
+echo 🎉
+curl --header "Authorization: Bearer $token" "https://api.tuneefy.com/search/track/spotify?q=amon+tobin&limit=1"
+
+```
+
+
+### Javascript (node)
+
+We use the **request** and **json** modules.
+
+```js
+var request = require('request');
+ 
+var key = 'administrator';
+var secret = 'password';
+
+var tokenEndpoint = 'https://api.tuneefy.com/auth/token';
+var searchEndpoint = 'https://api.tuneefy.com/search/track/spotify?q=amon+tobin&limit=1';
+
+// 1. Request token
+request.post({
+  url: tokenEndpoint,
+  form: {
+    'grant_type': 'client_credentials',
+    'client_id': key,
+    'client_secret': secret
+  }
+}, function(err, httpResponse, body) {
+  var json = JSON.parse(body);
+
+  if (json.token_type && json.token_type === 'Bearer') {
+      // 2. Use token for search on Spotify 
+      request({
+        url: searchEndpoint,
+        'auth': {
+          'bearer': json.access_token
+        },
+        method: 'GET'
+      }, function(err, httpResponse, body) {
+        var json = JSON.parse(body);
+
+        // 3. Tada ! 
+        console.log("🎉");
+        console.log(JSON.stringify(json, null, 4));
+      });
+  }
+
+});
+
+```
+
+
+### Python
+
+We use the **requests** module (standard).
+
+```python
+# coding=utf8
+import requests, json
+
+key = 'administrator'
+secret = 'password'
+
+tokenEndpoint = 'https://api.tuneefy.com/auth/token'
+searchEndpoint = 'https://api.tuneefy.com/search/track/spotify?q=amon+tobin&limit=1'
+
+# 1. Request token
+payload = {'grant_type': 'client_credentials', 'client_id': key, 'client_secret': secret}
+req = requests.post(tokenEndpoint,data=payload)
+
+token = req.json()
+
+# 2. Use token for search on Spotify
+if token['token_type'] and token['token_type'] == 'Bearer':
+    headers = {'Authorization': 'Bearer '+token['access_token'], 'Accept': 'application/json'}
+    req = requests.get(searchEndpoint, headers=headers)
+
+    # 3. Tada ! 
+    print "🎉"
+    print json.dumps(req.json(), indent=4, separators=(',', ': '))
+else:
+    print "Wrong key/secret pair"
+
+```
