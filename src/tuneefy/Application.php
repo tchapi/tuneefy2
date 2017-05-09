@@ -162,7 +162,7 @@ class Application
             $api->add(new Middleware\Authorization($this->oauth2Server, $container));
 
             /* The token route for OAuth */
-            $this->slimApp->post('/api/auth/'.Routes\Token::ROUTE, new Routes\Token($this->oauth2Server))->setName('token');
+            $this->slimApp->post('/api/auth'.Routes\Token::ROUTE, new Routes\Token($this->oauth2Server))->setName('token');
         }
 
         /* The API renderer */
