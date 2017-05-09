@@ -104,17 +104,17 @@ class DatabaseHandler
         $row = $statementSelect->fetch(\PDO::FETCH_ASSOC);
 
         if ($row == null) {
-            throw new \Exception('No intent with the requested uid : '.$intent);
+            throw new \Exception('NO_OR_EXPIRED_INTENT');
         }
 
         if ($row['signature'] !== hash_hmac('md5', $row['object'], $this->parameters['intents']['secret'])) {
-            throw new \Exception('Data for id : '.$id.' has been tampered with, the signature is not valid.');
+            throw new \Exception('INVALID_INTENT_SIGNATURE');
         }
 
         $result = unserialize($row['object'], ['allowed_classes' => MusicalEntityInterface::class]);
 
         if ($result === false || !($result instanceof MusicalEntityInterface)) {
-            throw new \Exception('Stored object is not unserializable');
+            throw new \Exception('SERIALIZATION_ERROR');
         }
 
         return [$result->getType(), Utils::toUId($row['id'])];

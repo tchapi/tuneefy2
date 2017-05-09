@@ -186,13 +186,11 @@ class Application
             // If we have an authentication error (401), handle it
             if (401 === $response->getStatusCode()) {
                 $response = $renderer->render($request, $response, [
-                    'errors' => ['Not authorized'],
-                    'code' => $response->getStatusCode(),
+                    'errors' => [ApiController::ERRORS['NOT_AUTHORIZED']],
                 ]);
-            } else if (4 === intval($response->getStatusCode()/100)) {
+            } elseif (4 === intval($response->getStatusCode() / 100)) {
                 $response = $renderer->render($request, $response, [
-                    'errors' => [$response->getBody()->__toString()],
-                    'code' => $response->getStatusCode(),
+                    'errors' => [ApiController::ERRORS[$response->getBody()->__toString()]],
                 ]);
             }
 

@@ -2,6 +2,7 @@
 
 namespace tuneefy;
 
+use tuneefy\Controller\ApiController;
 use tuneefy\Platform\Platform;
 use tuneefy\Platform\Platforms\AmazonMusicPlatform;
 use tuneefy\Platform\Platforms\DeezerPlatform;
@@ -106,7 +107,7 @@ class PlatformEngine
         }
 
         if ($platform === null) {
-            return ['errors' => ['This permalink does not belong to any known platform']];
+            return ['errors' => [ApiController::ERRORS['PERMALINK_UNKNOWN']]];
         }
 
         // Initiate a lookup on this platform
@@ -122,9 +123,9 @@ class PlatformEngine
 
             return ['results' => $results];
         } elseif ($type === Platform::SEARCH_TRACK) {
-            return ['errors' => ['This platform is not capable of searching tracks']];
+            return ['errors' => [ApiController::ERRORS['NOT_CAPABLE_TRACKS']]];
         } elseif ($type === Platform::SEARCH_ALBUM) {
-            return ['errors' => ['This platform is not capable of searching albums']];
+            return ['errors' => [ApiController::ERRORS['NOT_CAPABLE_ALBUMS']]];
         }
     }
 

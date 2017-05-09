@@ -13,6 +13,28 @@ class ApiController
     private $renderer;
     private $engine;
 
+    const ERRORS = [
+        'GENERAL_ERROR' => ['GENERAL_ERROR' => 'An error was encountered'],
+        'BAD_PLATFORM_TYPE' => ['BAD_PLATFORM_TYPE' => 'This type of platform does not exist'],
+        'BAD_PLATFORM' => ['BAD_PLATFORM' => 'This platform does not exist'],
+        'MISSING_PERMALINK' => ['MISSING_PERMALINK' => 'Missing or empty parameter : q (permalink)'],
+        'PERMALINK_UNKNOWN' => ['PERMALINK_UNKNOWN' => 'This permalink does not belong to any known platform'],
+        'FETCH_PROBLEM' => ['FETCH_PROBLEM' => 'There was a problem while fetching data from the platform'],
+        'FETCH_PROBLEMS' => ['FETCH_PROBLEMS' => 'There was a problem while fetching data from the platforms'],
+        'NO_MATCH' => ['NO_MATCH' => 'No match was found for this search'],
+        'NO_MATCH_PERMALINK' => ['NO_MATCH_PERMALINK' => 'No match was found for this permalink'],
+        'MISSING_QUERY' => ['MISSING_QUERY' => 'Missing or empty parameter : q (query)'],
+        'BAD_MUSICAL_TYPE' => ['BAD_MUSICAL_TYPE' => 'This musical type does not exist'],
+        'NO_INTENT' => ['NO_INTENT' => 'Missing or empty parameter : intent'],
+        'NO_OR_EXPIRED_INTENT' => ['NO_OR_EXPIRED_INTENT' => 'No intent with the requested uid'],
+        'INVALID_INTENT_SIGNATURE' => ['INVALID_INTENT_SIGNATURE' => 'Data for this intent has been tampered with, the signature is not valid.'],
+        'SERIALIZATION_ERROR' => ['SERIALIZATION_ERROR' => 'Stored object is not unserializable'],
+        'NOT_CAPABLE_TRACKS' => ['NOT_CAPABLE_TRACKS' => 'This platform is not capable of searching tracks'],
+        'NOT_CAPABLE_ALBUMS' => ['NOT_CAPABLE_ALBUMS' => 'This platform is not capable of searching albums'],
+
+        'NOT_AUTHORIZED' => ['NOT_AUTHORIZED' => 'Not authorized, check the token'],
+    ];
+
     // constructor receives container instance
     public function __construct(ContainerInterface $container)
     {
@@ -38,7 +60,7 @@ class ApiController
             });
 
             if (count($platforms) === 0) {
-                $response->write('This type of platform does not exist');
+                $response->write('BAD_PLATFORM_TYPE');
 
                 return $response->withStatus(400);
             }
@@ -55,8 +77,7 @@ class ApiController
         $platform = $this->engine->getPlatformByTag($args['tag']);
 
         if (!$platform) {
-            // TODO translation
-            $response->write('This platform does not exist');
+            $response->write('BAD_PLATFORM');
 
             return $response->withStatus(404);
         }
@@ -73,8 +94,7 @@ class ApiController
 
         // Permalink could be null, but we don't accept that
         if ($permalink === null || $permalink === '') {
-            // TODO translation
-            $response->write('Missing or empty parameter : q (permalink)');
+            $response->write('MISSING_PERMALINK');
 
             return $response->withStatus(400);
         }
@@ -91,7 +111,7 @@ class ApiController
 
         // From the try/catch up there
         if ($result === false) {
-            $data = ['errors' => ['There was a problem while fetching data from the platform']];
+            $data = ['errors' => [self::ERRORS['FETCH_PROBLEM']]];
         // If we have a result
         } elseif (isset($result['result'])) {
             if ($result['result']->getMusicalEntity()) {
@@ -100,7 +120,7 @@ class ApiController
                 ];
             } else {
                 $data = [
-                    'errors' => ['No match was found for this permalink'],
+                    'errors' => [self::ERRORS['NO_MATCH_PERMALINK']],
                     'result' => $result['result']->toArray(),
                 ];
             }
@@ -122,23 +142,20 @@ class ApiController
         $real_mode = $this->engine->translateFlag('mode', $request->getQueryParam('mode'));
 
         if ($query === null || $query === '') {
-            // TODO translation
-            $response->write('Missing or empty parameter : q (query)');
+            $response->write('MISSING_QUERY');
 
             return $response->withStatus(400);
         }
 
         $platform = $this->engine->getPlatformByTag($args['platform_str']);
         if ($platform === null) {
-            // TODO translation
-            $response->write('Invalid parameter : platform '.$args['platform_str'].' does not exist');
+            $response->write('BAD_PLATFORM');
 
             return $response->withStatus(400);
         }
 
         if ($real_type === null) {
-            // TODO translation
-            $response->write('Invalid parameter : type '.$args['type'].' does not exist');
+            $response->write('BAD_MUSICAL_TYPE');
 
             return $response->withStatus(400);
         }
@@ -155,7 +172,7 @@ class ApiController
 
         // From the try/catch up there
         if ($result === false) {
-            $data = ['errors' => ['There was a problem while fetching data from the platform']];
+            $data = ['errors' => [self::ERRORS['FETCH_PROBLEM']]];
         // If we have a result
         } elseif (isset($result['results'])) {
             if (count($result['results']) > 0) {
@@ -163,7 +180,7 @@ class ApiController
                     'results' => array_map(function ($e) { return $e->toArray(); }, $result['results']),
                 ];
             } else {
-                $data = ['errors' => ['No match was found for this search on this platform']];
+                $data = ['errors' => [self::ERRORS['NO_MATCH']]];
             }
         // Result is only an error message
         } else {
@@ -185,8 +202,7 @@ class ApiController
         $real_mode = $this->engine->translateFlag('mode', $request->getQueryParam('mode'));
 
         if ($query === null || $query === '') {
-            // TODO translation
-            $response->write('Missing or empty parameter : q (query)');
+            $response->write('MISSING_QUERY');
 
             return $response->withStatus(400);
         }
@@ -202,8 +218,7 @@ class ApiController
         }
 
         if ($real_type === null) {
-            // TODO translation
-            $response->write('Invalid parameter : type '.$args['type'].' does not exist');
+            $response->write('BAD_MUSICAL_TYPE');
 
             return $response->withStatus(400);
         }
@@ -220,7 +235,7 @@ class ApiController
 
         // From the try/catch up there
         if ($result === false) {
-            $data = ['errors' => ['There was a problem while fetching data from the platforms']];
+            $data = ['errors' => [self::ERRORS['FETCH_PROBLEMS']]];
         // If we have a result
         } elseif (isset($result['results'])) {
             if (count($result['results']) > 0) {
@@ -229,7 +244,7 @@ class ApiController
                     'results' => array_map(function ($e) { return $e->toArray(); }, $result['results']),
                 ];
             } else {
-                $data = ['errors' => ['No match was found for this search']];
+                $data = ['errors' => [self::ERRORS['NO_MATCH']]];
             }
         // Result is only an error message
         } else {
@@ -246,8 +261,7 @@ class ApiController
         $intent = $args['intent'];
 
         if ($intent === null || $intent === '') {
-            // TODO translation
-            $response->write('Missing or empty parameter : intent');
+            $response->write('NO_INTENT');
 
             return $response->withStatus(400);
         }

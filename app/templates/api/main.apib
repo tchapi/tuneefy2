@@ -3,7 +3,7 @@ HOST: https://api.tuneefy.com
 
 The tuneefy API
 ===
-Welcome to the **tuneefy** API. This API provides access to the **tuneefy.com** service and exposes endpoints to search and aggregate music links.
+Welcome to the **tuneefy** API. This API provides access to the **tuneefy.com** service and exposes endpoints to search, aggregate and share music links.
 
 
 <br>
@@ -17,7 +17,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 All exchange of date and time-related data, if applicable, MUST be done according to **ISO 8601** standard and stored in UTC.
 
-When returning date and time-related data, the `YYYY-MM-DDThh:mm:ss.SSSZ` format MUST be used.
+When returning date and time-related data, the `YYYY-MM-DDThh:mm:ss` format MUST be used.
 
 
 
@@ -116,6 +116,8 @@ The API does *not* support **JSONP**.
 <br>
 ## Status Codes and Errors
 
+
+### Status codes
 This API uses HTTP status codes to communicate with the API consumer.
 
 + `200 OK` - Response to a successful GET or POST.
@@ -126,14 +128,46 @@ This API uses HTTP status codes to communicate with the API consumer.
 + `406 Not Acceptable` - Could not satisfy the request Accept header.
 
 
+<br>
+### Error codes and responses
 
+This API returns both machine-readable error codes and human-readable error messages in response body when an error is encountered. An error can be encountered even if the response HTTP status code is 200.
+
++ `GENERAL_ERROR` - An error was encountered
++ `BAD_PLATFORM_TYPE` - This type of platform does not exist
++ `BAD_PLATFORM` - This platform does not exist
++ `MISSING_PERMALINK` - Missing or empty parameter : q (permalink)
++ `PERMALINK_UNKNOWN` - This permalink does not belong to any known platform
++ `FETCH_PROBLEM` - There was a problem while fetching data from the platform
++ `FETCH_PROBLEMS` - There was a problem while fetching data from the platforms
++ `NO_MATCH` - No match was found for this search
++ `NO_MATCH_PERMALINK` - No match was found for this permalink
++ `MISSING_QUERY` - Missing or empty parameter : q (query)
++ `BAD_MUSICAL_TYPE` - This musical type does not exist
++ `NO_INTENT` - Missing or empty parameter : intent
++ `NOT_CAPABLE_TRACKS` - This platform is not capable of searching tracks
++ `NOT_CAPABLE_ALBUMS` - This platform is not capable of searching albums
++ `NOT_AUTHORIZED` - Not authorized, check the token
 
 
 <br>
-## Error response
+## Intents
 
-This API returns both machine-readable error codes and human-readable error messages in response body when an error is encountered.
+When searching on the tuneefy API, results are returned with an intent code, in the share object :
 
+```
+{
+    ...
+    share: {
+        intent: '5911b14860e96',
+        expires: '2016-05-05T12:30:00'
+    }
+}
+```
+
+This means that each result can be shared easily until the intent expires.
+
+On our side, this allows for a practical way to create tuneefy link without cluttering the database and creating many links for each search result. As well, you don't necessarily need a tuneefy link when using the tuneefy API, hence the design choice.
 
 
 
@@ -268,8 +302,9 @@ Retrieves the list of available **Platforms**
     + Body
 
             {
-                "errors": ["This platform type does not exist"],
-                "code": 404
+                "errors": [
+                {"BAD_PLATFORM": "This platform type does not exist"}
+                ]
             }
 
 + Request Invalid token
@@ -284,8 +319,9 @@ Retrieves the list of available **Platforms**
     + Body
 
             {
-                "errors": ["Not authorized"],
-                "code": 401
+                "errors": [
+                {"NOT_AUTHORIZED": "Not authorized"}
+                ]
             }
 
 ## Platform detail [/platform/{tag}]
@@ -314,8 +350,9 @@ Retrieves a specific **Platform** and its details
     + Body
 
             {
-                "errors": ["This platform does not exist"],
-                "code": 404
+                "errors": [
+                {"BAD_PLATFORM": "This platform does not exist"}
+                ]
             }
 
 
@@ -384,8 +421,9 @@ To be able to search on a platform, the platform must have the **track\_search**
     + Body
 
             {
-                "errors": ["Missing or empty parameter : q (query)"],
-                "code": 400
+                "errors": [
+                {"MISSING_QUERY": "Missing or empty parameter : q (query)"}
+                ]
             }
 
 ## Lookup [/lookup{?q}]
@@ -441,7 +479,25 @@ To be able to lookup on a platform, the platform must have the **lookup** capabi
                 * platform: `Spotify` (string)
             * share (object)
                 * intent: `590c6c8320b1b` (string)
+                * expires: `2016-05-05T12:30:00` (string)
                     
+
++ Request Unknown permalink
+
+    + Headers
+
+            Accept: "application/json"
+            Authorization: "Bearer 5262d64b892e8d4341000001"
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "errors": [
+                {"PERMALINK_UNKNOWN": "This permalink does not belong to any known platform"}
+                ]
+            }
 
 ## Aggregate [/aggregate/{type}{?q}]
 
@@ -466,4 +522,63 @@ Search for tracks or albums on multiple platforms
         + results (array[Platform Result])
     
 
++ Request With errors
 
+    + Headers
+
+            Accept: "application/json"
+            Authorization: "Bearer 5262d64b892e8d4341000001"
+
++ Response 200 (application/json)
+
+    + Attributes (object)
+        + errors (array[object])
+            * (object)
+                + FETCH_PROBLEM: `There was a problem while fetching data from the platform` (string)
+        + results (array[Platform Result])
+    
+
+# Group Share
+
+## Share [/share/{intent}]
+
+### Share an intent [GET]
+Share a previous result as a tuneefy url, using the provided intent.
+
++ Parameters
+    + intent: `5911b14861018` (required, string) ... The share intent to use.
+
++ Request Example
+
+    + Headers
+
+            Accept: "application/json"
+            Authorization: "Bearer 5262d64b892e8d4341000001"
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+              "uid": "k0bun0",
+              "link": "http://tuneefy.com/s/track/k0bun0"
+            }
+
++ Request Expired or bad intent
+
+    + Headers
+
+            Accept: "application/json"
+            Authorization: "Bearer 5262d64b892e8d4341000001"
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "errors": [
+                {
+                  "NO_OR_EXPIRED_INTENT": "No intent with the requested uid"
+                }
+              ]
+            }
