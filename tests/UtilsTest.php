@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
-use tuneefy\Utils\Utils;
 use tuneefy\Application;
+use tuneefy\Utils\Utils;
 
 /**
- * @covers Utils
+ * @covers \Utils
  */
 final class UtilsTest extends TestCase
 {
@@ -40,30 +40,30 @@ final class UtilsTest extends TestCase
     public function testSanitize()
     {
         $string = "Je suis une chaîne prête pour la sanitization n'est-ce pas ?";
-        
+
         $this->assertEquals(
             Utils::sanitize($string),
-            "je-suis-une-chaine-prete-pour-la-sanitization-n-est-ce-pas-"
+            'je-suis-une-chaine-prete-pour-la-sanitization-n-est-ce-pas-'
         );
     }
 
     public function testEllipsis()
     {
         $string = "Je suis une chaîne prête pour l'ellipse n'est-ce pas ?";
-        
+
         $this->assertEquals(
             Utils::ellipsis($string),
             "Je suis une chaîne prête pour l'ellipse n'est-ce pas ?"
         );
 
         $this->assertEquals(
-            Utils::ellipsis($string, 12, "..."),
-            "Je suis ..."
+            Utils::ellipsis($string, 12, '...'),
+            'Je suis ...'
         );
 
         $this->assertEquals(
-            Utils::ellipsis($string, 14, "..."),
-            "Je suis une ..."
+            Utils::ellipsis($string, 14, '...'),
+            'Je suis une ...'
         );
     }
 
@@ -78,7 +78,7 @@ final class UtilsTest extends TestCase
         $xml = '<meta rel="namespace/artist">2Chainz</meta>';
         $this->assertEquals(
             Utils::flattenMetaXMLNodes($xml),
-            "<artist>2Chainz</artist>"
+            '<artist>2Chainz</artist>'
         );
     }
 
@@ -88,12 +88,12 @@ final class UtilsTest extends TestCase
             Utils::indexScore(0),
             1
         );
-        
+
         $this->assertEquals(
             Utils::indexScore(10),
             0.5
         );
-        
+
         $this->assertEquals(
             Utils::indexScore(100),
             0.09

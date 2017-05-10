@@ -3,20 +3,19 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use tuneefy\MusicalEntity\MusicalEntity;
 use tuneefy\MusicalEntity\Entities\AlbumEntity;
 use tuneefy\MusicalEntity\Entities\TrackEntity;
-use tuneefy\MusicalEntity\MusicalEntityMergeException;
+use tuneefy\MusicalEntity\MusicalEntity;
 
 /**
- * @covers MusicalEntity
+ * @covers \MusicalEntity
  */
 final class MusicalEntityTest extends TestCase
 {
     private $parsableMusicalStrings = [
         "A State Of Trance (ASOT 810) (About 'This Is A Test')" => [
-            "safe_title" => "A State Of Trance",
-            "extra_info" => [
+            'safe_title' => 'A State Of Trance',
+            'extra_info' => [
                 'is_cover' => false,
                 'is_remix' => false,
                 'acoustic' => false,
@@ -24,71 +23,71 @@ final class MusicalEntityTest extends TestCase
             ],
         ],
         "Ana's Song (Open Fire)" => [
-            "safe_title" => "Ana's Song",
-            "extra_info" => [
+            'safe_title' => "Ana's Song",
+            'extra_info' => [
                 'is_cover' => false,
                 'is_remix' => false,
                 'acoustic' => false,
                 'context' => ['Open Fire'],
             ],
         ],
-        "Late Night Tales: Belle and Sebastian (Continuous Mix)" => [
-            "safe_title" => "Late Night Tales: Belle and Sebastian",
-            "extra_info" => [
+        'Late Night Tales: Belle and Sebastian (Continuous Mix)' => [
+            'safe_title' => 'Late Night Tales: Belle and Sebastian',
+            'extra_info' => [
                 'is_cover' => false,
                 'is_remix' => true,
                 'acoustic' => false,
                 'context' => ['Continuous Mix'],
             ],
         ],
-        "Late Night Tales: Belle and Sebastian, Vol. 2 (Sampler)" => [
-            "safe_title" => "Late Night Tales: Belle and Sebastian, Vol. 2",
-            "extra_info" => [
+        'Late Night Tales: Belle and Sebastian, Vol. 2 (Sampler)' => [
+            'safe_title' => 'Late Night Tales: Belle and Sebastian, Vol. 2',
+            'extra_info' => [
                 'is_cover' => false,
                 'is_remix' => false,
                 'acoustic' => false,
                 'context' => ['Sampler'],
             ],
         ],
-        "Back to the Future — Back to the Future" => [
-            "safe_title" => "Back to the Future",
-            "extra_info" => [
+        'Back to the Future — Back to the Future' => [
+            'safe_title' => 'Back to the Future',
+            'extra_info' => [
                 'is_cover' => false,
                 'is_remix' => false,
                 'acoustic' => false,
                 'context' => ['Back to the Future'],
             ],
         ],
-        "Piano Sonata No.14 in C Sharp Minor Op.27 No.2 – Moonlight: 1. Adagio sostenuto" => [
-            "safe_title" => "Piano Sonata No.14 in C Sharp Minor Op.27 No.2",
-            "extra_info" => [
+        'Piano Sonata No.14 in C Sharp Minor Op.27 No.2 – Moonlight: 1. Adagio sostenuto' => [
+            'safe_title' => 'Piano Sonata No.14 in C Sharp Minor Op.27 No.2',
+            'extra_info' => [
                 'is_cover' => false,
                 'is_remix' => false,
                 'acoustic' => false,
                 'context' => ['Moonlight: 1. Adagio sostenuto'],
             ],
         ],
-        "Nocturne Op.9 - No.2" => [
-            "safe_title" => "Nocturne Op.9",
-            "extra_info" => [
+        'Nocturne Op.9 - No.2' => [
+            'safe_title' => 'Nocturne Op.9',
+            'extra_info' => [
                 'is_cover' => false,
                 'is_remix' => false,
                 'acoustic' => false,
                 'context' => ['No.2'],
             ],
         ],
-        "Call On Me (Ryan Extended Remix)" => [
-            "safe_title" => "Call On Me",
-            "extra_info" => [
+        'Call On Me (Ryan Extended Remix)' => [
+            'safe_title' => 'Call On Me',
+            'extra_info' => [
                 'is_cover' => false,
                 'is_remix' => true,
                 'acoustic' => false,
                 'context' => ['Ryan Extended Remix'],
             ],
         ],
-        "Light it up (feat. Nyla & Fuse ODG) (Remix)" => [
-            "safe_title" => "Light it up",
-            "extra_info" => [
+        'Light it up (feat. Nyla & Fuse ODG) (Remix)' => [
+            'safe_title' => 'Light it up',
+            'extra_info' => [
                 'is_cover' => false,
                 'is_remix' => true,
                 'acoustic' => false,
@@ -96,9 +95,9 @@ final class MusicalEntityTest extends TestCase
                 'context' => ['feat. Nyla & Fuse ODG', 'Remix'],
             ],
         ],
-        "Shape of You (Major Lazer Remix) [feat. Nyla & Kali]" => [
-            "safe_title" => "Shape of You",
-            "extra_info" => [
+        'Shape of You (Major Lazer Remix) [feat. Nyla & Kali]' => [
+            'safe_title' => 'Shape of You',
+            'extra_info' => [
                 'is_cover' => false,
                 'is_remix' => true,
                 'acoustic' => false,
@@ -106,9 +105,9 @@ final class MusicalEntityTest extends TestCase
                 'context' => ['Major Lazer Remix', 'feat. Nyla & Kali'],
             ],
         ],
-        "Cheerleader (Felix Jaehn Radio Edit)" => [
-            "safe_title" => "Cheerleader",
-            "extra_info" => [
+        'Cheerleader (Felix Jaehn Radio Edit)' => [
+            'safe_title' => 'Cheerleader',
+            'extra_info' => [
                 'is_cover' => false,
                 'is_remix' => false,
                 'edit' => 'Felix Jaehn Radio Edit',
@@ -116,27 +115,27 @@ final class MusicalEntityTest extends TestCase
                 'context' => ['Felix Jaehn Radio Edit'],
             ],
         ],
-        "Midnight City (Remix EP)" => [
-            "safe_title" => "Midnight City",
-            "extra_info" => [
+        'Midnight City (Remix EP)' => [
+            'safe_title' => 'Midnight City',
+            'extra_info' => [
                 'is_cover' => false,
                 'is_remix' => true,
                 'acoustic' => false,
                 'context' => ['Remix EP'],
             ],
         ],
-        "Human (Acoustic)" => [
-            "safe_title" => "Human",
-            "extra_info" => [
+        'Human (Acoustic)' => [
+            'safe_title' => 'Human',
+            'extra_info' => [
                 'is_cover' => false,
                 'is_remix' => false,
                 'acoustic' => true,
                 'context' => ['Acoustic'],
             ],
         ],
-        "My World (Edition collector)" => [
-            "safe_title" => "My World",
-            "extra_info" => [
+        'My World (Edition collector)' => [
+            'safe_title' => 'My World',
+            'extra_info' => [
                 'is_cover' => false,
                 'is_remix' => false,
                 'acoustic' => false,
@@ -144,17 +143,17 @@ final class MusicalEntityTest extends TestCase
             ],
         ],
         "Baba O'Riley (Original Album Version)" => [
-            "safe_title" => "Baba O'Riley",
-            "extra_info" => [
+            'safe_title' => "Baba O'Riley",
+            'extra_info' => [
                 'is_cover' => false,
                 'is_remix' => false,
                 'acoustic' => false,
                 'context' => ['Original Album Version'],
             ],
         ],
-        "When you look at me (Original Version/Radio Edit)" => [
-            "safe_title" => "When you look at me",
-            "extra_info" => [
+        'When you look at me (Original Version/Radio Edit)' => [
+            'safe_title' => 'When you look at me',
+            'extra_info' => [
                 'is_cover' => false,
                 'is_remix' => false,
                 'edit' => 'Original Version/Radio Edit',
@@ -162,32 +161,32 @@ final class MusicalEntityTest extends TestCase
                 'context' => ['Original Version/Radio Edit'],
             ],
         ],
-        "Paradise (Coldplay Acoustic Cover)" => [
-            "safe_title" => "Paradise",
-            "extra_info" => [
+        'Paradise (Coldplay Acoustic Cover)' => [
+            'safe_title' => 'Paradise',
+            'extra_info' => [
                 'is_cover' => true,
                 'is_remix' => false,
                 'acoustic' => true,
                 'context' => ['Coldplay Acoustic Cover'],
             ],
         ],
-        "Classic Covers Vol.2" => [
-            "safe_title" => "Classic Covers Vol.2",
-            "extra_info" => [
+        'Classic Covers Vol.2' => [
+            'safe_title' => 'Classic Covers Vol.2',
+            'extra_info' => [
                 'is_cover' => false, // Would be too difficult to assess
                 'is_remix' => false,
                 'acoustic' => false,
                 'context' => [],
             ],
         ],
-        "Josephine - Radio Edit (Acoustique)" => [
-            "safe_title" => "Josephine",
-            "extra_info" => [
+        'Josephine - Radio Edit (Acoustique)' => [
+            'safe_title' => 'Josephine',
+            'extra_info' => [
                 'is_cover' => false,
                 'is_remix' => false,
                 'acoustic' => true,
                 'edit' => 'Radio Edit',
-                'context' => [ 'Radio Edit', 'Acoustique'],
+                'context' => ['Radio Edit', 'Acoustique'],
             ],
         ],
     ];
@@ -293,7 +292,6 @@ final class MusicalEntityTest extends TestCase
         $this->assertFalse(
             $entity->isEdit()
         );
-
     }
 
     public function testSetIntrospectedAlbum()
@@ -372,7 +370,7 @@ final class MusicalEntityTest extends TestCase
     {
         $entity = new AlbumEntity('test title (extra)');
 
-        $entity->addLink('platform','link');
+        $entity->addLink('platform', 'link');
 
         $this->assertEquals(
             ['platform' => ['link']],
@@ -384,8 +382,8 @@ final class MusicalEntityTest extends TestCase
             $entity->countLinkedPlatforms()
         );
 
-        $entity->addLink('platform','link2');
-        $entity->addLink('platform2','link');
+        $entity->addLink('platform', 'link2');
+        $entity->addLink('platform2', 'link');
 
         $this->assertEquals(
             [
@@ -406,7 +404,7 @@ final class MusicalEntityTest extends TestCase
         $a = new AlbumEntity('test title a (extra)');
         $b = new AlbumEntity('test title b (extra)');
 
-        $c = AlbumEntity::merge($a,$b);
+        $c = AlbumEntity::merge($a, $b);
 
         $this->assertEquals(
             [
@@ -433,7 +431,7 @@ final class MusicalEntityTest extends TestCase
         $b_album = new AlbumEntity('test title b album (extra)');
         $b = new TrackEntity('test title b (extra)', $b_album);
 
-        $c = TrackEntity::merge($a,$b);
+        $c = TrackEntity::merge($a, $b);
 
         $this->assertEquals(
             [
@@ -464,7 +462,7 @@ final class MusicalEntityTest extends TestCase
     }
 
     /**
-     * @expectedException tuneefy\MusicalEntity\MusicalEntityMergeException
+     * @expectedException \tuneefy\MusicalEntity\MusicalEntityMergeException
      */
     public function testMergeTrackNotForced1()
     {
@@ -473,11 +471,11 @@ final class MusicalEntityTest extends TestCase
         $b_album = new AlbumEntity('test title b album (extra)');
         $b = new TrackEntity('test title b (extra)', $b_album);
 
-        $c = TrackEntity::merge($a,$b);
+        $c = TrackEntity::merge($a, $b);
     }
 
     /**
-     * @expectedException tuneefy\MusicalEntity\MusicalEntityMergeException
+     * @expectedException \tuneefy\MusicalEntity\MusicalEntityMergeException
      */
     public function testMergeTrackNotForced2()
     {
@@ -486,11 +484,11 @@ final class MusicalEntityTest extends TestCase
         $b_album = new AlbumEntity('test title b album (extra)');
         $b = new TrackEntity('test title b (cover)', $b_album);
 
-        $c = TrackEntity::merge($a,$b);
+        $c = TrackEntity::merge($a, $b);
     }
 
     /**
-     * @expectedException tuneefy\MusicalEntity\MusicalEntityMergeException
+     * @expectedException \tuneefy\MusicalEntity\MusicalEntityMergeException
      */
     public function testMergeTrackNotForced3()
     {
@@ -499,11 +497,11 @@ final class MusicalEntityTest extends TestCase
         $b_album = new AlbumEntity('test title b album (extra)');
         $b = new TrackEntity('test title b (extra)', $b_album);
 
-        $c = TrackEntity::merge($a,$b);
+        $c = TrackEntity::merge($a, $b);
     }
 
     /**
-     * @expectedException tuneefy\MusicalEntity\MusicalEntityMergeException
+     * @expectedException \tuneefy\MusicalEntity\MusicalEntityMergeException
      */
     public function testMergeTrackNotForced4()
     {
@@ -512,7 +510,7 @@ final class MusicalEntityTest extends TestCase
         $b_album = new AlbumEntity('test title b album (extra)');
         $b = new TrackEntity('test title b (remix)', $b_album);
 
-        $c = TrackEntity::merge($a,$b);
+        $c = TrackEntity::merge($a, $b);
     }
 
     public function testMergeTrackForced()
@@ -578,4 +576,3 @@ final class MusicalEntityTest extends TestCase
         );
     }
 }
-

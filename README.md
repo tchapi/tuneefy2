@@ -53,7 +53,7 @@ Just run :
 
     vendor/bin/phpunit -v
 
-There should be 33 tests containing 652 assertions.
+There should be 36 tests containing 667 assertions.
 
 > Sometimes a platform fails to respond correctly due to network latencies or such. Re-run the tests in this case, it should pass fine the second time.
 
