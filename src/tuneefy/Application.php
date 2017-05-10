@@ -5,7 +5,6 @@ namespace tuneefy;
 use Chadicus\Slim\OAuth2\Middleware;
 use Chadicus\Slim\OAuth2\Routes;
 use OAuth2;
-use RKA\ContentTypeRenderer\Renderer;
 use Slim\App;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
@@ -14,6 +13,7 @@ use tuneefy\Controller\ApiController;
 use tuneefy\Controller\FrontendController;
 use tuneefy\DB\DatabaseHandler;
 use tuneefy\Platform\Platform;
+use tuneefy\Utils\ContentTypeMiddleware;
 use tuneefy\Utils\CustomErrorHandler;
 use tuneefy\Utils\CustomNotFoundHandler;
 use tuneefy\Utils\Utils;
@@ -52,22 +52,19 @@ class Application
         // Custom 404, 405 and 500 handlers
         // Override the default handlers
         $container['notFoundHandler'] = function ($container) {
-            return new CustomNotFoundHandler($container->get('view'), 404, 'Not Found');
+            return new CustomNotFoundHandler($container->get('view'), 404, 'NOT_FOUND');
         };
         $container['notAllowedHandler'] = function ($container) {
-            return new CustomNotFoundHandler($container->get('view'), 405, 'Method not Allowed');
+            return new CustomNotFoundHandler($container->get('view'), 405, 'NOT_ALLOWED');
         };
-        // FIXME remove comments
+
         // $container['errorHandler'] = function ($container) {
-        //     return new CustomErrorHandler();
+        //     return new CustomErrorHandler($container->get('view'), 500, 'GENERAL_ERROR');
         // };
 
         // $container['phpErrorHandler'] = function ($container) {
         //     return $container['errorHandler'];
         // };
-
-        // JSON / XML renderer
-        $this->renderer = new Renderer();
 
         // Application engine
         $this->engine = new PlatformEngine();
@@ -131,14 +128,11 @@ class Application
         $container = $this->slimApp->getContainer();
         $container['params'] = $params;
 
-        $engine = $this->engine;
-        $renderer = $this->renderer;
-
         /* Documentation for the API, has to go first */
         $this->slimApp->get('/api', FrontendController::class.':api');
 
         /* The API group, behind an (optional) OAuth2 Server */
-        $api = $this->slimApp->group('/api', function () use ($engine, $renderer) {
+        $api = $this->slimApp->group('/api', function () {
             $this->get('/platforms', ApiController::class.':getAllPlatforms');
             $this->get('/platform/{tag}', ApiController::class.':getPlatform');
             $this->get('/lookup', ApiController::class.':lookup');
@@ -165,38 +159,6 @@ class Application
             $this->slimApp->post('/api/auth'.Routes\Token::ROUTE, new Routes\Token($this->oauth2Server))->setName('token');
         }
 
-        /* The API renderer */
-        $api->add(function ($request, $response, $next) use ($renderer) {
-            // Accept the 'format' modifier
-            $request = $request->withHeader('Accept', 'application/json'); // default
-            $format = $request->getParam('format');
-            if ($format) {
-                $mapping = [
-                    'html' => 'text/html',
-                    'xml' => 'application/xml',
-                    'json' => 'application/json',
-                ];
-                if (isset($mapping[$format])) {
-                    $request = $request->withHeader('Accept', $mapping[$format]);
-                }
-            }
-
-            $response = $next($request, $response);
-
-            // If we have an authentication error (401), handle it
-            if (401 === $response->getStatusCode()) {
-                $response = $renderer->render($request, $response, [
-                    'errors' => [ApiController::ERRORS['NOT_AUTHORIZED']],
-                ]);
-            } elseif (4 === intval($response->getStatusCode() / 100)) {
-                $response = $renderer->render($request, $response, [
-                    'errors' => [ApiController::ERRORS[$response->getBody()->__toString()]],
-                ]);
-            }
-
-            return $response;
-        });
-
         /* The display/show page for a musical entity */
         $this->slimApp->get($params['urls']['format'], FrontendController::class.':show')->setName('show');
 
@@ -207,6 +169,8 @@ class Application
         $this->slimApp->get('/', FrontendController::class.':home')->setName('home');
         $this->slimApp->get('/about', FrontendController::class.':about')->setName('about');
         $this->slimApp->get('/trends', FrontendController::class.':trends')->setName('trends');
+
+        $this->slimApp->add(new ContentTypeMiddleware());
 
         return $this;
     }

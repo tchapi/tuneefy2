@@ -44,7 +44,7 @@ class PlatformResult
                 'metadata' => $this->metadata,
                 'share' => [
                     'intent' => $this->intent,
-                    'expires' => $this->expires?$this->expires->format(\DateTime::ATOM):null,
+                    'expires' => $this->expires ? $this->expires->format(\DateTime::ATOM) : null,
                 ],
             ];
         }
@@ -83,6 +83,10 @@ class PlatformResult
 
     public function addIntent(): PlatformResult
     {
+        if (is_null($this->musical_entity)) {
+            return $this;
+        }
+        
         // Store guid + serialized platformResult in db
         $db = DatabaseHandler::getInstance(null);
         $this->expires = $db->addItemWithIntent($this->intent, $this);

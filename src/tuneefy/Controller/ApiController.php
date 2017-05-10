@@ -5,6 +5,7 @@ namespace tuneefy\Controller;
 use Interop\Container\ContainerInterface;
 use RKA\ContentTypeRenderer\Renderer;
 use tuneefy\DB\DatabaseHandler;
+use tuneefy\Platform\Platform;
 use tuneefy\PlatformEngine;
 
 class ApiController
@@ -33,6 +34,8 @@ class ApiController
         'NOT_CAPABLE_ALBUMS' => ['NOT_CAPABLE_ALBUMS' => 'This platform is not capable of searching albums'],
 
         'NOT_AUTHORIZED' => ['NOT_AUTHORIZED' => 'Not authorized, check the token'],
+        'NOT_FOUND' => ['NOT_FOUND' => 'Not found'],
+        'NOT_ALLOWED' => ['NOT_ALLOWED' => 'Method not allowed'],
     ];
 
     // constructor receives container instance
@@ -55,9 +58,9 @@ class ApiController
         $platforms = $this->engine->getAllPlatforms();
 
         if ($type != '') {
-            $platforms = array_filter($platforms, function ($e) use ($type) {
+            $platforms = array_values(array_filter($platforms, function ($e) use ($type) {
                 return $e->getType() === $type;
-            });
+            }));
 
             if (count($platforms) === 0) {
                 $response->write('BAD_PLATFORM_TYPE');
@@ -137,7 +140,7 @@ class ApiController
     public function search($request, $response, $args)
     {
         $query = $request->getQueryParam('q');
-        $limit = $request->getQueryParam('limit');
+        $limit = $request->getQueryParam('limit') ?? Platform::LIMIT;
         $real_type = $this->engine->translateFlag('type', $args['type']);
         $real_mode = $this->engine->translateFlag('mode', $request->getQueryParam('mode'));
 
@@ -195,7 +198,7 @@ class ApiController
     public function aggregate($request, $response, $args)
     {
         $query = $request->getQueryParam('q');
-        $limit = $request->getQueryParam('limit');
+        $limit = $request->getQueryParam('limit') ?? Platform::LIMIT;
         $include = $request->getQueryParam('include'); // Included platforms?
         $aggressive = true && ($request->getQueryParam('aggressive') && $request->getQueryParam('aggressive') == 'true'); // If aggressive, merge more (actual behaviour depends on the type)
         $real_type = $this->engine->translateFlag('type', $args['type']);

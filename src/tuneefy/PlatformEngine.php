@@ -71,9 +71,9 @@ class PlatformEngine
         return isset($this->platforms[$tag]) ? $this->platforms[$tag] : null;
     }
 
-    public function getPlatformsByTags(array $tags) //: ?array
+    public function getPlatformsByTags(array $tags): array
     {
-        return array_values($this->platforms->filterWithKey(function ($key, $val) use ($tags) { return in_array($key, $tags); }));
+        return array_intersect_key($this->platforms, array_flip($tags));
     }
 
     public function translateFlag(string $namespace, string $flag = null): int
@@ -111,7 +111,7 @@ class PlatformEngine
         }
 
         // Initiate a lookup on this platform
-        return ['result' => $platform->expandPermalink($permalink, $mode)];
+        return ['result' => $platform->expandPermalink($permalink, $mode)->addIntent()];
     }
 
     public function search(Platform $platform, int $type, string $query, int $limit, int $mode): array
@@ -143,7 +143,7 @@ class PlatformEngine
         return ['results' => $this->mergeResults($resultArray['results'], $aggressive, $limit), 'errors' => $resultArray['errors']];
     }
 
-    public function mergeResults(array $results, bool $aggressive, int $limit) //: ?array
+    public function mergeResults(array $results, bool $aggressive, int $limit): array
     {
         $merged_results = [];
 
