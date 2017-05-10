@@ -148,22 +148,10 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
 
                 $musical_entities[] = new PlatformResult(['score' => round($current_item->popularity / $max_track_popularity, 2)], $musical_entity);
             } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
-                // The search/?type=album endpoint only returns a simplified album object,
-                // not including the artist. Either we blank the artist, or we make an extra
-                // api call to $current_item->href. This is what EAGER mode is here for.
-                $artist = '';
-                if ($mode === Platform::MODE_EAGER) {
-                    // We need to fetch the artist of the album
-                  $album_response = self::fetch($this, Platform::LOOKUP_ALBUM, $current_item->id);
-                    if ($album_response !== null && !property_exists($album_response, 'error')) {
-                        $artist = $album_response->artists[0]->name;
-                    }
-                }
-
-                $musical_entity = new AlbumEntity($current_item->name, $artist, $current_item->images[1]->url);
+                $musical_entity = new AlbumEntity($current_item->name, $current_item->artists[0]->name, $current_item->images[1]->url);
                 $musical_entity->addLink(static::TAG, $current_item->external_urls->spotify);
 
-                $musical_entitie[] = new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity);
+                $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity);
             }
         }
 

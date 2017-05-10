@@ -399,7 +399,7 @@ To be able to search on a platform, the platform must have the **track\_search**
 
 **Mode**
 
-The **mode** indicates whether we're going to eagerly fetch data when it's missing from the platform response. For instance, Spotify only returns the track but not the album when getting a track. In `eager` mode, we will make a supplementary call to get the album info.
+The **mode** indicates whether we're going to eagerly fetch data when it's missing from the platform response. **It is not used as for now** but was handy when Spotify didn't return the artist when fetching an album. In `eager` mode, we made a supplementary call to get the artist info.
 
 > Don't forget to url-encode the query (`q`) if necessary
 
@@ -474,7 +474,7 @@ _See search_
 
 + Parameters
     + q: `https://open.spotify.com/track/6IWxHgVbdKyUMydhVGXRaT` (required, string) ... The permalink to search for
-    + mode: `eager` (optional, string) ... The lookup mode, defaults to `lazy`
+    + mode: `lazy` (optional, string) ... The lookup mode, defaults to `lazy`
 
 + Request Example
 
