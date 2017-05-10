@@ -1,0 +1,396 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Tuneefy API",
+		"_postman_id": "076ecb5b-6302-4b43-2018-8f905c426f29",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "OAuth",
+			"description": "",
+			"item": [
+				{
+					"name": "OAuth token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Response time is less than 200ms\"] = responseTime < 200;",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Has token\"] = _.has(jsonData, 'access_token');",
+									"tests[\"Has type\"] = jsonData.token_type === \"Bearer\";",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{api_endpoint}}/auth/token",
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "client_id",
+									"value": "{{api_key}}",
+									"type": "text",
+									"enabled": true
+								},
+								{
+									"key": "client_secret",
+									"value": "{{api_secret}}",
+									"type": "text",
+									"enabled": true
+								}
+							]
+						},
+						"description": "Retrieve a valid OAuth token using your API consumer key and secret"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Platforms",
+			"description": "",
+			"item": [
+				{
+					"name": "Platforms list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Response time is less than 200ms\"] = responseTime < 100;",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Has platforms\"] = _.has(jsonData, 'platforms');",
+									"tests[\"Has 14 platforms\"] = jsonData.platforms.length === 14;",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{api_endpoint}}/platforms",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 0fdeda414d87b2fd90b896bad6acdf83773fb317",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List all available platforms with their respective details and capabilities"
+					},
+					"response": []
+				},
+				{
+					"name": "Platforms list (by type)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Response time is less than 200ms\"] = responseTime < 100;",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Has platforms\"] = _.has(jsonData, 'platforms');",
+									"tests[\"Has 11 platforms\"] = jsonData.platforms.length === 11;",
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{api_endpoint}}/platforms?type=streaming",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 0fdeda414d87b2fd90b896bad6acdf83773fb317",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "List all available platforms of the corresponding type with their respective details and capabilities"
+					},
+					"response": []
+				},
+				{
+					"name": "Platform detail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Response time is less than 200ms\"] = responseTime < 100;",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Has a name\"] = _.has(jsonData, 'name');",
+									"tests[\"Has 11 platforms\"] = jsonData.platforms.length === 11;",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{api_endpoint}}/platform/{{example_platform_tag}}",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 0fdeda414d87b2fd90b896bad6acdf83773fb317",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Get details of a specific platform"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Search",
+			"description": "",
+			"item": [
+				{
+					"name": "Lookup a permalink",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Response time is less than 200ms\"] = responseTime < 200;",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Has a result\"] = _.has(jsonData, 'result');",
+									"tests[\"Has a musical entity\"] = _.has(jsonData.result, 'musical_entity');",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{api_endpoint}}/lookup?q=https://open.spotify.com/track/5jhJur5n4fasblLSCOcrTp",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 0fdeda414d87b2fd90b896bad6acdf83773fb317",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Lookup a permalink and find the relevant musical entity, along as search terms"
+					},
+					"response": []
+				},
+				{
+					"name": "Search track",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Response time is less than 250ms\"] = responseTime < 250;",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Has results\"] = _.has(jsonData, 'results');",
+									"tests[\"Has 10 results\"] = jsonData.results.length === 10;",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{api_endpoint}}/search/{{search_type_track}}/{{search_example_platform}}?q=amon+tobin",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 0fdeda414d87b2fd90b896bad6acdf83773fb317",
+								"description": ""
+							},
+							{
+								"key": "//Accept",
+								"value": "text/xml",
+								"description": "",
+								"disabled": true
+							}
+						],
+						"body": {},
+						"description": "Search for a track on a specific platform"
+					},
+					"response": []
+				},
+				{
+					"name": "Search album",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Response time is less than 250ms\"] = responseTime < 250;",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Has results\"] = _.has(jsonData, 'results');",
+									"tests[\"Has 1 result\"] = jsonData.results.length === 1;",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{api_endpoint}}/search/{{search_type_album}}/{{search_example_platform}}?q=ok+computer&limit=1",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 0fdeda414d87b2fd90b896bad6acdf83773fb317",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Search an album on a specific platform"
+					},
+					"response": []
+				},
+				{
+					"name": "Aggregate track",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Response time is less than 3500ms\"] = responseTime < 3500;",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Has results\"] = _.has(jsonData, 'results');",
+									"tests[\"Has 10 results\"] = jsonData.results.length === 10;",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{api_endpoint}}/aggregate/{{search_type_track}}?q=amon+tobin",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 0fdeda414d87b2fd90b896bad6acdf83773fb317",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Search on all platforms and aggregate all results"
+					},
+					"response": []
+				},
+				{
+					"name": "Aggregate album",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Response time is less than 3500ms\"] = responseTime < 3500;",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"tests[\"Has results\"] = _.has(jsonData, 'results');",
+									"tests[\"Has 10 results\"] = jsonData.results.length === 10;",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{api_endpoint}}/aggregate/{{search_type_album}}?q=ok+computer",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 9529849a9799b888158948d6669a66b1580bd57e",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Search on all platforms and aggregate all results"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Share",
+			"description": "",
+			"item": [
+				{
+					"name": "Share an intent",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"",
+									"tests[\"Response time is less than 100ms\"] = responseTime < 100;",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{api_endpoint}}/share/{{example_intent}}",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer 0fdeda414d87b2fd90b896bad6acdf83773fb317",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": "Sahre an intent ang get the corresponding tuneefy.com link"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
