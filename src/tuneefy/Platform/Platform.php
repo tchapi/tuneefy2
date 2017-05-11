@@ -261,7 +261,6 @@ abstract class Platform implements GeneralPlatformInterface
     {
         if ($response === false) {
             // Error in the request, we should gracefully fail returning null
-            // FIXME
             return null;
         } else {
             if (static::RETURN_CONTENT_TYPE === self::RETURN_XML) {

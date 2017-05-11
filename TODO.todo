@@ -2,13 +2,7 @@ Todo :
 
  - Implémenter une limite pour l'API
  - intent, ajouter from : "api" ou "tuneefy.com"
- - differentier 404/405 pour api et frontend
- 
- - doc api
-   - blueprint apib [EN Cours]
-   - faire une doc postman
-   - exemples JS PHP Python Ruby
+
+ - blueprint : enlever les schemas et différentier albums/tracks
 
 Bugs:
-
-  - mauvais message de oauth2 : { "errors": [ "Not Authorized" ] }access token provided has expired"}

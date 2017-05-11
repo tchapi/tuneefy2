@@ -81,8 +81,16 @@ class PlatformEngine
         if ($flag === null) {
             $flag = '*';
         }
-        // FIX ME enforce flags
-        return $this->flags[$namespace.'/'.$flag];
+
+        $path = $namespace.'/'.$fla;
+
+        if (!isset($this->flags[$path]) && $namespace === 'type') {
+            throw new \Exception('BAD_MUSICAL_TYPE');
+        } else if (!isset($this->flags[$path]) && $namespace === 'mode') {
+            throw new \Exception('BAD_MODE');
+        }
+
+        return $this->flags[$path];
     }
 
     public function lookup(string $permalink, int $mode): array

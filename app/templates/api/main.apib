@@ -547,8 +547,14 @@ _See search_
 
 **Include**
 
-TODO
-If it is empty or not provided, the api aggregates all the available platforms.
+For aggregation, you can choose which platforms to aggregate to improve the response time of the endpoint. The parameter accepts a string which is a concatenation of the platforms tags separated by a comma.
+
+
+```http
+GET aggregate/track?q=test&include=deezer,spotify,qobuz
+```
+
+If an unknown platform tag is passed, it is ignored. If the `include` parameter is empty or not given, the API will agreggate the results of all available platforms that are capable of searching this musical entity type.
 
 **Merging aggressively (tracks only)**
 
