@@ -93,17 +93,19 @@ class ApiController
     public function lookup($request, $response, $args)
     {
         $permalink = $request->getQueryParam('q');
-        $real_mode = $this->engine->translateFlag('mode', $request->getQueryParam('mode'));
+
+        try {
+            $real_mode = $this->engine->translateFlag('mode', $request->getQueryParam('mode'));
+        } catch(\Exception $e) {
+            $response->write($e->getMessage());
+            return $response->withStatus(400);
+        }
 
         // Permalink could be null, but we don't accept that
         if ($permalink === null || $permalink === '') {
             $response->write('MISSING_PERMALINK');
 
             return $response->withStatus(400);
-        }
-
-        if ($real_mode === null) {
-            $real_mode = Platform::MODE_LAZY;
         }
 
         try {
@@ -141,8 +143,14 @@ class ApiController
     {
         $query = $request->getQueryParam('q');
         $limit = $request->getQueryParam('limit') ?? Platform::LIMIT;
-        $real_type = $this->engine->translateFlag('type', $args['type']);
-        $real_mode = $this->engine->translateFlag('mode', $request->getQueryParam('mode'));
+
+        try {
+            $real_type = $this->engine->translateFlag('type', $args['type']);
+            $real_mode = $this->engine->translateFlag('mode', $request->getQueryParam('mode'));
+        } catch(\Exception $e) {
+            $response->write($e->getMessage());
+            return $response->withStatus(400);
+        }
 
         if ($query === null || $query === '') {
             $response->write('MISSING_QUERY');
@@ -155,16 +163,6 @@ class ApiController
             $response->write('BAD_PLATFORM');
 
             return $response->withStatus(400);
-        }
-
-        if ($real_type === null) {
-            $response->write('BAD_MUSICAL_TYPE');
-
-            return $response->withStatus(400);
-        }
-
-        if ($real_mode === null) {
-            $real_mode = Platform::MODE_LAZY;
         }
 
         try {
@@ -199,10 +197,16 @@ class ApiController
     {
         $query = $request->getQueryParam('q');
         $limit = $request->getQueryParam('limit') ?? Platform::LIMIT;
-        $include = $request->getQueryParam('include'); // Included platforms?
-        $aggressive = true && ($request->getQueryParam('aggressive') && $request->getQueryParam('aggressive') == 'true'); // If aggressive, merge more (actual behaviour depends on the type)
-        $real_type = $this->engine->translateFlag('type', $args['type']);
-        $real_mode = $this->engine->translateFlag('mode', $request->getQueryParam('mode'));
+        $include = strtolower($request->getQueryParam('include'));
+        $aggressive = true && ($request->getQueryParam('aggressive') && $request->getQueryParam('aggressive') == 'true'); 
+        
+        try {
+            $real_type = $this->engine->translateFlag('type', strtolower($args['type']));
+            $real_mode = $this->engine->translateFlag('mode', strtolower($request->getQueryParam('mode')));
+        } catch(\Exception $e) {
+            $response->write($e->getMessage());
+            return $response->withStatus(400);
+        }
 
         if ($query === null || $query === '') {
             $response->write('MISSING_QUERY');
@@ -210,24 +214,9 @@ class ApiController
             return $response->withStatus(400);
         }
 
-        // TODO FIXME: it's a bit cumbersome, should refactor
-        if ($include === null || $include === '') { // If empty, include all.
-            $platforms = $this->engine->getAllPlatforms();
-        } else {
-            $platforms = $this->engine->getPlatformsByTags(explode(',', strtolower($include)));
-            if ($platforms === null) { // Silently fails if a name is invalid, that's ok
-                $platforms = $this->engine->getAllPlatforms();
-            }
-        }
-
-        if ($real_type === null) {
-            $response->write('BAD_MUSICAL_TYPE');
-
-            return $response->withStatus(400);
-        }
-
-        if ($real_mode === null) {
-            $real_mode = Platform::MODE_LAZY;
+        $platforms = $this->engine->getPlatformsByTags(explode(',', $include));
+        if ($platforms === null) { // Silently fails if a name is invalid, that's ok
+           $platforms = $this->engine->getAllPlatforms();
         }
 
         try {
