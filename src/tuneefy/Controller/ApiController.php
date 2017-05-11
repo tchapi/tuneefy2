@@ -18,6 +18,7 @@ class ApiController
         'GENERAL_ERROR' => ['GENERAL_ERROR' => 'An error was encountered'],
         'BAD_PLATFORM_TYPE' => ['BAD_PLATFORM_TYPE' => 'This type of platform does not exist'],
         'BAD_PLATFORM' => ['BAD_PLATFORM' => 'This platform does not exist'],
+        'BAD_MODE' => ['BAD_MODE' => 'This mode is not valid'],
         'MISSING_PERMALINK' => ['MISSING_PERMALINK' => 'Missing or empty parameter : q (permalink)'],
         'PERMALINK_UNKNOWN' => ['PERMALINK_UNKNOWN' => 'This permalink does not belong to any known platform'],
         'FETCH_PROBLEM' => ['FETCH_PROBLEM' => 'There was a problem while fetching data from the platform'],
@@ -215,7 +216,7 @@ class ApiController
         }
 
         $platforms = $this->engine->getPlatformsByTags(explode(',', $include));
-        if ($platforms === null) { // Silently fails if a name is invalid, that's ok
+        if ($include === null || $include === "" || $platforms === null) { // Silently fails if a name is invalid, that's ok
            $platforms = $this->engine->getAllPlatforms();
         }
 
