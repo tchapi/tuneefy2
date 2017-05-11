@@ -423,8 +423,35 @@ The **mode** indicates whether we're going to eagerly fetch data when it's missi
 + Response 200 (application/json)
 
     + Attributes (object)
-        + results (array[Platform Result])
-    
+        + results (array[object])
+            * (object)
+                * musical_entity (object)
+                    + type: `track` (string)
+                    + title: `Karma Police` (string)
+                    + album (object)
+                      + title: `OK Computer` (string)
+                      + artist: `Radiohead` (string)
+                      + picture: `https://api.deezer.com/album/14879699/image` (string)
+                      + safe_title: `OK Computer` (string)
+                      + extra_info (object)
+                        + is_cover: `false` (boolean)
+                        + is_remix: `false` (boolean)
+                        + acoustic: `false` (boolean)
+                        + context (array[string])
+                            + `Deluxe Edition`
+                    + links (object)
+                      + deezer (array[string])
+                          + `http\://www.deezer.com/track/138539981`
+                    + safe_title: `Karma Police` (string)
+                    + extra_info (object)
+                      + is_cover: `false` (boolean)
+                      + is_remix: `false` (boolean)
+                      + acoustic: `false` (boolean)
+                      + context (array[string])
+                + metadata (object)
+                  + score: 0.97 (number)
+                + share (object)
+                  + intent: `590c6c8320b1b` (string)
 
 + Request Album
     + Parameters
@@ -440,8 +467,28 @@ The **mode** indicates whether we're going to eagerly fetch data when it's missi
 + Response 200 (application/json)
 
     + Attributes (object)
-        + results (array[Platform Result])
-    
+        + results (array[object])
+            * (object)
+                * musical_entity (object)
+                    * type: `album` (string)
+                    * title: `Ok Computer` (string)
+                    * artist: `Radiohead` (string)
+                    * picture: `https://api.deezer.com/album/14879699/image` (string)
+                    * links (object)
+                      * deezer (array[string])
+                          * `https://www.deezer.com/album/14879699`
+                    * safe_title: `Ok Computer` (string)
+                    * extra_info (object)
+                      * is_cover: `false` (boolean)
+                      * is_remix: `false` (boolean)
+                      * acoustic: `false` (boolean)
+                      * context (array[string])
+                * metadata (object)
+                    * score: 1 (number)
+                * share (object)
+                    * intent: `590c6c8320b1b` (string)
+                    * expires: `2016-05-05T12:30:00` (string)
+
 + Request Without `q` parameter
 
     + Headers
@@ -564,8 +611,8 @@ Acoustic versions, covers or remix should be correctly differentiated even if yo
 
 + Parameters
     + type: `track` (required, string) ... The type of musical entity to search for. Can be **track** or **album** for now.
-    + q: `ok+computer` (required, string) ... The text to search for
-    + mode: `eager` (optional, string) ... The lookup mode, defaults to `lazy`
+    + q: `karma+police` (required, string) ... The text to search for
+    + mode: `lazy` (optional, string) ... The lookup mode, defaults to `lazy`
     + aggressive: `false` (optional, boolean) ... Whether to merge tracks without looking at the album name. Defaults to `false`
     + include: `deeezer, spotify, groove` (optional, string) ... A list of comma separated platform tags from which to aggregate results.
 
@@ -709,7 +756,7 @@ if (isset($token->token_type) && $token->token_type === 'Bearer') {
 
 ### Shell
 
-We use **curl** too in a very simple fashion.
+We use **curl** and **jq** too in a very simple fashion.
 
 ```bash
 #!/bin/bash

@@ -3,6 +3,4 @@ Todo :
  - Implémenter une limite pour l'API
  - intent, ajouter from : "api" ou "tuneefy.com"
 
- - blueprint : enlever les schemas et différentier albums/tracks
-
 Bugs:
