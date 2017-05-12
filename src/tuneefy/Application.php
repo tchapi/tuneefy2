@@ -18,12 +18,18 @@ use tuneefy\Utils\CustomErrorHandler;
 use tuneefy\Utils\CustomNotFoundHandler;
 use tuneefy\Utils\Utils;
 
+// Use the ridiculously long Symfony namespaces
+use Symfony\Bridge\Twig\Extension\TranslationExtension;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Symfony\Component\Translation\Translator;
+
 class Application
 {
     const PATHS = [
         'parameters' => '/../../app/config/parameters.yml',
         'platforms' => '/../../app/config/platforms.yml',
         'templates' => '/../../app/templates',
+        'langs' => '/../../app/lang',
         'cache' => '/../../var/cache',
     ];
 
@@ -45,6 +51,19 @@ class Application
 
             $basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
             $view->addExtension(new TwigExtension($container['router'], $basePath));
+     
+            // First param is the "default language" to use.
+            $translator = new Translator("en_US");
+            // Set a fallback language incase you don't have a translation in the default language
+            $translator->setFallbackLocales(['en_US']);
+            $translator->addLoader('yaml', new YamlFileLoader());
+
+            // Add language files here
+            $translator->addResource('yaml', self::getPath('langs').'/fr_FR.yml', 'fr_FR'); // French
+            $translator->addResource('yaml', self::getPath('langs').'/en_US.yml', 'en_US'); // English
+
+            // add translator functions to Twig
+            $view->addExtension(new TranslationExtension($translator));
 
             return $view;
         };
