@@ -120,9 +120,9 @@ class DatabaseHandler
         return [$result->getType(), Utils::toUId($row['id'])];
     }
 
-    public function addItemWithIntent(string $intent, PlatformResult $result): \DateTime
+    public function addItemForClient(PlatformResult $result, string $client_id = null): \DateTime
     {
-        $statement = $this->connection->prepare('INSERT INTO `items` (`intent`, `object`, `created_at`, `expires_at`, `signature`) VALUES (:intent, :object, NOW(), :expires, :signature)');
+        $statement = $this->connection->prepare('INSERT INTO `items` (`intent`, `object`, `created_at`, `expires_at`, `signature`, `client_id`) VALUES (:intent, :object, NOW(), :expires, :signature, :client_id)');
 
         // Persist intent and object in DB for a later share if necessary
         $entity = $result->getMusicalEntity();
@@ -134,10 +134,11 @@ class DatabaseHandler
         $expires = new \DateTime('now');
         $expires->add(new \DateInterval('PT'.$this->parameters['intents']['lifetime'].'S'));
         $res = $statement->execute([
-          ':intent' => $intent,
+          ':intent' => $result->getIntent(),
           ':object' => $entityAsString,
           ':expires' => $expires->format('Y-m-d H:i:s'),
           ':signature' => hash_hmac('md5', $entityAsString, $this->parameters['intents']['secret']),
+          ':client_id' => $client_id,
         ]);
 
         if ($res === false) {

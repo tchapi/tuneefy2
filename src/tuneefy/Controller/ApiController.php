@@ -93,6 +93,8 @@ class ApiController
 
     public function lookup($request, $response, $args)
     {
+        $this->engine->setCurrentToken($this->container['token']);
+
         $permalink = $request->getQueryParam('q');
 
         try {
@@ -142,6 +144,8 @@ class ApiController
 
     public function search($request, $response, $args)
     {
+        $this->engine->setCurrentToken($this->container['token']);
+
         $query = $request->getQueryParam('q');
         $limit = $request->getQueryParam('limit') ?? Platform::LIMIT;
 
@@ -196,6 +200,8 @@ class ApiController
 
     public function aggregate($request, $response, $args)
     {
+        $this->engine->setCurrentToken($this->container['token']);
+        
         $query = $request->getQueryParam('q');
         $limit = $request->getQueryParam('limit') ?? Platform::LIMIT;
         $include = strtolower($request->getQueryParam('include'));

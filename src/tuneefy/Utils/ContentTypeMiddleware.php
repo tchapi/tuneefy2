@@ -16,6 +16,11 @@ class ContentTypeMiddleware
         'json' => 'application/json',
     ];
 
+    public function __construct($container)
+    {
+        $this->container = $container;
+    }
+
     public function __invoke(Request $request, Response $response, $next)
     {
         $request = $this->resolveContentType($request);
@@ -41,6 +46,11 @@ class ContentTypeMiddleware
                 $response = $renderer->render($request, $response, [
                     'errors' => [ApiController::ERRORS['GENERAL_ERROR']],
                 ]);
+            }
+        } else {
+            if (4 === intval($response->getStatusCode() / 100)) {
+                $handler = $this->container['notFoundHandler'];
+                return $handler($request, $response);
             }
         }
 

@@ -61,6 +61,13 @@ class PlatformEngine
         ];
     }
 
+    public function setCurrentToken(array $token = null)
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
     public function getAllPlatforms(): array
     {
         return array_values($this->platforms);
@@ -119,7 +126,7 @@ class PlatformEngine
         }
 
         // Initiate a lookup on this platform
-        return ['result' => $platform->expandPermalink($permalink, $mode)->addIntent()];
+        return ['result' => $platform->expandPermalink($permalink, $mode)->store($this->token)];
     }
 
     public function search(Platform $platform, int $type, string $query, int $limit, int $mode): array
@@ -127,7 +134,7 @@ class PlatformEngine
         if (($platform->isCapableOfSearchingTracks() && $type === Platform::SEARCH_TRACK)
          || ($platform->isCapableOfSearchingAlbums() && $type === Platform::SEARCH_ALBUM)) {
             $results = Platform::search($platform, $type, $query, $limit, $mode);
-            array_map(function ($e) { return $e->addIntent(); }, $results);
+            array_map(function ($e) { return $e->store($this->token); }, $results);
 
             return ['results' => $results];
         } elseif ($type === Platform::SEARCH_TRACK) {
@@ -188,7 +195,7 @@ class PlatformEngine
         array_splice($merged_results, $limit);
 
         // Gives each element a last chance of doing something useful on its data
-        array_map(function ($e) { return $e->finalizeMerge()->addIntent(); }, $merged_results);
+        array_map(function ($e) { return $e->finalizeMerge()->store($this->token); }, $merged_results);
 
         // Discards the key (hash) that we don't need anymore
         return array_values($merged_results);

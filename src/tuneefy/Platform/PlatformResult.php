@@ -32,6 +32,11 @@ class PlatformResult
         return $this->musical_entity;
     }
 
+    public function getIntent(): string
+    {
+        return $this->intent;
+    }
+
     public function toArray(): array
     {
         if ($this->musical_entity === null) {
@@ -81,15 +86,15 @@ class PlatformResult
         return $this;
     }
 
-    public function addIntent(): PlatformResult
+    public function store(array $token = null): PlatformResult
     {
         if (is_null($this->musical_entity)) {
             return $this;
         }
-        
+
         // Store guid + serialized platformResult in db
         $db = DatabaseHandler::getInstance(null);
-        $this->expires = $db->addItemWithIntent($this->intent, $this);
+        $this->expires = $db->addItemForClient($this, $token ? $token['client_id'] : null);
 
         return $this;
     }

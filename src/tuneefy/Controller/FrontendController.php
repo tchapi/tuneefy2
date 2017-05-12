@@ -58,7 +58,11 @@ class FrontendController
 
         // Translate into good id
         $id = Utils::fromUId($args['uid']);
-        $item = $db->getItemById($id);
+        try {
+            $item = $db->getItemById($id);
+        } catch(\Exception $e) {
+            return $response->withStatus(404);
+        }
 
         // Check the type and redirect if necessary
         if ($item->getType() !== $args['type']) {
@@ -90,7 +94,11 @@ class FrontendController
 
         // Translate into good id
         $id = Utils::fromUId($args['uid']);
-        $item = $db->getItemById($id);
+        try {
+            $item = $db->getItemById($id);
+        } catch(\Exception $e) {
+            return $response->withStatus(404);
+        }
 
         // Check we have a 'platform' link
         $links = $item->getLinksForPlatform($args['platform']);

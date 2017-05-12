@@ -176,6 +176,8 @@ class Application
 
             /* The token route for OAuth */
             $this->slimApp->post('/api/auth'.Routes\Token::ROUTE, new Routes\Token($this->oauth2Server))->setName('token');
+        } else {
+            $container['token'] = NULL;
         }
 
         /* The display/show page for a musical entity */
@@ -189,7 +191,7 @@ class Application
         $this->slimApp->get('/about', FrontendController::class.':about')->setName('about');
         $this->slimApp->get('/trends', FrontendController::class.':trends')->setName('trends');
 
-        $this->slimApp->add(new ContentTypeMiddleware());
+        $this->slimApp->add(new ContentTypeMiddleware($container));
 
         return $this;
     }
