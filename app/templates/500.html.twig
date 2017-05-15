@@ -1,5 +1,9 @@
 {% extends '_base.html.twig' %}
 
 {% block content %}
-Oops, a server error occured.
+<div id="error-wrapper" class="bdTop txtS">
+  <h2>{{ "error.500.title"|trans }}</h2>
+  <p>{{ "error.500.description"|trans|raw }}</p>
+  <a class="btn" target="_top" href="{{ path_for('home') }}">{{ "error.action"|trans }}</a>
+</div>
 {% endblock %}

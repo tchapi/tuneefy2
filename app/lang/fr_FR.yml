@@ -1,0 +1,13 @@
+# PAGES
+pages:
+  home:
+    title: "Accueil"
+    tip: ""
+  about:
+    title: "À propos"
+    title_long: ""
+    tip: ""
+    team: "L'équipe"
+  trends:
+    title: "Tendances"
+    tip: ""

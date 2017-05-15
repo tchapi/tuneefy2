@@ -1,5 +1,9 @@
 {% extends '_base.html.twig' %}
 
 {% block content %}
-Oops, the page you linked to couldn't be found.
+<div id="error-wrapper" class="bdTop txtS">
+  <h2>{{ "error.404.title"|trans }}</h2>
+  <p>{{ "error.404.description"|trans|raw }}</p>
+  <a class="btn" target="_top" href="{{ path_for('home') }}">{{ "error.action"|trans }}</a>
+</div>
 {% endblock %}

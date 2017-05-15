@@ -1,4 +1,21 @@
+{% set schemaType, page = "MusicRecording", "track" %}
+
 {% extends '_base.html.twig' %}
+
+{% block social %}
+  <title>{{ item.getSafeTitle }} | {{ item.getArtist }} — tuneefy</title>
+  <meta property="og:title" content="{{ item.getSafeTitle }} | {{ item.getArtist }}"/>
+  <meta property="og:url" content="{{ path_for('show', { uid: uid, type: "track" }) }}"/>
+  <meta property="og:image" content="{{ item.getPicture }}"/>
+  <meta property="tuneefy:artist" content="{{ item.getArtist }}"/>
+  <meta property="tuneefy:album" content="{{ item.getAlbumSafeTitle }}>" />
+  <meta property="og:description" content="{{ "track.description"|trans({"%artist%": item.getArtist, "%track%": item.getSafeTitle}) }}"/>
+  <meta property="og:type" content="<?php echo $slack?"website":"tuneefy:track"; ?>"> 
+      
+  <meta itemprop="name" content="{{ item.getSafeTitle }} | {{ item.getArtist }}">
+  <meta itemprop="description" content="{{ "track.description"|trans({"%artist%": item.getArtist, "%track%": item.getSafeTitle}) }}">
+  <meta itemprop="image" content="{{ item.getPicture }}">
+{% endblock %}
 
 {% block content %}
 

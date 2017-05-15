@@ -1,0 +1,138 @@
+# PAGES
+pages:
+  home:
+    title: "Home"
+    tip: ""
+  about:
+    title: "About"
+    title_long: "About tuneefy, the Universe, and Everything"
+    tip: ""
+    team: "About the Team"
+  trends:
+    title: "Trends"
+    tip: ""
+
+# GENERAL
+github: "Fork me on GitHub"
+tagline: "Sharing <span class='color'>music</span>, done <span class='color'>right</span>."
+description: "tuneefy is a new unified way to share music with your friends, over various online music services !"
+keywords: "listen, music, online, share, unify, platform, friends, tuneefy, music service, music platform, track, sharing"
+contact : "Contact"
+copyright: "Copyright"
+endorsement: "This service uses Spotify (resp. Deezer, Last.fm, Soundcloud, HypeMachine, Tidal, Groove Music, Amazon Music, Youtube, Mixcloud, iTunes, Qobuz, Napster, Google Play Music) APIs but is not endorsed, certified or otherwise approved in any way by Spotify (resp. Deezer, Last.fm, Soundcloud, HypeMachine, Tidal, Groove Music, Amazon Music, Youtube, Mixcloud, iTunes, Qobuz, Napster, Google Play Music). Each brand and name is or may be the registered trade mark of its respective owner."
+
+# TRACK AND ALBUM
+track:
+  description: "Get the links to listen to the track %track% by %artist% on tuneefy, a new unified way to share music over various online music services !"
+
+album:
+  description: "Get the links to listen to the album %album% by %artist% on tuneefy, a new unified way to share music over various online music services !"
+
+# ERRORS
+error:
+  action: "Go back home"
+  404:
+    title: "Couldn't find this page"
+    description: "404. Looks like you broke the Internet.<br/>We're pretty sure you typed gibberish in the url bar, you fool.<br />(Or it may just be a dead link. Maybe.)"
+  500:
+    title: "Wooooooooops"
+    description: "500. This occurs when our code blows up or when the server is dying.<br />Chuck Norris is on site right now. We'll keep you updated soon."
+
+# ABOUT PAGE
+contact_us: 
+  title: "Contact Us"
+  email: "Your email"
+  message: "Your message"
+  send: "Send"
+
+facts:
+  info: >
+      <h3>Sharing Music Online.<br />Made easy</h3>
+      <p>Tuneefy unifies various online music streaming services to provide you with a fast and easy way to search for your favorite tunes and share them around you.
+      </p>
+  friends: >
+      <h3>Keep your friends</h3>
+      <p>Tuneefy is genuine altruism; your friends get directly to your music, whatever the platform. No-brainer.<br /><span class=\"color\">Hell, yeah</span>.
+      </p>
+  pertinence: >
+      <h3>Pertinence is key</h3>
+      <p>Tracks are sorted with sharing in mind. You want to address a wide range of services, so the top tracks are the one present on the most platforms.
+      </p>
+  free: >
+      <h3>Free for you, Music Lovers !</h3>
+      <p>Tuneefy is free and ad-free. We care about music, not advertising or revenue.
+      </p>
+  supported: >
+      <a name=\"patterns\"></a><h3>Supported link patterns</h3>
+      <p>Of course you can search for any keywords, but there is more !<br />Have a look at all the different URLs & links we support !
+      </p>
+  supported_list: >
+        <ul class=\"platformsPatterns\">
+        <li class=\"platform active\">Deezer
+        <ul>
+          <li class=\"song\">Song link<br/><span class=\"link\">http://www.deezer.com/listen-10236179</span></li>
+          <li class=\"artist\">Artist link<br/><span class=\"link\">http://www.deezer.com/fr/music/radiohead</span></li>
+          <li class=\"album\">Album link<br/><span class=\"link\">http://www.deezer.com/fr/music/rjd2/deadringer-144183</span></li>
+        </ul>
+        </li>
+        <li class=\"platform\">Spotify
+        <ul style=\"display: none;\">
+          <li class=\"song\">Song link<br/><span class=\"link\">spotify:track:6GOxgLKnfd567oG2VpfJio</span></li>
+          <li class=\"artist\">Artist link<br/><span class=\"link\">http://play.spotify.com/artist/6UUrUCIZtQeOf8tC0WuzRy</span></li>
+          <li class=\"album\">Album link<br/><span class=\"link\">spotify:album:2bRcCP8NYDgO7gtRbkcqdk</span></li>
+        </ul>
+        </li>
+        <li class=\"platform\">Last.Fm
+        <ul style=\"display: none;\">
+          <li class=\"song\">Song link<br/><span class=\"link\">http://lastfm.fr/music/Muse/_/Bliss</span></li>
+          <li class=\"artist\">Artist link<br/><span class=\"link\">http://www.lastfm.fr/music/Sex+Pistols</span></li>
+          <li class=\"album\">Album link<br/><span class=\"link\">http://www.last.fm/music/The+Clash/London+Calling</span></li>
+          </ul>
+        </li>
+        <li class=\"platform\">Grooveshark
+        <ul style=\"display: none;\">
+          <li class=\"song\">Song link<br/><span class=\"link\">http://grooveshark.com/s/Blizzard/2r6qUb?src=5</span></li>
+          <li class=\"artist\">Artist link<br/><span class=\"link\">http://grooveshark.com/artist/Rone/76915</span></li>
+          <li class=\"album\">Album link<br/><span class=\"link\">http://grooveshark.com/album/30/1133717</span></li>
+        </ul>
+        </li>
+        <li class=\"platform\">And more ...
+        <ul style=\"display: none;\">
+          <li class=\"song\">Soundcloud link<br/><span class=\"link\">http://soundcloud.com/hsz/debich</span></li>
+          <li class=\"artist\">HypeMachine link<br/><span class=\"link\">http://hypem.com/item/1g079/</span></li>
+          <li class=\"album\">Youtube music link<br/><span class=\"link\">http://www.youtube.com/watch?v=_FOyHhU0i7k</span></li>
+        </ul>
+        </li>
+        <li class=\"platform\">... and more !
+        <ul style=\"display: none;\">
+          <li class=\"song\">All Rdio links<br/><span class=\"link\">http://www.rdio.com/#/artist/Crash_Test_Dummies</span></li>
+          <li class=\"artist\">Qobuz<br/><span class=\"link\">http://player.qobuz.com/#!/track/5280111</span></li>
+          <li class=\"album\">Xbox Music<br/><span class=\"link\">http://music.xbox.com/Album/C954F807-0100-11DB-89CA-0019B92A3933</span></li>
+        </ul>
+        </li>
+        </ul>
+  picks: >
+      <h3>We love Music, too</h3>
+      <p>Everyday, find a new staff pick on the home page, and spread the tune...
+      </p>
+  team_idea: >
+      <p class=\"realName\">tchap</p>
+      <p class=\"achievement\">Idea, development, code poetry</p>
+  team_design: >
+      <p class=\"realName\">_W___</p>
+      <p class=\"achievement\">Design, animated GIFs, painting</p>
+  minify: >
+      <h3>There's a widget for that</h3>
+      <p>Drag the button below to your bookmark bar and unleash the power of tuneefy : <a href=\"%minified%\" class=\"widgetBookmark\"><img src=\"/img/widget_button.png\" alt=\"tuneefy it!\" width=\"93\" height=\"33\"/></a>
+      </p>
+mail:
+  sending: "Sending mail ..."
+  success: "Thanks for your message !<br />We'll get back to you as soon as we wake up."
+  error: "There has been an error sending your mail.<br />Please try again."
+
+os:
+  title_long: "« http://tuneefy.com/t/oxtcm »"
+  paragraph_1_important: "Tuneefy is an open-source project. It is (<em>and always be</em>) free, ad-free, and it does not require any login or any personal information. It just works (<em>most of the time ...</em>)."
+  paragraph_1: "But tuneefy has a (small) cost nonetheless, that we are happy to pay each month. This is basically the server and a domain name, which amounts to around 6€ per month. While it's not much, it still is something.<br><br>If you find the service useful and if you would like to support us, we are happy to welcome your tiny donations to keep the server and the domain going : either <a href='http://paypal.me/tchap'>paypal.me/tchap</a> or <a href='mailto:team@tuneefy.com'>team@tuneefy.com</a> if you want to reach out."
+  paragraph_2: "We are also rewriting tuneefy from scratch to make it even more simple, fast and straight-forward, it takes some time, but you can have a look <a href='https://github.com/tchapi/tuneefy2'>here</a> and join forces if you have some spare time."
+  paragraph_2_thanks: "Thank you ! 💙"
