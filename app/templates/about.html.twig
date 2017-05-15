@@ -1,7 +1,66 @@
+{% set schemaType, page = "WebPage", "about" %}
+
 {% extends '_base.html.twig' %}
 
 {% block content %}
+<div id="about-wrapper" class="bdTop bdBot txtS">
+  <h2 class="color aboutTitle">{{ "pages.about.title_long"|trans|raw }}</h2>
+  
+  <div class="aboutRow boxed boxS">
+    <div class="item1 img_info">{{ "facts.info"|trans|raw }}</div>
+    <div class="item2 img_friends">{{ "facts.friends"|trans|raw }}</div>
+  </div>
+  
+  <div class="aboutRow">
+    <div class="item1 img_pertinence">{{ "facts.pertinence"|trans|raw }}</div>
+    <div class="item2 img_widget">{{ "facts.minify"|trans({"%minified%": minified})|raw }}</div>
+  </div>
+  
+  <div class="aboutRow boxed boxS">
+    <div class="item1 img_patterns"><a name="patterns">{{ "facts.supported"|trans|raw }}</a>
+    </div>
+    <div class="item2 txtS" id="examples">
+      {{ "facts.supported_list"|trans|raw }}
+      </div>
+  </div>
+  
+  <div class="aboutRow">
+    <div class="item1 img_picks">{{ "facts.picks"|trans|raw }}</div>
+    <div class="item2 img_free">{{ "facts.free"|trans|raw }}</div>
+  </div>
+  
+</div>
 
-About page (WIP)
+<div id="os-wrapper" class="bdTop bdBot txtS">
+  <h2 id="free" class="color aboutTitle">{{ "os.title_long"|trans|raw }}</h2>
+    <div class="aboutRow boxed boxS">
+      <h2 class="os_subtitle">{{ "os.paragraph_1_important"|trans|raw }}</h2>
+      <div class="os_box">{{ "os.paragraph_1"|trans|raw }}</div>
+      <div class="os_box">{{ "os.paragraph_2"|trans|raw }}</div>
+      <div class="os_subtitle">{{ "os.paragraph_2_thanks"|trans|raw }}</div>
+    </div>
+</div>
 
+<div id="team-wrapper" class="bdTop txtS">
+  <a name="us"></a>
+  <div class="theTeam">
+    <h2 class="color aboutTitles">{{ "pages.about.team"|trans|raw }}</h2>
+    <a href="https://about.me/tchap" target="_blank"><div class="creator idea">{{ "facts.team_idea"|trans|raw }}</div></a>
+    <a href="https://twitter.com/#!/_W___" target="_blank"><div class="creator design">{{ "facts.team_design"|trans|raw }}</div></a>
+  </div>
+  <div class="contactUs">
+    <a name="contact"></a>
+    <h2 class="color aboutTitles">{{ "contact_us.title"|trans|raw }}</h2>
+    <div id="contactFormWrapper">
+      <form class="contactForm">
+        <label for="email">{{ "contact_us.email"|trans|raw }}</label><input type="text" id="email" name="email" class="boxS5" />
+        <label for="message">{{ "contact_us.message"|trans|raw }}</label><textarea  id="message" name="message" class="boxS5" ></textarea>
+        <a id="send" class="btn btnSendEmail">{{ "contact_us.send"|trans|raw }}</a>
+      </form>
+      <div class="waitingMail">{{ "mail.sending"|trans|raw }}</div>
+      <div class="successMail">{{ "mail.success"|trans|raw }}</div>
+      <div class="errorMail">{{ "mail.error"|trans|raw }}</div>
+    </div>
+  </div>
+</div>
 {% endblock %}

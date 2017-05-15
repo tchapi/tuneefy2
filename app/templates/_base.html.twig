@@ -9,21 +9,104 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta http-equiv="content-language" content="{{ lang }}">
   
-  <meta name="description" content="" />
-  <meta name="keywords" content="" />
+  <meta name="description" content="{{ "description"|trans }}" />
+  <meta name="keywords" content="{{ "keywords"|trans }}" />
 
-  <meta property="fb:app_id" content=""> 
-  <meta property="fb:admins" content=""/>
-  <meta property="og:site_name" content=""/>
-        
-  <link rel="publisher" href="">
-  
+  {% block social %}
+    <title>{{ ("pages." ~ page ~ ".title")|trans }} — tuneefy</title>
+    <meta property="og:title" content="{{ ("pages." ~ page ~ ".title")|trans }} | tuneefy"/>
+    <meta property="og:url" content="{{ path_for('home') }}"/>
+    <meta property="og:image" content="/img/social.png"/>
+    <meta property="og:type" content="website"/>
+    
+    <meta itemprop="name" content="{{ ("pages." ~ page ~ ".title")|trans }} | tuneefy">
+    <meta itemprop="description" content="{{ "description"|trans }}">
+    <meta itemprop="image" content="/img/social.png">
+  {% endblock %}
+
+  <meta property="fb:app_id" content="<?php echo _FB_APP_ID; ?>">
+  <meta property="og:site_name" content="tuneefy"/>
+  <meta property="fb:admins" content="<?php echo _FB_ADMIN; ?>"/>
+
+  <link rel="publisher" href="<?php echo _GPLUS_PUBLISHER_ID; ?>">
+
+  <link rel="icon" type="image/png" href="/img/favicon.png" />
+  <!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="//img/favicon.ico" /><![endif]-->
+
+  <meta content="yes" name="apple-mobile-web-app-capable" />
+  <link href="/img/social.png" rel="apple-touch-icon" />
 
 </head>
-<body>
+<body class="Bcolor"> 
+  <div class="hideAll"></div>
+  <div class="ribbon"><a href="https://github.com/tchapi/tuneefy2" rel="me">{{ "github"|trans }}</a></div>
 
-{% block content %}{% endblock %}
+  <div id="wrapper">
 
-{% block javascript %}{% endblock %}
+    <div id="header-wrapper" class="full Fcolor txtColor">
+      <div class="wrap clear" id="header">
+    
+        <div id="lang">
+          <span{% if lang == 'en' %} class="activeLang"{% endif %} lang="en">EN</span>
+          <span{% if lang == 'fr' %} class="activeLang"{% endif %} lang="fr">FR</span>
+        </div>
+
+        <ul id="navigation">
+          <li><a{% if page == "home" %} class="current txtS3"{% endif %} title="{{ "pages.home.tip"|trans }}" href="{{ path_for('home') }}"><img class="homeImg" src="/img/home_pic.png" width="12px" height="14px" />{{ "pages.home.title"|trans }}</a></li>
+
+          <li><a{% if page == "trends" %} class="current txtS3"{% endif %} title="{{ "pages.trends.tip"|trans }}" href="{{ path_for('trends') }}">{{ "pages.trends.title"|trans }}</a></li>
+
+          <li><a{% if page == "about" %} class="current txtS3"{% endif %} title="{{ "pages.about.tip"|trans }}" href="{{ path_for('about') }}">{{ "pages.about.title"|trans }}</a></li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div id="content-wrapper" class="full">
+      <div class="wrap clear bdBot" id="content">
+
+        <div id="tagline" class="bdBot">
+          <a href="{{ path_for('home') }}"><h1 class="logo color"><img src="/img/logo.png" width="267" height="133" alt="tuneefy"/></h1> </a>
+          <p class="tagline txtS">{{ "tagline"|trans|raw }}</p>
+        </div>
+
+        {% block content %}{% endblock %}
+
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-wrapper" class="full">
+    <div id="footer" class="wrap bdTop txtS">
+      <div class="endorsement bdBot">{{ "endorsement"|trans }}</div>
+      <div class="copycon bdTop">
+        <div class="copyright"><img src="/img/logo_footer.png" width="115" alt="{{ "copyright"|trans }}" /></div>
+        <div class="conditions">{{ "copyright"|trans }} &nbsp; <a href="{{ path_for('about') }}#contact">{{ "contact"|trans }}</a> &nbsp; <a href="https://twitter.com/tuneefy" target="_new" rel="nofollow" class="twitterLink">{{ "follow_twitter"|trans }}</a></div>
+      </div>
+    </div>
+  </div>
+
+{% block javascript %}
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', '{{ statistics.ga_tracker_id }}']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+  <script type="text/javascript">
+    var uvOptions = {};
+    (function() {
+      var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+      uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/381pBuGNOqnoSuYjIMIBg.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+    })();
+  </script>
+{% endblock %}
+
 </body>
 </html>
