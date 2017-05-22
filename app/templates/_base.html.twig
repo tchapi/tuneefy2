@@ -50,7 +50,8 @@
           <span{% if lang == 'en' %} class="activeLang"{% endif %} lang="en">EN</span>
           <span{% if lang == 'fr' %} class="activeLang"{% endif %} lang="fr">FR</span>
         </div>
-
+        
+        {% spaceless %}
         <ul id="navigation">
           <li><a{% if page == "home" %} class="current txtS3"{% endif %} title="{{ "pages.home.tip"|trans }}" href="{{ path_for('home') }}"><img class="homeImg" src="/img/home_pic.png" width="12px" height="14px" />{{ "pages.home.title"|trans }}</a></li>
 
@@ -58,6 +59,7 @@
 
           <li><a{% if page == "about" %} class="current txtS3"{% endif %} title="{{ "pages.about.tip"|trans }}" href="{{ path_for('about') }}">{{ "pages.about.title"|trans }}</a></li>
         </ul>
+        {% endspaceless %}
 
       </div>
     </div>
