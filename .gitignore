@@ -12,3 +12,6 @@ var/*
 !var/.gitkeep
 
 app/templates/api.html
+
+web/js/main.js
+web/css/styles.css
