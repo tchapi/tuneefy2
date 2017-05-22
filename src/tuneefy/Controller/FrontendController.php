@@ -30,6 +30,7 @@ class FrontendController
     public function home($request, $response, $id)
     {
         return $this->container->get('view')->render($response, 'home.html.twig', [
+            'params' => $this->container->get('params'),
             'platforms' => $this->engine->getAllPlatforms(),
         ]);
     }
@@ -37,6 +38,7 @@ class FrontendController
     public function about($request, $response, $id)
     {
         return $this->container->get('view')->render($response, 'about.html.twig', [
+            'params' => $this->container->get('params'),
             'platforms' => $this->engine->getAllPlatforms(),
         ]);
     }
@@ -44,6 +46,7 @@ class FrontendController
     public function trends($request, $response, $id)
     {
         return $this->container->get('view')->render($response, 'trends.html.twig', [
+            'params' => $this->container->get('params'),
             'platforms' => $this->engine->getAllPlatforms(),
         ]);
     }
@@ -67,6 +70,7 @@ class FrontendController
         // Check the type and redirect if necessary
         if ($item->getType() !== $args['type']) {
             $route = $this->container->get('router')->pathFor('show', [
+                'params' => $this->container->get('params'),
                 'type' => $item->getType(),
                 'uid' => $args['uid'],
             ]);
@@ -76,6 +80,7 @@ class FrontendController
 
         if (!is_null($item)) {
             return $this->container->get('view')->render($response, 'item.'.$args['type'].'.html.twig', [
+                'params' => $this->container->get('params'),
                 'uid' => $args['uid'],
                 'item' => $item,
             ]);

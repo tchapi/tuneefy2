@@ -24,11 +24,11 @@
     <meta itemprop="image" content="/img/social.png">
   {% endblock %}
 
-  <meta property="fb:app_id" content="<?php echo _FB_APP_ID; ?>">
+  <meta property="fb:app_id" content="{{ params.facebook.app_id }}">
   <meta property="og:site_name" content="tuneefy"/>
-  <meta property="fb:admins" content="<?php echo _FB_ADMIN; ?>"/>
+  <meta property="fb:admins" content="{{ params.facebook.admin_user }}"/>
 
-  <link rel="publisher" href="<?php echo _GPLUS_PUBLISHER_ID; ?>">
+  <link rel="publisher" href="{{ params.google_plus.publisher_id }}">
 
   <link rel="icon" type="image/png" href="/img/favicon.png" />
   <!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="//img/favicon.ico" /><![endif]-->
@@ -91,25 +91,31 @@
   </div>
 
 {% block javascript %}
-  <script type="text/javascript">
-    var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '{{ statistics.ga_tracker_id }}']);
-    _gaq.push(['_trackPageview']);
+  {% if params.statistics.ga_tracker_id > 0 %}
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', '{{ params.statistics.ga_tracker_id }}']);
+      _gaq.push(['_trackPageview']);
 
-    (function() {
-      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-    })();
-  </script>
-  <script type="text/javascript">
-    var uvOptions = {};
-    (function() {
-      var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
-      uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/381pBuGNOqnoSuYjIMIBg.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
-    })();
-  </script>
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  {% endif %}
+  {% if params.uservoice.enabled %}
+    <script type="text/javascript">
+      var uvOptions = {};
+      (function() {
+        var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+        uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/{{ params.uservoice.client_id }}.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+      })();
+    </script>
+  {% endif %}
+  <script type="text/javascript" src="/js/zepto.min.js"></script>
+  <script type="text/javascript" src="/js/main.js"></script>
 {% endblock %}
 
 </body>
