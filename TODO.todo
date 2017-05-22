@@ -1,6 +1,36 @@
 Todo :
 
  - Implémenter une limite pour l'API
- - intent, ajouter from : "api" ou "tuneefy.com"
 
+Frontend :
+  - reprendre les templates
+  - faire des search en front pas des aggregate
+  - revoir le JS ?
+
+ - mobile :
+  - ne pas afficher uservoice + menu 'trends' + d'autres éléments
+ 
+ - mode iFrame à refaire
+ 
+ - detection de slack pour <meta property="og:type"
+
+ - injecter le widget minified dans la page /about
+
+
+ stats :
+platform.hits = 
+ sprintf("%01.1f",$platformsHits[$key]/$totalPlatformsHits*100)
+
+
+mostViewedArtists
+     $maxWidth = 180;
+     while (list($key, $va) = each($mostViewedArtists))
+      {
+        data.value = $mostViewedArtists[$key]
+        data.width = intval($mostViewedArtists[$key])/intval(current($topViewedArtist));
+        
+        $currentColor['r'] = dechex(118*$currentPercent + (1-$currentPercent)*255);
+        $currentColor['g'] = dechex(186*$currentPercent + (1-$currentPercent)*255);
+        $currentColor['b'] = dechex(208*$currentPercent + (1-$currentPercent)*255);
+        
 Bugs:
