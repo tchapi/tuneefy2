@@ -3,14 +3,37 @@
 -- Create syntax for TABLE 'items'
 CREATE TABLE `items` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `intent` varchar(255) DEFAULT NULL,
+  `intent` varchar(170) DEFAULT NULL,
   `object` blob NOT NULL,
+  `track` varchar(170) DEFAULT NULL,
+  `album` varchar(170) DEFAULT NULL,
+  `artist` varchar(170) DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `expires_at` datetime DEFAULT NULL,
-  `signature` varchar(255) NOT NULL DEFAULT '',
+  `signature` varchar(170) NOT NULL DEFAULT '',
   `client_id` varchar(80) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `stats_viewing` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `item_id` int(11) unsigned NOT NULL,
+  `viewed_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `item_id` (`item_id`),
+  CONSTRAINT `stats_viewing_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `stats_listening` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `item_id` int(11) unsigned NOT NULL,
+  `platform` varchar(25) NOT NULL,
+  `index` int(11) unsigned NOT NULL,
+  `listened_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `item_id` (`item_id`),
+  CONSTRAINT `stats_listening_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 /* OAuth tables */
 CREATE TABLE oauth_clients (client_id VARCHAR(80) NOT NULL, client_secret VARCHAR(80), redirect_uri VARCHAR(2000) NOT NULL, grant_types VARCHAR(80), scope VARCHAR(100), user_id VARCHAR(80), CONSTRAINT clients_client_id_pk PRIMARY KEY (client_id));
