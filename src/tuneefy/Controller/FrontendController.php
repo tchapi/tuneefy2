@@ -45,9 +45,39 @@ class FrontendController
 
     public function trends($request, $response, $id)
     {
+        $db = DatabaseHandler::getInstance(null);
+        $platforms = $this->engine->getAllPlatforms();
+        $stats = [];
+
+        // Get platform shares
+        $shares = $db->getPlatformShares();
+        $total = 0;
+
+        $stats['hits'] = [];
+        foreach ($shares as $key => $value) {
+            $stats['hits'][$key] = [
+                'platform' => $this->engine->getPlatformByTag($key),
+                'count' => $value['count'],
+            ];
+            $total = $total + intval($value['count']);
+        }
+
+        $stats['tracks'] = $db->getMostViewedTracks();
+        foreach ($stats['tracks'] as $key => $item) {
+            $stats['tracks'][$key]['uid'] = Utils::toUId($item['id']);
+        }
+        $stats['albums'] = $db->getMostViewedAlbums();
+        foreach ($stats['albums'] as $key => $item) {
+            $stats['albums'][$key]['uid'] = Utils::toUId($item['id']);
+        }
+
+        $stats['artists'] = [];
+
         return $this->container->get('view')->render($response, 'trends.html.twig', [
             'params' => $this->container->get('params'),
             'platforms' => $this->engine->getAllPlatforms(),
+            'stats' => $stats,
+            'total' => $total,
         ]);
     }
 
@@ -78,6 +108,13 @@ class FrontendController
             return $response->withStatus(301)->withHeader('Location', $route);
         }
 
+        // Increment stats
+        try {
+            $db->addViewingStat($id);
+        } catch(\Exception $e) {
+            // Let's redirect anyway, we should log an error somehow TODO FIX ME
+        }
+
         if (!is_null($item)) {
             return $this->container->get('view')->render($response, 'item.'.$args['type'].'.html.twig', [
                 'params' => $this->container->get('params'),
@@ -91,6 +128,8 @@ class FrontendController
 
     public function listen($request, $response, $args)
     {
+        $platform = strtolower($args['platform']);
+
         if ($args['uid'] === null || $args['uid'] === '') {
             return $response->withStatus(404);
         }
@@ -106,12 +145,19 @@ class FrontendController
         }
 
         // Check we have a 'platform' link
-        $links = $item->getLinksForPlatform($args['platform']);
+        $links = $item->getLinksForPlatform($platform);
 
         $index = intval($args['i'] ?? 0);
 
-        if (count($links) <= $index) {
+        if ($links === [] || count($links) <= $index) {
             return $response->withStatus(404);
+        }
+
+        // Increment stats
+        try {
+            $db->addListeningStat($id, $platform, $index);
+        } catch(\Exception $e) {
+            // Let's redirect anyway, we should log an error somehow TODO FIX ME
         }
 
         // Eventually, redirect to platform

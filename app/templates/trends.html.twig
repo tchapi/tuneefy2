@@ -4,18 +4,18 @@
 
 {% block content %}
 <div id="stats" class="bdTop txtS">
-  <h2 class="color statsTitle">{{ "stats_title_long"|trans|raw }}</h2>
+  <h2 class="color statsTitle">{{ "pages.trends.title_long"|trans|raw }}</h2>
   
   <div id="globalStats">
-    <h2 class="color">{{ "global_stats"|trans|raw }}</h2>
+    <h2 class="color">{{ "stats.global"|trans|raw }}</h2>
       <table style="display:none;" id="pieData">
         <tbody>
-          {% for key, platform in platformsHits %}
+          {% for hit in stats.hits %}
             <tr><th scope="row">
-                <span class="id">{{ key }}</span>
-                <span class="name">{{ platform.name }}</span>
-                <span class="color">{{ platform.color }}</span>
-                </th><td>{{ platform.hits }}%</td>
+                <span class="id">{{ hit.platform.tag }}</span>
+                <span class="name">{{ hit.platform.name }}</span>
+                <span class="color">{{ hit.platform.color }}</span>
+                </th><td>{{ (hit.count / total * 100)|number_format(1) }}%</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -24,42 +24,42 @@
       <div id="pieChart"></div>
 
     <ul>
-      {% for key, platform in platformsHits %}
-        <li>{{ platform.name }}<span class="figure color">{{ platform.hits }}%</span></li>
+      {% for hit in stats.hits %}
+        <li>{{ hit.platform.name }}<span class="figure color">{{ (hit.count / total * 100)|number_format(1) }}%</span></li>
       {% endfor %}
     </ul>
   </div>
   
   <div id="mostViewedArtists" class="boxed boxS">
-    <h2 class="color">{{ "most_viewed_artists"|trans({"%limit%": listDisplayLimit})|raw }}</h2>
+    <h2 class="color">{{ "stats.most_viewed_artists"|trans({"%limit%": params.website.stats_limit})|raw }}</h2>
     <ul>
-      {% for key, data in mostViewedArtists %}
+      {% for key, data in stats.artists %}
         <li><span class="name">{{ key }}</span>
-            <div class="bar Fcolor" style="width: {{ data.width }}px; background: #{{ currentColor.r ~ currentColor.g ~ currentColor.b }}"></div><span class="count">{{ "views"|trans({"%val%": data.value})|raw }}</span>
+            <div class="bar Fcolor" style="width: {{ data.width }}px; background: #{{ currentColor.r ~ currentColor.g ~ currentColor.b }}"></div><span class="count">{{ "stats.views"|trans({"%val%": data.value})|raw }}</span>
         </li>
       {% endfor %}
     </ul>
   </div>
   
   <div id="mostViewedTracks">
-    <h2 class="color">{{ "most_viewed_tracks"|trans({"%limit%": listDisplayLimit})|raw }}</h2>
+    <h2 class="color">{{ "stats.most_viewed_tracks"|trans({"%limit%": params.website.stats_limit})|raw }}</h2>
     <ul>
-        {% for key, data in mostViewedTracks %}
+        {% for key, data in stats.tracks %}
             {% set fontSize = 2.3*(1-loop.index/5) + (loop.index/5)*0.6 %}
-            <li><span class="count bdBot">{{ "views"|trans({"%val%": data.value})|raw }}
-            </span><span class="order bdTop bdBot">{{ loop.index }}</span><span class="title"><a style="font-size: {{ fontSize }}em" href="{{ path_for('show', {uid: data.uid, type: 'track'}) }}">{{ data.title }}</a></span><span class="artist bdTop">{{ data.artist }}</span>
+            <li><span class="count bdBot">{{ "stats.views"|trans({"%val%": data.count})|raw }}</span>
+            <span class="order bdTop bdBot">{{ loop.index }}</span><span class="title"><a style="font-size: {{ fontSize }}em" href="{{ path_for('show', {uid: data.uid, type: 'track'}) }}">{{ data.track }}</a></span><span class="artist bdTop">{{ data.artist }}</span>
             </li>
         {% endfor %}
     </ul>
   </div>
   
   <div id="mostViewedAlbums">
-  <h2 class="color">{{ "most_viewed_albums"|trans({"%limit%": listDisplayLimit})|raw }}</h2>
+  <h2 class="color">{{ "stats.most_viewed_albums"|trans({"%limit%": params.website.stats_limit})|raw }}</h2>
     <ul>
-        {% for key, data in mostViewedAlbums %}
+        {% for key, data in stats.albums %}
             {% set fontSize = 2.3*(1-loop.index/5) + (loop.index/5)*0.6 %}
-            <li><span class="count bdBot">{{ "views"|trans({"%val%": data.value})|raw }}
-            </span><span class="order bdTop bdBot">{{ loop.index }}</span><span class="title"><a style="font-size: {{ fontSize }}em" href="{{ path_for('show', {uid: data.uid, type: 'album'}) }}">{{ data.title }}</a></span><span class="artist bdTop">{{ data.artist }}</span>
+            <li><span class="count bdBot">{{ "stats.views"|trans({"%val%": data.count})|raw }}
+            </span><span class="order bdTop bdBot">{{ loop.index }}</span><span class="title"><a style="font-size: {{ fontSize }}em" href="{{ path_for('show', {uid: data.uid, type: 'album'}) }}">{{ data.album }}</a></span><span class="artist bdTop">{{ data.artist }}</span>
             </li>
         {% endfor %}
     </ul>

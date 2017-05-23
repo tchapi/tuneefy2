@@ -122,7 +122,7 @@ class DatabaseHandler
 
     public function addItemForClient(PlatformResult $result, string $client_id = null): \DateTime
     {
-        $statement = $this->connection->prepare('INSERT INTO `items` (`intent`, `object`, `created_at`, `expires_at`, `signature`, `client_id`) VALUES (:intent, :object, NOW(), :expires, :signature, :client_id)');
+        $statement = $this->connection->prepare('INSERT INTO `items` (`intent`, `object`, `track`, `album`, `artist`, `created_at`, `expires_at`, `signature`, `client_id`) VALUES (:intent, :object, :track, :album, :artist, NOW(), :expires, :signature, :client_id)');
 
         // Persist intent and object in DB for a later share if necessary
         $entity = $result->getMusicalEntity();
@@ -136,6 +136,9 @@ class DatabaseHandler
         $res = $statement->execute([
           ':intent' => $result->getIntent(),
           ':object' => $entityAsString,
+          ':track' => ($entity->getType()==='track')?$entity->getSafeTitle():null,
+          ':album' => ($entity->getType()==='track')?$entity->getAlbum():$entity->getSafeTitle(),
+          ':artist' => $entity->getArtist(),
           ':expires' => $expires->format('Y-m-d H:i:s'),
           ':signature' => hash_hmac('md5', $entityAsString, $this->parameters['intents']['secret']),
           ':client_id' => $client_id,
@@ -147,4 +150,69 @@ class DatabaseHandler
 
         return $expires;
     }
+
+    public function addListeningStat(int $item_id, string $platformTag, int $index)
+    {
+        $statement = $this->connection->prepare('INSERT INTO `stats_listening` (`item_id`, `platform`, `index`, `listened_at`) VALUES (:item_id, :platform, :index, NOW())');
+
+        $res = $statement->execute([
+          ':item_id' => $item_id,
+          ':platform' => $platformTag,
+          ':index' => $index,
+        ]);
+
+        if ($res === false) {
+            throw new \Exception('Error adding listening stat : '.$statement->errorInfo()[2]);
+        }
+    }
+
+    public function addViewingStat(int $item_id)
+    {
+        $statement = $this->connection->prepare('INSERT INTO `stats_viewing` (`item_id`, `viewed_at`) VALUES (:item_id, NOW())');
+
+        $res = $statement->execute([
+          ':item_id' => $item_id,
+        ]);
+
+        if ($res === false) {
+            throw new \Exception('Error adding viewing stat : '.$statement->errorInfo()[2]);
+        }
+    }
+
+    public function getPlatformShares()
+    {
+        $statement = $this->connection->prepare('SELECT `platform`, COUNT(`id`) AS `count` FROM `stats_listening` GROUP BY `platform`');
+
+        $res = $statement->execute();
+
+        if ($res === false) {
+            throw new \Exception('Error getting platform share stats : '.$statement->errorInfo()[2]);
+        }
+
+        return $statement->fetchAll(\PDO::FETCH_UNIQUE);
+    }
+
+    private function getMostViewed(string $flavour)
+    {
+        $limit = intval($this->parameters['website']['stats_limit']);
+        $statement = $this->connection->prepare('SELECT `items`.`id`, `items`.`track`, `items`.`album`, `items`.`artist`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` INNER JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` '.$flavour.' GROUP BY `stats_viewing`.`item_id` LIMIT '.$limit);
+
+        $res = $statement->execute();
+
+        if ($res === false) {
+            throw new \Exception('Error getting most viewed items : '.$statement->errorInfo()[2]);
+        }
+
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function getMostViewedTracks()
+    {
+        return $this->getMostViewed('WHERE `items`.`track` IS NOT NULL');
+    }
+    
+    public function getMostViewedAlbums()
+    {
+        return $this->getMostViewed('WHERE `items`.`album` IS NULL');
+    }    
 }

@@ -2,18 +2,31 @@
 pages:
   home:
     title: "Home"
-    tip: ""
+    tip: "Search and share music"
+    welcome: "All for Music, Music for all !"
+    content: >
+        Let's say you use <span class="color">Spotify</span> and your friends use other music platforms such as <span class="color">Deezer</span>, <span class="color">Soundcloud</span> or <span class="color">Grooveshark</span> for instance. When it comes to sharing music, what a mess!<br/>
+        <span class="color">tuneefy</span> bridges the gap — search for a track or paste the corresponding link from your platform, hit 'Share' for the tune you're looking for and <span class="color">voila</span> !"
+    more_info: "Tell Me More !"
   about:
     title: "About"
     title_long: "About tuneefy, the Universe, and Everything"
-    tip: ""
+    tip: "What is Tuneefy"
     team: "About the Team"
   trends:
     title: "Trends"
-    tip: ""
+    title_long: "What people are sharing lately"
+    tip: "Statistics about usage"
+
+widget:
+  see_more: "More results"
 
 # GENERAL
+yes: "Yes"
+no: "No"
 github: "Fork me on GitHub"
+back_to_top: "Back To Top"
+follow_twitter: "Follow us on Twitter"
 tagline: "Sharing <span class='color'>music</span>, done <span class='color'>right</span>."
 description: "tuneefy is a new unified way to share music with your friends, over various online music services !"
 keywords: "listen, music, online, share, unify, platform, friends, tuneefy, music service, music platform, track, sharing"
@@ -21,11 +34,56 @@ contact : "Contact"
 copyright: "Copyright"
 endorsement: "This service uses Spotify (resp. Deezer, Last.fm, Soundcloud, HypeMachine, Tidal, Groove Music, Amazon Music, Youtube, Mixcloud, iTunes, Qobuz, Napster, Google Play Music) APIs but is not endorsed, certified or otherwise approved in any way by Spotify (resp. Deezer, Last.fm, Soundcloud, HypeMachine, Tidal, Groove Music, Amazon Music, Youtube, Mixcloud, iTunes, Qobuz, Napster, Google Play Music). Each brand and name is or may be the registered trade mark of its respective owner."
 
+# RESULTS
+results:
+  search_title: "Your search for %query%"
+  various_albums: "(Various Albums)"
+  share: "Share"
+  share_tip: "Get the link to share '%name%' on all these platforms!"
+  listen_to: "Listen to '%name%' on '%platform%'"
+  featuring: "feat. "
+  album_cover: "cover"
+  header:
+    track: "Track"
+    artist: "Artist"
+    album: "Album"
+    available: "Available on"
+
 # TRACK AND ALBUM
 track:
   description: "Get the links to listen to the track %track% by %artist% on tuneefy, a new unified way to share music over various online music services !"
+  intro: "Let's turn up the volume and listen to some music."
+  listen_to: "You can listen to this track on these sites : "
+  share: "Share this track : "
+  facebook: "Share this track on Facebook"
+  embed: "Embed a widget of this track"
+  twitter: "Share this track on Twitter"
+  mail: 
+    action: "Send the link to this track via mail"
+    subject: "Someone wants to share the track '%track%' (by '%artist%') with you"
+    body: "Click here to discover this track : %track%"
+  facebook_action: "Share music too !"
+  twitter_status: "Listen to '%track%' by '%artist%'  %s %%23tuneefy"
+  seeOnTuneefy: "Go to the tuneefy page for this track"
+  title: "Listen to %track% by %artist%"
+  description: "Get the links to listen to %s by %s on tuneefy, a new unified way to share music over various online music services !"
 
 album:
+  description: "Get the links to listen to the album %album% by %artist% on tuneefy, a new unified way to share music over various online music services !"
+  intro: "Let's turn up the volume and listen to this album."
+  listen_to: "You can listen to this album on these sites : "
+  share: "Share this album : "
+  facebook: "Share this album on Facebook"
+  embed: "Embed a widget of this album"
+  twitter: "Share this album on Twitter"
+  mail:
+    action: "Send the link to this album via mail"
+    subject: "Someone wants to share the album '%album%' (by '%artist%') with you"
+    body: "Click here to discover this album : %album%"
+  facebook_action: "Share music too !"
+  twitter_status: "Listen to the album '%album%' by '%artist%'  %s %%23tuneefy"
+  seeOnTuneefy: "Go to the tuneefy page for this album"
+  title: "Listen to the album %album% by %artist%"
   description: "Get the links to listen to the album %album% by %artist% on tuneefy, a new unified way to share music over various online music services !"
 
 # ERRORS
@@ -125,6 +183,17 @@ facts:
       <h3>There's a widget for that</h3>
       <p>Drag the button below to your bookmark bar and unleash the power of tuneefy : <a href="%minified%" class="widgetBookmark"><img src="/img/widget_button.png" alt="tuneefy it!" width="93" height="33"/></a>
       </p>
+
+stats:
+  global: "Music services you are using"
+  most_viewed_tracks: "%limit% Most Viewed Tracks"
+  most_viewed_albums: "%limit% Most Viewed Albums"
+  most_viewed_artists: "%limit% Most Viewed Artists"
+  total_tracks_viewed: "Total Tracks Viewed :"
+  total_links_clicked: "Total Platforms Links Clicked :"
+  views: "<span class='color'>%val%</span> views"
+
+
 mail:
   sending: "Sending mail ..."
   success: "Thanks for your message !<br />We'll get back to you as soon as we wake up."
