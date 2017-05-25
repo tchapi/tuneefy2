@@ -27,7 +27,7 @@ class FrontendController
         $this->container = $container;
     }
 
-    public function home($request, $response, $id)
+    public function home($request, $response)
     {
         return $this->container->get('view')->render($response, 'home.html.twig', [
             'params' => $this->container->get('params'),
@@ -35,7 +35,7 @@ class FrontendController
         ]);
     }
 
-    public function about($request, $response, $id)
+    public function about($request, $response)
     {
         return $this->container->get('view')->render($response, 'about.html.twig', [
             'params' => $this->container->get('params'),
@@ -43,7 +43,15 @@ class FrontendController
         ]);
     }
 
-    public function trends($request, $response, $id)
+    public function mail($request, $response)
+    {
+        // TODO FIX ME SEND MAIL FOR REAL
+        $body = $response->getBody();
+        $body->write(1);
+        return $response;
+    }
+
+    public function trends($request, $response)
     {
         $db = DatabaseHandler::getInstance(null);
         $platforms = $this->engine->getAllPlatforms();

@@ -5,12 +5,12 @@
 {% block social %}
   <title>{{ item.getSafeTitle }} | {{ item.getArtist }} — tuneefy</title>
   <meta property="og:title" content="{{ item.getSafeTitle }} | {{ item.getArtist }}"/>
-  <meta property="og:url" content="{{ path_for('show', { uid: uid, type: "album" }) }}"/>
+  <meta property="og:url" content="{{ params.urls.front }}{{ path_for('show', { uid: uid, type: "album" }) }}"/>
   <meta property="og:image" content="{{ item.getPicture }}"/>
   <meta property="tuneefy:artist" content="{{ item.getArtist }}"/>
   <meta property="tuneefy:album" content="{{ item.getSafeTitle }}>" />
   <meta property="og:description" content="{{ "album.description"|trans({"%artist%": item.getArtist, "%album%": item.getSafeTitle}) }}"/>
-  <meta property="og:type" content="<?php echo $slack?"website":"tuneefy:album"; ?>"> 
+  <meta property="og:type" content="{{ context.slack?'website':'tuneefy:album' }}"> 
 
   <meta itemprop="name" content="{{ item.getSafeTitle }} | {{ item.getArtist }}">
   <meta itemprop="description" content="{{ "album.description"|trans({"%artist%": item.getArtist, "%album%": item.getSafeTitle}) }}">

@@ -190,6 +190,7 @@ class Application
         $this->slimApp->get('/', FrontendController::class.':home')->setName('home');
         $this->slimApp->get('/about', FrontendController::class.':about')->setName('about');
         $this->slimApp->get('/trends', FrontendController::class.':trends')->setName('trends');
+        $this->slimApp->post('/mail', FrontendController::class.':mail')->setName('mail');
 
         $this->slimApp->add(new ContentTypeMiddleware($container));
 

@@ -137,7 +137,7 @@ class DatabaseHandler
           ':intent' => $result->getIntent(),
           ':object' => $entityAsString,
           ':track' => ($entity->getType()==='track')?$entity->getSafeTitle():null,
-          ':album' => ($entity->getType()==='track')?$entity->getAlbum():$entity->getSafeTitle(),
+          ':album' => ($entity->getType()==='track')?$entity->getAlbum()->getSafeTitle():$entity->getSafeTitle(),
           ':artist' => $entity->getArtist(),
           ':expires' => $expires->format('Y-m-d H:i:s'),
           ':signature' => hash_hmac('md5', $entityAsString, $this->parameters['intents']['secret']),
