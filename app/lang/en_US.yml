@@ -5,8 +5,8 @@ pages:
     tip: "Search and share music"
     welcome: "All for Music, Music for all !"
     content: >
-        Let's say you use <span class="color">Spotify</span> and your friends use other music platforms such as <span class="color">Deezer</span>, <span class="color">Soundcloud</span> or <span class="color">Grooveshark</span> for instance. When it comes to sharing music, what a mess!<br/>
-        <span class="color">tuneefy</span> bridges the gap — search for a track or paste the corresponding link from your platform, hit 'Share' for the tune you're looking for and <span class="color">voila</span> !"
+        Let's say you use <span class="color">Spotify</span> and your friends use other music platforms such as <span class="color">Deezer</span>, <span class="color">Soundcloud</span> or <span class="color">Tidal</span> for instance. When it comes to sharing music, what a mess!<br/>
+        <span class="color">tuneefy</span> bridges the gap — search for a track or paste the corresponding link from your platform, hit 'Share' for the tune you're looking for and <span class="color">voila</span> !
     more_info: "Tell Me More !"
   about:
     title: "About"
@@ -33,6 +33,36 @@ keywords: "listen, music, online, share, unify, platform, friends, tuneefy, musi
 contact : "Contact"
 copyright: "Copyright"
 endorsement: "This service uses Spotify (resp. Deezer, Last.fm, Soundcloud, HypeMachine, Tidal, Groove Music, Amazon Music, Youtube, Mixcloud, iTunes, Qobuz, Napster, Google Play Music) APIs but is not endorsed, certified or otherwise approved in any way by Spotify (resp. Deezer, Last.fm, Soundcloud, HypeMachine, Tidal, Groove Music, Amazon Music, Youtube, Mixcloud, iTunes, Qobuz, Napster, Google Play Music). Each brand and name is or may be the registered trade mark of its respective owner."
+
+# SEARCH
+search:
+  query_label: "Search for a track, album or paste a link here"
+  available_platforms: "Broaden your search to more services"
+  results_found: "We found #nb# #type# for your search &laquo; #iq# &raquo;"
+  result_found_widget: "Is that the track you're looking for ?"
+  merge_label: "Merge tracks even if the album is not the same"
+  search_button: "Search"
+  search_alert: "#p# did not return any result."
+  invalid_query: "Your query seems invalid. Please try with a different phrase."
+  api_alert: "#p# API did not respond. It may be down, please try again in a few seconds."
+  no_result: "Wooops ... no result found !"
+  _tracks: "tracks"
+  _albums: "albums"
+  newImage: "new.png"
+  newAlt: "new!"
+  moreOptionsImage: "more_options.png"
+  moreOptionsAlt: "More options!"
+
+# HELP
+help:
+  text_close: "Don't ever show me this message again"
+  text_title: "Hey ! What about trying searches like that :"
+  text_more: "and there are many more patterns ! "
+  text_more_button: "see here"
+  text: >
+    <div class="example"><span class="searchForIt">http://www.deezer.com/listen-10236179</span><span class="searchForWhat">A track on Deezer</span></div>
+    <div class="example"><span class="searchForIt">http://www.lastfm.fr/music/Caribou/_/Odessa</span><span class="searchForWhat">A song on Last.fm</span></div>
+    <div class="example"><span class="searchForIt">spotify:track:5jhJur5n4fasblLSCOcrTp</span><span class="searchForWhat">A track on Spotify</span></div>
 
 # RESULTS
 results:
@@ -63,7 +93,7 @@ track:
     subject: "Someone wants to share the track '%track%' (by '%artist%') with you"
     body: "Click here to discover this track : %track%"
   facebook_action: "Share music too !"
-  twitter_status: "Listen to '%track%' by '%artist%'  %s %%23tuneefy"
+  twitter_status: "Listen to '%track%' by '%artist%'  %link% %%23tuneefy"
   seeOnTuneefy: "Go to the tuneefy page for this track"
   title: "Listen to %track% by %artist%"
   description: "Get the links to listen to %s by %s on tuneefy, a new unified way to share music over various online music services !"
