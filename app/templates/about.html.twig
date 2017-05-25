@@ -52,7 +52,7 @@
     <a name="contact"></a>
     <h2 class="color aboutTitles">{{ "contact_us.title"|trans|raw }}</h2>
     <div id="contactFormWrapper">
-      <form class="contactForm">
+      <form class="contactForm" action="{{ path_for('mail') }}">
         <label for="email">{{ "contact_us.email"|trans|raw }}</label><input type="text" id="email" name="email" class="boxS5" />
         <label for="message">{{ "contact_us.message"|trans|raw }}</label><textarea  id="message" name="message" class="boxS5" ></textarea>
         <a id="send" class="btn btnSendEmail">{{ "contact_us.send"|trans|raw }}</a>
