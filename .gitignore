@@ -13,5 +13,5 @@ var/*
 
 app/templates/api.html
 
-web/js/main.js
-web/css/styles.css
+web/js/*
+web/css/*
