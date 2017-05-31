@@ -189,8 +189,6 @@ stats:
   most_viewed_tracks: "%limit% Most Viewed Tracks"
   most_viewed_albums: "%limit% Most Viewed Albums"
   most_viewed_artists: "%limit% Most Viewed Artists"
-  total_tracks_viewed: "Total Tracks Viewed :"
-  total_links_clicked: "Total Platforms Links Clicked :"
   views: "<span class='color'>%val%</span> views"
 
 
