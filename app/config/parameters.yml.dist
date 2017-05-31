@@ -14,6 +14,7 @@ intents:
 
 website:
   max_results: 100
+  stats_limit: 5
 
 urls:
   base: 12345678
