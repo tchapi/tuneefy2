@@ -19,20 +19,63 @@
 
 {% block content %}
 
-<div><img src="{{ item.getPicture }}" width="100px" height="100px"</div>
-<div><strong>{{ item.getSafeTitle }}</strong></div>
-<div><em>{{ item.getArtist }}</em></div>
+<div id="shareTitle" class="bdTop color"><p>{{ "album_intro"|trans }}</p></div>
 
-<ul>
-{% for key, links in item.links %}
-    <li><strong>{{ key }}</strong>
-        <ul>
+<div id="shareBox" class="boxed boxS txtS">
+
+  <div id="trackInfo" class="bdBot">
+    <div class="cover">
+      <img src="{{ item.getPicture?:'/img/nothumb_album.png' }}" width="82" height="82" />
+      <span class="coverlay"></span>
+    </div>
+    <div class="info">
+    <div class="infoWrapper">
+      <div class="infoContent">
+        <div class="title">{{ tools.ellipsis(item.getSafeTitle, 40) }}</div>
+        <div class="artist">{{ tools.ellipsis(item.getArtist, 40) }}</div>
+      </div>
+    </div>
+    </div>
+  </div>
+  
+  <div id="platforms" class="bdBot bdTop2">
+    <div class="listenTitle">{{ "album_listen_to"|trans }}</div>
+
+      {% for key, links in item.links %}
         {% for i, link in links %}
-            <li>{{ link }} - <a href="{{ path_for('listen', { 'type': 'album', 'uid': uid, 'platform': key, 'i': i }) }}">listen</a></li>
+            <a target="_top" class="btns_full btn_full_{{ key }}" href="{{ path_for('listen', { 'type': 'album', 'uid': uid, 'platform': key, 'i': i }) }}" title="{{ "listen_to"|trans({name: item.getSafeTitle, platform: platform.name}) }}"></a>
         {% endfor %}
-        </ul>
-    </li>
-{% endfor %}
-</ul>
+      {% endfor %}
 
+  </div>
+  
+  <div id="share" class="bdTop2">
+    <div class="shareTitle">{{ "album_share"|trans }}</div>
+    
+    <div id="linkHolder" class="boxSinv">
+      <input type="text" readonly="readonly" value="{{ params.urls.front }}{{ path_for('show', { uid: uid, type: "album" }) }}" id="shareLink" class="boxS5"/>
+    </div>
+  
+    <div id="socialHolder" class="boxSinv">
+      <a id="embed" onclick="toggleEmbed(); return false;" title="{{ "album_embed"|trans }}"></a>
+      <a id="facebookShare" onclick="postToFeed('{{ params.urls.front ~ path_for('show', { uid: uid, type: "album" }) }}', '{{ item.getPicture?:'/img/nothumb_album.png' }}', '{{ item.getSafeTitle ~ ' | ' ~ item.getArtist }}', '{{ "album.description"|trans({name: item.getSafeTitle|url_encode, artist: item.getArtist|url_encode}) }}', '{{ "album.facebook_action"|trans }}', '{{ params.urls.front}}''); return false;" title="{{ "album_facebook"|trans }}"></a>
+      <a id="twitterShare" onclick="newTweet({{ "album.twitter_status"|trans({name: item.getSafeTitle|url_encode, artist: item.getArtist|url_encode, link: params.urls.front ~ path_for('show', { uid: uid, type: "album" })}) }}); return false;" title="{{ "album_twitter"|trans }}"></a>
+      <a id="mailShare" title="{{ "album_mail"|trans }}" href="mailto:?subject={{ "album_mail_subject"|trans({name: item.getSafeTitle|url_encode, artist: item.getArtist|url_encode}) }}&body={{ "album_mail_body"|trans({link: params.urls.front ~ path_for('show', { uid: uid, type: "album" }) }) }}"></a>
+    </div>
+    
+    <div id="embedHolder" class="boxSinv" style="display: none;">
+      <textarea readonly="readonly" id="embedContent" class="boxS5"><?php echo $iframeCode; ?></textarea>
+    </div>
+    <div style="clear: both"></div>
+  
+  </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block javascript %}
+  {{ parent() }}
+  <script type="text/javascript" src="/js/show.js"></script>
 {% endblock %}

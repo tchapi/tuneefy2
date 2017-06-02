@@ -1,0 +1,3 @@
+{% macro ellipsis(txt, len) -%}
+    {{ txt|length > len ? txt|slice(0, len) ~ '…' : txt }}
+{%- endmacro %}

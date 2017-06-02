@@ -4,32 +4,78 @@
 
 {% block content %}
 
-<form id="form">
+<div id="preSearch" class="bdBot bdTop">
+
+  <div class="boxed boxS">
+    <div id="info">
+      <h2 class="infoTitle color">{{ "pages.home.welcome"|trans }}</h2>
+      <p class="infoContent">{{ "pages.home.content"|trans|raw }}</p>
+      <a class="btn btn_more" href="/about">{{ "pages.home.more_info"|trans }}</a>
+    </div>
+
+    <div id="todaysPickOverlay"></div>
+    <div id="pickPager">
+      <div class="pickPagerItem Bcolor active"></div>
+      <div class="pickPagerItem Bcolor"></div> 
+    </div>
+  </div>
   
-  <input type="text" name="query" id="query" placeholder="rechercher"/>
+</div>
 
-  <ul id="type">
-    <li>
-      <label for="type_track"><input id="type_track" data-api-verb="track" type="radio" name="type" checked="checked"/> track</label>
-      <label for="type_album"><input id="type_album" data-api-verb="album" type="radio" name="type"/> album</label>
-    </li>
-  </ul>
+<div id="searchForm" class="wrap bdTop">
+ <div id="moreOptions" ><img src="/img/more_options.png" width="160" height="60" title="{{ "search.moreOptionsAlt"|trans }}"/></div>
 
-  <label for="aggressive"><input id="aggressive" type="checkbox" class="aggressive" /> aggressive merge</label>
+  <form id="find" action="">
 
-  <ul id="platforms">
-  {% for platform in platforms %}
-    <li>
-      <label for="platform_{{ platform.tag }}"><input id="platform_{{ platform.tag }}" data-platform-tag="{{ platform.tag }}" class="platform" type="checkbox" /> {{ platform.name }}</label>
-    </li>
-  {% endfor %}
-  </ul>
+    <div id="basic">
+      <input type="text" id="query" name="query" class="boxS5" value="{{ request?:"search.query_label"|trans }}" />
+      <div id="searchType" class="boxed boxS"><div id="searchTypeInner">
+        <span id="typeAlbums" class="off">{{ "search._albums"|trans }}</span>
+        <span id="typeTracks">{{ "search._tracks"|trans }}</span>
+        <input type="checkbox" id="type" checked='checked' />
+      </div></div>
+      <input type="submit" id="launch" class="txtSinv boxS2" value="{{ "search.search_button"|trans }}"/>
+      <div id="resetQuery" style="display: none;"></div>
+      <div id="options"></div>
+      <div id="waiting" style="display: none;"><img src="/img/ajax-loader.gif" /></div>
+    </div>
   
-  <input type="submit" value="Search" name="search" id="search"/>
+    <div id="help" style="display:none;" class="txtS">
+      <div class="neverAgain"><span class="closeForever">{{ "help.text_close"|trans }}</span><span class="closeHelp"></span></div>
+      <div class="helpMe">
+      <span class="color helpTitle">{{ "help.text_title"|trans }}</span>
+      {{ "help.text"|trans }}
+      </div>
+      <div class="moreHelp">
+      <span>{{ "help.text_more"|trans }}</span>
+      <a class="btn btnMoreHelp" href="/about#patterns">{{ "help.text_more_button"|trans }}</a>
+      </div>
+      <div class="helpTriangle"></div>
+    </div>
 
-</form>
+    <div id="hideMisere" style="display:none;"></div>
+    <div id="advanced" style="display:none;" class="shd">
+      <div id="availablePlatforms" class="boxS3">
+        <span class="filter">{{ "search.available_platforms"|trans }}</span>
+        {% for platform in platforms %}
+          <a class="btns btn_{{ platform.tag }} off" rel="{{platform.tag}}" id="platform_{{ platform.tag }}" data-platform-tag="{{ platform.tag }}" title="{{ platform.name }}" ></a>
+        {% endfor %}
+      </div>
+      <div id="mergeResults" class="boxS3">
+        <span class="merge">{{ "search.merge_label"|trans }}</span>
+        <input type="checkbox" id="aggressive" checked="checked" />
+      </div>
+    </div>
+    
+  </form>
+</div>
 
-<ul id="results">
-</ul>
+<div id="alerts" class="wrap" ></div>
+<div id="results" class="wrap" ></div>
 
+{% endblock %}
+
+{% block javascript %}
+  {{ parent() }}
+  <script type="text/javascript" src="/js/search.js"></script>
 {% endblock %}

@@ -5,34 +5,77 @@
 {% block social %}
   <title>{{ item.getSafeTitle }} | {{ item.getArtist }} — tuneefy</title>
   <meta property="og:title" content="{{ item.getSafeTitle }} | {{ item.getArtist }}"/>
-  <meta property="og:url" content="{{ path_for('show', { uid: uid, type: "track" }) }}"/>
-  <meta property="og:image" content="{{ item.getPicture }}"/>
+  <meta property="og:url" content="{{ params.urls.front }}{{ path_for('show', { uid: uid, type: "track" }) }}"/>
+  <meta property="og:image" content="{{ item.getAlbumPicture }}"/>
   <meta property="tuneefy:artist" content="{{ item.getArtist }}"/>
   <meta property="tuneefy:album" content="{{ item.getAlbumSafeTitle }}>" />
   <meta property="og:description" content="{{ "track.description"|trans({"%artist%": item.getArtist, "%track%": item.getSafeTitle}) }}"/>
-  <meta property="og:type" content="<?php echo $slack?"website":"tuneefy:track"; ?>"> 
+  <meta property="og:type" content="{{ context.slack?'website':'tuneefy:track' }}"> 
       
   <meta itemprop="name" content="{{ item.getSafeTitle }} | {{ item.getArtist }}">
   <meta itemprop="description" content="{{ "track.description"|trans({"%artist%": item.getArtist, "%track%": item.getSafeTitle}) }}">
-  <meta itemprop="image" content="{{ item.getPicture }}">
+  <meta itemprop="image" content="{{ item.getAlbumPicture }}">
 {% endblock %}
 
 {% block content %}
 
-<div><img src="{{ item.getAlbumPicture }}" width="100px" height="100px"</div>
-<div><strong>{{ item.getSafeTitle }}</strong></div>
-<div><em>{{ item.getArtist }} — {{ item.getAlbumSafeTitle }}</em></div>
+<div id="shareTitle" class="bdTop color"><p>{{ "track_intro"|trans }}</p></div>
 
-<ul>
-{% for key, links in item.links %}
-    <li><strong>{{ key }}</strong>
-        <ul>
+<div id="shareBox" class="boxed boxS txtS">
+
+  <div id="trackInfo" class="bdBot">
+    <div class="cover">
+      <img src="{{ item.getAlbumPicture?:'/img/nothumb_track.png' }}" width="82" height="82" />
+      <span class="coverlay"></span>
+    </div>
+    <div class="info">
+    <div class="infoWrapper">
+      <div class="infoContent">
+        <div class="title">{{ tools.ellipsis(item.getSafeTitle, 40) }}</div>
+        <div class="artist">{{ tools.ellipsis(item.getArtist, 40) }}</div>
+        <div class="album">{{ tools.ellipsis(item.getAlbumSafeTitle, 40) }}</div>
+      </div>
+    </div>
+    </div>
+  </div>
+  
+  <div id="platforms" class="bdBot bdTop2">
+    <div class="listenTitle">{{ "track_listen_to"|trans }}</div>
+
+      {% for key, links in item.links %}
         {% for i, link in links %}
-            <li>{{ link }} - <a href="{{ path_for('listen', { 'type': 'track', 'uid': uid, 'platform': key, 'i': i }) }}">listen</a></li>
+            <a target="_top" class="btns_full btn_full_{{ key }}" href="{{ path_for('listen', { 'type': 'track', 'uid': uid, 'platform': key, 'i': i }) }}" title="{{ "listen_to"|trans({name: item.getSafeTitle, platform: platform.name}) }}"></a>
         {% endfor %}
-        </ul>
-    </li>
-{% endfor %}
-</ul>
+      {% endfor %}
 
+  </div>
+  
+  <div id="share" class="bdTop2">
+    <div class="shareTitle">{{ "track_share"|trans }}</div>
+    
+    <div id="linkHolder" class="boxSinv">
+      <input type="text" readonly="readonly" value="{{ params.urls.front }}{{ path_for('show', { uid: uid, type: "track" }) }}" id="shareLink" class="boxS5"/>
+    </div>
+  
+    <div id="socialHolder" class="boxSinv">
+      <a id="embed" onclick="toggleEmbed(); return false;" title="{{ "track_embed"|trans }}"></a>
+      <a id="facebookShare" onclick="postToFeed('{{ params.urls.front ~ path_for('show', { uid: uid, type: "track" }) }}', '{{ item.getAlbumPicture?:'/img/nothumb_track.png' }}', '{{ item.getSafeTitle ~ ' | ' ~ item.getArtist }}', '{{ "track.description"|trans({name: item.getSafeTitle|url_encode, artist: item.getArtist|url_encode}) }}', '{{ "track.facebook_action"|trans }}', '{{ params.urls.front}}''); return false;" title="{{ "track_facebook"|trans }}"></a>
+      <a id="twitterShare" onclick="newTweet({{ "track.twitter_status"|trans({name: item.getSafeTitle|url_encode, artist: item.getArtist|url_encode, link: params.urls.front ~ path_for('show', { uid: uid, type: "track" })}) }}); return false;" title="{{ "track_twitter"|trans }}"></a>
+      <a id="mailShare" title="{{ "track_mail"|trans }}" href="mailto:?subject={{ "track_mail_subject"|trans({name: item.getSafeTitle|url_encode, artist: item.getArtist|url_encode}) }}&body={{ "track_mail_body"|trans({link: params.urls.front ~ path_for('show', { uid: uid, type: "track" }) }) }}"></a>
+    </div>
+    
+    <div id="embedHolder" class="boxSinv" style="display: none;">
+      <textarea readonly="readonly" id="embedContent" class="boxS5"><?php echo $iframeCode; ?></textarea>
+    </div>
+    <div style="clear: both"></div>
+  
+  </div>
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+  {{ parent() }}
+  <script type="text/javascript" src="/js/show.js"></script>
 {% endblock %}
