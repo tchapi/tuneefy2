@@ -3,19 +3,20 @@ Todo :
  - Implémenter une limite pour l'API
 
 Frontend :
-  - reprendre les templates
+
   - faire des search en front pas des aggregate
-  - revoir le JS ?
+  - revoir le JS
 
  - mobile :
   - ne pas afficher uservoice + menu 'trends' + d'autres éléments
  
  - mode iFrame à refaire
  
- - detection de slack pour <meta property="og:type"
+ - detection de slack pour <meta property="og:type" ==> context
 
  - injecter le widget minified dans la page /about
 
+ - injecter le code iframe dans les pages de share
 
  stats :
 platform.hits = 
@@ -34,3 +35,11 @@ mostViewedArtists
         $currentColor['b'] = dechex(208*$currentPercent + (1-$currentPercent)*255);
         
 Bugs:
+  -context a injecter partout
+   context : {
+     slack : false
+     mobile: false # a degager ensuite
+   }
+
+   cookie FR ou EN
+   cookie pour les plateformes
