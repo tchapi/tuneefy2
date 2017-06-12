@@ -3,6 +3,7 @@
 namespace tuneefy\Utils;
 
 use RKA\ContentTypeRenderer\Renderer;
+use Slim\Http\Response;
 use Slim\Views\Twig;
 use tuneefy\Controller\ApiController;
 
@@ -30,9 +31,8 @@ class CustomErrorHandler
 
         // Depending on the group we should render an error page or a structured response
         if (!$isApiRoute) {
-            $this->view->render($response, '500.html.twig');
-
-            return $response->withStatus($this->status);
+            $response = new Response($this->status);
+            return $this->view->render($response, '500.html.twig');
         } else {
             $response->withStatus($this->status);
 

@@ -13,6 +13,10 @@ pages:
     title_long: "About tuneefy, the Universe, and Everything"
     tip: "What is Tuneefy"
     team: "About the Team"
+  404:
+    title: "Ooops, page not found"
+  500:
+    title: "Ooops, server error"
   trends:
     title: "Trends"
     title_long: "What people are sharing lately"
