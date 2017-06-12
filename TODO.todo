@@ -18,6 +18,11 @@ Frontend :
 
  - injecter le code iframe dans les pages de share
 
+ - dashboard admin avec les clés API et les comptes liés, et leur utilisation (nombre d'items crées)
+  liés avec user_id de oauth_clients
+
+ - add referer pour les stats ?
+ 
  stats :
 platform.hits = 
  sprintf("%01.1f",$platformsHits[$key]/$totalPlatformsHits*100)
