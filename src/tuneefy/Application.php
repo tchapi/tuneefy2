@@ -113,7 +113,7 @@ class Application
             $params = Yaml::parse(file_get_contents(self::getPath('parameters')));
         } catch (\Exception $e) {
             // TODO  : translate / template : this will not happen in Slim's run loop, handle differently
-            throw new \Exception('No config files found');
+            throw new \Exception('No config files found: '.$e->getMessage());
         }
 
         if ($platforms === null || $params === null) {
