@@ -61,6 +61,28 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
         return strpos($permalink, 'spotify:') !== false || strpos($permalink, 'open.spotify.') !== false || strpos($permalink, 'play.spotify.') !== false;
     }
 
+    protected function addContextHeaders(): array
+    {
+        // From https://developer.spotify.com/web-api/authorization-guide/
+        $serviceauth = 'https://accounts.spotify.com/api/token';
+        $grantType = 'client_credentials';
+
+        $requestData = ['client_id' => $this->key, 'client_secret' => $this->secret, 'grant_type' => $grantType];
+
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+          CURLOPT_URL => $serviceauth,
+          CURLOPT_POST => 1,
+          CURLOPT_RETURNTRANSFER => 1,
+          CURLOPT_POSTFIELDS => http_build_query($requestData),
+        ]);
+
+        $result = json_decode(curl_exec($ch), true);
+        curl_close($ch);
+
+        return ['Authorization: Bearer '.$result['access_token']];
+    }
+
     public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
