@@ -62,9 +62,19 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         return strpos($permalink, 'play.google.com') !== false;
     }
 
-    protected function addContextHeaders(): array
+    /**
+        This function is a stub, it's never called anywhere, it's just here to indicate
+        how to retrieve a master token easily.
+    */
+    private function getMasterToken(): array
     {
         // From https://github.com/jamon/playmusic/blob/master/play.js
+
+        // Set your Google email and password, and make sure that 
+        // you have set the key (generally, a MAC address without all the ':')
+        $YOUR_EMAIL = "";
+        $YOUR_PASSWORD = "";
+
         $serviceauth = 'https://android.clients.google.com/auth';
 
         $requestData = [
@@ -72,14 +82,58 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
             'has_permission' => 1,
             'service' => 'sj',
             'source' => 'android',
-            'androidId' => random_bytes(8),
+            'androidId' => $this->key,
             'app' => 'com.google.android.music',
             'device_country' => 'us',
             'operatorCountry' => 'us',
-            'lang' => 'en',
+            'lang' => 'en_US',
             'sdk_version' => '17',
-            'Email' => $this->key,
-            'Passwd' => $this->secret,
+            "Email" => $YOUR_EMAIL,
+            "Passwd" => $YOUR_PASSWORD,
+        ];
+
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+          CURLOPT_URL => $serviceauth,
+          CURLOPT_HTTPHEADER => ['Content-Type: application/x-www-form-urlencoded'],
+          CURLOPT_POST => 1,
+          CURLOPT_RETURNTRANSFER => 1,
+          CURLOPT_POSTFIELDS => http_build_query($requestData),
+        ]);
+
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        $params = explode("\n", $result);
+        $token = array_reduce($params, function ($carry, $e) {
+            if (substr($e, 0, 6) === 'Token=') {
+                return substr($e, 6);
+            }
+            return $carry;
+        }, null);
+
+        echo "Your master token is : ".$token;
+    }
+
+    protected function addContextHeaders(): array
+    {
+        // From https://github.com/jamon/playmusic/blob/master/play.js
+        // To get a master token first, call the same endpoint with Email and Passwd of a 
+        // Google account that already had access to Google Play. See getMasterToken() above.
+        $serviceauth = 'https://android.clients.google.com/auth';
+
+        $requestData = [
+            'accountType' => 'HOSTED_OR_GOOGLE',
+            'has_permission' => 1,
+            'service' => 'sj',
+            'source' => 'android',
+            'androidId' => $this->key,
+            'app' => 'com.google.android.music',
+            'device_country' => 'us',
+            'operatorCountry' => 'us',
+            'lang' => 'en_US',
+            'sdk_version' => '17',
+            'Token' => $this->secret,
         ];
 
         $ch = curl_init();
