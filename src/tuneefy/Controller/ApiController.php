@@ -99,8 +99,9 @@ class ApiController
 
         try {
             $real_mode = $this->engine->translateFlag('mode', $request->getQueryParam('mode'));
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $response->write($e->getMessage());
+
             return $response->withStatus(400);
         }
 
@@ -152,8 +153,9 @@ class ApiController
         try {
             $real_type = $this->engine->translateFlag('type', $args['type']);
             $real_mode = $this->engine->translateFlag('mode', $request->getQueryParam('mode'));
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $response->write($e->getMessage());
+
             return $response->withStatus(400);
         }
 
@@ -201,17 +203,18 @@ class ApiController
     public function aggregate($request, $response, $args)
     {
         $this->engine->setCurrentToken($this->container['token']);
-        
+
         $query = $request->getQueryParam('q');
         $limit = $request->getQueryParam('limit') ?? Platform::LIMIT;
         $include = strtolower($request->getQueryParam('include'));
-        $aggressive = true && ($request->getQueryParam('aggressive') && $request->getQueryParam('aggressive') == 'true'); 
-        
+        $aggressive = true && ($request->getQueryParam('aggressive') && $request->getQueryParam('aggressive') == 'true');
+
         try {
             $real_type = $this->engine->translateFlag('type', strtolower($args['type']));
             $real_mode = $this->engine->translateFlag('mode', strtolower($request->getQueryParam('mode')));
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $response->write($e->getMessage());
+
             return $response->withStatus(400);
         }
 
@@ -222,7 +225,7 @@ class ApiController
         }
 
         $platforms = $this->engine->getPlatformsByTags(explode(',', $include));
-        if ($include === null || $include === "" || $platforms === null) { // Silently fails if a name is invalid, that's ok
+        if ($include === null || $include === '' || $platforms === null) { // Silently fails if a name is invalid, that's ok
            $platforms = $this->engine->getAllPlatforms();
         }
 

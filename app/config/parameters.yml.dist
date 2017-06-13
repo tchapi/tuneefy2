@@ -43,3 +43,6 @@ facebook:
 
 google_plus:
   publisher_id: "https://..."
+
+admin_users:
+  admin: admin

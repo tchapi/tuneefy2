@@ -8,8 +8,12 @@ use OAuth2;
 use Slim\App;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
+use Symfony\Bridge\Twig\Extension\TranslationExtension;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Symfony\Component\Translation\Translator;
 use Symfony\Component\Yaml\Yaml;
 use tuneefy\Controller\ApiController;
+use tuneefy\Controller\BackendController;
 use tuneefy\Controller\FrontendController;
 use tuneefy\DB\DatabaseHandler;
 use tuneefy\Platform\Platform;
@@ -17,11 +21,6 @@ use tuneefy\Utils\ContentTypeMiddleware;
 use tuneefy\Utils\CustomErrorHandler;
 use tuneefy\Utils\CustomNotFoundHandler;
 use tuneefy\Utils\Utils;
-
-// Use the ridiculously long Symfony namespaces
-use Symfony\Bridge\Twig\Extension\TranslationExtension;
-use Symfony\Component\Translation\Loader\YamlFileLoader;
-use Symfony\Component\Translation\Translator;
 
 class Application
 {
@@ -51,9 +50,9 @@ class Application
 
             $basePath = rtrim(str_ireplace('index.php', '', $container['request']->getUri()->getBasePath()), '/');
             $view->addExtension(new TwigExtension($container['router'], $basePath));
-     
+
             // First param is the "default language" to use.
-            $translator = new Translator("en_US");
+            $translator = new Translator('en_US');
             // Set a fallback language incase you don't have a translation in the default language
             $translator->setFallbackLocales(['en_US']);
             $translator->addLoader('yaml', new YamlFileLoader());
@@ -177,7 +176,7 @@ class Application
             /* The token route for OAuth */
             $this->slimApp->post('/api/auth'.Routes\Token::ROUTE, new Routes\Token($this->oauth2Server))->setName('token');
         } else {
-            $container['token'] = NULL;
+            $container['token'] = null;
         }
 
         /* The display/show page for a musical entity */
@@ -192,7 +191,18 @@ class Application
         $this->slimApp->get('/trends', FrontendController::class.':trends')->setName('trends');
         $this->slimApp->post('/mail', FrontendController::class.':mail')->setName('mail');
 
+        /* The backend routes */
+        $admin = $this->slimApp->group('/admin', function () {
+            $this->get('/dashboard', BackendController::class.':dashboard')->setName('admin_dashboard');
+        });
+
+        /* Middlewares should be in a certain order, the authentication must be added last */
         $this->slimApp->add(new ContentTypeMiddleware($container));
+        $this->slimApp->add(new \Slim\Middleware\HttpBasicAuthentication([
+            'path' => ['/admin'],
+            'realm' => 'Protected access',
+            'users' => $params['admin_users'],
+        ]));
 
         return $this;
     }

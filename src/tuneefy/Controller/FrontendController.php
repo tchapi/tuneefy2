@@ -48,6 +48,7 @@ class FrontendController
         // TODO FIX ME SEND MAIL FOR REAL
         $body = $response->getBody();
         $body->write(1);
+
         return $response;
     }
 
@@ -101,7 +102,7 @@ class FrontendController
         $id = Utils::fromUId($args['uid']);
         try {
             $item = $db->getItemById($id);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return $response->withStatus(404);
         }
 
@@ -119,7 +120,7 @@ class FrontendController
         // Increment stats
         try {
             $db->addViewingStat($id);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             // Let's redirect anyway, we should log an error somehow TODO FIX ME
         }
 
@@ -148,7 +149,7 @@ class FrontendController
         $id = Utils::fromUId($args['uid']);
         try {
             $item = $db->getItemById($id);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             return $response->withStatus(404);
         }
 
@@ -164,7 +165,7 @@ class FrontendController
         // Increment stats
         try {
             $db->addListeningStat($id, $platform, $index);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             // Let's redirect anyway, we should log an error somehow TODO FIX ME
         }
 

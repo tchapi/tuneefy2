@@ -85,7 +85,7 @@ class PlatformEngine
 
     public function translateFlag(string $namespace, string $flag = null): int
     {
-        if ($flag === null || $flag === "") {
+        if ($flag === null || $flag === '') {
             $flag = '*';
         }
 
@@ -93,7 +93,7 @@ class PlatformEngine
 
         if (!isset($this->flags[$path]) && $namespace === 'type') {
             throw new \Exception('BAD_MUSICAL_TYPE');
-        } else if (!isset($this->flags[$path]) && $namespace === 'mode') {
+        } elseif (!isset($this->flags[$path]) && $namespace === 'mode') {
             throw new \Exception('BAD_MODE');
         }
 

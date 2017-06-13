@@ -50,6 +50,7 @@ class ContentTypeMiddleware
         } else {
             if (4 === intval($response->getStatusCode() / 100)) {
                 $handler = $this->container['notFoundHandler'];
+
                 return $handler($request, $response);
             }
         }

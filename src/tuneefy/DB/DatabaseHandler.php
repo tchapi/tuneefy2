@@ -136,8 +136,8 @@ class DatabaseHandler
         $res = $statement->execute([
           ':intent' => $result->getIntent(),
           ':object' => $entityAsString,
-          ':track' => ($entity->getType()==='track')?$entity->getSafeTitle():null,
-          ':album' => ($entity->getType()==='track')?$entity->getAlbum()->getSafeTitle():$entity->getSafeTitle(),
+          ':track' => ($entity->getType() === 'track') ? $entity->getSafeTitle() : null,
+          ':album' => ($entity->getType() === 'track') ? $entity->getAlbum()->getSafeTitle() : $entity->getSafeTitle(),
           ':artist' => $entity->getArtist(),
           ':expires' => $expires->format('Y-m-d H:i:s'),
           ':signature' => hash_hmac('md5', $entityAsString, $this->parameters['intents']['secret']),
@@ -210,9 +210,9 @@ class DatabaseHandler
     {
         return $this->getMostViewed('WHERE `items`.`track` IS NOT NULL');
     }
-    
+
     public function getMostViewedAlbums()
     {
         return $this->getMostViewed('WHERE `items`.`album` IS NULL');
-    }    
+    }
 }
