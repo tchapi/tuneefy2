@@ -6,6 +6,7 @@ use Interop\Container\ContainerInterface;
 use RKA\ContentTypeRenderer\Renderer;
 use tuneefy\DB\DatabaseHandler;
 use tuneefy\Platform\Platform;
+use tuneefy\Platform\PlatformException;
 use tuneefy\PlatformEngine;
 
 class ApiController

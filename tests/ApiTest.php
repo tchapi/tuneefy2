@@ -221,7 +221,7 @@ final class ApiTest extends TestCase
                   'album' => [
                     'title' => 'Mon premier EP',
                     'artist' => "Salut c'est cool",
-                    'picture' => 'http://static.qobuz.com/images/covers/59/88/0060254728859_230.jpg',
+                    'picture' => 'https://static.qobuz.com/images/covers/59/88/0060254728859_230.jpg',
                     'safe_title' => 'Mon premier EP',
                     'extra_info' => [
                       'is_cover' => false,
@@ -257,7 +257,7 @@ final class ApiTest extends TestCase
                     'album' => [
                         'title' => 'Homework',
                         'artist' => 'Daft Punk',
-                        'picture' => 'http://static.qobuz.com/images/covers/58/09/0724384260958_230.jpg',
+                        'picture' => 'https://static.qobuz.com/images/covers/58/09/0724384260958_230.jpg',
                         'safe_title' => 'Homework',
                         'extra_info' => [
                             'is_cover' => false,
@@ -289,7 +289,7 @@ final class ApiTest extends TestCase
                   'type' => 'album',
                   'title' => 'Homework',
                   'artist' => 'Daft Punk',
-                  'picture' => 'http://static.qobuz.com/images/covers/58/09/0724384260958_230.jpg',
+                  'picture' => 'https://static.qobuz.com/images/covers/58/09/0724384260958_230.jpg',
                   'links' => [
                     'qobuz' => [
                       'http://open.qobuz.com/album/0724384260958',
@@ -319,7 +319,7 @@ final class ApiTest extends TestCase
                     'type' => 'album',
                     'title' => 'Mon premier EP',
                     'artist' => "Salut c'est cool",
-                    'picture' => 'http://static.qobuz.com/images/covers/59/88/0060254728859_230.jpg',
+                    'picture' => 'https://static.qobuz.com/images/covers/59/88/0060254728859_230.jpg',
                     'links' => [
                         'qobuz' => [
                             'http://open.qobuz.com/album/0060254728859',
@@ -482,7 +482,7 @@ final class ApiTest extends TestCase
                   ],
                 ],
                 'query_words' => [
-                    'James McAlister',
+                    'Various Artists',
                     'Planetarium',
                   ],
             ],

@@ -135,7 +135,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         if (preg_match(self::REGEX_GOOGLE_PLAY_TRACK, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['track_id']);
 
-            if ($response === null || !property_exists($response, 'data')) {
+            if ($response === null || !property_exists($response, 'data') || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 
@@ -150,7 +150,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         } elseif (preg_match(self::REGEX_GOOGLE_PLAY_ALBUM, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_id']);
 
-            if ($response === null || !property_exists($response, 'data')) {
+            if ($response === null || !property_exists($response, 'data') || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 
@@ -165,7 +165,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         } elseif (preg_match(self::REGEX_GOOGLE_PLAY_ARTIST, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_id']);
 
-            if ($response === null || !property_exists($response, 'data')) {
+            if ($response === null || !property_exists($response, 'data') || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 
