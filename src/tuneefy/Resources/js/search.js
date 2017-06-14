@@ -22,6 +22,8 @@ $(document).ready(function(){
     var resetField = $("#resetQuery");
 
     var resultsDiv = $("#results");
+    var resultsList = $("#results ul");
+    var resultsNumber = $(".nbResults");
     var waitingDiv = $("#waiting");
     var paginators = $("a.tPagerNext img, a.tPagerPrev img, .tPagerPage");
 
@@ -139,7 +141,8 @@ $(document).ready(function(){
 
         searchButton.attr('disabled', 'disabled');
 
-        resultsDiv.empty();
+        resultsDiv.hide();
+        resultsList.find('.tResult').remove();
         waitingDiv.show();
         alertsDiv.empty();
 
@@ -158,6 +161,11 @@ $(document).ready(function(){
                 alertsDiv.children().last().fadeIn();  
             } else {
                 // TODO display results
+                resultsNumber.html($results_found.replace('%query%', queryString).replace('%type%', itemType).replace('%number%', data.results.length));
+                for (var item in data.results){
+                    resultsList.append('<li>test</li>');   
+                }
+                resultsDiv.show();
             }
           })
           .fail(function() {
@@ -169,7 +177,7 @@ $(document).ready(function(){
             searchButton.removeAttr('disabled');
             queryField.blur();
             $('html,body').animate({
-                scrollTop: resultsDiv.offset().top - 20
+                scrollTop: resultsList.offset().top - 20
             }, "slow");
           });
     });

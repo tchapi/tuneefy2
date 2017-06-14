@@ -73,9 +73,39 @@
 </div>
 
 <div id="alerts" class="wrap"></div>
-<div id="results" class="wrap">
+<div id="results" class="wrap" style="display: block;">
+  <div class="above">
+      <div class="nbResults">{{ "results.results_found"|trans|raw }}</div>
+      <div class="pager">
+          <a rel="10" class="btn tPagerPrev" target="_top"><img src="/img/pagination_left.png" height="17" width="17"></a>
+          <a class="btn tPagerPage selected ins txtS2" target="_top">1</a>
+          <a rel="10" class="btn tPagerPage" target="_top">2</a>
+          <a rel="20" class="btn tPagerPage" target="_top">3</a>
+          <a rel="10" class="btn tPagerNext" target="_top"><img src="/img/pagination_right.png" height="17" width="17"></a>
+      </div>
+  </div>
 
+  <ul>
+      <li class="tHeader">
+          <div class="tHeader_bf">&nbsp;</div>
+          <div class="tHeader_tA" rel="track">{{ "results.header.track"|trans }}</div>
+          <div class="tHeader_tA" rel="album" style="display: none">{{ "results.header.album"|trans }}</div>
+          <div class="tHeader_aA">{{ "results.header.artist"|trans }}</div>
+          <div class="tHeader_p">{{ "results.header.available"|trans }}</div>
+          <div class="tHeader_af">&nbsp;</div>
+      </li>
+  </ul>
 
+  <div class="below">
+      <a rel="undefined" class="btn backToTop" target="_top">{{ "back_to_top"|trans }}</a>
+      <div class="pager">
+          <a rel="10" class="btn tPagerPrev" target="_top"><img src="/img/pagination_left.png" height="17" width="17"></a>
+          <a class="btn tPagerPage selected ins txtS2" target="_top">1</a>
+          <a rel="10" class="btn tPagerPage" target="_top">2</a>
+          <a rel="20" class="btn tPagerPage" target="_top">3</a>
+          <a rel="10" class="btn tPagerNext" target="_top"><img src="/img/pagination_right.png" height="17" width="17"></a>
+      </div>
+  </div>
 </div>
 
 {% endblock %}
@@ -85,6 +115,7 @@
   <script type="text/javascript">
     var $default_platforms = "{{ default_platforms }}";
     var $error_message = "{{ "search.error_message"|trans }}";
+    var $results_found = "{{ "results.results_found"|trans|raw }}";
   </script>
   <script type="text/javascript" src="/js/vendor/iphone-style.js"></script>
   <script type="text/javascript" src="/js/search.js"></script>

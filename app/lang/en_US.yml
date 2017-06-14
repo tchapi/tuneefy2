@@ -67,6 +67,8 @@ help:
 
 # RESULTS
 results:
+  results_found: "We found <span class='color' id='results_number'>%number%</span> %type%(s) for your search &laquo; <span class='color' id='results_query'>%query%</span> &raquo;"
+  result_found_widget: "Is that the track you're looking for ?"
   search_title: "Your search for %query%"
   various_albums: "(Various Albums)"
   share: "Share"
