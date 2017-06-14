@@ -16,9 +16,14 @@ $(document).ready(function(){
     var advanced = $("#advanced,#hideMisere");
     var platforms = $("a.btns");
     var searchForIt = $(".searchForIt");
+    var alertsDiv = $("#alerts");
     var closeHelp = $("span.closeHelp");
     var closeForever = $("span.closeForever");
     var resetField = $("#resetQuery");
+
+    var resultsDiv = $("#results");
+    var waitingDiv = $("#waiting");
+    var paginators = $("a.tPagerNext img, a.tPagerPrev img, .tPagerPage");
 
     var selectedPlatforms = "";
 
@@ -80,6 +85,10 @@ $(document).ready(function(){
         });
     }
 
+    $(document).on('.closeAlert', "click", function() {
+        $(this).parent().fadeOut();
+    });
+
     // Gets the cookie to initially set the platforms
     var cookieValue = document.cookie.split($COOKIE_PREFS + '=')[1] || "";
 
@@ -121,7 +130,7 @@ $(document).ready(function(){
             strictMode = strictModeCheckBox.is(':checked');
 
         // Do we search for tracks or albums ? 0 = track, 1 = album
-        var itemType = searchTypeCheckBox.is(':checked') ? 0 : 1;
+        var itemType = searchTypeCheckBox.is(':checked') ? 'track' : 'album';
 
         // Has the user entered something interesting as a query ?
         if (queryString === "" || queryString === queryLabel || selectedPlatforms === "") {
@@ -130,8 +139,37 @@ $(document).ready(function(){
 
         searchButton.attr('disabled', 'disabled');
 
-        // TODO LAUNCH SEARCH HERE
-        console.log("SEARCH LAUNCHED " + queryString + " " + itemType + " " + strictMode + " " + selectedPlatforms);
+        resultsDiv.empty();
+        waitingDiv.show();
+        alertsDiv.empty();
+
+        console.log("Searching for " + itemType + "s with query '" + queryString + "' on " + selectedPlatforms + " (strict: " + strictMode + ").");
+
+        var url = searchForm.attr("action").replace('%type%', itemType);
+        var params = {q: queryString, aggressive: strictMode, include: selectedPlatforms};
+        url = url+"?"+$.param(params);
+
+        var jqxhr = $.get(url)
+          .done(function(data) {
+            if (data.errors && data.errors.length > 0) {
+                for (var i = 0; i < data.errors.length; i++) {
+                    alertsDiv.append("<span class='alert' ><div class=\"triangle\"></div>" + Object.values(data.errors[0])[0] + "<span class='closeAlert'></span></span>");
+                }
+                alertsDiv.children().last().fadeIn();  
+            }
+          })
+          .fail(function() {
+            alertsDiv.append("<span class='alert' ><div class=\"triangle\"></div>" + message + "<span class='closeAlert'></span></span>");
+            alertsDiv.children().last().fadeIn();
+          })
+          .always(function() {
+            waitingDiv.hide();
+            searchButton.removeAttr('disabled');
+            queryField.blur();
+            $('html,body').animate({
+                scrollTop: resultsDiv.offset().top - 20
+            }, "slow");
+          });
     });
 
 

@@ -21,7 +21,7 @@ To build the assets and the API documentation, I use **npm** and some modules.
     npm run build-assets
     npm run api-documentation
 
-### Packages used
+### Composer packages used
 
   - [Composer](https://getcomposer.org/), providing a nice package manager *and* a practical PSR-4 autoloader
   - [Symfony\Yaml](http://symfony.com/doc/current/components/yaml/introduction.html) to parse the configuration files
@@ -29,11 +29,22 @@ To build the assets and the API documentation, I use **npm** and some modules.
   - [Twig](http://twig.sensiolabs.org/), a template engine
   - [XmlToJsonConverter](https://github.com/markwilson/xml-to-json) to convert Amazon XML to correct JSON
   - [RKA Content-Type renderer](https://github.com/akrabat/rka-content-type-renderer) to output JSON / XML / HTML for the API
+  - [Slim basic auth](https://github.com/tuupola/slim-basic-auth) for admin access
+
+#### Dev packages
+
+  - [PHP CS Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) to lint the PHP code
+  - [PHPUnit](https://phpunit.de/) for unit tests
+  - [Deployer](https://deployer.org) to deploy the site
+
+### NPM (dev) packages used
+
+  - [Gulp](http://gulpjs.com/) , including `gulp-sass`, `gulp-uglify` and `pump` for building assets
   - [Aglio](https://github.com/danielgtaylor/aglio) for generating the API docs
 
 ### On the frontend side of things
 
-I'm using [Zepto.js](http://zeptojs.com) to cover the DOM manipulation tasks and related stuff.
+I'm using [JQuery](http://jquery.com) to cover the DOM manipulation tasks and related stuff.
 
 ### Code structure
 
