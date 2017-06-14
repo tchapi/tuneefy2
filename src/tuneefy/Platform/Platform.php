@@ -143,6 +143,13 @@ abstract class Platform implements GeneralPlatformInterface
         return $this;
     }
 
+    public function setDefault(bool $default): Platform
+    {
+        $this->default = $default;
+
+        return $this;
+    }
+
     public function isDefault(): bool
     {
         return $this->default;

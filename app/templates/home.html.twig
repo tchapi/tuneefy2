@@ -10,7 +10,7 @@
     <div id="info">
       <h2 class="infoTitle color">{{ "pages.home.welcome"|trans }}</h2>
       <p class="infoContent">{{ "pages.home.content"|trans|raw }}</p>
-      <a class="btn btn_more" href="/about">{{ "pages.home.more_info"|trans }}</a>
+      <a class="btn btn_more" href="{{ path_for('about') }}">{{ "pages.home.more_info"|trans }}</a>
     </div>
 
     <div id="todaysPickOverlay"></div>
@@ -25,7 +25,7 @@
 <div id="searchForm" class="wrap bdTop">
  <div id="moreOptions" ><img src="/img/more_options.png" width="160" height="60" title="{{ "search.moreOptionsAlt"|trans }}"/></div>
 
-  <form id="find" action="">
+  <form id="find" action="{{ path_for('aggregate', {type: '%type%'}) }}">
 
     <div id="basic">
       <input type="text" id="query" name="query" class="boxS5" value="{{ request?:"search.query_label"|trans }}" data-placeholder="{{ "search.query_label"|trans }}"/>
@@ -79,6 +79,9 @@
 
 {% block javascript %}
   {{ parent() }}
+  <script type="text/javascript">
+    var $default_platforms = "{{ default_platforms }}";
+  </script>
   <script type="text/javascript" src="/js/vendor/iphone-style.js"></script>
   <script type="text/javascript" src="/js/search.js"></script>
 {% endblock %}

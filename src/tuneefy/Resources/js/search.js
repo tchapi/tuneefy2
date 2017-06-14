@@ -1,7 +1,6 @@
 $(document).ready(function(){
 
-    var $DOMAIN = "localhost";
-    var $default_platforms= "deezer, spotify";
+    var $DOMAIN = "localhost:1234";
 
     var $COOKIE_PREFS = "tuneefyPrefs";
     var $COOKIE_HELP = "tuneefyHelpBox";
@@ -94,7 +93,7 @@ $(document).ready(function(){
 
     var arrayCookieContent = cookieValue.split(',');
     $.each(arrayCookieContent, function(index, pltf) {
-        $('#pltf' + pltf).attr('on', 'yes').removeClass("off");
+        $('#platform_' + pltf).attr('on', 'yes').removeClass("off");
 
     });
 
@@ -124,11 +123,6 @@ $(document).ready(function(){
         // Do we search for tracks or albums ? 0 = track, 1 = album
         var itemType = searchTypeCheckBox.is(':checked') ? 0 : 1;
 
-        // Is it a trap ?
-        if (queryString.match(/http\:\/\/tuneefy\.com\/[t|a]\/[a-zA-Z0-9]+/)) {
-            window.location.href = queryString;
-        }
-
         // Has the user entered something interesting as a query ?
         if (queryString === "" || queryString === queryLabel || selectedPlatforms === "") {
             return false;
@@ -137,12 +131,7 @@ $(document).ready(function(){
         searchButton.attr('disabled', 'disabled');
 
         // TODO LAUNCH SEARCH HERE
-        console.log("SEARCH LAUNCHED");
-        // console.log('SearchUI >>> search.launched for itemType : ' + itemType);
-        // $(controller).trigger("tuneefy.search.launched", itemType);
-        // console.log('SearchUI >>> search.start');
-        // $(controller).trigger("tuneefy.search.start", [queryString, itemType, strictMode, selectedPlatforms, 100]);
-
+        console.log("SEARCH LAUNCHED " + queryString + " " + itemType + " " + strictMode + " " + selectedPlatforms);
     });
 
 

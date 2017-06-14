@@ -132,6 +132,7 @@ class Application
 
             $p->setEnables($platform['enable'])
               ->setCapabilities($platform['capabilities'])
+              ->setDefault($platform['default'])
               ->setCredentials($platform['key'], $platform['secret']);
         }
 
@@ -155,7 +156,7 @@ class Application
             $this->get('/platform/{tag}', ApiController::class.':getPlatform');
             $this->get('/lookup', ApiController::class.':lookup');
             $this->get('/search/{type}/{platform_str}', ApiController::class.':search');
-            $this->get('/aggregate/{type}', ApiController::class.':aggregate');
+            $this->get('/aggregate/{type}', ApiController::class.':aggregate')->setName('aggregate');
             $this->get('/share/{intent}', ApiController::class.':share');
         });
 

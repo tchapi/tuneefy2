@@ -32,6 +32,12 @@ class FrontendController
         return $this->container->get('view')->render($response, 'home.html.twig', [
             'params' => $this->container->get('params'),
             'platforms' => $this->engine->getAllPlatforms(),
+            'default_platforms' => implode(",", array_reduce($this->engine->getAllPlatforms(), function($carry, $e) {
+                if ($e->isDefault()) {
+                    $carry[] = $e->getTag();
+                }
+                return $carry;
+            }, [])),
         ]);
     }
 
