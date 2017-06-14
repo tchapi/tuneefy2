@@ -11,7 +11,9 @@ gulp.task('javascript', function () {
         gulp.src(resourcesFolder + 'js/**/*.js'),
         uglify(),
         gulp.dest(webFolder + 'js')
-    ]);
+    ],
+    console.log
+    );
 });
 
 gulp.task('sass', function () {
@@ -19,7 +21,9 @@ gulp.task('sass', function () {
         gulp.src(resourcesFolder + 'scss/styles.scss'),
         sass({outputStyle: 'compressed'}).on('error', sass.logError),
         gulp.dest(webFolder + 'css')
-    ]);
+    ],
+    console.log
+    );
 });
 
 gulp.task('default', ['sass', 'javascript']);

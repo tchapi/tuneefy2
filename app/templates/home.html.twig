@@ -28,12 +28,14 @@
   <form id="find" action="">
 
     <div id="basic">
-      <input type="text" id="query" name="query" class="boxS5" value="{{ request?:"search.query_label"|trans }}" />
-      <div id="searchType" class="boxed boxS"><div id="searchTypeInner">
-        <span id="typeAlbums" class="off">{{ "search._albums"|trans }}</span>
-        <span id="typeTracks">{{ "search._tracks"|trans }}</span>
-        <input type="checkbox" id="type" checked='checked' />
-      </div></div>
+      <input type="text" id="query" name="query" class="boxS5" value="{{ request?:"search.query_label"|trans }}" data-placeholder="{{ "search.query_label"|trans }}"/>
+      <div id="searchType" class="boxed boxS">
+        <div id="searchTypeInner">
+          <span id="typeAlbums" class="off">{{ "search._albums"|trans }}</span>
+          <span id="typeTracks">{{ "search._tracks"|trans }}</span>
+          <input type="checkbox" id="searchTypeCheckbox" checked='checked' />
+        </div>
+      </div>
       <input type="submit" id="launch" class="txtSinv boxS2" value="{{ "search.search_button"|trans }}"/>
       <div id="resetQuery" style="display: none;"></div>
       <div id="options"></div>
@@ -63,7 +65,7 @@
       </div>
       <div id="mergeResults" class="boxS3">
         <span class="merge">{{ "search.merge_label"|trans }}</span>
-        <input type="checkbox" id="aggressive" checked="checked" />
+        <input type="checkbox" id="aggressive" checked="checked" data-yes="{{ "yes"|trans }}" data-no="{{ "no"|trans }}"/>
       </div>
     </div>
     
@@ -77,5 +79,6 @@
 
 {% block javascript %}
   {{ parent() }}
+  <script type="text/javascript" src="/js/vendor/iphone-style.js"></script>
   <script type="text/javascript" src="/js/search.js"></script>
 {% endblock %}
