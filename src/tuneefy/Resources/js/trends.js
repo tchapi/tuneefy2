@@ -26,7 +26,7 @@ Raphael.fn.pieChart = function (cx, cy, r, values, labels, stroke) {
                 p = sector(cx, cy, r, angle, angle + angleplus, {fill: Raphael.color('#'+labels[j][2]), stroke: "none"}),
                 txt = paper.text(cx + (r + delta + 55) * Math.cos(-popangle * rad), cy + (r + delta + 25) * Math.sin(-popangle * rad), labels[j][1]).attr({fill: Raphael.color('#'+labels[j][2]), stroke: "none", opacity: 0, "font-size": 16});
             if (angleplus > 13)
-              paper.image("/img/platforms/platform_chart_"+labels[j][0]+".png", cx + (r*0.65) * Math.cos(-popangle * rad) - 18, cy + (r*0.65) * Math.sin(-popangle * rad) - 15, 36, 30);
+              paper.image("/img/platforms/platform_chart_"+labels[j][1]+".png", cx + (r*0.65) * Math.cos(-popangle * rad) - 18, cy + (r*0.65) * Math.sin(-popangle * rad) - 15, 36, 30);
             p.mouseover(function () {
                 p.stop().animate({transform: "s1.1 1.1 " + cx + " " + cy}, ms, "elastic");
                 txt.stop().animate({opacity: 1}, ms, "elastic");
