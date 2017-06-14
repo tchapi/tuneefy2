@@ -156,10 +156,12 @@ $(document).ready(function(){
                     alertsDiv.append("<span class='alert' ><div class=\"triangle\"></div>" + Object.values(data.errors[0])[0] + "<span class='closeAlert'></span></span>");
                 }
                 alertsDiv.children().last().fadeIn();  
+            } else {
+                // TODO display results
             }
           })
           .fail(function() {
-            alertsDiv.append("<span class='alert' ><div class=\"triangle\"></div>" + message + "<span class='closeAlert'></span></span>");
+            alertsDiv.append("<span class='alert' ><div class=\"triangle\"></div>" + $error_message + "<span class='closeAlert'></span></span>");
             alertsDiv.children().last().fadeIn();
           })
           .always(function() {

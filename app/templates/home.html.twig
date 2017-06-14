@@ -72,8 +72,11 @@
   </form>
 </div>
 
-<div id="alerts" class="wrap" ></div>
-<div id="results" class="wrap" ></div>
+<div id="alerts" class="wrap"></div>
+<div id="results" class="wrap">
+
+
+</div>
 
 {% endblock %}
 
@@ -81,6 +84,7 @@
   {{ parent() }}
   <script type="text/javascript">
     var $default_platforms = "{{ default_platforms }}";
+    var $error_message = "{{ "search.error_message"|trans }}";
   </script>
   <script type="text/javascript" src="/js/vendor/iphone-style.js"></script>
   <script type="text/javascript" src="/js/search.js"></script>
