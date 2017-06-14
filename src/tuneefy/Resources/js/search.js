@@ -170,10 +170,8 @@ $(document).ready(function(){
 
     /******* CLICK IN HELP *******/
     searchForIt.click(function(e) {
-
         queryField.val($(e.target).html());
         searchForm.submit();
-
     });
 
     /******* RESET BUTTON *******/
@@ -183,7 +181,6 @@ $(document).ready(function(){
         } else {
             resetField.hide();
         }
-
     });
 
     resetField.click(function(e) {
@@ -209,7 +206,6 @@ $(document).ready(function(){
         $("#help").fadeOut();
         queryField.focus();
         e.stopPropagation();
-
     });
 
     /******* OPTIONS *******/
@@ -271,16 +267,5 @@ $(document).ready(function(){
         document.cookie = value;
 
     });
-/*
-    var sliderView = new SliderUI(4000);
 
-    var model = new Tuneefy(window);
-    var searchView = new SearchUI(window);
-    var alertView = new AlertUI(window, 1);
-    var resultsView = new ResultRenderUI(model, window, 10, 10, false);
-    
-    window.onpopstate = function(event) {
-      $(window).trigger("tuneefy.search.popstate", event);
-    }
-*/
 });

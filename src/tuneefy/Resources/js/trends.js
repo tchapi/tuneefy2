@@ -55,14 +55,10 @@ Raphael.fn.pieChart = function (cx, cy, r, values, labels, stroke) {
 };
 
 $(document).ready(function() {
-
     var values = [], labels = [];
-
-    $("table#pieData > tr").each(function () {
+    $("table#pieData tr").each(function () {
         values.push(parseInt($("td", this).text(), 10));
         labels.push(new Array($("th span.id", this).text(), $("th span.name", this).text(), $("th span.color", this).text()));
     });
-
     Raphael("pieChart", 650, 500).pieChart(325, 250, 200, values, labels, "#2d2d2d");
-
 });
