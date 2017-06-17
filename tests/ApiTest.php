@@ -465,7 +465,7 @@ final class ApiTest extends TestCase
                 'musical_entity' => [
                   'type' => 'album',
                   'title' => 'Planetarium',
-                  'artist' => 'James McAlister',
+                  'artist' => 'Sufjan Stevens, Nico Muhly, Bryce Dessner, James McAlister',
                   'picture' => 'http://lh3.googleusercontent.com/YTbUe1gyfP64zYebOO14Py38XziO-IRkt6UcYsk4AzT3Zymyxr-kFfkzws_uiLjBuLFp-s6FkmQ',
                   'links' => [
                     'googleplay' => [
@@ -482,7 +482,7 @@ final class ApiTest extends TestCase
                   ],
                 ],
                 'query_words' => [
-                    'Various Artists',
+                    'Sufjan Stevens, Nico Muhly, Bryce Dessner, James McAlister',
                     'Planetarium',
                   ],
             ],
@@ -1093,16 +1093,17 @@ final class ApiTest extends TestCase
         $this->assertSame($response->getStatusCode(), 200);
 
         $result = json_decode($response->getBody()->__toString(), true);
+
         $this->assertArrayHasKey('results', $result);
         $this->assertCount(1, $result['results']);
 
         $this->assertArrayHasKey('musical_entity', $result['results'][0]);
         $this->assertCount(2, $result['results'][0]['musical_entity']['links']);
-        $this->assertEquals(2, $result['results'][0]['metadata']['merges']);
+        $this->assertGreaterThan(0, $result['results'][0]['metadata']['merges']);
 
         $this->assertArrayHasKey('deezer', $result['results'][0]['musical_entity']['links']);
         $this->assertArrayHasKey('spotify', $result['results'][0]['musical_entity']['links']);
-        $this->assertCount(2, $result['results'][0]['musical_entity']['links']['spotify']);
+        $this->assertGreaterThan(0, $result['results'][0]['musical_entity']['links']['spotify']);
     }
 
     public function testAggregateInclude()
