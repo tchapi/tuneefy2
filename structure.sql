@@ -26,9 +26,9 @@ CREATE TABLE `stats_viewing` (
 
 CREATE TABLE `stats_listening` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `item_id` int(11) unsigned NOT NULL,
+  `item_id` int(11) unsigned DEFAULT NULL,
   `platform` varchar(25) NOT NULL,
-  `index` int(11) unsigned NOT NULL,
+  `index` int(11) unsigned DEFAULT NULL,
   `listened_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `item_id` (`item_id`),

@@ -185,6 +185,7 @@ class Application
 
         /* Listen to a musical entity => goes to the platform link */
         $this->slimApp->get($params['urls']['format'].'/listen/{platform}[/{i:[0-9]+}]', FrontendController::class.':listen')->setName('listen');
+        $this->slimApp->get('/listen/{platform}', FrontendController::class.':listenDirect')->setName('listen_direct');
 
         /* The other frontend routes */
         $this->slimApp->get('/', FrontendController::class.':home')->setName('home');

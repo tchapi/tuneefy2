@@ -73,7 +73,7 @@
 </div>
 
 <div id="alerts" class="wrap"></div>
-<div id="results" class="wrap" style="display: block;">
+<div id="results" class="wrap" style="display: none;">
   <div class="above">
       <div class="nbResults">{{ "results.results_found"|trans|raw }}</div>
       <div class="pager">
@@ -88,9 +88,11 @@
   <ul>
       <li class="tHeader">
           <div class="tHeader_bf">&nbsp;</div>
-          <div class="tHeader_tA" rel="track">{{ "results.header.track"|trans }}</div>
-          <div class="tHeader_tA" rel="album" style="display: none">{{ "results.header.album"|trans }}</div>
-          <div class="tHeader_aA">{{ "results.header.artist"|trans }}</div>
+          <div class="tHeader_tA tHeader_disp" rel="album">{{ "results.header.track"|trans }}</div>
+          <div class="tHeader_aA tHeader_disp" rel="album">{{ "results.header.artist"|trans }}</div>
+          <div class="tHeader_t tHeader_disp" rel="track" style="display: none">{{ "results.header.track"|trans }}</div>
+          <div class="tHeader_a tHeader_disp" rel="track" style="display: none">{{ "results.header.artist"|trans }}</div>
+          <div class="tHeader_c tHeader_disp" rel="track" style="display: none">{{ "results.header.album"|trans }}</div>
           <div class="tHeader_p">{{ "results.header.available"|trans }}</div>
           <div class="tHeader_af">&nbsp;</div>
       </li>
@@ -116,7 +118,12 @@
     var $default_platforms = "{{ default_platforms }}";
     var $error_message = "{{ "search.error_message"|trans }}";
     var $results_found = "{{ "results.results_found"|trans|raw }}";
+    var $listen_to = "{{ "results.listen_to"|trans|raw }}";
+    var $share = "{{ "results.share"|trans|raw }}";
+    var $share_tip = "{{ "results.share_tip"|trans|raw }}";
+    var $path = "{{ path_for('listen_direct', {'platform': '%key%'}) }}";
   </script>
   <script type="text/javascript" src="/js/vendor/iphone-style.js"></script>
+  <script type="text/javascript" src="/js/vendor/twig.min.js"></script>
   <script type="text/javascript" src="/js/search.js"></script>
 {% endblock %}

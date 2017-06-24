@@ -166,6 +166,19 @@ class DatabaseHandler
         }
     }
 
+    public function addListeningStatDirect(string $platformTag)
+    {
+        $statement = $this->connection->prepare('INSERT INTO `stats_listening` (`platform`, `listened_at`) VALUES (:platform, NOW())');
+
+        $res = $statement->execute([
+          ':platform' => $platformTag,
+        ]);
+
+        if ($res === false) {
+            throw new \Exception('Error adding listening stat : '.$statement->errorInfo()[2]);
+        }
+    }
+
     public function addViewingStat(int $item_id)
     {
         $statement = $this->connection->prepare('INSERT INTO `stats_viewing` (`item_id`, `viewed_at`) VALUES (:item_id, NOW())');

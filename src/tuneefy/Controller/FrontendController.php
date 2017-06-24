@@ -179,6 +179,29 @@ class FrontendController
         return $response->withStatus(303)->withHeader('Location', $links[$index]);
     }
 
+    public function listenDirect($request, $response, $args)
+    {
+        $platform = strtolower($args['platform']);
+
+        $link = $request->getQueryParam('l');
+
+        if ($link === null || $link === '') {
+            return $response->withStatus(404);
+        }
+
+        $db = DatabaseHandler::getInstance(null);
+
+        // Increment stats
+        try {
+            $db->addListeningStatDirect($platform);
+        } catch (\Exception $e) {
+            // Let's redirect anyway, we should log an error somehow TODO FIX ME
+        }
+
+        // Eventually, redirect to platform
+        return $response->withStatus(303)->withHeader('Location', $link);
+    }
+
     public function api($request, $response, $args)
     {
         return $this->container->get('view')->render($response, 'api.html');

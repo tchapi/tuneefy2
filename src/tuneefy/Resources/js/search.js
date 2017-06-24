@@ -145,6 +145,7 @@ $(document).ready(function(){
         resultsList.find('.tResult').remove();
         waitingDiv.show();
         alertsDiv.empty();
+        $('.tHeader_disp').hide();
 
         console.log("Searching for " + itemType + "s with query '" + queryString + "' on " + selectedPlatforms + " (strict: " + strictMode + ").");
 
@@ -158,14 +159,34 @@ $(document).ready(function(){
                 for (var i = 0; i < data.errors.length; i++) {
                     alertsDiv.append("<span class='alert' ><div class=\"triangle\"></div>" + Object.values(data.errors[0])[0] + "<span class='closeAlert'></span></span>");
                 }
-                alertsDiv.children().last().fadeIn();  
-            } else {
-                // TODO display results
+                alertsDiv.children().last().fadeIn();
+            }
+            if (data.results) {
                 resultsNumber.html($results_found.replace('%query%', queryString).replace('%type%', itemType).replace('%number%', data.results.length));
-                for (var item in data.results){
-                    resultsList.append('<li>test</li>');   
-                }
-                resultsDiv.show();
+                // Display correct headers
+                $('.tHeader_disp[rel='+itemType+']').show();
+                Twig.twig({
+                    href: "js/twig/result.html.twig",
+                    async: true,
+                    load: function(template) {
+                        for (var key in data.results){
+                            var item = data.results[key]
+                            resultsList.append(template.render({
+                                type: itemType,
+                                item: item.musical_entity,
+                                share: $share,
+                                listenTo: $listen_to.replace('%name%', item.musical_entity.safe_title),
+                                shareTip: $share_tip.replace('%name%', item.musical_entity.safe_title),
+                                linkDirect: $path
+                            })); 
+                        }
+                        resultsDiv.show();
+                    }
+                });
+            } else {
+                // Some other problem
+                alertsDiv.append("<span class='alert' ><div class=\"triangle\"></div>" + $error_message + "<span class='closeAlert'></span></span>");
+                alertsDiv.children().last().fadeIn();
             }
           })
           .fail(function() {

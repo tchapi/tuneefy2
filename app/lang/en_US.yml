@@ -73,7 +73,7 @@ results:
   various_albums: "(Various Albums)"
   share: "Share"
   share_tip: "Get the link to share '%name%' on all these platforms!"
-  listen_to: "Listen to '%name%' on '%platform%'"
+  listen_to: "Listen to '%name%' on this platform"
   featuring: "feat. "
   album_cover: "cover"
   header:

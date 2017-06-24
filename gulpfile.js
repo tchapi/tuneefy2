@@ -16,6 +16,15 @@ gulp.task('javascript', function () {
     );
 });
 
+gulp.task('twig', function () {
+  pump([
+        gulp.src(resourcesFolder + 'js/**/*.twig'),
+        gulp.dest(webFolder + 'js')
+    ],
+    console.log
+    );
+});
+
 gulp.task('sass', function () {
   pump([
         gulp.src(resourcesFolder + 'scss/styles.scss'),
@@ -26,4 +35,4 @@ gulp.task('sass', function () {
     );
 });
 
-gulp.task('default', ['sass', 'javascript']);
+gulp.task('default', ['sass', 'javascript', 'twig']);

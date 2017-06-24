@@ -1,0 +1,38 @@
+<li class="tResult">
+    <div class="tImage">
+        {% if type == "track" %}
+            <img src="{{ item.album.picture ?: ("/img/nothumb_track.png") }}" height="74" width="74">
+        {% else %}
+            <img src="{{ item.picture ?: ("/img/nothumb_album.png") }}" height="74" width="74">
+        {% endif %}
+        <div class="coverlay"></div>
+    </div>
+    {% if type == "track" %}
+        <div class="tTitle">
+            <div class="wrapper">{{ item.safe_title }}<div class="tFeat txtS">{{ item.feats }}</div></div>
+        </div>
+        <div class="tArtist txtS">
+            <div class="wrapper">{{ item.album.artist }}</div>
+        </div>
+        <div class="tAlbum txtS">
+            <div class="wrapper">{{ item.album.safe_title }}</div>
+        </div>
+    {% else %}
+        <div class="tAlbumA">
+            <div class="wrapper">{{ item.safe_title }}<div class="tFeat txtS">{{ item.feats }}</div></div>
+        </div>
+        <div class="tArtistA txtS">
+            <div class="wrapper">{{ item.artist }}</div>
+        </div>
+    {% endif %}
+    <div class="tLinks">
+        <div class="wrapper">
+          {% for key, links in item.links %}
+            {% for i, link in links %}
+                <a target="_top" class="tLink btns btn_{{ key }}" href="{{ linkDirect|replace({'%key%': key}) }}?l={{link|url_encode}}" title="{{ listenTo }}"></a>
+            {% endfor %}
+          {% endfor %}
+        </div>
+    </div>
+    <a rel="1" title="{{ shareTip }}" class="btn tShare sharePage" target="_top">{{ share }}</a>
+</li>
