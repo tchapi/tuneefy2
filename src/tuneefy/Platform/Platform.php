@@ -251,6 +251,8 @@ abstract class Platform implements GeneralPlatformInterface
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_HTTPHEADER => $headers,
             CURLOPT_FOLLOWLOCATION => 1, // Some APIs redirect to content with a 3XX code
+            CURLOPT_CONNECTTIMEOUT => 2000,
+            CURLOPT_TIMEOUT_MS => 2000,
         ]);
 
         if (static::API_METHOD === self::METHOD_GET) {
@@ -344,7 +346,7 @@ abstract class Platform implements GeneralPlatformInterface
             $response = $object['platform']->postProcessResult($response);
 
             if ($response === null) {
-                $errors[] = (new PlatformException($object['platform']))->getMessage();
+                $errors[] =  ["FETCH_PROBLEM" => (new PlatformException($object['platform']))->getMessage()];
                 continue;
             }
 
