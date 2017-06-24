@@ -20,6 +20,10 @@ Frontend :
 
  - add referer pour les stats ?
  
+ - feats a rajouter également dans la page result.html.twig
+
+ - pagination sur la home
+
  stats :
 platform.hits = 
  sprintf("%01.1f",$platformsHits[$key]/$totalPlatformsHits*100)
