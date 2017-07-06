@@ -24,6 +24,10 @@ Frontend :
 
  - pagination sur la home
 
+ -bouton pour closer les erreurs sur la home ne marche pas
+
+ - faire les icones manquantes
+ 
  stats :
 platform.hits = 
  sprintf("%01.1f",$platformsHits[$key]/$totalPlatformsHits*100)
