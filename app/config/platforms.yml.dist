@@ -63,19 +63,6 @@ soundcloud:
   secret: ""
   default: false
   order: 5
-hypem:
-  class: tuneefy\Platform\HypemachinePlatform
-  enable:
-    api: true
-    website: true
-  capabilities:
-    track_search: true
-    album_search: false
-    lookup: true
-  key: ""
-  secret: ""
-  default: false
-  order: 6
 youtube:
   class: tuneefy\Platform\YoutubePlatform
   enable:

@@ -36,7 +36,7 @@ description: "tuneefy is a new unified way to share music with your friends, ove
 keywords: "listen, music, online, share, unify, platform, friends, tuneefy, music service, music platform, track, sharing"
 contact : "Contact"
 copyright: "Copyright"
-endorsement: "This service uses Spotify (resp. Deezer, Last.fm, Soundcloud, HypeMachine, Tidal, Groove Music, Amazon Music, Youtube, Mixcloud, iTunes, Qobuz, Napster, Google Play Music) APIs but is not endorsed, certified or otherwise approved in any way by Spotify (resp. Deezer, Last.fm, Soundcloud, HypeMachine, Tidal, Groove Music, Amazon Music, Youtube, Mixcloud, iTunes, Qobuz, Napster, Google Play Music). Each brand and name is or may be the registered trade mark of its respective owner."
+endorsement: "This service uses Spotify (resp. Deezer, Last.fm, Soundcloud, Tidal, Groove Music, Amazon Music, Youtube, Mixcloud, iTunes, Qobuz, Napster, Google Play Music) APIs but is not endorsed, certified or otherwise approved in any way by Spotify (resp. Deezer, Last.fm, Soundcloud, Tidal, Groove Music, Amazon Music, Youtube, Mixcloud, iTunes, Qobuz, Napster, Google Play Music). Each brand and name is or may be the registered trade mark of its respective owner."
 
 # SEARCH
 search:
@@ -190,7 +190,6 @@ facts:
         <li class="platform">And more ...
         <ul style="display: none;">
           <li class="song">Soundcloud link<br/><span class="link">http://soundcloud.com/hsz/debich</span></li>
-          <li class="artist">HypeMachine link<br/><span class="link">http://hypem.com/item/1g079/</span></li>
           <li class="album">Youtube music link<br/><span class="link">http://www.youtube.com/watch?v=_FOyHhU0i7k</span></li>
         </ul>
         </li>

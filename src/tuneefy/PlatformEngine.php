@@ -8,7 +8,6 @@ use tuneefy\Platform\Platforms\AmazonMusicPlatform;
 use tuneefy\Platform\Platforms\DeezerPlatform;
 use tuneefy\Platform\Platforms\GooglePlayMusicPlatform;
 use tuneefy\Platform\Platforms\GrooveMusicPlatform;
-use tuneefy\Platform\Platforms\HypeMachinePlatform;
 use tuneefy\Platform\Platforms\ItunesPlatform;
 use tuneefy\Platform\Platforms\LastFMPlatform;
 use tuneefy\Platform\Platforms\MixcloudPlatform;
@@ -53,7 +52,6 @@ class PlatformEngine
 
           // Blogs / Scrobbling
           'lastfm' => LastFMPlatform::getInstance(),
-          'hypem' => HypeMachinePlatform::getInstance(),
 
           // Stores
           'itunes' => ItunesPlatform::getInstance(),

@@ -676,47 +676,6 @@ final class ApiTest extends TestCase
                 ],
             ],
         ],
-        'hypem' => [
-            'http://hypem.com/item/1arwr/Digitalism+-+2+Hearts' => [
-                'musical_entity' => [
-                    'type' => 'track',
-                    'title' => '2 Hearts',
-                    'album' => [
-                        'title' => '',
-                        'artist' => 'Digitalism',
-                        'picture' => '',
-                        'safe_title' => '',
-                        'extra_info' => [
-                            'is_cover' => false,
-                            'is_remix' => false,
-                            'acoustic' => false,
-                            'context' => [],
-                        ],
-                    ],
-                    'links' => [
-                        'hypem' => [
-                            'http://hypem.com/item/1arwr/Digitalism+-+2+Hearts',
-                        ],
-                    ],
-                    'safe_title' => '2 Hearts',
-                    'extra_info' => [
-                        'is_cover' => false,
-                        'is_remix' => false,
-                        'acoustic' => false,
-                        'context' => [],
-                    ],
-                ],
-                'query_words' => [
-                    'Digitalism',
-                    '2 Hearts',
-                  ],
-            ],
-            'http://hypem.com/artist/Digitalism' => [
-                'query_words' => [
-                    'DIGITALISM',
-                  ],
-            ],
-        ],
 
         // Stores
         'itunes' => [
