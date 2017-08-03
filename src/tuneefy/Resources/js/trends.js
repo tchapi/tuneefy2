@@ -60,5 +60,7 @@ $(document).ready(function() {
         values.push(parseInt($("td", this).text(), 10));
         labels.push(new Array($("th span.id", this).text(), $("th span.name", this).text(), $("th span.color", this).text()));
     });
-    Raphael("pieChart", 650, 500).pieChart(325, 250, 200, values, labels, "#2d2d2d");
+    var w = $("#pieChart").outerWidth();
+    var h = $("#pieChart").outerHeight();
+    Raphael("pieChart", w, 500).pieChart(w/2, 250, Math.min(h/2.5, w/2.5), values, labels, "#2d2d2d");
 });

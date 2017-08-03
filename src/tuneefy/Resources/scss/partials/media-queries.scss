@@ -1,0 +1,114 @@
+@media (max-width: 1010px) {
+  .wrap {
+    width: 100%;
+    padding: 0 8px;
+    box-sizing: border-box;
+  }
+  #info .infoContent {
+    width: initial;
+    margin-right: 340px;
+  }
+  .ribbon {
+    display: none;
+  }
+  #team-wrapper  {
+    height: auto;
+    .theTeam, .contactUs, .creator {
+      text-align: center;
+      float: none;
+      width: auto;
+      &.creator {
+        margin: 20px 40px 0 40px;
+      }
+    }
+    a {
+      float: none;
+      display: inline-block;
+    }
+  }
+}
+
+@media (max-width: 920px) {
+  #about-wrapper .aboutRow, #about-wrapper .aboutRow.boxed {
+    height: auto;
+  }
+  #about-wrapper .item1, .item2, .itemSolo {
+    float: none;
+    width: auto;
+    min-width: 300px;
+    min-height: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  #info .infoContent {
+    width: 100%;
+    margin-right: 0px;
+  }
+  #todaysPickOverlay {
+    display: none;
+  }
+  #pickPager {
+    display: none;
+  }
+  #globalStats {
+      #pieData {
+      display: none;
+    }
+    #pieChart {
+      width: 100%;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  #tagline{
+    height: auto;
+    text-align: center;
+    p {
+      float: none;
+      padding: 0;
+    }
+  }
+  h1.logo {
+    margin-left: 0px;
+  }
+  h2, h3{
+    text-align: center;
+  }
+  h2.aboutTitle, h2.aboutTitles {
+    font-size: 1.4em;
+  }
+  #about-wrapper .item1, .item2, .itemSolo {
+    min-height: 300px;
+  }
+  #about-wrapper .aboutRow {
+    h3 {
+      padding-left: 10px;
+      padding-top: 170px;
+    }
+    p {
+      padding-left: 10px; 
+    }
+  }
+  #about-wrapper .item1, .item2, .itemSolo {
+    background-position: center top;
+  }
+  #team-wrapper .creator .realName {
+    font-size: 1.7em;
+    padding: 16px 0 13px;
+  }
+  #contactFormWrapper {
+    width: auto;
+    height: auto;
+    a.btnSendEmail {
+      position: relative;
+    }
+  }
+  #navigation a {
+    padding: 10px 10px 0;
+  }
+  #stats h2 {
+    font-size: 1.4em;
+  }
+}

@@ -144,7 +144,7 @@ h2.infoTitle, h2.pickTitle{
 }
 
 #info .infoContent{
-  width: 589px;
+  max-width: 589px;
   height: 69px;
   padding-top: 10px;
   color: #696969;
@@ -1049,7 +1049,7 @@ h2.aboutTitle, h2.aboutTitles{
 }
 
 #team-wrapper .creator.idea{ background: url("../img/creator_idea.png") no-repeat scroll center top transparent; }
-#team-wrapper .creator.design{ background: url("../img/creator_design.png") no-repeat scroll 80px top transparent; }
+#team-wrapper .creator.design{ background: url("../img/creator_design.png") no-repeat scroll center top transparent; }
 
 #team-wrapper .creator.idea:hover{
   background-position: center -180px;
@@ -1080,6 +1080,8 @@ h2.aboutTitle, h2.aboutTitles{
   height: 172px;
   color: #A6A6A6;
   font-size: 0.75em;
+  margin: 0 auto;
+  margin-bottom: 40px;
 }
 #contactFormWrapper .contactForm{
   position: relative;
@@ -1625,7 +1627,7 @@ tr.platformsEnum{
 @media screen and (max-width:640px) {
 
   body{
-    font-size: 0.65em;
+    //font-size: 0.65em;
   }
   .wrapSmall{
     width: auto;
