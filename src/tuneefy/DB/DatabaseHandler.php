@@ -228,4 +228,31 @@ class DatabaseHandler
     {
         return $this->getMostViewed('WHERE `items`.`album` IS NULL');
     }
+
+    public function getApiClients()
+    {
+        $statement = $this->connection->prepare('SELECT * FROM `oauth_clients`');
+
+        $res = $statement->execute();
+
+        if ($res === false) {
+            throw new \Exception('Error getting api clients : '.$statement->errorInfo()[2]);
+        }
+    }
+
+    public function addApiClient(ApiClientEntity $client)
+    {
+        $statement = $this->connection->prepare('INSERT INTO `oauth_clients` (`item_id`, `platform`, `index`, `listened_at`) VALUES (:item_id, :platform, :index, NOW())');
+
+        $res = $statement->execute([
+          ':item_id' => $item_id,
+          ':platform' => $platformTag,
+          ':index' => $index,
+        ]);
+
+        if ($res === false) {
+            throw new \Exception('Error adding api client : '.$statement->errorInfo()[2]);
+        }
+    }
+
 }

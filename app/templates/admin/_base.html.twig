@@ -4,11 +4,38 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta http-equiv="content-language" content="{{ lang }}">
   <title>Administration</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
 </head>
 <body>
-{% block content %}{% endblock %}
+  
+  <div class="ui container">
+    <div class="ui secondary pointing menu">
+      <a class="item active" href="{{ path_for('admin_dashboard') }}">
+        Admin
+      </a>
+      <a class="item" href="{{ path_for('admin_clients') }}">
+        API Clients
+      </a>
+      <div class="right menu">
+        <a class="ui item">
+          Admin
+        </a>
+      </div>
+    </div>
+
+    <div class="ui segment">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>
+
 {% block javascript %}
-  <script type="text/javascript" src="/js/zepto.min.js"></script>
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
 {% endblock %}
 </body>
 </html>

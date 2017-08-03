@@ -196,6 +196,7 @@ class Application
         /* The backend routes */
         $admin = $this->slimApp->group('/admin', function () {
             $this->get('/dashboard', BackendController::class.':dashboard')->setName('admin_dashboard');
+            $this->get('/api/clients', BackendController::class.':clients')->setName('admin_clients');
         });
 
         /* Middlewares should be in a certain order, the authentication must be added last */
