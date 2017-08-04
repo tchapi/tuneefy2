@@ -1,5 +1,5 @@
 composer.phar
-vendor/
+/vendor
 node_modules
 app/cache
 .DS_Store
@@ -14,5 +14,4 @@ var/*
 app/templates/api.html
 
 web/js/*
-!web/js/vendor
 web/css/*
