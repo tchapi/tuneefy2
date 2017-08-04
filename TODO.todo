@@ -4,12 +4,12 @@ Todo :
 
 Frontend :
 
- - mobile :
-  - ne pas afficher uservoice + menu 'trends' + d'autres éléments
+ - mobile : CSS !
+  - ne pas afficher uservoice + d'autres éléments
  
- - mode iFrame à refaire
- 
+ - mode iFrame à refaire => appeler le css dans le header en fonction d'un parametre dans base ?
  - detection de slack pour <meta property="og:type" ==> context
+
 
  - injecter le widget minified dans la page /about
 
@@ -24,11 +24,16 @@ Frontend :
 
  - pagination sur la home
 
- -bouton pour closer les erreurs sur la home ne marche pas
+ - bouton pour closer les erreurs sur la home ne marche pas
 
- - faire les icones manquantes
- 
- stats :
+Icones :
+  tidal : logo trop à droite
+  napster : refaire en gris très foncé (comme deezer presque)
+
+Textes:
+   supported music platforms dans "about"
+
+Stats :
 platform.hits = 
  sprintf("%01.1f",$platformsHits[$key]/$totalPlatformsHits*100)
 
@@ -48,8 +53,6 @@ Bugs:
   -context a injecter partout
    context : {
      slack : false
-     mobile: false # a degager ensuite
    }
-
    cookie FR ou EN
    cookie pour les plateformes
