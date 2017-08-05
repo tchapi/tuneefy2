@@ -21,8 +21,6 @@ Frontend :
 
  - pagination sur la home
 
- - bouton pour closer les erreurs sur la home ne marche pas
-
 Stats :
 platform.hits = 
  sprintf("%01.1f",$platformsHits[$key]/$totalPlatformsHits*100)

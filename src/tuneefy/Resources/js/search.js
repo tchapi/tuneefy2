@@ -87,7 +87,7 @@ $(document).ready(function(){
         });
     }
 
-    $(document).on('.closeAlert', "click", function() {
+    $(document).on("click", '.closeAlert', function() {
         $(this).parent().fadeOut();
     });
 
