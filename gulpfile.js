@@ -6,13 +6,19 @@ var pump = require('pump');
 let resourcesFolder = 'src/tuneefy/Resources/';
 let webFolder = 'web/'
 
+let log = function (error) {
+    if (error) {
+        console.log(error);
+    }
+}
+
 gulp.task('javascript', function () {
   pump([
         gulp.src(resourcesFolder + 'js/**/*.js'),
         uglify(),
         gulp.dest(webFolder + 'js')
     ],
-    console.log
+    log
     );
 });
 
@@ -21,7 +27,7 @@ gulp.task('twig', function () {
         gulp.src(resourcesFolder + 'js/**/*.twig'),
         gulp.dest(webFolder + 'js')
     ],
-    console.log
+    log
     );
 });
 
@@ -31,7 +37,7 @@ gulp.task('sass', function () {
         sass({outputStyle: 'compressed'}).on('error', sass.logError),
         gulp.dest(webFolder + 'css')
     ],
-    console.log
+    log
     );
 });
 
