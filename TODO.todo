@@ -4,9 +4,6 @@ Todo :
 
 Frontend :
 
- - mobile : CSS !
-  - ne pas afficher uservoice + d'autres éléments
- 
  - mode iFrame à refaire => appeler le css dans le header en fonction d'un parametre dans base ?
  - detection de slack pour <meta property="og:type" ==> context
 
@@ -25,13 +22,6 @@ Frontend :
  - pagination sur la home
 
  - bouton pour closer les erreurs sur la home ne marche pas
-
-Icones :
-  tidal : logo trop à droite
-  napster : refaire en gris très foncé (comme deezer presque)
-
-Textes:
-   supported music platforms dans "about"
 
 Stats :
 platform.hits = 

@@ -1,8 +1,44 @@
+
+/* LEGACY : For errors in EMBED MODE */
+@media screen and (max-width:640px) {
+
+  body{
+    //font-size: 0.65em;
+  }
+  .wrapSmall{
+    width: auto;
+  }
+  #content{
+    padding-bottom:0;
+  }
+  #wrapper.light{
+    top: 0;
+    margin: 0;
+  }
+  #taglineCenter{
+    display: none;
+  }
+  #footer{
+    height: auto;
+  }
+  #error-wrapper h2{
+    margin: 12px;
+  }
+  #error-wrapper a.btn {
+    margin: 7px;
+  }
+  
+}
+/* **********************   */
+
 @media (max-width: 1010px) {
   .wrap {
     width: 100%;
     padding: 0 8px;
     box-sizing: border-box;
+  }
+  #hideMisere, #advanced {
+    right: 17px;
   }
   #info .infoContent {
     width: initial;
@@ -29,7 +65,8 @@
 }
 
 @media (max-width: 920px) {
-  #about-wrapper .aboutRow, #about-wrapper .aboutRow.boxed {
+  #about-wrapper .aboutRow,
+  #about-wrapper .aboutRow.boxed {
     height: auto;
   }
   #about-wrapper .item1, .item2, .itemSolo {
@@ -38,12 +75,64 @@
     min-width: 300px;
     min-height: 200px;
   }
+  #info {
+    font-size: 0.8em;
+  }
 }
 
 @media (max-width: 768px) {
+
+  #hideMisere {
+    top: 150px;
+  }
+  #advanced {
+    top: 156px;
+  }
+
+  #moreOptions {
+    display: none;
+  }
+  #resetQuery {
+    right: 20px;
+  }
+  #searchType, #launch {
+    display: inline-block;
+    float: none;
+    top: 0;
+    right: 0;
+    position: relative;
+    margin: 8px 0 0 0;
+    vertical-align: top;
+  }
+  #launch {
+    float: right;
+  }
+  #options {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    top: initial;
+      }
+  #basic {
+    padding-right: 8px;
+    min-width: 270px;
+  }
+  #info, #preSearch, #preSearch .boxed {
+    float: none;
+    height: auto;
+  }
   #info .infoContent {
     width: 100%;
     margin-right: 0px;
+    float: none;
+    height: auto;
+  }
+  #info a.btn_more {
+    display: inline-block;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    margin-top: 10px;
   }
   #todaysPickOverlay {
     display: none;
@@ -75,12 +164,9 @@
   }
   h2, h3{
     text-align: center;
-  }
-  h2.aboutTitle, h2.aboutTitles {
-    font-size: 1.4em;
-  }
-  #about-wrapper .item1, .item2, .itemSolo {
-    min-height: 300px;
+    &.aboutTitles, &.aboutTitle {
+      font-size: 1.4em;
+    }
   }
   #about-wrapper .aboutRow {
     h3 {
@@ -93,6 +179,7 @@
   }
   #about-wrapper .item1, .item2, .itemSolo {
     background-position: center top;
+    min-height: 300px;
   }
   #team-wrapper .creator .realName {
     font-size: 1.7em;

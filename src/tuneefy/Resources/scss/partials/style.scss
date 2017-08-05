@@ -250,19 +250,21 @@ h2.infoTitle, h2.pickTitle{
   position: relative;
 }
 
-#basic, #login{
+#basic {
   background: #262626;
   border: 1px solid black;
   padding: 8px;
   position: relative;
   border-radius: 3px;
   z-index: 200;
+  padding-right: 288px;
 }
 
 #query{
   background: url("../img/icon_search.png") no-repeat scroll 17px 16px #c3c3c3;
+  box-sizing: border-box;
   height: 54px;
-  width: 634px;
+  width: 100%;
   font-size: 1.5em;
   line-height: 54px;
   color: #727272;
@@ -366,7 +368,7 @@ h2.infoTitle, h2.pickTitle{
   border-left: 1px solid #363636;
   cursor: pointer;
   border-radius: 0 5px 5px 0;
-  box-shadow: 0 0 10px #76bad0 inset;
+  //box-shadow: 0 0 10px #76bad0 inset;
 }
 
 #options.shd{
@@ -1171,123 +1173,6 @@ h2.aboutTitle, h2.aboutTitles{
   color: white;
 }
 
-/* PLAYLISTS */
-h2.playlistsTitle{
-  font: lighter normal normal 19px/1em "Helvetica Neue", helvetica, arial, sans-serif;
-  font-size: 2em;
-  padding: 30px 0;
-}
-
-#playlists-wrapper h3{
-  font-size:1em;
-  font-weight: bold;
-  color: #A6A6A6;
-}
-
-#explication{
-  color: grey;
-  font-size: 0.9em;
-  margin-right: 16px;
-  display: inline-block;
-  width: 300px;
-  text-align: right;
-}
-#loginButtons,
-#loginFields{
-  float: right;
-  margin-top: 2px;
-}
-
-#loginFields input[type=text],
-#loginFields input[type=password]{
-  background: white;
-  height: 30px;
-  width: 225px;
-  font-size: 1.1em;
-  line-height: 30px;
-  color: #727272;
-  border: none;
-  border-radius: 2px;
-  margin-right: 8px;
-  -webkit-transition: background-color 1s; /* -- -- -- -- -- -- -- -- CSS 3 ONLY */
-  -moz-transition: background-color 1s; /* -- -- -- -- -- -- -- -- CSS 3 ONLY */
-  transition: background-color 1s; /* -- -- -- -- -- -- -- -- CSS 3 ONLY */
-}
-form#playlist-login a.btns_full{
-  margin: 0 2px;
-}
-#login{
-  height: 32px;
-}
-#log, #back, #logout{
-  height: 30px;
-  width: 70px;
-  vertical-align: top;
-  text-align: left;
-  padding: 4px;
-  border: none;
-  font-size: 1em;
-  color: #262626;
-  cursor: pointer;
-  border-radius: 3px;
-  box-sizing: border-box;
-  background: #5E5E5E;
-  background-image: -moz-linear-gradient(center top , #5e5e5e 0%, #515151 100%);
-  background-image:     -webkit-gradient(linear, left top,left bottom, color-stop(0, #5e5e5e), color-stop(1,  #515151));
-}
-#log:hover, #back:hover, #logout:hover{
-  background-image: -moz-linear-gradient(center top , #515151 0%, #5e5e5e 100%);
-  background-image:     -webkit-gradient(linear, left top,left bottom, color-stop(0, #515151), color-stop(1,  #5e5e5e));
-}
-#logged{
-  float: right;
-}
-#loggedExplication{
-  padding: 7px;
-  display: inline-block;
-}
-
-#query.playlists{
-  width: 798px;
-}
-#launch.playlists{
-  width: 106px;
-  text-align: center;
-}
-#waiting.playlists{
-  right: 170px;
-}
-
-#resetQuery.playlists{
-  right: 136px;
-}
-
-.tResult.tPlaylist,
-.tResult.tPlaylist .tTitle,
-.tResult.tPlaylist .tTitle .wrapper,
-.tResult.tPlaylist .tArtist .wrapper,
-.tResult.tPlaylist .tAlbum .wrapper{
-  height: 26px;
-}
-
-.tHeader_t.tPlaylist{
-  width: 558px;
-}
-.tResult.tPlaylist .tTitle{
-  width: 560px;
-}
-.tResult.tPlaylist .tAlbum{
-  width: 248px;
-}
-
-.tResult.tPlaylist .tHeader_c{
-  width: 266px;
-}
-
-.tResult.tPlaylist.ok .tTitle{
-  color: green;
-}
-
 /* STATS */
 h2.statsTitle{
   font: lighter normal normal 19px/1em "Helvetica Neue", helvetica, arial, sans-serif;
@@ -1621,35 +1506,4 @@ tr.platformsEnum{
 }
 #share_plusone, #share_twitter, #share_facebook {
   float: left;
-}
-
-/* For errors in EMBED MODE */
-@media screen and (max-width:640px) {
-
-  body{
-    //font-size: 0.65em;
-  }
-  .wrapSmall{
-    width: auto;
-  }
-  #content{
-    padding-bottom:0;
-  }
-  #wrapper.light{
-    top: 0;
-    margin: 0;
-  }
-  #taglineCenter{
-    display: none;
-  }
-  #footer{
-    height: auto;
-  }
-  #error-wrapper h2{
-    margin: 12px;
-  }
-  #error-wrapper a.btn {
-    margin: 7px;
-  }
-  
 }
