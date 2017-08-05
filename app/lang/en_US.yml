@@ -154,56 +154,8 @@ facts:
       <p>Tuneefy is free and ad-free. We care about music, not advertising or revenue.
       </p>
   supported: >
-      <a name="patterns"></a><h3>Supported link patterns</h3>
-      <p>Of course you can search for any keywords, but there is more !<br />Have a look at all the different URLs & links we support !
-      </p>
-  supported_list: >
-        <ul class="platformsPatterns">
-        <li class="platform active">Deezer
-        <ul>
-          <li class="song">Song link<br/><span class="link">http://www.deezer.com/listen-10236179</span></li>
-          <li class="artist">Artist link<br/><span class="link">http://www.deezer.com/fr/music/radiohead</span></li>
-          <li class="album">Album link<br/><span class="link">http://www.deezer.com/fr/music/rjd2/deadringer-144183</span></li>
-        </ul>
-        </li>
-        <li class="platform">Spotify
-        <ul style="display: none;">
-          <li class="song">Song link<br/><span class="link">spotify:track:6GOxgLKnfd567oG2VpfJio</span></li>
-          <li class="artist">Artist link<br/><span class="link">http://play.spotify.com/artist/6UUrUCIZtQeOf8tC0WuzRy</span></li>
-          <li class="album">Album link<br/><span class="link">spotify:album:2bRcCP8NYDgO7gtRbkcqdk</span></li>
-        </ul>
-        </li>
-        <li class="platform">Last.Fm
-        <ul style="display: none;">
-          <li class="song">Song link<br/><span class="link">http://lastfm.fr/music/Muse/_/Bliss</span></li>
-          <li class="artist">Artist link<br/><span class="link">http://www.lastfm.fr/music/Sex+Pistols</span></li>
-          <li class="album">Album link<br/><span class="link">http://www.last.fm/music/The+Clash/London+Calling</span></li>
-          </ul>
-        </li>
-        <li class="platform">Grooveshark
-        <ul style="display: none;">
-          <li class="song">Song link<br/><span class="link">http://grooveshark.com/s/Blizzard/2r6qUb?src=5</span></li>
-          <li class="artist">Artist link<br/><span class="link">http://grooveshark.com/artist/Rone/76915</span></li>
-          <li class="album">Album link<br/><span class="link">http://grooveshark.com/album/30/1133717</span></li>
-        </ul>
-        </li>
-        <li class="platform">And more ...
-        <ul style="display: none;">
-          <li class="song">Soundcloud link<br/><span class="link">http://soundcloud.com/hsz/debich</span></li>
-          <li class="album">Youtube music link<br/><span class="link">http://www.youtube.com/watch?v=_FOyHhU0i7k</span></li>
-        </ul>
-        </li>
-        <li class="platform">... and more !
-        <ul style="display: none;">
-          <li class="song">All Rdio links<br/><span class="link">http://www.rdio.com/#/artist/Crash_Test_Dummies</span></li>
-          <li class="artist">Qobuz<br/><span class="link">http://player.qobuz.com/#!/track/5280111</span></li>
-          <li class="album">Xbox Music<br/><span class="link">http://music.xbox.com/Album/C954F807-0100-11DB-89CA-0019B92A3933</span></li>
-        </ul>
-        </li>
-        </ul>
-  picks: >
-      <h3>We love Music, too</h3>
-      <p>Everyday, find a new staff pick on the home page, and spread the tune...
+      <a name="patterns"></a><h3>Link patterns supported</h3>
+      <p>Of course you can search for any keywords, but there is more ...<br />You can input any link from any platform, too !
       </p>
   team_idea: >
       <p class="realName">tchap</p>
