@@ -78,6 +78,11 @@
   #info {
     font-size: 0.8em;
   }
+  #globalStats {
+    #pieChart {
+      width: 470px;
+    }
+  }
 }
 
 @media (max-width: 768px) {
@@ -141,7 +146,7 @@
     display: none;
   }
   #globalStats {
-      #pieData {
+    ul {
       display: none;
     }
     #pieChart {
