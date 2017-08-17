@@ -3,6 +3,8 @@
 namespace tuneefy\DB;
 
 use tuneefy\MusicalEntity\MusicalEntityInterface;
+use tuneefy\MusicalEntity\Entities\TrackEntity;
+use tuneefy\MusicalEntity\Entities\AlbumEntity;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Utils\Utils;
 
@@ -72,7 +74,7 @@ class DatabaseHandler
             throw new \Exception('Data for id : '.$id.' has been tampered with, the signature is not valid.');
         }
 
-        $result = unserialize($row['object'], ['allowed_classes' => MusicalEntityInterface::class]);
+        $result = unserialize($row['object'], ['allowed_classes' => [TrackEntity::class, AlbumEntity::class]]);
 
         if ($result === false || !($result instanceof MusicalEntityInterface)) {
             throw new \Exception('Stored object is not unserializable');
@@ -111,7 +113,7 @@ class DatabaseHandler
             throw new \Exception('INVALID_INTENT_SIGNATURE');
         }
 
-        $result = unserialize($row['object'], ['allowed_classes' => MusicalEntityInterface::class]);
+        $result = unserialize($row['object'], ['allowed_classes' => [TrackEntity::class, AlbumEntity::class]]);
 
         if ($result === false || !($result instanceof MusicalEntityInterface)) {
             throw new \Exception('SERIALIZATION_ERROR');
