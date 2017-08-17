@@ -24,6 +24,8 @@ use tuneefy\Utils\Utils;
 
 class Application
 {
+    const COOKIE_LANG = "tuneefyLocale";
+
     const PATHS = [
         'parameters' => '/../../app/config/parameters.yml',
         'platforms' => '/../../app/config/platforms.yml',
@@ -52,7 +54,9 @@ class Application
             $view->addExtension(new TwigExtension($container['router'], $basePath));
 
             // First param is the "default language" to use.
-            $translator = new Translator('en_US');
+            $translator = new Translator($_COOKIE[self::COOKIE_LANG]);
+            $view->getEnvironment()->addGlobal("locale", $_COOKIE[self::COOKIE_LANG]);
+
             // Set a fallback language incase you don't have a translation in the default language
             $translator->setFallbackLocales(['en_US']);
             $translator->addLoader('yaml', new YamlFileLoader());

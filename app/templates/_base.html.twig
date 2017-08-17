@@ -4,12 +4,12 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:og="http://ogp.me/ns#"
       xmlns:fb="http://www.facebook.com/2008/fbml"
-      xml:lang="{{ lang }}" lang="{{ lang }}">
+      xml:lang="{{ locale }}" lang="{{ locale }}">
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# tuneefy: http://ogp.me/ns/fb/tuneefy#">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="content-language" content="{{ lang }}">
+  <meta http-equiv="content-language" content="{{ locale }}">
   
   <meta name="description" content="{{ "description"|trans }}" />
   <meta name="keywords" content="{{ "keywords"|trans }}" />
@@ -52,8 +52,8 @@
       <div class="wrap clear" id="header">
     
         <div id="lang">
-          <span{% if lang == 'en' %} class="activeLang"{% endif %} lang="en">EN</span>
-          <span{% if lang == 'fr' %} class="activeLang"{% endif %} lang="fr">FR</span>
+          <span{% if locale == 'en_US' %} class="activeLang"{% endif %} lang="en_US">EN</span>
+          <span{% if locale == 'fr_FR' %} class="activeLang"{% endif %} lang="fr_FR">FR</span>
         </div>
         
         {% spaceless %}
