@@ -1,6 +1,8 @@
+var search;
+
 $(document).ready(function(){
 
-    var $DOMAIN = "localhost:1234";
+    var $DOMAIN = ""; // '' for localhost, else it won't work
 
     var $COOKIE_PREFS = "tuneefyPrefs";
     var $COOKIE_HELP = "tuneefyHelpBox";
@@ -117,10 +119,71 @@ $(document).ready(function(){
         }
     }
 
+    search = function (url, queryString, options) {
+
+        console.log("Searching for " + options.itemType + "s with query '" + queryString + "' on " + options.selectedPlatforms + " (strict: " + options.strictMode + ").");
+
+        var params = {q: queryString, aggressive: options.strictMode, include: options.selectedPlatforms, limit: options.limit};
+        url = url + "?" + $.param(params);
+
+        var jqxhr = $.get(url)
+          .done(function(data) {
+            if (data.errors && data.errors.length > 0) {
+                for (var i = 0; i < data.errors.length; i++) {
+                    alertsDiv.append("<span class='alert' ><div class=\"triangle\"></div>" + Object.values(data.errors[0])[0] + "<span class='closeAlert'></span></span>");
+                }
+                alertsDiv.children().last().fadeIn();
+            }
+            if (data.results) {
+                if (options.updateNumberLabel) {
+                    resultsNumber.html($results_found.replace('%query%', queryString).replace('%type%', options.itemType).replace('%number%', data.results.length));
+                }
+                // Display correct headers
+                $('.tHeader_disp[rel='+options.itemType+']').show();
+                Twig.twig({
+                    href: "js/twig/result.html.twig",
+                    async: true,
+                    load: function(template) {
+                        for (var key in data.results){
+                            var item = data.results[key]
+                            resultsList.append(template.render({
+                                type: options.itemType,
+                                item: item.musical_entity,
+                                share: $share,
+                                listenTo: $listen_to.replace('%name%', item.musical_entity.safe_title),
+                                shareTip: $share_tip.replace('%name%', item.musical_entity.safe_title),
+                                linkDirect: $path,
+                                compact: true
+                            })); 
+                        }
+                        resultsDiv.show();
+                    }
+                });
+            } else {
+                // Some other problem
+                alertsDiv.append("<span class='alert' ><div class=\"triangle\"></div>" + $error_message + "<span class='closeAlert'></span></span>");
+                alertsDiv.children().last().fadeIn();
+            }
+          })
+          .fail(function() {
+            alertsDiv.append("<span class='alert' ><div class=\"triangle\"></div>" + $error_message + "<span class='closeAlert'></span></span>");
+            alertsDiv.children().last().fadeIn();
+          })
+          .always(function() {
+            waitingDiv.hide();
+            searchButton.removeAttr('disabled');
+            queryField.blur();
+            if (resultsList.length > 0) {
+                $('html,body').animate({
+                    scrollTop: resultsList.offset().top - 20
+                }, "slow");
+            }
+          });
+    };
+
 
     /******* SEARCH INITIATED *******/
-    searchForm.submit(function(e) {
-
+    searchForm.submit(function search(e) {
         e.preventDefault();
 
         $(".hideAll").fadeOut();
@@ -147,62 +210,15 @@ $(document).ready(function(){
         alertsDiv.empty();
         $('.tHeader_disp').hide();
 
-        console.log("Searching for " + itemType + "s with query '" + queryString + "' on " + selectedPlatforms + " (strict: " + strictMode + ").");
-
         var url = searchForm.attr("action").replace('%type%', itemType);
-        var params = {q: queryString, aggressive: strictMode, include: selectedPlatforms};
-        url = url+"?"+$.param(params);
 
-        var jqxhr = $.get(url)
-          .done(function(data) {
-            if (data.errors && data.errors.length > 0) {
-                for (var i = 0; i < data.errors.length; i++) {
-                    alertsDiv.append("<span class='alert' ><div class=\"triangle\"></div>" + Object.values(data.errors[0])[0] + "<span class='closeAlert'></span></span>");
-                }
-                alertsDiv.children().last().fadeIn();
-            }
-            if (data.results) {
-                resultsNumber.html($results_found.replace('%query%', queryString).replace('%type%', itemType).replace('%number%', data.results.length));
-                // Display correct headers
-                $('.tHeader_disp[rel='+itemType+']').show();
-                Twig.twig({
-                    href: "js/twig/result.html.twig",
-                    async: true,
-                    load: function(template) {
-                        for (var key in data.results){
-                            var item = data.results[key]
-                            resultsList.append(template.render({
-                                type: itemType,
-                                item: item.musical_entity,
-                                share: $share,
-                                listenTo: $listen_to.replace('%name%', item.musical_entity.safe_title),
-                                shareTip: $share_tip.replace('%name%', item.musical_entity.safe_title),
-                                linkDirect: $path
-                            })); 
-                        }
-                        resultsDiv.show();
-                    }
-                });
-            } else {
-                // Some other problem
-                alertsDiv.append("<span class='alert' ><div class=\"triangle\"></div>" + $error_message + "<span class='closeAlert'></span></span>");
-                alertsDiv.children().last().fadeIn();
-            }
-          })
-          .fail(function() {
-            alertsDiv.append("<span class='alert' ><div class=\"triangle\"></div>" + $error_message + "<span class='closeAlert'></span></span>");
-            alertsDiv.children().last().fadeIn();
-          })
-          .always(function() {
-            waitingDiv.hide();
-            searchButton.removeAttr('disabled');
-            queryField.blur();
-            $('html,body').animate({
-                scrollTop: resultsList.offset().top - 20
-            }, "slow");
-          });
+        search(url, queryString, {
+            itemType: itemType,
+            selectedPlatforms: selectedPlatforms,
+            strictMode: strictMode,
+            updateNumberLabel: true,
+        });
     });
-
 
     /******* QUERY INPUT ON FOCUS AND BLUR *******/
     queryField.click(function(e) {
