@@ -27,5 +27,7 @@
     "gulp-uglify": "^3.0.0",
     "pump": "^1.0.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "gulp-concat": "^2.6.1"
+  }
 }

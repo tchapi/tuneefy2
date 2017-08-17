@@ -29,16 +29,27 @@ class FrontendController
 
     public function home($request, $response)
     {
-        return $this->container->get('view')->render($response, 'home.html.twig', [
-            'params' => $this->container->get('params'),
-            'platforms' => $this->engine->getAllPlatforms(),
-            'default_platforms' => implode(",", array_reduce($this->engine->getAllPlatforms(), function($carry, $e) {
-                if ($e->isDefault()) {
-                    $carry[] = $e->getTag();
-                }
-                return $carry;
-            }, [])),
-        ]);
+        // Are we on the widget ?
+        $default_platforms = implode(",", array_reduce($this->engine->getAllPlatforms(), function($carry, $e) {
+            if ($e->isDefault()) {
+                $carry[] = $e->getTag();
+            }
+            return $carry;
+        }, []));
+
+        if ($request->getQueryParam('widget') == "42") {
+            return $this->container->get('view')->render($response, '_widget.html.twig', [
+                'query' => $request->getQueryParam('q'),
+                'params' => $this->container->get('params'),
+                'default_platforms' => $default_platforms,
+            ]);
+        } else {
+            return $this->container->get('view')->render($response, 'home.html.twig', [
+                'params' => $this->container->get('params'),
+                'platforms' => $this->engine->getAllPlatforms(),
+                'default_platforms' => $default_platforms,
+            ]);
+        }
     }
 
     public function about($request, $response)

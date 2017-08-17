@@ -1,0 +1,178 @@
+body{
+  font: normal normal normal 1em/1em arial,helvetica,sans-serif;
+}
+
+/* Button CSS 3 */
+a.btn{
+  position: relative;
+  color: white;
+  text-transform: lowercase;
+  font-size: 14px;
+  font-weight: bold;
+  display: block;
+  background: #222;
+  background-image: -moz-linear-gradient(center top , #262626 0%, #1B1B1B 100%);
+  background-image: -webkit-gradient(linear, left top,left bottom, color-stop(0,#262626), color-stop(1,#1B1B1B));
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 6px 15px 7px 15px;
+  cursor: pointer;
+  text-shadow: 0 -2px black;
+  box-shadow: 0 1px #333333 inset,  0 1px #171717;
+}
+a.btn:hover{ color: #76bad0; }
+a.btn:active{ box-shadow: 0 3px 3px #171717 inset,  0 1px #171717;  }
+
+a.btns{
+  display: inline-block;
+  width: 36px;
+  height: 31px; 
+  cursor: pointer;
+}
+
+a.btns:hover{ background-position: 0px -32px; }
+a.btns.off{ background-position: 0px -64px; }
+
+a.btn_deezer{ background: url("../img/platforms/platform_deezer.png") no-repeat;}
+a.btn_spotify{ background: url("../img/platforms/platform_spotify.png") no-repeat;}
+a.btn_qobuz{ background: url("../img/platforms/platform_qobuz.png") no-repeat;}
+a.btn_lastfm{ background: url("../img/platforms/platform_lastfm.png") no-repeat;}
+a.btn_itunes{ background: url("../img/platforms/platform_itunes.png") no-repeat;}
+a.btn_youtube{ background: url("../img/platforms/platform_youtube.png") no-repeat;}
+a.btn_soundcloud{ background: url("../img/platforms/platform_soundcloud.png") no-repeat;}
+a.btn_mixcloud{ background: url("../img/platforms/platform_mixcloud.png") no-repeat;}
+a.btn_groove{ background: url("../img/platforms/platform_groove.png") no-repeat;}
+a.btn_napster{ background: url("../img/platforms/platform_napster.png") no-repeat;}
+a.btn_tidal{ background: url("../img/platforms/platform_tidal.png") no-repeat;}
+a.btn_amazon{ background: url("../img/platforms/platform_amazon.png") no-repeat;}
+a.btn_hypem{ background: url("../img/platforms/platform_hypem.png") no-repeat;}
+a.btn_googleplay{ background: url("../img/platforms/platform_googleplay.png") no-repeat;}
+
+.txtS{ text-shadow: 0 -1px black !important; } /*standard*/
+
+ul li.tHeader{
+  display: none;
+}
+
+#waiting{
+  background: #1A1A1A;
+  height: 100%;
+  left: 0;
+  opacity: 0.8;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+#waiting img{
+  position: absolute;
+  left: 200px;
+  top: 66px;
+}
+
+#results{
+  padding: 16px;
+}
+
+.nbResults{
+  color: #76bad0;
+  font-size: 18px;
+  text-shadow: 0 -1px black;
+  margin-bottom: 10px;
+}
+
+li.tResult{
+  box-shadow: 0 1px #070707 inset, 0 1px #333333;
+  border-radius: 3px;
+  background: #151515;
+  height: 60px;
+  padding: 10px;
+}
+
+li.tResult .coverlay{
+  position:absolute;
+  top:4px;
+  left:4px; 
+  width: 48px;
+  height: 48px;
+  border: 1px solid #AAA;
+  background: url("../img/coverlay.png") center center;
+}
+
+li.tResult .tImage{
+  float: left;
+  position: relative;
+  margin-right: 20px;
+}
+
+li.tResult .tImage img{
+  width: 50px;
+  height: 50px;
+  border: 4px solid white;
+  box-shadow: 0px 0px 3px black;
+  display: block;
+}
+
+li.tResult .tTitle{
+  font-weight: bold;
+  font-size: 16px;
+  color: #A2A2A2;
+  padding-top: 4px;
+}
+
+li.tResult .tFeat{
+  display: none;
+}
+
+li.tResult .tArtist{
+  color: #474747;
+  font-size: 12px;
+  padding-top: 4px;
+}
+
+li.tResult .tAlbum{
+  color: #474747;
+  font-size: 10px;
+  padding-top: 2px;
+  text-transform: uppercase;
+}
+
+li.tResult .tShare{
+  position: absolute;
+  bottom: 14px;
+  right: 138px;
+}
+
+.tLinks{
+  position: absolute;
+  bottom: 11px;
+  left: 14px;
+}
+
+.tLinks .wrapper{
+  height: 33px;
+  overflow: hidden;
+  width: 205px;
+}
+
+#more {
+  position: absolute;
+  bottom: 14px;
+  right: 16px;
+}
+
+#alerts{
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  padding-top: 66px;
+}
+#alerts span{
+  text-shadow: 0 -1px black !important;
+  color: #76bad0;
+}
+
+a.backToTop{
+  display: none !important;
+}

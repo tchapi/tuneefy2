@@ -7,9 +7,6 @@ Frontend :
  - mode iFrame à refaire => appeler le css dans le header en fonction d'un parametre dans base ?
  - detection de slack pour <meta property="og:type" ==> context
 
-
- - injecter le widget minified dans la page /about
-
  - injecter le code iframe dans les pages de share
 
  - dashboard admin avec les clés API et les comptes liés, et leur utilisation (nombre d'items crées)
@@ -20,6 +17,11 @@ Frontend :
  - feats a rajouter également dans la page result.html.twig
 
  - pagination sur la home
+
+Widget :
+
+ - faire le bouton share
+ - pouvoir launcher directement une recherche avec ?q=test sur le site principal
 
 Stats :
 platform.hits = 
@@ -36,11 +38,3 @@ mostViewedArtists
         $currentColor['r'] = dechex(118*$currentPercent + (1-$currentPercent)*255);
         $currentColor['g'] = dechex(186*$currentPercent + (1-$currentPercent)*255);
         $currentColor['b'] = dechex(208*$currentPercent + (1-$currentPercent)*255);
-        
-Bugs:
-  -context a injecter partout
-   context : {
-     slack : false
-   }
-   cookie FR ou EN
-   cookie pour les plateformes

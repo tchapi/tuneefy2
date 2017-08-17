@@ -13,7 +13,7 @@
   
   <div class="aboutRow">
     <div class="item1 img_pertinence">{{ "facts.pertinence"|trans|raw }}</div>
-    <div class="item2 img_widget">{{ "facts.minify"|trans({"%minified%": minified})|raw }}</div>
+    <div class="item2 img_widget">{{ "facts.minify"|trans({"%minified%": "javascript:(function(){tb=document.createElement('SCRIPT');a.type='text/javascript';a.src='" ~ params.urls.front  ~ "/js/widget.js?x='+(Math.random());document.getElementsByTagName('head')[0].appendChild(a);})();"})|raw }}</div>
   </div>
   
   <div class="aboutRow boxed boxS">

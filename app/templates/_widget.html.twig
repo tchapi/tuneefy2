@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/{{ schemaType }}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:og="http://ogp.me/ns#"
+      xml:lang="{{ locale }}" lang="{{ locale }}">
+<head prefix="og: http://ogp.me/ns#">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="content-language" content="{{ locale }}">
+  <link rel="stylesheet" href="/css/widget.css"/>
+</head>
+<body>
+  <div id="wrapper">
+    <div id="waiting"><img src="/img/ajax-loader-widget.gif" /></div>
+    <div id="results" class="wrap" style="display: none;">
+      <div class="above">
+        <div class="nbResults">{{ "search.result_found_widget"|trans|raw }}</div>
+      </div>
+      <ul></ul>
+    </div>
+    <div id="more"><a href="/?q={{ query|url_encode }}" target="_blank" class="btn">{{ "widget.see_more"|trans }}</a></div>
+    <div id="alerts"></div>
+  </div>
+  {% if params.statistics.ga_tracker_id > 0 %}
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', '{{ params.statistics.ga_tracker_id }}']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  {% endif %}
+  <script type="text/javascript" src="/js/vendor/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/js/main.js"></script>
+  <script type="text/javascript">
+    var $default_platforms = "{{ default_platforms }}";
+    var $error_message = "{{ "search.error_message"|trans }}";
+    var $results_found = "{{ "results.results_found"|trans|raw }}";
+    var $listen_to = "{{ "results.listen_to"|trans|raw }}";
+    var $share = "{{ "results.share"|trans|raw }}";
+    var $share_tip = "{{ "results.share_tip"|trans|raw }}";
+    var $path = "{{ path_for('listen_direct', {'platform': '%key%'}) }}";
+  </script>
+  <script type="text/javascript" src="/js/vendor/twig.min.js"></script>
+  <script type="text/javascript" src="/js/search.js"></script>
+  <script type="text/javascript">
+      $(document).ready(function(){
+        search("{{ path_for('aggregate', {type: 'track'}) }}", "{{ query }}", {
+            itemType: "track",
+            selectedPlatforms: $default_platforms,
+            strictMode: false,
+            limit: 1,
+        });
+      });
+  </script>
+</body>
