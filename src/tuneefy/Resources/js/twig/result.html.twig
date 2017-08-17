@@ -28,9 +28,13 @@
     <div class="tLinks">
         <div class="wrapper">
           {% for key, links in item.links %}
-            {% for i, link in links %}
-                <a target="_top" class="tLink btns btn_{{ key }}" href="{{ linkDirect|replace({'%key%': key}) }}?l={{link|url_encode}}" title="{{ listenTo }}"></a>
-            {% endfor %}
+            {% if links|length > 0 and compact|default(true) %}
+                <a target="_top" class="tLink btns btn_{{ key }}" href="{{ linkDirect|replace({'%key%': key}) }}?l={{links[0]|url_encode}}" title="{{ listenTo }}"></a>
+            {% else %}
+                {% for i, link in links %}
+                    <a target="_top" class="tLink btns btn_{{ key }}" href="{{ linkDirect|replace({'%key%': key}) }}?l={{link|url_encode}}" title="{{ listenTo }}"></a>
+                {% endfor %}
+            {% endif %}
           {% endfor %}
         </div>
     </div>
