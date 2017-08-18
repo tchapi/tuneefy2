@@ -17,6 +17,8 @@ Frontend :
 
  - pagination sur la home
 
+ - garder les anciennes urls actives (via rewrite ?)
+ 
 Widget :
 
  - faire le bouton share
