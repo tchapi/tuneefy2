@@ -146,6 +146,7 @@ class FrontendController
                 'params' => $this->container->get('params'),
                 'uid' => $args['uid'],
                 'item' => $item,
+                'embed' => ($request->getQueryParam('embed') !== NULL),
             ]);
         } else {
             return $response->withStatus(404);

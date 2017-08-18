@@ -39,15 +39,19 @@
   <link href="/img/social.png" rel="apple-touch-icon" />
 
   <link rel="stylesheet" href="/css/styles.css"/>
+  {% if embed %}<link rel="stylesheet" href="/css/embed.css"/>{% endif %}
 
   <script type="text/javascript">var fb_app_id = '{{ params.facebook.app_id }}';</script>
 </head>
-<body class="Bcolor"> 
-  <div class="hideAll"></div>
-  <div class="ribbon"><a href="https://github.com/tchapi/tuneefy2" rel="me">{{ "github"|trans }}</a></div>
+<body class="Bcolor">
+
+  {% if not embed %}
+    <div class="hideAll"></div>
+    <div class="ribbon"><a href="https://github.com/tchapi/tuneefy2" rel="me">{{ "github"|trans }}</a></div>
+  {% endif %}
 
   <div id="wrapper">
-
+  
     <div id="header-wrapper" class="full Fcolor txtColor">
       <div class="wrap clear" id="header">
     
@@ -71,9 +75,8 @@
 
     <div id="content-wrapper" class="full">
       <div class="wrap clear bdBot" id="content">
-
         <div id="tagline" class="bdBot">
-          <a href="{{ path_for('home') }}"><h1 class="logo color"><img src="/img/logo.png" width="267" height="133" alt="tuneefy"/></h1> </a>
+          <a href="{{ path_for('home') }}"{% if embed %} target="_blank"{% endif %}><h1 class="logo color"><img src="/img/logo.png" width="267" height="133" alt="tuneefy"/></h1> </a>
           <p class="tagline txtS">{{ "tagline"|trans|raw }}</p>
         </div>
 
@@ -107,7 +110,7 @@
       })();
     </script>
   {% endif %}
-  {% if params.uservoice.enabled %}
+  {% if params.uservoice.enabled and not embed %}
     <script type="text/javascript">
       var uvOptions = {};
       (function() {
