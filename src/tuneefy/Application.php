@@ -54,8 +54,10 @@ class Application
             $view->addExtension(new TwigExtension($container['router'], $basePath));
 
             // First param is the "default language" to use.
-            $translator = new Translator($_COOKIE[self::COOKIE_LANG]);
-            $view->getEnvironment()->addGlobal("locale", $_COOKIE[self::COOKIE_LANG]);
+            $locale = isset($_COOKIE[self::COOKIE_LANG])?$_COOKIE[self::COOKIE_LANG]:'en_US';
+
+            $translator = new Translator($locale);
+            $view->getEnvironment()->addGlobal("locale", $locale);
 
             // Set a fallback language incase you don't have a translation in the default language
             $translator->setFallbackLocales(['en_US']);
