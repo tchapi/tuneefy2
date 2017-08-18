@@ -19,39 +19,72 @@
 
 {% block content %}
 
-<div id="shareTitle" class="bdTop color"><p>{{ "track_intro"|trans }}</p></div>
+{% if not embed %}
+<div id="shareTitle" class="bdTop color"><p>{{ "track.intro"|trans }}</p></div>
+{% endif %}
 
-<div id="shareBox" class="boxed boxS txtS">
+<div id="shareBox" class="{% if embed %}bdTop{% else %}boxed boxS txtS{% endif %}">
 
   <div id="trackInfo" class="bdBot">
+    {% if embed %}
+    <a href="{{ params.urls.front }}{{ path_for('show', { uid: uid, type: "track" }) }}" target="_blank" title="{{ "track.seeOnTuneefy"|trans }}">
+    {% endif %}
     <div class="cover">
       <img src="{{ item.getAlbumPicture?:'/img/nothumb_track.png' }}" width="82" height="82" />
       <span class="coverlay"></span>
     </div>
+    {% if embed %}</a>{% endif %}
+
     <div class="info">
-    <div class="infoWrapper">
-      <div class="infoContent">
-        <div class="title">{{ tools.ellipsis(item.getSafeTitle, 40) }}</div>
-        <div class="artist">{{ tools.ellipsis(item.getArtist, 40) }}</div>
-        <div class="album">{{ tools.ellipsis(item.getAlbumSafeTitle, 40) }}</div>
+      <div class="infoWrapper">
+        <div class="infoContent">
+          {% if embed %}
+            <a href="{{ params.urls.front }}{{ path_for('show', { uid: uid, type: "track" }) }}" target="_blank" title="{{ "track.seeOnTuneefy"|trans }}" >
+              <div class="title">{{ tools.ellipsis(item.getSafeTitle, 40) }}
+                <img class="newWindow" src="{{ params.url.frontend }}/img/new_window.png" width="14" />
+              </div>
+            </a>
+          {% else %}
+            <div class="title">{{ tools.ellipsis(item.getSafeTitle, 40) }}</div>
+          {% endif %}
+          <div class="artist">{{ tools.ellipsis(item.getArtist, 40) }}</div>
+          <div class="album">{{ tools.ellipsis(item.getAlbumSafeTitle, 40) }}</div>
+          {% if embed %}
+          <div id="platforms">
+            {% for key, links in item.links %}
+              {% if links|length > 0 and compact|default(true) %}
+                  <a target="_blank" class="btns btn_{{ key }}" href="{{ path_for('listen', { 'type': 'track', 'uid': uid, 'platform': key, 'i': 0 }) }}" title="{{ "listen_to"|trans({name: item.getSafeTitle, platform: platform.name}) }}"></a>
+              {% else %}
+                {% for i, link in links %}
+                    <a target="_blank" class="btns btn_{{ key }}" href="{{ path_for('listen', { 'type': 'track', 'uid': uid, 'platform': key, 'i': i }) }}" title="{{ "listen_to"|trans({name: item.getSafeTitle, platform: platform.name}) }}"></a>
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
       </div>
     </div>
-    </div>
   </div>
-  
+
+  {% if not embed %}
   <div id="platforms" class="bdBot bdTop2">
-    <div class="listenTitle">{{ "track_listen_to"|trans }}</div>
+    <div class="listenTitle">{{ "track.listen_to"|trans }}</div>
 
       {% for key, links in item.links %}
-        {% for i, link in links %}
-            <a target="_top" class="btns_full btn_full_{{ key }}" href="{{ path_for('listen', { 'type': 'track', 'uid': uid, 'platform': key, 'i': i }) }}" title="{{ "listen_to"|trans({name: item.getSafeTitle, platform: platform.name}) }}"></a>
-        {% endfor %}
+        {% if links|length > 0 and compact|default(true) %}
+            <a target="_top" class="btns_full btn_full_{{ key }}" href="{{ path_for('listen', { 'type': 'track', 'uid': uid, 'platform': key, 'i': 0 }) }}" title="{{ "listen_to"|trans({name: item.getSafeTitle, platform: platform.name}) }}"></a>
+        {% else %}
+          {% for i, link in links %}
+              <a target="_top" class="btns_full btn_full_{{ key }}" href="{{ path_for('listen', { 'type': 'track', 'uid': uid, 'platform': key, 'i': i }) }}" title="{{ "listen_to"|trans({name: item.getSafeTitle, platform: platform.name}) }}"></a>
+          {% endfor %}
+        {% endif %}
       {% endfor %}
 
   </div>
   
   <div id="share" class="bdTop2">
-    <div class="shareTitle">{{ "track_share"|trans }}</div>
+    <div class="shareTitle">{{ "track.share"|trans }}</div>
     
     <div id="linkHolder" class="boxSinv">
       <input type="text" readonly="readonly" value="{{ params.urls.front }}{{ path_for('show', { uid: uid, type: "track" }) }}" id="shareLink" class="boxS5"/>
@@ -70,6 +103,7 @@
     <div style="clear: both"></div>
   
   </div>
+  {% endif %}
 
 </div>
 

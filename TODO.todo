@@ -4,10 +4,9 @@ Todo :
 
 Frontend :
 
- - mode iFrame à refaire => appeler le css dans le header en fonction d'un parametre dans base ?
  - detection de slack pour <meta property="og:type" ==> context
 
- - injecter le code iframe dans les pages de share
+ - injecter le code iframe / embed dans les pages de share
 
  - dashboard admin avec les clés API et les comptes liés, et leur utilisation (nombre d'items crées)
   liés avec user_id de oauth_clients
