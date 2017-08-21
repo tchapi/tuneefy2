@@ -123,7 +123,7 @@ $(document).ready(function(){
 
         console.log("Searching for " + options.itemType + "s with query '" + queryString + "' on " + options.selectedPlatforms + " (strict: " + options.strictMode + ").");
 
-        var params = {q: queryString, aggressive: options.strictMode, include: options.selectedPlatforms, limit: options.limit};
+        var params = {q: queryString, aggressive: options.strictMode, include: options.selectedPlatforms, limit: (options.limit?options.limit:10)};
         url = url + "?" + $.param(params);
 
         var jqxhr = $.get(url)
@@ -183,7 +183,7 @@ $(document).ready(function(){
 
 
     /******* SEARCH INITIATED *******/
-    searchForm.submit(function search(e) {
+    searchForm.submit(function(e) {
         e.preventDefault();
 
         $(".hideAll").fadeOut();
