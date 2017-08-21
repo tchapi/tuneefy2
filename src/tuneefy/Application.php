@@ -57,6 +57,11 @@ class Application
             $translator = new Translator($_COOKIE[self::COOKIE_LANG]);
             $view->getEnvironment()->addGlobal("locale", $_COOKIE[self::COOKIE_LANG]);
 
+            // If we want to add specific data to the context, it's here
+            $view->getEnvironment()->addGlobal("context", [
+                "slack" => (preg_match('/Slackbot/', $_SERVER['HTTP_USER_AGENT']) !== 0),  // ** Detect Slack
+            ]);
+
             // Set a fallback language incase you don't have a translation in the default language
             $translator->setFallbackLocales(['en_US']);
             $translator->addLoader('yaml', new YamlFileLoader());
