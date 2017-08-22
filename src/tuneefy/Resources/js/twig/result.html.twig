@@ -38,5 +38,5 @@
           {% endfor %}
         </div>
     </div>
-    <a rel="1" title="{{ shareTip }}" class="btn tShare sharePage" target="_top">{{ share }}</a>
+    <a data-href="{{ linkIntent|replace({'%intent%': intent}) }}" title="{{ shareTip }}" class="btn tShare sharePage" target="_top">{{ share }}</a>
 </li>

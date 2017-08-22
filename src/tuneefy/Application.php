@@ -166,7 +166,7 @@ class Application
             $this->get('/lookup', ApiController::class.':lookup');
             $this->get('/search/{type}/{platform_str}', ApiController::class.':search');
             $this->get('/aggregate/{type}', ApiController::class.':aggregate')->setName('aggregate');
-            $this->get('/share/{intent}', ApiController::class.':share');
+            $this->get('/share/{intent}', ApiController::class.':share')->setName('share');
         });
 
         if ($params['api']['use_oauth'] === true) {
