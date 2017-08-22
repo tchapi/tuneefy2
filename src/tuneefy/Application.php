@@ -191,6 +191,8 @@ class Application
 
         /* The display/show page for a musical entity */
         $this->slimApp->get($params['urls']['format'], FrontendController::class.':show')->setName('show');
+        $this->slimApp->get('/a/{uid}', FrontendController::class.':show')->setName('legacy_show_album');
+        $this->slimApp->get('/t/{uid}', FrontendController::class.':show')->setName('legacy_show_track');
 
         /* Listen to a musical entity => goes to the platform link */
         $this->slimApp->get($params['urls']['format'].'/listen/{platform}[/{i:[0-9]+}]', FrontendController::class.':listen')->setName('listen');

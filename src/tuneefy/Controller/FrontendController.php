@@ -127,6 +127,7 @@ class FrontendController
         ]);
     }
 
+    // Handles legacy routes as well with a 301
     public function show($request, $response, $args)
     {
         if ($args['uid'] === null || $args['uid'] === '') {
