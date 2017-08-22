@@ -12,15 +12,18 @@ Frontend :
 
  - last share (x2) sur la home ?
 
- - garder les anciennes urls actives (via rewrite ?)
+ - faire un script de passage ancienne base -> nouvelle base pour les tracks
 
- - traductions françaises
+ - traductions françaises fr_to_migrate -> fr_FR
+
+ - secure API depuis tuneefy.com sans token / oauth ? Comment faire
 
 Backend :
 
  - dashboard admin avec les clés API et les comptes liés, et leur utilisation (nombre d'items crées)
   liés avec user_id de oauth_clients
 
-Widget :
+A tester en prod :
 
- - faire le bouton share
+ - mail
+ - deployement en beta ?
