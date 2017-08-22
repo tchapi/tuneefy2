@@ -62,9 +62,29 @@ class FrontendController
 
     public function mail($request, $response)
     {
-        // TODO FIX ME SEND MAIL FOR REAL
+        $allPostVars = $request->getParsedBody();
+
+        $sanitized_email = filter_var($allPostVars['mail'], FILTER_SANITIZE_EMAIL);
+
+        $params = $this->container->get('params');
+
+        // Create the Transport
+        $transport = (new \Swift_SmtpTransport($params['mail']['smtp_server'], 25))
+          ->setUsername($params['mail']['smtp_user'])
+          ->setPassword($params['mail']['smtp_password']);
+        $mailer = new \Swift_Mailer($transport);
+
+        $message = (new \Swift_Message('[CONTACT] '.$sanitized_email.' (via tuneefy.com)"'))
+          ->setFrom([$params['mail']['contact_email']])
+          ->setTo([$params['mail']['team_email']])
+          ->setBody($sanitized_email.' sent a message from the site : <br /><br />'.nl2br($allPostVars['message']));
+
+        // Send the message
+        $result = $mailer->send($message);
+
+        // Return a response
         $body = $response->getBody();
-        $body->write(1);
+        $body->write(0 + ($result > 0));
 
         return $response;
     }
