@@ -1,11 +1,8 @@
-Todo :
+API :
 
  - Implémenter une limite pour l'API
 
 Frontend :
-
- - dashboard admin avec les clés API et les comptes liés, et leur utilisation (nombre d'items crées)
-  liés avec user_id de oauth_clients
 
  - add referer pour les stats ?
  
@@ -13,25 +10,17 @@ Frontend :
 
  - pagination sur la home
 
+ - last share (x2) sur la home ?
+
  - garder les anciennes urls actives (via rewrite ?)
- 
+
+ - traductions françaises
+
+Backend :
+
+ - dashboard admin avec les clés API et les comptes liés, et leur utilisation (nombre d'items crées)
+  liés avec user_id de oauth_clients
+
 Widget :
 
  - faire le bouton share
- - pouvoir launcher directement une recherche avec ?q=test sur le site principal
-
-Stats :
-platform.hits = 
- sprintf("%01.1f",$platformsHits[$key]/$totalPlatformsHits*100)
-
-
-mostViewedArtists
-     $maxWidth = 180;
-     while (list($key, $va) = each($mostViewedArtists))
-      {
-        data.value = $mostViewedArtists[$key]
-        data.width = intval($mostViewedArtists[$key])/intval(current($topViewedArtist));
-        
-        $currentColor['r'] = dechex(118*$currentPercent + (1-$currentPercent)*255);
-        $currentColor['g'] = dechex(186*$currentPercent + (1-$currentPercent)*255);
-        $currentColor['b'] = dechex(208*$currentPercent + (1-$currentPercent)*255);

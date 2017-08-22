@@ -126,4 +126,12 @@
   <script type="text/javascript" src="/js/vendor/iphone-style.js"></script>
   <script type="text/javascript" src="/js/vendor/twig.min.js"></script>
   <script type="text/javascript" src="/js/search.js"></script>
+  {% if query %}
+  <script type="text/javascript">
+      $(document).ready(function(){
+        $('#query').val("{{ query }}");
+        $("#find").submit();
+      });
+  </script>
+  {% endif %}
 {% endblock %}

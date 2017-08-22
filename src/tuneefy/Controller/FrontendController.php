@@ -29,7 +29,6 @@ class FrontendController
 
     public function home($request, $response)
     {
-        // Are we on the widget ?
         $default_platforms = implode(",", array_reduce($this->engine->getAllPlatforms(), function($carry, $e) {
             if ($e->isDefault()) {
                 $carry[] = $e->getTag();
@@ -45,6 +44,7 @@ class FrontendController
             ]);
         } else {
             return $this->container->get('view')->render($response, 'home.html.twig', [
+                'query' => $request->getQueryParam('q'),
                 'params' => $this->container->get('params'),
                 'platforms' => $this->engine->getAllPlatforms(),
                 'default_platforms' => $default_platforms,
@@ -97,7 +97,7 @@ class FrontendController
             $stats['albums'][$key]['uid'] = Utils::toUId($item['id']);
         }
 
-        $stats['artists'] = [];
+        $stats['artists'] = $db->getMostViewedArtists();
 
         return $this->container->get('view')->render($response, 'trends.html.twig', [
             'params' => $this->container->get('params'),
