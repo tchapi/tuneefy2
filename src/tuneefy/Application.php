@@ -59,6 +59,11 @@ class Application
             $translator = new Translator($locale);
             $view->getEnvironment()->addGlobal("locale", $locale);
 
+            // If we want to add specific data to the context, it's here
+            $view->getEnvironment()->addGlobal("context", [
+                "slack" => (preg_match('/Slackbot/', $_SERVER['HTTP_USER_AGENT']) !== 0),  // ** Detect Slack
+            ]);
+
             // Set a fallback language incase you don't have a translation in the default language
             $translator->setFallbackLocales(['en_US']);
             $translator->addLoader('yaml', new YamlFileLoader());
@@ -163,7 +168,7 @@ class Application
             $this->get('/lookup', ApiController::class.':lookup');
             $this->get('/search/{type}/{platform_str}', ApiController::class.':search');
             $this->get('/aggregate/{type}', ApiController::class.':aggregate')->setName('aggregate');
-            $this->get('/share/{intent}', ApiController::class.':share');
+            $this->get('/share/{intent}', ApiController::class.':share')->setName('share');
         });
 
         if ($params['api']['use_oauth'] === true) {
@@ -188,6 +193,8 @@ class Application
 
         /* The display/show page for a musical entity */
         $this->slimApp->get($params['urls']['format'], FrontendController::class.':show')->setName('show');
+        $this->slimApp->get('/a/{uid}', FrontendController::class.':show')->setName('legacy_show_album');
+        $this->slimApp->get('/t/{uid}', FrontendController::class.':show')->setName('legacy_show_track');
 
         /* Listen to a musical entity => goes to the platform link */
         $this->slimApp->get($params['urls']['format'].'/listen/{platform}[/{i:[0-9]+}]', FrontendController::class.':listen')->setName('listen');

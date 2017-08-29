@@ -29,7 +29,6 @@ class FrontendController
 
     public function home($request, $response)
     {
-        // Are we on the widget ?
         $default_platforms = implode(",", array_reduce($this->engine->getAllPlatforms(), function($carry, $e) {
             if ($e->isDefault()) {
                 $carry[] = $e->getTag();
@@ -45,6 +44,7 @@ class FrontendController
             ]);
         } else {
             return $this->container->get('view')->render($response, 'home.html.twig', [
+                'query' => $request->getQueryParam('q'),
                 'params' => $this->container->get('params'),
                 'platforms' => $this->engine->getAllPlatforms(),
                 'default_platforms' => $default_platforms,
@@ -62,9 +62,29 @@ class FrontendController
 
     public function mail($request, $response)
     {
-        // TODO FIX ME SEND MAIL FOR REAL
+        $allPostVars = $request->getParsedBody();
+
+        $sanitized_email = filter_var($allPostVars['mail'], FILTER_SANITIZE_EMAIL);
+
+        $params = $this->container->get('params');
+
+        // Create the Transport
+        $transport = (new \Swift_SmtpTransport($params['mail']['smtp_server'], 25))
+          ->setUsername($params['mail']['smtp_user'])
+          ->setPassword($params['mail']['smtp_password']);
+        $mailer = new \Swift_Mailer($transport);
+
+        $message = (new \Swift_Message('[CONTACT] '.$sanitized_email.' (via tuneefy.com)"'))
+          ->setFrom([$params['mail']['contact_email']])
+          ->setTo([$params['mail']['team_email']])
+          ->setBody($sanitized_email.' sent a message from the site : <br /><br />'.nl2br($allPostVars['message']));
+
+        // Send the message
+        $result = $mailer->send($message);
+
+        // Return a response
         $body = $response->getBody();
-        $body->write(1);
+        $body->write(0 + ($result > 0));
 
         return $response;
     }
@@ -97,7 +117,7 @@ class FrontendController
             $stats['albums'][$key]['uid'] = Utils::toUId($item['id']);
         }
 
-        $stats['artists'] = [];
+        $stats['artists'] = $db->getMostViewedArtists();
 
         return $this->container->get('view')->render($response, 'trends.html.twig', [
             'params' => $this->container->get('params'),
@@ -107,6 +127,7 @@ class FrontendController
         ]);
     }
 
+    // Handles legacy routes as well with a 301
     public function show($request, $response, $args)
     {
         if ($args['uid'] === null || $args['uid'] === '') {

@@ -1,15 +1,8 @@
-Todo :
+API :
 
  - Implémenter une limite pour l'API
 
 Frontend :
-
- - detection de slack pour <meta property="og:type" ==> context
-
- - injecter le code iframe / embed dans les pages de share
-
- - dashboard admin avec les clés API et les comptes liés, et leur utilisation (nombre d'items crées)
-  liés avec user_id de oauth_clients
 
  - add referer pour les stats ?
  
@@ -17,25 +10,20 @@ Frontend :
 
  - pagination sur la home
 
- - garder les anciennes urls actives (via rewrite ?)
- 
-Widget :
+ - last share (x2) sur la home ?
 
- - faire le bouton share
- - pouvoir launcher directement une recherche avec ?q=test sur le site principal
+ - faire un script de passage ancienne base -> nouvelle base pour les tracks
 
-Stats :
-platform.hits = 
- sprintf("%01.1f",$platformsHits[$key]/$totalPlatformsHits*100)
+ - traductions françaises fr_to_migrate -> fr_FR
 
+ - secure API depuis tuneefy.com sans token / oauth ? Comment faire
 
-mostViewedArtists
-     $maxWidth = 180;
-     while (list($key, $va) = each($mostViewedArtists))
-      {
-        data.value = $mostViewedArtists[$key]
-        data.width = intval($mostViewedArtists[$key])/intval(current($topViewedArtist));
-        
-        $currentColor['r'] = dechex(118*$currentPercent + (1-$currentPercent)*255);
-        $currentColor['g'] = dechex(186*$currentPercent + (1-$currentPercent)*255);
-        $currentColor['b'] = dechex(208*$currentPercent + (1-$currentPercent)*255);
+Backend :
+
+ - dashboard admin avec les clés API et les comptes liés, et leur utilisation (nombre d'items crées)
+  liés avec user_id de oauth_clients
+
+A tester en prod :
+
+ - mail
+ - deployement en beta ?

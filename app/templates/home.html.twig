@@ -122,8 +122,17 @@
     var $share = "{{ "results.share"|trans|raw }}";
     var $share_tip = "{{ "results.share_tip"|trans|raw }}";
     var $path = "{{ path_for('listen_direct', {'platform': '%key%'}) }}";
+    var $pathIntent = "{{ path_for('share', {'intent': '%intent%'}) }}";
   </script>
   <script type="text/javascript" src="/js/vendor/iphone-style.js"></script>
   <script type="text/javascript" src="/js/vendor/twig.min.js"></script>
   <script type="text/javascript" src="/js/search.js"></script>
+  {% if query %}
+  <script type="text/javascript">
+      $(document).ready(function(){
+        $('#query').val("{{ query }}");
+        $("#find").submit();
+      });
+  </script>
+  {% endif %}
 {% endblock %}

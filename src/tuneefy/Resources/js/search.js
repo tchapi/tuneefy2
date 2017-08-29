@@ -1,3 +1,5 @@
+'use strict';
+
 var search;
 
 $(document).ready(function(){
@@ -123,7 +125,7 @@ $(document).ready(function(){
 
         console.log("Searching for " + options.itemType + "s with query '" + queryString + "' on " + options.selectedPlatforms + " (strict: " + options.strictMode + ").");
 
-        var params = {q: queryString, aggressive: options.strictMode, include: options.selectedPlatforms, limit: options.limit};
+        var params = {q: queryString, aggressive: options.strictMode, include: options.selectedPlatforms, limit: (options.limit?options.limit:10)};
         url = url + "?" + $.param(params);
 
         var jqxhr = $.get(url)
@@ -149,10 +151,12 @@ $(document).ready(function(){
                             resultsList.append(template.render({
                                 type: options.itemType,
                                 item: item.musical_entity,
+                                intent: item.share.intent,
                                 share: $share,
                                 listenTo: $listen_to.replace('%name%', item.musical_entity.safe_title),
                                 shareTip: $share_tip.replace('%name%', item.musical_entity.safe_title),
                                 linkDirect: $path,
+                                linkIntent: $pathIntent,
                                 compact: true
                             })); 
                         }
@@ -183,7 +187,7 @@ $(document).ready(function(){
 
 
     /******* SEARCH INITIATED *******/
-    searchForm.submit(function search(e) {
+    searchForm.submit(function(e) {
         e.preventDefault();
 
         $(".hideAll").fadeOut();
@@ -340,6 +344,21 @@ $(document).ready(function(){
 
         document.cookie = value;
 
+    });
+
+    /******* SHARE PAGE *******/
+    $(document).on("click", '.sharePage', function() {
+        var intentUrl = $(this).attr('data-href');
+        var jqxhr = $.get(intentUrl)
+          .done(function(data) {
+            if (data.link) {
+                window.location.href = data.link;
+            }
+          })
+          .fail(function() {
+          })
+          .always(function() {
+          });
     });
 
 });
