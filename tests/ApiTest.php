@@ -869,7 +869,6 @@ final class ApiTest extends TestCase
                 continue;
             }
 
-            //error_log(strtoupper($platformTag));
             foreach ($permalinks as $permalink => $expectedResult) {
                 $response = $this->get('/lookup?q='.urlencode($permalink));
                 $this->assertSame($response->getStatusCode(), 200);
