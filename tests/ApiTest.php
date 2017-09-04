@@ -378,7 +378,7 @@ final class ApiTest extends TestCase
                 'musical_entity' => [
                   'type' => 'album',
                   'title' => 'JAY Z: MTV Unplugged',
-                  'artist' => 'JAY Z',
+                  'artist' => 'JAY-Z',
                   'picture' => 'http://resources.wimpmusic.com/images/f1494811/b30e/45eb/8fe0/40137f1c0e58/320x320.jpg',
                   'links' => [
                     'tidal' => [
@@ -395,7 +395,7 @@ final class ApiTest extends TestCase
                   ],
                 ],
                 'query_words' => [
-                    'JAY Z',
+                    'JAY-Z',
                     'JAY Z: MTV Unplugged',
                   ],
             ],
@@ -573,10 +573,10 @@ final class ApiTest extends TestCase
                     'Aphex Twin',
                 ],
             ],
-            'https://www.mixcloud.com/LeFtOoO/678-new-section-boyz-onra-romare-drake-roman-rauch-clap-clap/' => [
+            'https://www.mixcloud.com/LeFtOoO/709-season-finale-w-niveau4-lor-du-commun-darrell-cole-new-spaven-mura-masa-budgie/' => [
                 'musical_entity' => [
                     'type' => 'track',
-                    'title' => '#678 | New Section Boyz | Onra | Romare | Drake | Roman Rauch | Clap! Clap! ...',
+                    'title' => "#709 - Season  Finale w/ #Niveau4 | L'Or Du Commun | Darrell Cole | New Spaven | Mura Masa | Budgie",
                     'album' => [
                         'title' => '',
                         'artist' => 'LeFtO',
@@ -591,20 +591,22 @@ final class ApiTest extends TestCase
                     ],
                     'links' => [
                         'mixcloud' => [
-                            'https://www.mixcloud.com/LeFtOoO/678-new-section-boyz-onra-romare-drake-roman-rauch-clap-clap/',
+                            'https://www.mixcloud.com/LeFtOoO/709-season-finale-w-niveau4-lor-du-commun-darrell-cole-new-spaven-mura-masa-budgie/',
                         ],
                     ],
-                    'safe_title' => '#678 | New Section Boyz | Onra | Romare | Drake | Roman Rauch | Clap! Clap! ...',
+                    'safe_title' => "#709",
                     'extra_info' => [
                         'is_cover' => false,
                         'is_remix' => false,
                         'acoustic' => false,
-                        'context' => [],
+                        'context' => [
+                            'Season  Finale w/ #Niveau4 | L\'Or Du Commun | Darrell Cole | New Spaven | Mura Masa | Budgie'
+                        ],
                     ],
                 ],
                 'query_words' => [
                     'LeFtO',
-                    '#678 | New Section Boyz | Onra | Romare | Drake | Roman Rauch | Clap! Clap! ...',
+                    "#709",
                 ],
             ],
         ],
@@ -689,7 +691,7 @@ final class ApiTest extends TestCase
                     'type' => 'album',
                     'title' => 'Weezer',
                     'artist' => 'Weezer',
-                    'picture' => 'http://is2.mzstatic.com/image/thumb/Music60/v4/f8/52/ef/f852efd1-3221-6ce7-d5aa-e320a9d8879e/source/100x100bb.jpg',
+                    'picture' => 'http://is1.mzstatic.com/image/thumb/Music60/v4/f8/52/ef/f852efd1-3221-6ce7-d5aa-e320a9d8879e/source/100x100bb.jpg',
                     'links' => [
                         'itunes' => [
                             'https://itunes.apple.com/us/album/weezer/id1136784464?uo=4',
@@ -813,7 +815,7 @@ final class ApiTest extends TestCase
         $result = $result['platforms'];
 
         // 14 platforms
-        $this->assertEquals(count($result), 14);
+        $this->assertEquals(count($result), 13);
 
         foreach ($result as $key => $platform) {
             $this->assertCount(7, $platform);
@@ -849,7 +851,7 @@ final class ApiTest extends TestCase
         $result = $result['platforms'];
 
         // 14 platforms
-        $this->assertEquals(count($result), 11);
+        $this->assertEquals(count($result), 10);
 
         foreach ($result as $key => $platform) {
             $this->assertCount(7, $platform);
@@ -1024,7 +1026,12 @@ final class ApiTest extends TestCase
             $this->assertSame($response->getStatusCode(), 200);
 
             $result = json_decode($response->getBody()->__toString(), true);
-            $this->assertArrayHasKey('errors', $result);
+            if ($platform->getTag() === 'napster') {
+                // Napster always returns something
+                $this->assertArrayHasKey('results', $result);
+            } else {
+                $this->assertArrayHasKey('errors', $result);
+            }
         }
     }
 

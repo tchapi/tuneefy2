@@ -110,6 +110,12 @@ class Application
         $container[$key] = $value;
     }
 
+    public function get(string $key)
+    {
+        $container = $this->slimApp->getContainer();
+        return $container[$key];
+    }
+
     public function run(bool $returnObject = false)
     {
         return $this->slimApp->run($returnObject);
