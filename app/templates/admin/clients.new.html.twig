@@ -1,0 +1,55 @@
+{% extends 'admin/_base.html.twig' %}
+{% set menu = "clients" %}
+
+{% block content %}
+<h1>API Clients</h1>
+
+<h3 class="ui dividing header">Create a new client</h3>
+
+<form class="ui form" method="POST">
+  <div class="field">
+    <label>Name</label>
+    <input type="text" name="name" placeholder="API User ">
+  </div>
+  <div class="field">
+    <label>Client ID</label>
+    <input type="text" name="client_id" placeholder="">
+  </div>
+  <div class="field">
+    <label>Client Secret</label>
+    <input type="text" name="client_secret" placeholder="">
+  </div>
+  <div class="field">
+    <label>Description</label>
+    <input type="text" name="description" placeholder="">
+  </div>
+  <div class="field">
+    <label>Email</label>
+    <input type="email" name="email" placeholder="user@example.org">
+  </div>
+  <div class="field">
+    <label>Url</label>
+    <input type="text" name="url" placeholder="http://site.com">
+  </div>
+  <a href="{{ path_for('admin_clients') }}" class="ui button" type="cancel"><i class="ui icon angle double left"></i> Back</a>
+  <button class="ui button green" type="submit"><i class="ui icon check"></i> Save</button>
+</form>
+
+{% endblock %}
+
+{% block javascript %}
+  {{ parent() }}
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('.ui.form')
+        .form({
+          fields: {
+            name          : ['minLength[6]', 'empty'],
+            client_id     : 'empty',
+            client_secret : 'empty',
+            email         : ['minLength[6]', 'empty']
+          }
+        });
+    })
+  </script>
+{% endblock %}

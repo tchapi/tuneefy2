@@ -236,30 +236,61 @@ class DatabaseHandler
         return $this->getMostViewed(null, "GROUP BY UPPER(`items`.`artist`)");
     }
 
+    public function getItemsStats(): array
+    {
+        $statement = $this->connection->prepare('SELECT 
+            COUNT(`items`.`id`) AS `total`,
+            COUNT(`items`.`track`) AS `tracks`,
+            COUNT(`items`.`intent`) AS `intents`
+        FROM `items`');
+
+        $res = $statement->execute();
+
+        if ($res === false) {
+            throw new \Exception('Error getting items stats : '.$statement->errorInfo()[2]);
+        }
+
+        $row = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        return ['total' => $row["total"], 'tracks' => $row["tracks"], 'intents' => $row["intents"]];
+        
+    }
+
     public function getApiClients()
     {
-        $statement = $this->connection->prepare('SELECT * FROM `oauth_clients`');
+        $statement = $this->connection->prepare('
+            SELECT clients.*, COUNT(`items`.`id`) AS `items`, COUNT(`items`.`intent`) AS `intents` FROM `oauth_clients` `clients`
+            LEFT JOIN `items` ON `items`.`client_id` = `clients`.`client_id`
+            GROUP BY `clients`.`client_id`
+        ');
 
         $res = $statement->execute();
 
         if ($res === false) {
             throw new \Exception('Error getting api clients : '.$statement->errorInfo()[2]);
         }
+
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function addApiClient(ApiClientEntity $client)
+    public function addApiClient(string $name, string $client_id, string $client_secret, string $description, string $email, string $url)
     {
-        $statement = $this->connection->prepare('INSERT INTO `oauth_clients` (`item_id`, `platform`, `index`, `listened_at`) VALUES (:item_id, :platform, :index, NOW())');
+        $statement = $this->connection->prepare('INSERT INTO `oauth_clients` (`name`, `client_id`, `client_secret`, `description`, `email`, `url`, `createdAt`) VALUES (:name, :client_id, :client_secret, :description, :email, :url, NOW())');
 
         $res = $statement->execute([
-          ':item_id' => $item_id,
-          ':platform' => $platformTag,
-          ':index' => $index,
+          ':name' => $name,
+          ':client_id' => $client_id,
+          ':client_secret' => $client_secret,
+          ':description' => $description,
+          ':email' => $email,
+          ':url' => $url,
         ]);
 
         if ($res === false) {
             throw new \Exception('Error adding api client : '.$statement->errorInfo()[2]);
         }
+
+        return true;
     }
 
 }

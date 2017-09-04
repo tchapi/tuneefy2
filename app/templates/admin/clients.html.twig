@@ -2,5 +2,40 @@
 {% set menu = "clients" %}
 
 {% block content %}
-API Clients
+<h1>API Clients</h1>
+
+<h3 class="ui dividing header">Actions</h3>
+<p><a class="ui button green" href="{{ path_for('admin_new_client') }}"><i class="ui icon add"></i> Create new client</a></p>
+
+<h3 class="ui dividing header">List</h3>
+<table class="ui celled table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Client ID</th>
+      <th>Client Secret</th>
+      <th>Since</th>
+      <th>Description</th>
+      <th>URL</th>
+      <th>Email</th>
+      <th>Items created</th>
+      <th>Items shared</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for client in clients %}
+    <tr>
+      <td>{{ client.name }}</td>
+      <td>{{ client.client_id }}</td>
+      <td>{{ client.client_secret }}</td>
+      <td>{{ client.created_at|date('d/m/Y') }}</td>
+      <td>{{ client.description }}</td>
+      <td><a href="{{ client.url }}" target="_blank">{{ client.url }}</a></td>
+      <td><a href="mailto:{{ client.email }}">{{ client.email }}</a></td>
+      <td>{{ client.items|number_format(0,'.',' ') }}</td>
+      <td>{{ (client.items - client.intents)|number_format(0,'.',' ') }} ({{ ((client.items==0)?0:((client.items - client.intents)/client.items*100))|number_format }}%)</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

@@ -2,5 +2,56 @@
 {% set menu = "dashboard" %}
 
 {% block content %}
-Dashboard
+<h1 class="ui header">Dashboard</h1>
+
+<h3 class="ui dividing header">Tracks & Albums</h3>
+<div class="ui three statistics">
+  <div class="statistic">
+    <div class="value">
+      {{ stats.total|number_format(0, '.', ' ') }}
+    </div>
+    <div class="label">
+      Items total
+    </div>
+  </div>
+  <div class="statistic">
+    <div class="value">
+      <img src="{{ params.urls.front }}/img/dashboard/song.png" class="ui circular inline image"> {{ stats.tracks|number_format(0, '.', ' ') }}
+    </div>
+    <div class="label">
+      Tracks
+    </div>
+  </div>
+  <div class="statistic">
+    <div class="value">
+      <img src="{{ params.urls.front }}/img/dashboard/album.png" class="ui circular inline image"> {{ (stats.total - stats.tracks)|number_format(0, '.', ' ') }}
+    </div>
+    <div class="label">
+      Albums
+    </div>
+  </div>
+</div>
+
+<h3 class="ui dividing header">Sharing</h3>
+<div class="ui two statistics">
+  <div class="statistic">
+    <div class="value">
+      {{ (stats.total - stats.intents)|number_format(0, '.', ' ') }}
+    </div>
+    <div class="label">
+      Shares
+    </div>
+  </div>
+  <div class="statistic">
+    <div class="value">
+      {{ ((stats.total - stats.intents)*100/stats.total)|number_format }}%
+    </div>
+    <div class="label">
+      Conversion rate
+    </div>
+  </div>
+</div>
+
+<h3 class="ui dividing header">Actions</h3>
+<p><a class="ui button red" href="{{ path_for('admin_migrate') }}"><i class="ui icon warning"></i> Migrate</a></p>
 {% endblock %}

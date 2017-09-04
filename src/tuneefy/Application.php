@@ -208,8 +208,10 @@ class Application
 
         /* The backend routes */
         $admin = $this->slimApp->group('/admin', function () {
+            $this->get('/migrate', BackendController::class.':migrate')->setName('admin_migrate');
             $this->get('/dashboard', BackendController::class.':dashboard')->setName('admin_dashboard');
             $this->get('/api/clients', BackendController::class.':clients')->setName('admin_clients');
+            $this->map(['GET', 'POST'], '/api/clients/new', BackendController::class.':createClient')->setName('admin_new_client');
         });
 
         /* Middlewares should be in a certain order, the authentication must be added last */
