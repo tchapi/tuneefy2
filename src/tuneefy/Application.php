@@ -54,14 +54,28 @@ class Application
             $view->addExtension(new TwigExtension($container['router'], $basePath));
 
             // First param is the "default language" to use.
-            $locale = isset($_COOKIE[self::COOKIE_LANG])?$_COOKIE[self::COOKIE_LANG]:'en_US';
+            if (isset($_COOKIE[self::COOKIE_LANG])) {
+                $locale = $_COOKIE[self::COOKIE_LANG]; 
+            } else if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+                $prefLocales = array_reduce(explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']), function ($res, $el) { 
+                    list($l, $q) = array_merge(explode(';q=', $el), [1]); $res[$l] = (float) $q;
+                    return $res;
+                }, []);
+                asort($prefLocales);
+        
+                $locale = array_reduce(array_keys($prefLocales), function ($default, $prefLocale) {
+                    return in_array($prefLocale, ['en_US', 'fr_FR']) ? $prefLocale : $default;
+                }, 'en_US');
+            } else {
+                $locale = 'en_US';
+            }
 
             $translator = new Translator($locale);
             $view->getEnvironment()->addGlobal("locale", $locale);
 
             // If we want to add specific data to the context, it's here
             $view->getEnvironment()->addGlobal("context", [
-                "slack" => (preg_match('/Slackbot/', $_SERVER['HTTP_USER_AGENT']) !== 0),  // ** Detect Slack
+                "slack" => isset($_SERVER['HTTP_USER_AGENT'])?(preg_match('/Slackbot/', $_SERVER['HTTP_USER_AGENT']) !== 0):false,  // ** Detect Slack
             ]);
 
             // Set a fallback language incase you don't have a translation in the default language
