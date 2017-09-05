@@ -236,6 +236,52 @@ class DatabaseHandler
         return $this->getMostViewed(null, "GROUP BY UPPER(`items`.`artist`)");
     }
 
+    public function getMostViewedItemThisWeek()
+    {
+        $statement = $this->connection->prepare('SELECT `items`.`id`, `items`.`object`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` INNER JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` WHERE YEARWEEK(`stats_viewing`.`viewed_at`) = YEARWEEK(NOW()) GROUP BY `items`. `id` ORDER BY `count` DESC LIMIT 1');
+
+        $res = $statement->execute();
+
+        if ($res === false) {
+            throw new \Exception('Error getting most viewed item : '.$statement->errorInfo()[2]);
+        }
+
+        $row = $statement->fetch(\PDO::FETCH_ASSOC);
+
+        $result = [
+            "id" => $row['id'],
+            "entity" => unserialize($row['object'], ['allowed_classes' => [TrackEntity::class, AlbumEntity::class]]),
+        ];
+
+        return $result;
+    }
+
+    public function getLastSharedItems(): array
+    {
+        $statement = $this->connection->prepare('(SELECT `items`.`id`, `items`.`object` FROM `items` WHERE `track` IS NOT NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` LIMIT 1) UNION (SELECT `items`.`id`, `object` FROM `items` WHERE `track` IS NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` LIMIT 1)');
+
+        $res = $statement->execute();
+
+        if ($res === false) {
+            throw new \Exception('Error getting last shared items : '.$statement->errorInfo()[2]);
+        }
+
+        $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
+
+        $result = [
+            "track" => [
+                "id" => $rows[0]['id'],
+                "entity" => unserialize($rows[0]['object'], ['allowed_classes' => [TrackEntity::class, AlbumEntity::class]]),
+            ],
+            "album" => [
+                "id" => $rows[1]['id'],
+                "entity" => unserialize($rows[1]['object'], ['allowed_classes' => [AlbumEntity::class]]),
+            ],
+        ];
+
+        return $result;
+    }
+
     public function getItemsStats(): array
     {
         $statement = $this->connection->prepare('SELECT 

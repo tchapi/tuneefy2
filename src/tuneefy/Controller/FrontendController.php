@@ -36,6 +36,15 @@ class FrontendController
             return $carry;
         }, []));
 
+        // Get the most viewed and last shared
+        $db = DatabaseHandler::getInstance(null);
+        $mostViewed = $db->getMostViewedItemThisWeek();
+        $mostViewed['uid'] = Utils::toUId($mostViewed['id']);
+
+        $lastShared = $db->getLastSharedItems();
+        $lastShared['track']['uid'] = Utils::toUId($lastShared['track']['id']);
+        $lastShared['album']['uid'] = Utils::toUId($lastShared['album']['id']);
+
         if ($request->getQueryParam('widget') == "42") {
             return $this->container->get('view')->render($response, '_widget.html.twig', [
                 'query' => $request->getQueryParam('q'),
@@ -48,6 +57,8 @@ class FrontendController
                 'params' => $this->container->get('params'),
                 'platforms' => $this->engine->getAllPlatforms(),
                 'default_platforms' => $default_platforms,
+                'last_shared' => $lastShared,
+                'most_viewed' => $mostViewed,
             ]);
         }
     }

@@ -361,4 +361,36 @@ $(document).ready(function(){
           });
     });
 
+    /* PICKS */
+    var picks = $('.pick');
+    var pagers = $(".pickPagerItem");
+
+    setInterval(function() {
+
+        var active = picks.filter(':visible');
+        var activePager = pagers.filter('.active');
+
+        var next = active.next();;
+        var nextPager = activePager.next()
+
+        if (next.length == 0) {
+            next = picks.first();
+            nextPager = pagers.first();
+        }
+
+        next.css("left", "400px");
+        next.show();
+        next.animate({
+            "left": "30px"
+        }, "slow");
+        active.animate({
+            "left": "-300px"
+        }, "slow");
+        active.fadeOut("slow");
+
+        activePager.removeClass("active");
+        nextPager.addClass("active");
+
+    }, 4000);
+
 });

@@ -14,16 +14,69 @@
     </div>
 
     <div id="todaysPickOverlay"></div>
+
     <div id="pickPager">
       <div class="pickPagerItem Bcolor active"></div>
-      <div class="pickPagerItem Bcolor"></div> 
+      <div class="pickPagerItem Bcolor"></div>
+      <div class="pickPagerItem Bcolor"></div>
     </div>
+
+    <div id="todaysPick">
+
+      <div class="pick">
+        <h2 class="pickTitle color">{{ "picks.lastSharedTrack"|trans }}</h2>
+        <div class="pickContent">
+          <div class="cover">
+            <img src="{{ last_shared.track.entity.getAlbumPicture?:'/img/nothumb_track.png' }}" width="50" height="50" />
+            <span class="coverlay"></span>
+          </div>
+          <div class="info">
+            <div class="title">{{ last_shared.track.entity.safeTitle }}</div>
+            <div class="artist">{{ last_shared.track.entity.artist }}</div>
+            <div class="album">{{ last_shared.track.entity.album.safeTitle }}</div>
+          </div>
+        </div>
+        <a class="btn btn_picks" href="{{ params.urls.front }}{{ path_for('show', { uid: last_shared.track.uid, type: "track" }) }}">{{ "picks.discover"|trans }}</a>
+      </div>
+
+      <div class="pick">
+        <h2 class="pickTitle color">{{ "picks.lastSharedAlbum"|trans }}</h2>
+        <div class="pickContent">
+          <div class="cover">
+            <img src="{{ last_shared.album.entity.getPicture?:'/img/nothumb_album.png' }}" width="50" height="50" />
+            <span class="coverlay"></span>
+          </div>
+          <div class="info">
+            <div class="title">{{ last_shared.album.entity.safeTitle }}</div>
+            <div class="artist">{{ last_shared.album.entity.artist }}</div>
+          </div>
+        </div>
+        <a class="btn btn_picks" href="{{ params.urls.front }}{{ path_for('show', { uid: last_shared.album.uid, type: "album" }) }}">{{ "picks.discover"|trans }}</a>
+      </div>
+
+      <div class="pick">
+        <h2 class="pickTitle color">{{ "picks.mostViewed"|trans }}</h2>
+        <div class="pickContent">
+          <div class="cover">
+            <img src="{{ most_viewed.entity.trackTitle?(most_viewed.entity.getAlbumPicture?:'/img/nothumb_track.png'):(most_viewed.entity.getPicture?:'/img/nothumb_album.png') }}" width="50" height="50" />
+            <span class="coverlay"></span>
+          </div>
+          <div class="info">
+            <div class="title">{{ most_viewed.entity.trackTitle?most_viewed.entity.safeTrackTitle:most_viewed.entity.safeTitle }}</div>
+            <div class="artist">{{ most_viewed.entity.artist }}</div>
+            {% if most_viewed.trackTitle %}<div class="album">{{ most_viewed.album.entity.safeTitle }}</div>{% endif %}
+          </div>
+        </div>
+        <a class="btn btn_picks" href="{{ params.urls.front }}{{ path_for('show', { uid: most_viewed.uid, type: "mixed" }) }}">{{ "picks.discover"|trans }}</a>
+      </div>
+    </div>
+
   </div>
   
 </div>
 
 <div id="searchForm" class="wrap bdTop">
- <div id="moreOptions" ><img src="/img/more_options.png" width="160" height="60" title="{{ "search.moreOptionsAlt"|trans }}"/></div>
+ <div id="moreOptions" ><img src="/img/{{ 'search.moreOptionsImage'|trans }}" width="160" height="60" title="{{ "search.moreOptionsAlt"|trans }}"/></div>
 
   <form id="find" action="{{ path_for('aggregate', {type: '%type%'}) }}">
 
