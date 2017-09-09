@@ -115,11 +115,18 @@ class BackendController
                     $entity = new AlbumEntity($row['album'], $row['artist'], $row['image']);
                 }
 
+                if ($row['link_DEEZER'] != null) { $entity->addLink('deezer', $row['link_DEEZER']); }
+                if ($row['link_SPOTIFY'] != null) { $entity->addLink('spotify', $row['link_SPOTIFY']); }
+                if ($row['link_LASTFM'] != null) { $entity->addLink('lastfm', $row['link_LASTFM']); }
+                if ($row['link_SOUNDCLOUD'] != null) { $entity->addLink('soundcloud', $row['link_SOUNDCLOUD']); }
+                if ($row['link_YOUTUBE'] != null) { $entity->addLink('youtube', $row['link_YOUTUBE']); }
+                if ($row['link_MIXCLOUD'] != null) { $entity->addLink('mixcloud', $row['link_MIXCLOUD']); }
+                if ($row['link_ITUNES'] != null) { $entity->addLink('itunes', $row['link_ITUNES']); }
+                if ($row['link_QOBUZ'] != null) { $entity->addLink('qobuz', $row['link_QOBUZ']); }
+
                 $platformResult = new PlatformResult([], $entity);
                 
-                $statement = $connection->prepare('INSERT INTO `items` (`id`, `intent`, `object`, `track`, `album`, `artist`, `created_at`, `expires_at`, `signature`, `client_id`) VALUES (:id, :intent, :object, :track, :album, :artist, NOW(), :expires, :signature, :client_id)');
-
-                $entity = $platformResult->getMusicalEntity();
+                $statement = $connection->prepare('INSERT INTO `items` (`id`, `intent`, `object`, `track`, `album`, `artist`, `created_at`, `expires_at`, `signature`, `client_id`) VALUES (:id, :intent, :object, :track, :album, :artist, :date, :expires, :signature, :client_id)');
 
                 $entityAsString = serialize($entity);
                 $expires = new \DateTime('now');
@@ -131,6 +138,7 @@ class BackendController
                   ':track' => ($entity->getType() === 'track') ? $entity->getTitle() : null,
                   ':album' => ($entity->getType() === 'track') ? $entity->getAlbum()->getTitle() : $entity->getTitle(),
                   ':artist' => $entity->getArtist(),
+                  ':date' => $row['date'],
                   ':expires' => null,
                   ':signature' => hash_hmac('md5', $entityAsString, $this->container->get('params')['intents']['secret']),
                   ':client_id' => "legacy",
