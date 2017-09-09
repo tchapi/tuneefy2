@@ -268,16 +268,20 @@ class DatabaseHandler
 
         $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
-        $result = [
-            "track" => [
+        $result = [];
+
+        if (count($rows) > 0) {
+            $result["track"] = [
                 "id" => $rows[0]['id'],
                 "entity" => unserialize($rows[0]['object'], ['allowed_classes' => [TrackEntity::class, AlbumEntity::class]]),
-            ],
-            "album" => [
+            ];
+        }
+        if (count($rows) > 1) {
+            $result["album"] = [
                 "id" => $rows[1]['id'],
                 "entity" => unserialize($rows[1]['object'], ['allowed_classes' => [AlbumEntity::class]]),
-            ],
-        ];
+            ];
+        }
 
         return $result;
     }

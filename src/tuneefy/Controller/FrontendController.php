@@ -39,16 +39,18 @@ class FrontendController
         // Get the most viewed and last shared
         $db = DatabaseHandler::getInstance(null);
         $mostViewed = $db->getMostViewedItemThisWeek();
-        if ($mostViewed) {
+        if ($mostViewed['id']) {
             $mostViewed['uid'] = Utils::toUId($mostViewed['id']);
         }
 
         $lastShared = $db->getLastSharedItems();
-        if ($lastShared) {
+        if (isset($lastShared['track']) && $lastShared['track']['id']) {
             $lastShared['track']['uid'] = Utils::toUId($lastShared['track']['id']);
+        }
+        if (isset($lastShared['album']) && $lastShared['album']['id']) {
             $lastShared['album']['uid'] = Utils::toUId($lastShared['album']['id']);
         }
-        
+
         if ($request->getQueryParam('widget') == "42") {
             return $this->container->get('view')->render($response, '_widget.html.twig', [
                 'query' => $request->getQueryParam('q'),
