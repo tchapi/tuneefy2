@@ -20,14 +20,12 @@
     "url": "https://github.com/tchapi/tuneefy2/issues"
   },
   "homepage": "https://github.com/tchapi/tuneefy2#readme",
-  "devDependencies": {
-    "aglio": "^2.3.0",
+  "dependencies": {
     "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
     "gulp-sass": "^3.1.0",
     "gulp-uglify": "^3.0.0",
-    "pump": "^1.0.2"
-  },
-  "dependencies": {
-    "gulp-concat": "^2.6.1"
+    "pump": "^1.0.2",
+    "aglio": "^2.3.0"
   }
 }
