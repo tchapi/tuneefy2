@@ -94,7 +94,7 @@ class FrontendController
         $message = (new \Swift_Message('[CONTACT] '.$sanitized_email.' (via tuneefy.com)"'))
           ->setFrom([$params['mail']['contact_email']])
           ->setTo([$params['mail']['team_email']])
-          ->setBody($sanitized_email.' sent a message from the site : <br /><br />'.nl2br($allPostVars['message']));
+          ->setBody($sanitized_email." sent a message from the site : \n\n".nl2br($allPostVars['message']));
 
         // Send the message
         $result = $mailer->send($message);
