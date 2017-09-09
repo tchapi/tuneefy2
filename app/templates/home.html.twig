@@ -22,7 +22,7 @@
     </div>
 
     <div id="todaysPick">
-
+    {% if last_shared.track %}
       <div class="pick">
         <h2 class="pickTitle color">{{ "picks.lastSharedTrack"|trans }}</h2>
         <div class="pickContent">
@@ -38,7 +38,9 @@
         </div>
         <a class="btn btn_picks" href="{{ params.urls.front }}{{ path_for('show', { uid: last_shared.track.uid, type: "track" }) }}">{{ "picks.discover"|trans }}</a>
       </div>
+    {% endif %}
 
+    {% if last_shared.album %}
       <div class="pick">
         <h2 class="pickTitle color">{{ "picks.lastSharedAlbum"|trans }}</h2>
         <div class="pickContent">
@@ -53,7 +55,9 @@
         </div>
         <a class="btn btn_picks" href="{{ params.urls.front }}{{ path_for('show', { uid: last_shared.album.uid, type: "album" }) }}">{{ "picks.discover"|trans }}</a>
       </div>
+    {% endif %}
 
+    {% if most_viewed %}
       <div class="pick">
         <h2 class="pickTitle color">{{ "picks.mostViewed"|trans }}</h2>
         <div class="pickContent">
@@ -70,6 +74,7 @@
         <a class="btn btn_picks" href="{{ params.urls.front }}{{ path_for('show', { uid: most_viewed.uid, type: "mixed" }) }}">{{ "picks.discover"|trans }}</a>
       </div>
     </div>
+    {% endif %}
 
   </div>
   
