@@ -239,6 +239,7 @@ class Application
         $this->slimApp->add(new \Slim\Middleware\HttpBasicAuthentication([
             'path' => ['/admin'],
             'realm' => 'Protected access',
+            'secure' => $params['admin_secure'],
             'users' => $params['admin_users'],
         ]));
 

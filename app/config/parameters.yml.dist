@@ -4,22 +4,24 @@ database:
   user: "tuneefy"
   password: "ChangeMe"
 
+website:
+  max_results: 100
+  stats_limit: 5
+  cookie_domain: ".tuneefy.com"
+
 api:
   use_oauth: false # for testing purposes
+  front: http://tuneefy.com
   access_lifetime: 3600
   
 intents:
   lifetime: 600 # seconds
   secret: c0dac0017e8e1311a4c19c3f9d743dba
 
-website:
-  max_results: 100
-  stats_limit: 5
-
 urls:
   base: 12345678
-  front: https://tuneefy.com
   format: /s/{type}/{uid}
+  front: https://tuneefy.com
 
 mail:
   smtp_server: "tuneefy.com"
@@ -44,5 +46,6 @@ facebook:
 google_plus:
   publisher_id: "https://..."
 
+admin_secure: true
 admin_users:
   admin: admin

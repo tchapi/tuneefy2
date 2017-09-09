@@ -4,8 +4,6 @@ var search;
 
 $(document).ready(function(){
 
-    var $DOMAIN = ""; // '' for localhost, else it won't work
-
     var $COOKIE_PREFS = "tuneefyPrefs";
     var $COOKIE_HELP = "tuneefyHelpBox";
     var $COOKIE_SEARCH = "tuneefySearchType";

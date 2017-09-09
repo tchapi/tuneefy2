@@ -97,6 +97,9 @@
   </div>
 
 {% block javascript %}
+  <script type="text/javascript">
+    var $DOMAIN = "{{ params.website.cookie_domain }}"; // '' for localhost, else it won't work, or .tuneefy.com
+  </script>
   {% if params.statistics.ga_tracker_id > 0 %}
     <script type="text/javascript">
       var _gaq = _gaq || [];
