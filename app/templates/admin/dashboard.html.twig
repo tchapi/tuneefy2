@@ -44,7 +44,10 @@
   </div>
   <div class="statistic">
     <div class="value">
+    {% if stats.total > 0 %}
       {{ ((stats.total - stats.intents)*100/stats.total)|number_format }}%
+    {% else %} N/A
+    {% endif %}
     </div>
     <div class="label">
       Conversion rate
