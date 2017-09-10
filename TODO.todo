@@ -1,29 +1,23 @@
 API :
 
- - Implémenter une limite pour l'API
+ ☐ Implémenter une limite pour l'API
 
 Frontend :
 
- - add referer pour les stats ?
- 
- - feats a rajouter également dans la page result.html.twig
-
- - pagination sur la home
-
- - last share (x2) sur la home ?
-
- - faire un script de passage ancienne base -> nouvelle base pour les tracks
-
- - traductions françaises fr_to_migrate -> fr_FR
-
- - secure API depuis tuneefy.com sans token / oauth ? Comment faire
-
-Backend :
-
- - dashboard admin avec les clés API et les comptes liés, et leur utilisation (nombre d'items crées)
-  liés avec user_id de oauth_clients
+ ✔ last share (x2) sur la home ? @done (17-09-05 22:54)
+ ✔ migrate : get the links from the previous table ! @done (17-09-09 13:24)
+ ✔ migrate : stats de viewing ? = copier la table et renommer date → viewed_at @done (17-09-09 13:51)
+ ✔ add referer pour les stats ? @done (17-09-10 17:45)
+ ☐ feats a rajouter également dans la page result.html.twig
+ ✔ null -> various albums sur la page show pour albums et artists aussi I ugess @done (17-09-10 18:23)
+ ☐ pagination sur la home => a virer ? faire du pur JS hide / show et faire un get de limit30 ou 50 des la premiere requete ?
+ ✔ traductions françaises fr_to_migrate -> fr_FR @done (17-09-05 23:35)
+ ☐ secure API depuis tuneefy.com sans token / oauth ? Comment faire ?
 
 A tester en prod :
 
- - mail
- - deployement en beta ?
+ ✔ envoi email @done (17-09-09 17:29)
+
+ Process
+ - remettre admin_secure à true
+ indexes sql

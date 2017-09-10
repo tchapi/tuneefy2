@@ -15,3 +15,6 @@ app/templates/api.html
 
 web/js/*
 web/css/*
+
+deploy/*
+!deploy/nginx.conf
