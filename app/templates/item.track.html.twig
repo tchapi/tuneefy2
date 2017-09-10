@@ -48,7 +48,7 @@
             <div class="title">{{ tools.ellipsis(item.getSafeTitle, 40) }}</div>
           {% endif %}
           <div class="artist">{{ tools.ellipsis(item.getArtist, 40) }}</div>
-          <div class="album">{% if item.getAlbumSafeTitle or (item.getAlbumSafeTitle)|lower == 'null' %}{{ tools.ellipsis(item.getAlbumSafeTitle, 40) }}{% else %}{{ "results.various_albums"|trans }}{% endif %}</div>
+          <div class="album">{% if item.getAlbumSafeTitle and (item.getAlbumSafeTitle)|lower != 'null' %}{{ tools.ellipsis(item.getAlbumSafeTitle, 40) }}{% else %}{{ "results.various_albums"|trans }}{% endif %}</div>
           {% if embed %}
           <div id="platforms">
             {% for key, links in item.links %}
