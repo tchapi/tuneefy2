@@ -183,10 +183,11 @@ class DatabaseHandler
 
     public function addViewingStat(int $item_id)
     {
-        $statement = $this->connection->prepare('INSERT INTO `stats_viewing` (`item_id`, `viewed_at`) VALUES (:item_id, NOW())');
+        $statement = $this->connection->prepare('INSERT INTO `stats_viewing` (`item_id`, `referer`, `viewed_at`) VALUES (:item_id, :referer, NOW())');
 
         $res = $statement->execute([
           ':item_id' => $item_id,
+          ':referer' => $_SERVER["HTTP_REFERER"],
         ]);
 
         if ($res === false) {
@@ -258,7 +259,7 @@ class DatabaseHandler
 
     public function getLastSharedItems(): array
     {
-        $statement = $this->connection->prepare('(SELECT `items`.`id`, `items`.`object` FROM `items` WHERE `track` IS NOT NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` LIMIT 1) UNION (SELECT `items`.`id`, `object` FROM `items` WHERE `track` IS NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` LIMIT 1)');
+        $statement = $this->connection->prepare('(SELECT `items`.`id`, `items`.`object` FROM `items` WHERE `track` IS NOT NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` DESC LIMIT 1) UNION (SELECT `items`.`id`, `object` FROM `items` WHERE `track` IS NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` DESC LIMIT 1)');
 
         $res = $statement->execute();
 

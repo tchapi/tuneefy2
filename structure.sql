@@ -18,6 +18,7 @@ CREATE TABLE `items` (
 CREATE TABLE `stats_viewing` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `item_id` int(11) unsigned NOT NULL,
+  `referer` varchar(170) DEFAULT NULL,
   `viewed_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `item_id` (`item_id`),
