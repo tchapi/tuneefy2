@@ -9,7 +9,7 @@
   <div id="globalStats">
     <h2 class="color">{{ "stats.global"|trans|raw }}</h2>
       <table style="display:none;" id="pieData">
-          {% for hit in stats.hits %}
+          {% for hit in stats.hits if hit.platform.tag %}
             <tr><th scope="row">
                 <span class="id">{{ hit.platform.tag }}</span>
                 <span class="name">{{ hit.platform.name }}</span>
