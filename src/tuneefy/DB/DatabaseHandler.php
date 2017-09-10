@@ -197,7 +197,7 @@ class DatabaseHandler
 
     public function getPlatformShares()
     {
-        $statement = $this->connection->prepare('SELECT `platform`, COUNT(`id`) AS `count` FROM `stats_listening` GROUP BY `platform`');
+        $statement = $this->connection->prepare('SELECT `platform`, COUNT(`id`) AS `count` FROM `stats_listening` GROUP BY `platform` ORDER BY `count` DESC');
 
         $res = $statement->execute();
 
