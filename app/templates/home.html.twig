@@ -32,9 +32,9 @@
             <span class="coverlay"></span>
           </div>
           <div class="info">
-            <div class="title">{{ last_shared.track.entity.safeTitle }}</div>
-            <div class="artist">{{ last_shared.track.entity.artist }}</div>
-            <div class="album">{{ last_shared.track.entity.album.safeTitle }}</div>
+            <div class="title">{{ tools.ellipsis(last_shared.track.entity.safeTitle, 24)  }}</div>
+            <div class="artist">{{ tools.ellipsis(last_shared.track.entity.artist, 40)  }}</div>
+            <div class="album">{% if last_shared.track.entity.album.safeTitle and (last_shared.track.entity.album.safeTitle)|lower != 'null' %}{{ tools.ellipsis(last_shared.track.entity.album.safeTitle, 36) }}{% else %}{{ "results.various_albums"|trans }}{% endif %}</div>
           </div>
         </div>
         <a class="btn btn_picks" href="{{ params.urls.front }}{{ path_for('show', { uid: last_shared.track.uid, type: "track" }) }}">{{ "picks.discover"|trans }}</a>
@@ -50,8 +50,8 @@
             <span class="coverlay"></span>
           </div>
           <div class="info">
-            <div class="title">{{ last_shared.album.entity.safeTitle }}</div>
-            <div class="artist">{{ last_shared.album.entity.artist }}</div>
+            <div class="title">{{ tools.ellipsis(last_shared.album.entity.safeTitle, 24)  }}</div>
+            <div class="artist">{{ tools.ellipsis(last_shared.album.entity.artist, 40) }}</div>
           </div>
         </div>
         <a class="btn btn_picks" href="{{ params.urls.front }}{{ path_for('show', { uid: last_shared.album.uid, type: "album" }) }}">{{ "picks.discover"|trans }}</a>
