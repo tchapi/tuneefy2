@@ -16,9 +16,9 @@
     <div id="todaysPickOverlay"></div>
 
     <div id="pickPager">
-      <div class="pickPagerItem Bcolor active"></div>
-      <div class="pickPagerItem Bcolor"></div>
-      <div class="pickPagerItem Bcolor"></div>
+      {% if last_shared.track %}<div class="pickPagerItem Bcolor"></div>{% endif %}
+      {% if last_shared.album %}<div class="pickPagerItem Bcolor"></div>{% endif %}
+      {% if most_viewed.entity %}<div class="pickPagerItem Bcolor"></div>{% endif %}
     </div>
 
     <div id="todaysPick">

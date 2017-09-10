@@ -13,6 +13,8 @@ api:
   use_oauth: false # for testing purposes
   front: http://tuneefy.com
   access_lifetime: 3600
+  bypassSecret: changeMe
+  bypassToken: null
   
 intents:
   lifetime: 600 # seconds

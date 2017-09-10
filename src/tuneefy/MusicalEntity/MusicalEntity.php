@@ -2,6 +2,9 @@
 
 namespace tuneefy\MusicalEntity;
 
+use tuneefy\MusicalEntity\Entities\AlbumEntity;
+use tuneefy\MusicalEntity\Entities\TrackEntity;
+
 abstract class MusicalEntity implements MusicalEntityInterface
 {
     const TYPE = 'musical_entity';
@@ -131,8 +134,12 @@ abstract class MusicalEntity implements MusicalEntityInterface
         // the strlen part prevents from matching a track named "cover" or "karaoke" only
         // We don't want to remove this from the title since we don't want to mix cover results from normal ones.
         $extra_info['is_cover'] = (
-            preg_match('/[\-\—\–\(\[].*(originally\sperformed|cover|tribute|karaoke)/iu', $str) === 1 &&
-            strlen($str) > 8
+            strlen($str) > 8 &&
+            (
+                (static::TYPE == TrackEntity::TYPE && preg_match('/[\-\—\–\(\[].*(originally\sperformed|cover|tribute|karaoke)/iu', $str) === 1) 
+                ||
+                (static::TYPE == AlbumEntity::TYPE && preg_match('/.*(originally\sperformed|cover(.*)(vol|sessions)|tribute|karaoke)/iu', $str) === 1)
+            )
         );
 
         // 2. It's a special remix ?

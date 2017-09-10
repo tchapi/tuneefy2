@@ -259,7 +259,7 @@ class DatabaseHandler
 
     public function getLastSharedItems(): array
     {
-        $statement = $this->connection->prepare('(SELECT `items`.`id`, `items`.`object` FROM `items` WHERE `track` IS NOT NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` DESC LIMIT 1) UNION (SELECT `items`.`id`, `object` FROM `items` WHERE `track` IS NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` DESC LIMIT 1)');
+        $statement = $this->connection->prepare('(SELECT "track" as `type`, `items`.`id`, `items`.`object` FROM `items` WHERE `track` IS NOT NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` DESC LIMIT 1) UNION (SELECT  "album" as `type`, `items`.`id`, `object` FROM `items` WHERE `track` IS NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` DESC LIMIT 1)');
 
         $res = $statement->execute();
 
@@ -272,13 +272,13 @@ class DatabaseHandler
         $result = [];
 
         if (count($rows) > 0) {
-            $result["track"] = [
+            $result[$rows[0]['type']] = [
                 "id" => $rows[0]['id'],
                 "entity" => unserialize($rows[0]['object'], ['allowed_classes' => [TrackEntity::class, AlbumEntity::class]]),
             ];
         }
         if (count($rows) > 1) {
-            $result["album"] = [
+            $result[$rows[1]['type']] = [
                 "id" => $rows[1]['id'],
                 "entity" => unserialize($rows[1]['object'], ['allowed_classes' => [AlbumEntity::class]]),
             ];

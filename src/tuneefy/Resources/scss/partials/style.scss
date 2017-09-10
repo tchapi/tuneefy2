@@ -709,7 +709,8 @@ li.tResult:last-child{
 }
 
 .tFeat{
-  color:#646464;
+  color:#888;
+  margin-top: 6px;
   font: lighter normal normal 14px/1em "Helvetica Neue", helvetica, arial, sans-serif;
 }
 
@@ -1507,3 +1508,18 @@ tr.platformsEnum{
 #share_plusone, #share_twitter, #share_facebook {
   float: left;
 }
+
+/* Extra */
+.extra {
+  height: 15px;
+  width: 15px;
+  opacity: 0.7;
+  display: inline-block;
+  background-size: contain;
+  margin-right: 1px;
+  vertical-align: text-bottom;
+}
+
+.extra.extra-cover { background-image: url('../img/extra_cover.png')}
+.extra.extra-acoustic { background-image: url('../img/extra_acoustic.png')}
+.extra.extra-remix { background-image: url('../img/extra_remix.png')}

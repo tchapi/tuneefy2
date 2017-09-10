@@ -17,6 +17,7 @@ use tuneefy\Controller\BackendController;
 use tuneefy\Controller\FrontendController;
 use tuneefy\DB\DatabaseHandler;
 use tuneefy\Platform\Platform;
+use tuneefy\Utils\ApiBypassMiddleware;
 use tuneefy\Utils\ContentTypeMiddleware;
 use tuneefy\Utils\CustomErrorHandler;
 use tuneefy\Utils\CustomNotFoundHandler;
@@ -178,6 +179,15 @@ class Application
         $container = $this->slimApp->getContainer();
         $container['params'] = $params;
 
+        /* Add session (for bypassing OAuth) */
+        $this->slimApp->add(new \Slim\Middleware\Session([
+          'name' => 'TUNEEFY_SESSION',
+          'autorefresh' => false,
+          'secure' => true,
+          'domain' => $params['website']['cookie_domain'],
+          'lifetime' => '5 minutes'
+        ]));
+
         /* Documentation for the API, has to go first */
         $this->slimApp->get('/api', FrontendController::class.':api');
 
@@ -204,6 +214,7 @@ class Application
 
             /* OAuth2 Middleware for the API */
             $api->add(new Middleware\Authorization($this->oauth2Server, $container));
+            $api->add(new ApiBypassMiddleware($params['api']));
 
             /* The token route for OAuth */
             $this->slimApp->post('/api/auth'.Routes\Token::ROUTE, new Routes\Token($this->oauth2Server))->setName('token');

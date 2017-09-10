@@ -12,7 +12,10 @@ CREATE TABLE `items` (
   `expires_at` datetime DEFAULT NULL,
   `signature` varchar(170) NOT NULL DEFAULT '',
   `client_id` varchar(80) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `track` (`track`),
+  KEY `album` (`album`),
+  KEY `artist` (`artist`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `stats_viewing` (
@@ -22,6 +25,7 @@ CREATE TABLE `stats_viewing` (
   `viewed_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `item_id` (`item_id`),
+  KEY `viewed_at` (`viewed_at`)
   CONSTRAINT `stats_viewing_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -33,6 +37,7 @@ CREATE TABLE `stats_listening` (
   `listened_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `item_id` (`item_id`),
+  KEY `platform` (`platform`),
   CONSTRAINT `stats_listening_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -50,7 +55,7 @@ CREATE TABLE oauth_clients (
   scope VARCHAR(100),
   user_id VARCHAR(80),
   CONSTRAINT clients_client_id_pk PRIMARY KEY (client_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE oauth_access_tokens (access_token VARCHAR(40) NOT NULL, client_id VARCHAR(80) NOT NULL, user_id VARCHAR(255), expires TIMESTAMP NOT NULL, scope VARCHAR(2000), CONSTRAINT access_token_pk PRIMARY KEY (access_token));
 CREATE TABLE oauth_authorization_codes (authorization_code VARCHAR(40) NOT NULL, client_id VARCHAR(80) NOT NULL, user_id VARCHAR(255), redirect_uri VARCHAR(2000), expires TIMESTAMP NOT NULL, scope VARCHAR(2000), CONSTRAINT auth_code_pk PRIMARY KEY (authorization_code));

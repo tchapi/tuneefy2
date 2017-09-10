@@ -29,6 +29,10 @@ class FrontendController
 
     public function home($request, $response)
     {
+        // Let's bypass OAuth by setting a session secret
+        $session = new \SlimSession\Helper;
+        $session->bypassSecret = $this->container->get('params')['api']['bypassSecret'];
+
         $default_platforms = implode(",", array_reduce($this->engine->getAllPlatforms(), function($carry, $e) {
             if ($e->isDefault()) {
                 $carry[] = $e->getTag();

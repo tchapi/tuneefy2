@@ -9,7 +9,19 @@
     </div>
     {% if type == "track" %}
         <div class="tTitle">
-            <div class="wrapper">{{ item.safe_title }}<div class="tFeat txtS">{{ item.feats }}</div></div>
+            <div class="wrapper">{{ item.safe_title }}
+                <div class="tFeat txtS">
+                {% if item.extra_info.is_cover or item.album.extra_info.is_cover %}
+                    <i class="extra extra-cover"></i> [Cover]&nbsp;
+                {% endif %}
+                {% if item.extra_info.is_remix %}
+                    <i class="extra extra-remix"></i> [Remix]&nbsp;
+                {% endif %}
+                {% if item.extra_info.acoustic %}
+                    <i class="extra extra-acoustic"></i> [Acoustic]&nbsp;
+                {% endif %}
+                </div>
+            </div>
         </div>
         <div class="tArtist txtS">
             <div class="wrapper">{{ item.album.artist }}</div>
@@ -19,7 +31,19 @@
         </div>
     {% else %}
         <div class="tAlbumA">
-            <div class="wrapper">{{ item.safe_title }}<div class="tFeat txtS">{{ item.feats }}</div></div>
+            <div class="wrapper">{{ item.safe_title }}
+                <div class="tFeat txtS">
+                {% if item.extra_info.is_cover %}
+                    <i class="extra extra-cover"></i> [Cover]&nbsp;
+                {% endif %}
+                {% if item.extra_info.is_remix %}
+                    <i class="extra extra-remix"></i> [Remix]&nbsp;
+                {% endif %}
+                {% if item.extra_info.acoustic %}
+                    <i class="extra extra-acoustic"></i> [Acoustic]&nbsp;
+                {% endif %}
+                </div>
+            </div>
         </div>
         <div class="tArtistA txtS">
             <div class="wrapper">{{ item.artist }}</div>

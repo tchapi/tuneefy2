@@ -23,7 +23,8 @@
         "symfony/twig-bridge": "^3.2",
         "tuupola/slim-basic-auth": "^2.2",
         "dflydev/fig-cookies": "^1.0",
-        "swiftmailer/swiftmailer": "^6.0"
+        "swiftmailer/swiftmailer": "^6.0",
+        "bryanjhv/slim-session": "~3.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.2",
