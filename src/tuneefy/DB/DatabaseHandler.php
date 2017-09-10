@@ -239,7 +239,7 @@ class DatabaseHandler
 
     public function getMostViewedItemThisWeek()
     {
-        $statement = $this->connection->prepare('SELECT `items`.`id`, `items`.`object`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` INNER JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` WHERE YEARWEEK(`stats_viewing`.`viewed_at`) = YEARWEEK(NOW()) GROUP BY `items`. `id` ORDER BY `count` DESC LIMIT 1');
+        $statement = $this->connection->prepare('SELECT `items`.`id`, `items`.`object`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` LEFT JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` WHERE `stats_viewing`.`viewed_at` > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY `items`. `id` ORDER BY `count` DESC LIMIT 1');
 
         $res = $statement->execute();
 
