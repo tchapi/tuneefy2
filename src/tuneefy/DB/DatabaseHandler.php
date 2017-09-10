@@ -211,7 +211,7 @@ class DatabaseHandler
     private function getMostViewed(string $flavour = null, string $grouping = "GROUP BY `stats_viewing`.`item_id`")
     {
         $limit = intval($this->parameters['website']['stats_limit']);
-        $statement = $this->connection->prepare('SELECT `items`.`id`, `items`.`track`, `items`.`album`, `items`.`artist`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` INNER JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` '.$flavour.' '.$grouping.' ORDER BY `count` DESC LIMIT '.$limit);
+        $statement = $this->connection->prepare('SELECT `items`.`id`, `items`.`track`, `items`.`album`, `items`.`artist`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` LEFT JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` '.$flavour.' '.$grouping.' ORDER BY `count` DESC LIMIT '.$limit);
 
         $res = $statement->execute();
 
