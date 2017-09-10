@@ -26,7 +26,7 @@ class Utils
 
     /*
       Sanitizes a string
-      TODO : add doc here
+      Removes any non Latin character by its equivalent in ASCII Latin
     */
     public static function sanitize(string $string): string
     {

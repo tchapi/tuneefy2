@@ -34,6 +34,7 @@ class DatabaseHandler
                 $this->parameters['database']['user'],
                 $this->parameters['database']['password']
             );
+            $this->connection->exec("SET NAMES 'utf8';");
         }
 
         return $this->connection;
