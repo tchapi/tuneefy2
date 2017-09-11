@@ -135,15 +135,8 @@
 <div id="results" class="wrap" style="display: none;">
   <div class="above">
       <div class="nbResults">{{ "results.results_found"|trans|raw }}</div>
-      <div class="pager">
-          <a rel="10" class="btn tPagerPrev" target="_top"><img src="/img/pagination_left.png" height="17" width="17"></a>
-          <a class="btn tPagerPage selected ins txtS2" target="_top">1</a>
-          <a rel="10" class="btn tPagerPage" target="_top">2</a>
-          <a rel="20" class="btn tPagerPage" target="_top">3</a>
-          <a rel="10" class="btn tPagerNext" target="_top"><img src="/img/pagination_right.png" height="17" width="17"></a>
-      </div>
   </div>
-
+  {% spaceless %}
   <ul>
       <li class="tHeader">
           <div class="tHeader_bf">&nbsp;</div>
@@ -156,16 +149,10 @@
           <div class="tHeader_af">&nbsp;</div>
       </li>
   </ul>
+  {% endspaceless %}
 
   <div class="below">
-      <a rel="undefined" class="btn backToTop" target="_top">{{ "back_to_top"|trans }}</a>
-      <div class="pager">
-          <a rel="10" class="btn tPagerPrev" target="_top"><img src="/img/pagination_left.png" height="17" width="17"></a>
-          <a class="btn tPagerPage selected ins txtS2" target="_top">1</a>
-          <a rel="10" class="btn tPagerPage" target="_top">2</a>
-          <a rel="20" class="btn tPagerPage" target="_top">3</a>
-          <a rel="10" class="btn tPagerNext" target="_top"><img src="/img/pagination_right.png" height="17" width="17"></a>
-      </div>
+      <a class="btn backToTop" href="#preSearch">{{ "back_to_top"|trans }}</a>
   </div>
 </div>
 

@@ -1,3 +1,4 @@
+{% spaceless %}
 <li class="tResult">
     <div class="tImage">
         {% if type == "track" %}
@@ -64,3 +65,4 @@
     </div>
     <a data-href="{{ linkIntent|replace({'%intent%': intent}) }}" title="{{ shareTip }}" class="btn tShare sharePage" target="_top">{{ share }}</a>
 </li>
+{% endspaceless %}

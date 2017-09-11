@@ -7,4 +7,11 @@ $(document).ready(function(){
       location.reload();
     });
 
+    $(document).on("click", ".backToTop", function(e) {
+        e.preventDefault();
+        $("html,body").animate({
+            scrollTop: 0
+        }, 1500);
+    });
+
 });
