@@ -18,8 +18,9 @@ class CustomNotFoundHandler
 
     private $renderer;
 
-    public function __construct(Twig $view, int $status, string $message)
+    public function __construct(Twig $view, bool $isApiRoute, int $status, string $message)
     {
+        $this->isApiRoute = $isApiRoute;
         $this->view = $view;
         $this->status = $status;
         $this->message = $message;
@@ -29,10 +30,8 @@ class CustomNotFoundHandler
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response)
     {
-        $isApiRoute = (substr($request->getUri()->getPath(), 0, 4) === 'api/');
-
         // Depending on the group we should render an error page or a structured response
-        if (!$isApiRoute) {
+        if (!$this->isApiRoute) {
             $response = new Response($this->status);
 
             return $this->view->render($response, '404.html.twig');

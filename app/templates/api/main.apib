@@ -1,10 +1,15 @@
 FORMAT: 1A
-HOST: https://api.tuneefy.com
+HOST: https://data.tuneefy.com
 
 The tuneefy API
 ===
 Welcome to the **tuneefy** API. This API provides access to the **tuneefy.com** service and exposes endpoints to search, aggregate and share music links.
 
+
+<br>
+## Version
+
+The current version is `v2`, which this documentation is for. The legacy API is available at https://api.tuneefy.com but will be deprecated soon. Next versions of the API will reside in the same host, and will be prefixed with, say `v3`, `v4`, .. for instance.
 
 <br>
 ## Notational Conventions
@@ -29,7 +34,7 @@ The API endpoints require an OAuth access token. The token is necessary to authe
 <br>
 ### OAuth
 
-The tuneefy API currently supports the [OAuth 2 draft](https://oauth.net/2/) specification. All OAuth2 requests MUST use the SSL endpoint available at https://api.tuneefy.com/.
+The tuneefy API currently supports the [OAuth 2 draft](https://oauth.net/2/) specification. All OAuth2 requests MUST use the SSL endpoint available at https://data.tuneefy.com/v2/'.
 
 OAuth 2.0 is a simple and secure authentication mechanism. It allows applications to acquire an access token for tuneefy via a POST request to a token endpoint. Authentication with OAuth can be accomplished in the following steps:
 
@@ -113,8 +118,6 @@ Alternatively, all API methods support an optional return format parameter `form
 ## Info
 The API does *not* support **JSONP**.
 :::
-
-
 
 
 
@@ -716,7 +719,7 @@ We use **curl** to retrieve the token and then perform a basic search.
 $key = 'administrator';
 $secret = 'password';
 
-$host = 'https://api.tuneefy.com';
+$host = 'https://data.tuneefy.com/v2';
 $tokenEndpoint = $host.'/auth/token';
 $searchEndpoint = $host.'/search/track/spotify?q=amon+tobin&limit=1';
 
@@ -761,12 +764,12 @@ We use **curl** and **jq** too in a very simple fashion.
 ```bash
 #!/bin/bash
 
-response=$(curl -X POST --silent -d client_id=administrator -d client_secret=password -d grant_type=client_credentials https://api.tuneefy.com/auth/token)
+response=$(curl -X POST --silent -d client_id=administrator -d client_secret=password -d grant_type=client_credentials https://data.tuneefy.com/v2/'auth/token)
 
 token=$(echo $response | jq --raw-output '.access_token')
 
 echo 🎉
-curl --header "Authorization: Bearer $token" "https://api.tuneefy.com/search/track/spotify?q=amon+tobin&limit=1"
+curl --header "Authorization: Bearer $token" "https://data.tuneefy.com/v2/'search/track/spotify?q=amon+tobin&limit=1"
 
 ```
 
@@ -781,8 +784,8 @@ var request = require('request');
 var key = 'administrator';
 var secret = 'password';
 
-var tokenEndpoint = 'https://api.tuneefy.com/auth/token';
-var searchEndpoint = 'https://api.tuneefy.com/search/track/spotify?q=amon+tobin&limit=1';
+var tokenEndpoint = 'https://data.tuneefy.com/v2/'auth/token';
+var searchEndpoint = 'https://data.tuneefy.com/v2/'search/track/spotify?q=amon+tobin&limit=1';
 
 // 1. Request token
 request.post({
@@ -828,8 +831,8 @@ import requests, json
 key = 'administrator'
 secret = 'password'
 
-tokenEndpoint = 'https://api.tuneefy.com/auth/token'
-searchEndpoint = 'https://api.tuneefy.com/search/track/spotify?q=amon+tobin&limit=1'
+tokenEndpoint = 'https://data.tuneefy.com/v2/'auth/token'
+searchEndpoint = 'https://data.tuneefy.com/v2/'search/track/spotify?q=amon+tobin&limit=1'
 
 # 1. Request token
 payload = {'grant_type': 'client_credentials', 'client_id': key, 'client_secret': secret}

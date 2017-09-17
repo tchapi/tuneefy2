@@ -126,7 +126,12 @@ $(document).ready(function(){
         var params = {q: queryString, aggressive: options.strictMode, include: options.selectedPlatforms, limit: (options.limit?options.limit:10)};
         url = url + "?" + $.param(params);
 
-        var jqxhr = $.get(url)
+        var jqxhr = $.get({
+            url: url,
+            crossDomain: true,
+            beforeSend: function(xhr){xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');},
+            xhrFields: { withCredentials: true }
+            })
           .done(function(data) {
             if (data.errors && data.errors.length > 0) {
                 for (var i = 0; i < data.errors.length; i++) {
@@ -347,7 +352,12 @@ $(document).ready(function(){
     /******* SHARE PAGE *******/
     $(document).on("click", '.sharePage', function() {
         var intentUrl = $(this).attr('data-href');
-        var jqxhr = $.get(intentUrl)
+        var jqxhr = $.get({
+            url: intentUrl,
+            crossDomain: true,
+            beforeSend: function(xhr){xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');},
+            xhrFields: { withCredentials: true }
+            })
           .done(function(data) {
             if (data.link) {
                 window.location.href = data.link;

@@ -4,5 +4,5 @@
 
   $app = new tuneefy\Application();
   $app->configure();
-  $app->setupWebsiteRoutes();
+  $app->setupV2ApiRoutes();
   $app->run();

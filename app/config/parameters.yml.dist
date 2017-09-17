@@ -11,7 +11,7 @@ website:
 
 api:
   use_oauth: false # for testing purposes
-  front: http://tuneefy.com
+  front: http://data.tuneefy.com
   access_lifetime: 3600
   bypassSecret: changeMe
   bypassToken: null

@@ -30,31 +30,26 @@ class ContentTypeMiddleware
          */
         $response = $next($request, $response);
 
-        $isApiRoute = (preg_match("/^\/?api\//", $request->getUri()->getPath()));
-
-        if ($isApiRoute) {
-            $renderer = new Renderer();
-            if (401 === $response->getStatusCode()) {
-                $response = $renderer->render($request, $response, [
-                    'errors' => [ApiController::ERRORS['NOT_AUTHORIZED']],
-                ]);
-            } elseif (4 === intval($response->getStatusCode() / 100)) {
-                $response = $renderer->render($request, $response, [
-                    'errors' => [ApiController::ERRORS[$response->getBody()->__toString()]],
-                ]);
-            } elseif (5 === intval($response->getStatusCode() / 100)) {
-                $response = $renderer->render($request, $response, [
-                    'errors' => [ApiController::ERRORS['GENERAL_ERROR']],
-                ]);
-            }
-        } else {
-            if (4 === intval($response->getStatusCode() / 100)) {
-                $handler = $this->container['notFoundHandler'];
-
-                return $handler($request, $response);
-            }
+        $renderer = new Renderer();
+        if (401 === $response->getStatusCode()) {
+            $response = $renderer->render($request, $response, [
+                'errors' => [ApiController::ERRORS['NOT_AUTHORIZED']],
+            ]);
+        } elseif (4 === intval($response->getStatusCode() / 100) &&
+                isset(ApiController::ERRORS[$response->getBody()->__toString()])) {
+            $response = $renderer->render($request, $response, [
+                'errors' => [ApiController::ERRORS[$response->getBody()->__toString()]],
+            ]);
+        } elseif (4 === intval($response->getStatusCode() / 100)) {
+            $response = $renderer->render($request, $response, [
+                'errors' => [ApiController::ERRORS['NOT_FOUND']],
+            ]);
+        } elseif (5 === intval($response->getStatusCode() / 100)) {
+            $response = $renderer->render($request, $response, [
+                'errors' => [ApiController::ERRORS['GENERAL_ERROR']],
+            ]);
         }
-
+      
         return $response;
     }
 
