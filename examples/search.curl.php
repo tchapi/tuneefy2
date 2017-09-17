@@ -3,8 +3,8 @@
 $key = 'administrator';
 $secret = 'password';
 
-$tokenEndpoint = 'https://api.tuneefy.com/auth/token';
-$searchEndpoint = 'https://api.tuneefy.com/search/track/spotify?q=amon+tobin&limit=1';
+$tokenEndpoint = 'https://data.tuneefy.com/v2/auth/token';
+$searchEndpoint = 'https://data.tuneefy.com/v2/search/track/spotify?q=amon+tobin&limit=1';
 
 // 1. Request token
 $tk = curl_init($tokenEndpoint);

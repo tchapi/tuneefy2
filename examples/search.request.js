@@ -3,8 +3,8 @@ var request = require('request');
 var key = 'administrator';
 var secret = 'password';
 
-var tokenEndpoint = 'https://api.tuneefy.com/auth/token';
-var searchEndpoint = 'https://api.tuneefy.com/search/track/spotify?q=amon+tobin&limit=1';
+var tokenEndpoint = 'https://data.tuneefy.com/v2/auth/token';
+var searchEndpoint = 'https://data.tuneefy.com/v2/search/track/spotify?q=amon+tobin&limit=1';
 
 // 1. Request token
 request.post({
