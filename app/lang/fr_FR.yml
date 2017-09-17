@@ -48,7 +48,7 @@ search:
   result_found_widget: "Ça devrait être ce que vous cherchez .."
   merge_label: "Grouper les titres identiques venant d'albums divers"
   search_button: "Chercher"
-  error_message: L'API n'a pas répondu. Elle est peut-être inaccessible pour le moment, veuillez réessayer dans quelques instants."
+  error_message: "L'API n'a pas répondu. Elle est peut-être inaccessible pour le moment, veuillez réessayer dans quelques instants."
   _tracks: "chansons"
   _albums: "albums"
   newImage: "nouveau.png"
