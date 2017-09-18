@@ -69,9 +69,9 @@ help:
 
 # RESULTS
 results:
-  results_found: "We found <span class='color' id='results_number'>%number%</span> %type%(s) for your search &laquo; <span class='color' id='results_query'>%query%</span> &raquo;"
+  results_found: "Nous avons trouvé <span class='color' id='results_number'>%number%</span> résultats pour votre recherche &laquo; <span class='color' id='results_query'>%query%</span> &raquo;"
   result_found_widget: "Is that the track you're looking for ?"
-  search_title: "Your search for %query%"
+  search_title: "Votre recherche pour %query%"
   various_albums: "(Plusieurs albums)"
   share: "Partager"
   share_tip: "Obtenez tous les liens pour partager '%name%'!"
