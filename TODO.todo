@@ -1,24 +1,13 @@
 API :
 
- ☐ Implémenter une limite pour l'API
+ ☐ Implémenter une limite pour l'API (temps / requetes par heure / nb total)
 
-Frontend :
+Dashboard :
+  ☐ API Usage par client
+    -chart :
+SELECT  DATE(created_at) day, COUNT(id) count
+FROM    items
+WHERE client_id = 'administrator'
+GROUP   BY  DATE(created_at)
 
- ✔ last share (x2) sur la home ? @done (17-09-05 22:54)
- ✔ migrate : get the links from the previous table ! @done (17-09-09 13:24)
- ✔ migrate : stats de viewing ? = copier la table et renommer date → viewed_at @done (17-09-09 13:51)
- ✔ add referer pour les stats ? @done (17-09-10 17:45)
- ✔ feats a rajouter également dans la page result.html.twig @done (17-09-11 00:10)
- ✔ null -> various albums sur la page show pour albums et artists aussi I ugess @done (17-09-10 18:23)
- ☐ pagination sur la home => a virer ? faire du pur JS hide / show et faire un get de limit30 ou 50 des la premiere requete ?
- ✔ traductions françaises fr_to_migrate -> fr_FR @done (17-09-05 23:35)
- ✔ secure API depuis tuneefy.com sans token / oauth ? Comment faire ? @done (17-09-10 23:10)
- ✔ bullets pour les picks + pas d'anim si only one @done (17-09-10 23:15)
- ✔ /img/favicon not found ? @done (17-09-11 00:25)
-
-A tester en prod :
-
- ✔ envoi email @done (17-09-09 17:29)
-
- Process
- - remettre admin_secure à true
+ ☐  image de meilleure qualité pour chaque plateforme ?

@@ -72,7 +72,7 @@ There should be 36 tests containing 673 assertions.
 
 The API endpoints require an OAuth access token. The token is necessary to authenticate **all** requests to the API.
 
-The tuneefy API currently supports the [OAuth 2 draft](https://oauth.net/2/) specification. All OAuth2 requests MUST use the SSL endpoint available at https://api.tuneefy.com/.
+The tuneefy API currently supports the [OAuth 2 draft](https://oauth.net/2/) specification. All OAuth2 requests MUST use the SSL endpoint available at https://data.tuneefy.com/.
 
 OAuth 2.0 is a simple and secure authentication mechanism. It allows applications to acquire an access token for tuneefy via a POST request to a token endpoint. Authentication with OAuth can be accomplished in the following steps:
 
@@ -91,7 +91,7 @@ Limits are placed on the number of API requests you may make using your API key.
 
 #### Full documentation
 
-The full documentation is available at https://api.tuneefy.com. An API blueprint is also available [here](https://github.com/tchapi/tuneefy2/blob/master/app/templates/api/main.apib) — use your preferred renderer to build it. We use Aglio.
+The full documentation is available at https://data.tuneefy.com. An API blueprint is also available [here](https://github.com/tchapi/tuneefy2/blob/master/app/templates/api/main.apib) — use your preferred renderer to build it. We use Aglio.
 
 
 - - -
