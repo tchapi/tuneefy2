@@ -63,13 +63,13 @@
         <h2 class="pickTitle color">{{ "picks.mostViewed"|trans }}</h2>
         <div class="pickContent">
           <div class="cover">
-            <img src="{{ most_viewed.entity.trackTitle?(most_viewed.entity.getAlbumPicture?:'/img/nothumb_track.png'):(most_viewed.entity.getPicture?:'/img/nothumb_album.png') }}" width="50" height="50" />
+            <img src="{{ most_viewed.entity.title?(most_viewed.entity.getAlbumPicture?:'/img/nothumb_track.png'):(most_viewed.entity.getPicture?:'/img/nothumb_album.png') }}" width="50" height="50" />
             <span class="coverlay"></span>
           </div>
           <div class="info">
-            <div class="title">{{ most_viewed.entity.trackTitle?most_viewed.entity.safeTrackTitle:most_viewed.entity.safeTitle }}</div>
+            <div class="title">{{ most_viewed.entity.title?most_viewed.entity.safeTitle:most_viewed.entity.album.safeTitle }}</div>
             <div class="artist">{{ most_viewed.entity.artist }}</div>
-            {% if most_viewed.trackTitle %}<div class="album">{{ most_viewed.album.entity.safeTitle }}</div>{% endif %}
+            {% if most_viewed.entity.title %}<div class="album">{{ most_viewed.entity.album.safeTitle }}</div>{% endif %}
           </div>
         </div>
         <a class="btn btn_picks" href="{{ params.urls.front }}{{ path_for('show', { uid: most_viewed.uid, type: "mixed" }) }}">{{ "picks.discover"|trans }}</a>
