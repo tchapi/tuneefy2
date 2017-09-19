@@ -196,10 +196,11 @@ class Application
         };
 
         /* Documentation for the API, has to go first */
-        $this->slimApp->get('/', FrontendController::class.':api');
+        $this->slimApp->get('/', FrontendController::class.':api')->setName('api');
 
         /* The API group, behind an (optional) OAuth2 Server */
         $api = $this->slimApp->group('/v2', function () {
+            $this->get('/', ApiController::class.':redirect');
             $this->get('/platforms', ApiController::class.':getAllPlatforms');
             $this->get('/platform/{tag}', ApiController::class.':getPlatform');
             $this->get('/lookup', ApiController::class.':lookup');

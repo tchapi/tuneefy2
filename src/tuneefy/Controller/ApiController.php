@@ -53,6 +53,12 @@ class ApiController
         $this->container = $container;
     }
 
+    public function redirect($request, $response, $args)
+    {
+        $route = $this->container->get('router')->pathFor('api');
+        return $response->withStatus(301)->withHeader('Location', $route);
+    }
+
     public function getAllPlatforms($request, $response, $args)
     {
         $type = strtolower($request->getQueryParam('type'));
