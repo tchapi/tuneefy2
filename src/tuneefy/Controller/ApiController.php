@@ -56,6 +56,7 @@ class ApiController
     public function redirect($request, $response, $args)
     {
         $route = $this->container->get('router')->pathFor('api');
+
         return $response->withStatus(301)->withHeader('Location', $route);
     }
 
@@ -128,7 +129,7 @@ class ApiController
         // From the try/catch up there
         if ($result === false) {
             $data = ['errors' => [self::ERRORS['FETCH_PROBLEM']]];
-        // If we have a result
+            // If we have a result
         } elseif (isset($result['result'])) {
             if ($result['result']->getMusicalEntity()) {
                 $data = [
@@ -140,7 +141,7 @@ class ApiController
                     'result' => $result['result']->toArray(),
                 ];
             }
-        // Result is only an error message
+            // Result is only an error message
         } else {
             $data = $result;
         }
@@ -188,7 +189,7 @@ class ApiController
         // From the try/catch up there
         if ($result === false) {
             $data = ['errors' => [self::ERRORS['FETCH_PROBLEM']]];
-        // If we have a result
+            // If we have a result
         } elseif (isset($result['results'])) {
             if (count($result['results']) > 0) {
                 $data = [
@@ -197,7 +198,7 @@ class ApiController
             } else {
                 $data = ['errors' => [self::ERRORS['NO_MATCH']]];
             }
-        // Result is only an error message
+            // Result is only an error message
         } else {
             $data = $result;
         }
@@ -233,7 +234,7 @@ class ApiController
 
         $platforms = $this->engine->getPlatformsByTags(explode(',', $include));
         if ($include === null || $include === '' || $platforms === null) { // Silently fails if a name is invalid, that's ok
-           $platforms = $this->engine->getAllPlatforms();
+            $platforms = $this->engine->getAllPlatforms();
         }
 
         try {
@@ -245,7 +246,7 @@ class ApiController
         // From the try/catch up there
         if ($result === false) {
             $data = ['errors' => [self::ERRORS['FETCH_PROBLEMS']]];
-        // If we have a result
+            // If we have a result
         } elseif (isset($result['results'])) {
             if (count($result['results']) > 0) {
                 $data = [
@@ -255,7 +256,7 @@ class ApiController
             } else {
                 $data = ['errors' => [self::ERRORS['NO_MATCH']]];
             }
-        // Result is only an error message
+            // Result is only an error message
         } else {
             $data = $result;
         }

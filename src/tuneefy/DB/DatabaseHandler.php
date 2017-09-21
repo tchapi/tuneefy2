@@ -2,9 +2,9 @@
 
 namespace tuneefy\DB;
 
-use tuneefy\MusicalEntity\MusicalEntityInterface;
-use tuneefy\MusicalEntity\Entities\TrackEntity;
 use tuneefy\MusicalEntity\Entities\AlbumEntity;
+use tuneefy\MusicalEntity\Entities\TrackEntity;
+use tuneefy\MusicalEntity\MusicalEntityInterface;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Utils\Utils;
 
@@ -188,7 +188,7 @@ class DatabaseHandler
 
         $res = $statement->execute([
           ':item_id' => $item_id,
-          ':referer' => $_SERVER["HTTP_REFERER"],
+          ':referer' => $_SERVER['HTTP_REFERER'],
         ]);
 
         if ($res === false) {
@@ -209,7 +209,7 @@ class DatabaseHandler
         return $statement->fetchAll(\PDO::FETCH_UNIQUE);
     }
 
-    private function getMostViewed(string $flavour = null, string $grouping = "GROUP BY `stats_viewing`.`item_id`")
+    private function getMostViewed(string $flavour = null, string $grouping = 'GROUP BY `stats_viewing`.`item_id`')
     {
         $limit = intval($this->parameters['website']['stats_limit']);
         $statement = $this->connection->prepare('SELECT `items`.`id`, `items`.`track`, `items`.`album`, `items`.`artist`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` LEFT JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` '.$flavour.' '.$grouping.' ORDER BY `count` DESC LIMIT '.$limit);
@@ -235,7 +235,7 @@ class DatabaseHandler
 
     public function getMostViewedArtists()
     {
-        return $this->getMostViewed(null, "GROUP BY UPPER(`items`.`artist`)");
+        return $this->getMostViewed(null, 'GROUP BY UPPER(`items`.`artist`)');
     }
 
     public function getMostViewedItemThisWeek()
@@ -251,8 +251,8 @@ class DatabaseHandler
         $row = $statement->fetch(\PDO::FETCH_ASSOC);
 
         $result = [
-            "id" => $row['id'],
-            "entity" => unserialize($row['object'], ['allowed_classes' => [TrackEntity::class, AlbumEntity::class]]),
+            'id' => $row['id'],
+            'entity' => unserialize($row['object'], ['allowed_classes' => [TrackEntity::class, AlbumEntity::class]]),
         ];
 
         return $result;
@@ -274,14 +274,14 @@ class DatabaseHandler
 
         if (count($rows) > 0) {
             $result[$rows[0]['type']] = [
-                "id" => $rows[0]['id'],
-                "entity" => unserialize($rows[0]['object'], ['allowed_classes' => [TrackEntity::class, AlbumEntity::class]]),
+                'id' => $rows[0]['id'],
+                'entity' => unserialize($rows[0]['object'], ['allowed_classes' => [TrackEntity::class, AlbumEntity::class]]),
             ];
         }
         if (count($rows) > 1) {
             $result[$rows[1]['type']] = [
-                "id" => $rows[1]['id'],
-                "entity" => unserialize($rows[1]['object'], ['allowed_classes' => [AlbumEntity::class]]),
+                'id' => $rows[1]['id'],
+                'entity' => unserialize($rows[1]['object'], ['allowed_classes' => [AlbumEntity::class]]),
             ];
         }
 
@@ -304,8 +304,7 @@ class DatabaseHandler
 
         $row = $statement->fetch(\PDO::FETCH_ASSOC);
 
-        return ['total' => $row["total"], 'tracks' => $row["tracks"], 'intents' => $row["intents"]];
-        
+        return ['total' => $row['total'], 'tracks' => $row['tracks'], 'intents' => $row['intents']];
     }
 
     public function getApiClients()
@@ -344,5 +343,4 @@ class DatabaseHandler
 
         return true;
     }
-
 }

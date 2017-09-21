@@ -4,8 +4,8 @@ namespace tuneefy\Controller;
 
 use Interop\Container\ContainerInterface;
 use tuneefy\DB\DatabaseHandler;
-use tuneefy\MusicalEntity\Entities\TrackEntity;
 use tuneefy\MusicalEntity\Entities\AlbumEntity;
+use tuneefy\MusicalEntity\Entities\TrackEntity;
 use tuneefy\Platform\PlatformResult;
 
 class BackendController
@@ -22,9 +22,10 @@ class BackendController
     public function dashboard($request, $response)
     {
         $db = DatabaseHandler::getInstance(null);
+
         return $this->container->get('view')->render($response, 'admin/dashboard.html.twig', [
             'params' => $this->container->get('params'),
-            "stats" => $db->getItemsStats(),
+            'stats' => $db->getItemsStats(),
         ]);
     }
 
@@ -35,7 +36,7 @@ class BackendController
 
         return $this->container->get('view')->render($response, 'admin/clients.html.twig', [
             'params' => $this->container->get('params'),
-            "clients" => $clients,
+            'clients' => $clients,
         ]);
     }
 
@@ -51,8 +52,9 @@ class BackendController
                 $request->getParsedBodyParam('email'),
                 $request->getParsedBodyParam('url')
             );
-            
-            $uri = $request->getUri()->withPath($this->container->get('router')->pathFor('admin_clients'));    
+
+            $uri = $request->getUri()->withPath($this->container->get('router')->pathFor('admin_clients'));
+
             return $response->withRedirect($uri);
         }
 
@@ -75,14 +77,13 @@ class BackendController
         if ($res === false) {
             throw new \Exception('Could not truncate table : '.$statement->errorInfo()[2]);
         }
-        
+
         $statement = $connection->prepare('ALTER TABLE `items` AUTO_INCREMENT=1; SET FOREIGN_KEY_CHECKS=1;');
         $res = $statement->execute();
 
         if ($res === false) {
             throw new \Exception('Could not reset auto increment : '.$statement->errorInfo()[2]);
         }
-        
 
         // Count items in DB
         $statement = $connection->prepare('SELECT COUNT(`id`) FROM `items_legacy`;');
@@ -93,16 +94,16 @@ class BackendController
         }
 
         $total = $statement->fetchColumn();
-        $body->write("Got ".$total." legacy items to migrate\n");
+        $body->write('Got '.$total." legacy items to migrate\n");
 
         $count = $total / 100;
 
         // Get items 100 by 100
-        for ($i=0; $i < $count; $i++) { 
-            # fetch 100 items
-            $body->write(" * Getting items [".($i*100)." → ".(($i+1)*100)."] ... ");
+        for ($i = 0; $i < $count; ++$i) {
+            // fetch 100 items
+            $body->write(' * Getting items ['.($i * 100).' → '.(($i + 1) * 100).'] ... ');
 
-            $statement = $connection->prepare('SELECT * FROM `items_legacy` LIMIT '.($i*100).',100;');
+            $statement = $connection->prepare('SELECT * FROM `items_legacy` LIMIT '.($i * 100).',100;');
             $res = $statement->execute();
             $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -115,22 +116,38 @@ class BackendController
                     $entity = new AlbumEntity($row['album'], $row['artist'], $row['image']);
                 }
 
-                if ($row['link_DEEZER'] != null) { $entity->addLink('deezer', $row['link_DEEZER']); }
-                if ($row['link_SPOTIFY'] != null) { $entity->addLink('spotify', $row['link_SPOTIFY']); }
-                if ($row['link_LASTFM'] != null) { $entity->addLink('lastfm', $row['link_LASTFM']); }
-                if ($row['link_SOUNDCLOUD'] != null) { $entity->addLink('soundcloud', $row['link_SOUNDCLOUD']); }
-                if ($row['link_YOUTUBE'] != null) { $entity->addLink('youtube', $row['link_YOUTUBE']); }
-                if ($row['link_MIXCLOUD'] != null) { $entity->addLink('mixcloud', $row['link_MIXCLOUD']); }
-                if ($row['link_ITUNES'] != null) { $entity->addLink('itunes', $row['link_ITUNES']); }
-                if ($row['link_QOBUZ'] != null) { $entity->addLink('qobuz', $row['link_QOBUZ']); }
+                if ($row['link_DEEZER'] != null) {
+                    $entity->addLink('deezer', $row['link_DEEZER']);
+                }
+                if ($row['link_SPOTIFY'] != null) {
+                    $entity->addLink('spotify', $row['link_SPOTIFY']);
+                }
+                if ($row['link_LASTFM'] != null) {
+                    $entity->addLink('lastfm', $row['link_LASTFM']);
+                }
+                if ($row['link_SOUNDCLOUD'] != null) {
+                    $entity->addLink('soundcloud', $row['link_SOUNDCLOUD']);
+                }
+                if ($row['link_YOUTUBE'] != null) {
+                    $entity->addLink('youtube', $row['link_YOUTUBE']);
+                }
+                if ($row['link_MIXCLOUD'] != null) {
+                    $entity->addLink('mixcloud', $row['link_MIXCLOUD']);
+                }
+                if ($row['link_ITUNES'] != null) {
+                    $entity->addLink('itunes', $row['link_ITUNES']);
+                }
+                if ($row['link_QOBUZ'] != null) {
+                    $entity->addLink('qobuz', $row['link_QOBUZ']);
+                }
 
                 $platformResult = new PlatformResult([], $entity);
-                
+
                 $statement = $connection->prepare('INSERT INTO `items` (`id`, `intent`, `object`, `track`, `album`, `artist`, `created_at`, `expires_at`, `signature`, `client_id`) VALUES (:id, :intent, :object, :track, :album, :artist, :date, :expires, :signature, :client_id)');
 
                 $entityAsString = serialize($entity);
                 $expires = new \DateTime('now');
-                $expires->add(new \DateInterval('PT'. $this->container->get('params')['intents']['lifetime'].'S'));
+                $expires->add(new \DateInterval('PT'.$this->container->get('params')['intents']['lifetime'].'S'));
                 $res = $statement->execute([
                   ':id' => $row['id'],
                   ':intent' => null,
@@ -141,7 +158,7 @@ class BackendController
                   ':date' => $row['date'],
                   ':expires' => null,
                   ':signature' => hash_hmac('md5', $entityAsString, $this->container->get('params')['intents']['secret']),
-                  ':client_id' => "legacy",
+                  ':client_id' => 'legacy',
                 ]);
 
                 if ($res === false) {
@@ -154,7 +171,7 @@ class BackendController
 
         // Return a response
         $body = $response->getBody();
-        $body->write("OK");
+        $body->write('OK');
 
         return $response;
     }

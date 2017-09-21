@@ -25,7 +25,7 @@ use tuneefy\Utils\Utils;
 
 class Application
 {
-    const COOKIE_LANG = "tuneefyLocale";
+    const COOKIE_LANG = 'tuneefyLocale';
 
     const PATHS = [
         'parameters' => '/../../app/config/parameters.yml',
@@ -59,14 +59,16 @@ class Application
 
             // First param is the "default language" to use.
             if (isset($_COOKIE[self::COOKIE_LANG])) {
-                $locale = $_COOKIE[self::COOKIE_LANG]; 
-            } else if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-                $prefLocales = array_reduce(explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']), function ($res, $el) { 
-                    list($l, $q) = array_merge(explode(';q=', $el), [1]); $res[$l] = (float) $q;
+                $locale = $_COOKIE[self::COOKIE_LANG];
+            } elseif (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+                $prefLocales = array_reduce(explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']), function ($res, $el) {
+                    list($l, $q) = array_merge(explode(';q=', $el), [1]);
+                    $res[$l] = (float) $q;
+
                     return $res;
                 }, []);
                 asort($prefLocales);
-        
+
                 $locale = array_reduce(array_keys($prefLocales), function ($default, $prefLocale) {
                     return in_array($prefLocale, ['en_US', 'fr_FR']) ? $prefLocale : $default;
                 }, 'en_US');
@@ -75,11 +77,11 @@ class Application
             }
 
             $translator = new Translator($locale);
-            $view->getEnvironment()->addGlobal("locale", $locale);
+            $view->getEnvironment()->addGlobal('locale', $locale);
 
             // If we want to add specific data to the context, it's here
-            $view->getEnvironment()->addGlobal("context", [
-                "slack" => isset($_SERVER['HTTP_USER_AGENT'])?(preg_match('/Slackbot/', $_SERVER['HTTP_USER_AGENT']) !== 0):false,  // ** Detect Slack
+            $view->getEnvironment()->addGlobal('context', [
+                'slack' => isset($_SERVER['HTTP_USER_AGENT']) ? (preg_match('/Slackbot/', $_SERVER['HTTP_USER_AGENT']) !== 0) : false,  // ** Detect Slack
             ]);
 
             // Set a fallback language incase you don't have a translation in the default language
@@ -122,6 +124,7 @@ class Application
     public function get(string $key)
     {
         $container = $this->slimApp->getContainer();
+
         return $container[$key];
     }
 
@@ -179,9 +182,8 @@ class Application
           'autorefresh' => true,
           'secure' => false,
           'domain' => $this->params['website']['cookie_domain'],
-          'lifetime' => '5 minutes'
+          'lifetime' => '5 minutes',
         ]));
-
     }
 
     public function setupV2ApiRoutes()

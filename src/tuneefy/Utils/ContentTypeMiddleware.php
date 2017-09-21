@@ -49,7 +49,7 @@ class ContentTypeMiddleware
                 'errors' => [ApiController::ERRORS['GENERAL_ERROR']],
             ]);
         }
-      
+
         return $response;
     }
 

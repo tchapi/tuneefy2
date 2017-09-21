@@ -594,19 +594,19 @@ final class ApiTest extends TestCase
                             'https://www.mixcloud.com/LeFtOoO/709-season-finale-w-niveau4-lor-du-commun-darrell-cole-new-spaven-mura-masa-budgie/',
                         ],
                     ],
-                    'safe_title' => "#709",
+                    'safe_title' => '#709',
                     'extra_info' => [
                         'is_cover' => false,
                         'is_remix' => false,
                         'acoustic' => false,
                         'context' => [
-                            'Season  Finale w/ #Niveau4 | L\'Or Du Commun | Darrell Cole | New Spaven | Mura Masa | Budgie'
+                            'Season  Finale w/ #Niveau4 | L\'Or Du Commun | Darrell Cole | New Spaven | Mura Masa | Budgie',
                         ],
                     ],
                 ],
                 'query_words' => [
                     'LeFtO',
-                    "#709",
+                    '#709',
                 ],
             ],
         ],

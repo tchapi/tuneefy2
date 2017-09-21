@@ -346,7 +346,7 @@ abstract class Platform implements GeneralPlatformInterface
             $response = $object['platform']->postProcessResult($response);
 
             if ($response === null) {
-                $errors[] =  ["FETCH_PROBLEM" => (new PlatformException($object['platform']))->getMessage()];
+                $errors[] = ['FETCH_PROBLEM' => (new PlatformException($object['platform']))->getMessage()];
                 continue;
             }
 

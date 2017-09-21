@@ -30,13 +30,14 @@ class FrontendController
     public function home($request, $response)
     {
         // Let's bypass OAuth by setting a session secret
-        $session = new \SlimSession\Helper;
+        $session = new \SlimSession\Helper();
         $session->bypassSecret = $this->container->get('params')['api']['bypassSecret'];
 
-        $default_platforms = implode(",", array_reduce($this->engine->getAllPlatforms(), function($carry, $e) {
+        $default_platforms = implode(',', array_reduce($this->engine->getAllPlatforms(), function ($carry, $e) {
             if ($e->isDefault()) {
                 $carry[] = $e->getTag();
             }
+
             return $carry;
         }, []));
 
@@ -55,7 +56,7 @@ class FrontendController
             $lastShared['album']['uid'] = Utils::toUId($lastShared['album']['id']);
         }
 
-        if ($request->getQueryParam('widget') == "42") {
+        if ($request->getQueryParam('widget') == '42') {
             return $this->container->get('view')->render($response, '_widget.html.twig', [
                 'query' => $request->getQueryParam('q'),
                 'params' => $this->container->get('params'),
@@ -188,7 +189,7 @@ class FrontendController
                 'params' => $this->container->get('params'),
                 'uid' => $args['uid'],
                 'item' => $item,
-                'embed' => ($request->getQueryParam('embed') !== NULL),
+                'embed' => ($request->getQueryParam('embed') !== null),
             ]);
         } else {
             return $response->withStatus(404);

@@ -72,23 +72,23 @@ class AlbumEntity extends MusicalEntity
         return $result;
     }
 
-  /*
-    Strips unnecessary words from an album title
-    And extracts extra info
-  */
-  public function introspect(): MusicalEntityInterface
-  {
-      if ($this->introspected === false) {
-          // https://secure.php.net/manual/en/function.extract.php
-          extract(parent::parse($this->title));
-          $this->safe_title = $safe_title;
-          $this->extra_info = $extra_info;
+    /*
+      Strips unnecessary words from an album title
+      And extracts extra info
+    */
+    public function introspect(): MusicalEntityInterface
+    {
+        if ($this->introspected === false) {
+            // https://secure.php.net/manual/en/function.extract.php
+            extract(parent::parse($this->title));
+            $this->safe_title = $safe_title;
+            $this->extra_info = $extra_info;
 
-          $this->introspected = true;
-      }
+            $this->introspected = true;
+        }
 
-      return $this;
-  }
+        return $this;
+    }
 
     public function setSafeTitle(string $safe_title): AlbumEntity
     {

@@ -2,8 +2,6 @@
 
 namespace tuneefy\ApiClientEntity;
 
-use tuneefy\Utils\Utils;
-
 class ApiClientEntity
 {
     private $clientId;
@@ -24,6 +22,7 @@ class ApiClientEntity
     public function setName(string $name): this
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -35,6 +34,7 @@ class ApiClientEntity
     public function setEmail(string $email): this
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -46,6 +46,7 @@ class ApiClientEntity
     public function setUrl(string $url): this
     {
         $this->url = $url;
+
         return $this;
     }
 
@@ -57,6 +58,7 @@ class ApiClientEntity
     public function setDescription(string $description): this
     {
         $this->description = $description;
+
         return $this;
     }
 
@@ -68,6 +70,7 @@ class ApiClientEntity
     public function setCreatedAt(\DateTime $createdAt): this
     {
         $this->createdAt = clone $createdAt;
+
         return $this;
     }
 }

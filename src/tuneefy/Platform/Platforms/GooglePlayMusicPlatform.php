@@ -63,17 +63,16 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
     }
 
     /**
-        This function is a stub, it's never called anywhere, it's just here to indicate
-        how to retrieve a master token easily.
-    */
+     how to retrieve a master token easily.
+     */
     private function getMasterToken(): array
     {
         // From https://github.com/jamon/playmusic/blob/master/play.js
 
-        // Set your Google email and password, and make sure that 
+        // Set your Google email and password, and make sure that
         // you have set the key (generally, a MAC address without all the ':')
-        $YOUR_EMAIL = "";
-        $YOUR_PASSWORD = "";
+        $YOUR_EMAIL = '';
+        $YOUR_PASSWORD = '';
 
         $serviceauth = 'https://android.clients.google.com/auth';
 
@@ -88,8 +87,8 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
             'operatorCountry' => 'us',
             'lang' => 'en_US',
             'sdk_version' => '17',
-            "Email" => $YOUR_EMAIL,
-            "Passwd" => $YOUR_PASSWORD,
+            'Email' => $YOUR_EMAIL,
+            'Passwd' => $YOUR_PASSWORD,
         ];
 
         $ch = curl_init();
@@ -109,16 +108,17 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
             if (substr($e, 0, 6) === 'Token=') {
                 return substr($e, 6);
             }
+
             return $carry;
         }, null);
 
-        echo "Your master token is : ".$token;
+        echo 'Your master token is : '.$token;
     }
 
     protected function addContextHeaders(): array
     {
         // From https://github.com/jamon/playmusic/blob/master/play.js
-        // To get a master token first, call the same endpoint with Email and Passwd of a 
+        // To get a master token first, call the same endpoint with Email and Passwd of a
         // Google account that already had access to Google Play. See getMasterToken() above.
         $serviceauth = 'https://android.clients.google.com/auth';
 

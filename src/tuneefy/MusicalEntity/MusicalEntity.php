@@ -136,7 +136,7 @@ abstract class MusicalEntity implements MusicalEntityInterface
         $extra_info['is_cover'] = (
             strlen($str) > 8 &&
             (
-                (static::TYPE == TrackEntity::TYPE && preg_match('/[\-\—\–\(\[].*(originally\sperformed|cover|tribute|karaoke)/iu', $str) === 1) 
+                (static::TYPE == TrackEntity::TYPE && preg_match('/[\-\—\–\(\[].*(originally\sperformed|cover|tribute|karaoke)/iu', $str) === 1)
                 ||
                 (static::TYPE == AlbumEntity::TYPE && preg_match('/.*(originally\sperformed|cover(.*)(vol|sessions)|tribute|karaoke)/iu', $str) === 1)
             )

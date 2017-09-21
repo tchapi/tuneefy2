@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 use Slim\Http\Environment;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use tuneefy\PlatformEngine;
 
 /**
  * @covers \Backend
@@ -24,7 +23,7 @@ final class BackendTest extends TestCase
     private function get(string $path)
     {
         $user = current($this->app->get('params')['admin_users']);
-        $pass =  $this->app->get('params')['admin_users'][$user];
+        $pass = $this->app->get('params')['admin_users'][$user];
 
         $env = Environment::mock([
             'REQUEST_METHOD' => 'GET',
@@ -57,5 +56,4 @@ final class BackendTest extends TestCase
         $response = $this->get('/api/clients/new');
         $this->assertSame($response->getStatusCode(), 200);
     }
-
 }
