@@ -185,12 +185,18 @@ class FrontendController
         }
 
         if (!is_null($item)) {
-            return $this->container->get('view')->render($response, 'item.'.$args['type'].'.html.twig', [
-                'params' => $this->container->get('params'),
-                'uid' => $args['uid'],
-                'item' => $item,
-                'embed' => ($request->getQueryParam('embed') !== null),
-            ]);
+            // Override, just to get the page in JSON
+            if ($request->getQueryParam('format') === "json") {
+                $response = $this->renderer->render($request->withHeader('Accept', "application/json"), $response, $item->toArray());
+                return $response->withStatus(200);
+            } else {
+                return $this->container->get('view')->render($response, 'item.'.$args['type'].'.html.twig', [
+                    'params' => $this->container->get('params'),
+                    'uid' => $args['uid'],
+                    'item' => $item,
+                    'embed' => ($request->getQueryParam('embed') !== NULL),
+                ]);
+            }
         } else {
             return $response->withStatus(404);
         }

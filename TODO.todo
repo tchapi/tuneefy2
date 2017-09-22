@@ -3,11 +3,13 @@ API :
  ☐ Implémenter une limite pour l'API (temps / requetes par heure / nb total)
 
 Dashboard :
-  ☐ API Usage par client
-    -chart :
+
+  ☐ API Usage par client sous forme de graphe par jour
+
 SELECT  DATE(created_at) day, COUNT(id) count
 FROM    items
 WHERE client_id = 'administrator'
 GROUP   BY  DATE(created_at)
 
- ☐  image de meilleure qualité pour chaque plateforme ?
+ ☐ image de meilleure qualité pour chaque plateforme ?
+ ☐ requètes trop lourdes dans "tendances"
