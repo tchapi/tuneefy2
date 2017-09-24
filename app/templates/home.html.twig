@@ -59,17 +59,18 @@
     {% endif %}
 
     {% if most_viewed.entity %}
+      {% set isTrack = (most_viewed.entity.getType() == "track") %}
       <div class="pick">
         <h2 class="pickTitle color">{{ "picks.mostViewed"|trans }}</h2>
         <div class="pickContent">
           <div class="cover">
-            <img src="{{ most_viewed.entity.title?(most_viewed.entity.getAlbumPicture?:'/img/nothumb_track.png'):(most_viewed.entity.getPicture?:'/img/nothumb_album.png') }}" width="50" height="50" />
+            <img src="{{ isTrack?(most_viewed.entity.album.getPicture?:'/img/nothumb_album.png'):(most_viewed.entity.getPicture?:'/img/nothumb_album.png') }}" width="50" height="50" />
             <span class="coverlay"></span>
           </div>
           <div class="info">
-            <div class="title">{{ most_viewed.entity.title?most_viewed.entity.safeTitle:most_viewed.entity.album.safeTitle }}</div>
-            <div class="artist">{{ most_viewed.entity.artist }}</div>
-            {% if most_viewed.entity.title %}<div class="album">{{ most_viewed.entity.album.safeTitle }}</div>{% endif %}
+            <div class="title">{{ most_viewed.entity.title() }}</div>
+            <div class="artist">{{ most_viewed.entity.artist() }}</div>
+            {% if isTrack %}<div class="album">{{ most_viewed.entity.getAlbumTitle() }}</div>{% endif %}
           </div>
         </div>
         <a class="btn btn_picks" href="{{ params.urls.front }}{{ path_for('show', { uid: most_viewed.uid, type: "mixed" }) }}">{{ "picks.discover"|trans }}</a>
