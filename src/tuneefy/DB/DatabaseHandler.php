@@ -188,7 +188,7 @@ class DatabaseHandler
 
         $res = $statement->execute([
           ':item_id' => $item_id,
-          ':referer' => isset($_SERVER["HTTP_REFERER"])?:null,
+          ':referer' => isset($_SERVER['HTTP_REFERER']) ?: null,
         ]);
 
         if ($res === false) {
