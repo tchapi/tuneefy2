@@ -1,6 +1,6 @@
 # tuneefy _2_
 
-A new version of [tuneefy](http://tuneefy.com) built for PHP 7, from the ground up, using the minimal Slim framework and a few helper libraries.
+A new version of [tuneefy](http://tuneefy.com) built for **PHP 7**, from the ground up, using the minimal [Slim](https://www.slimframework.com/) framework and a few helper libraries.
 
 ### Installing
 
@@ -17,6 +17,8 @@ Tuneefy needs a variety of tables to work properly; you can populate your databa
 ### Building assets & API doc
 
 To build the assets and the API documentation, I use **npm** and some modules.
+
+    npm install
 
     npm run build-assets
     npm run api-documentation
@@ -96,4 +98,4 @@ The full documentation is available at https://data.tuneefy.com. An API blueprin
 
 - - -
 
-> This is work in progress, but if you want to participate/contribute, feel free to tell me ! :)
+> If you want to participate/contribute, feel free to create pull requests or issues so we can make Tuneefy better and more efficient !

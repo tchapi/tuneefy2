@@ -1,17 +1,23 @@
 {
-    "name": "tchap/tuneefy",
+    "name": "tchapi/tuneefy",
     "description": "tuneefy is a unified way to share music with your friends, over various online music services",
-    "license": "CC BY-NC",
+    "license": "GPL-2.0",
     "authors": [
         {
             "name": "tchapi",
-            "email": "regbasket+github@gmail.com"
+            "email": "regbasket+github@gmail.com",
+            "homepage": "https://tchap.me"
         }
     ],
+    "support": {
+        "email": "team@tuneefy.com",
+        "issues": "https://github.com/tchapi/tuneefy2/issues"
+    },
     "autoload": {
         "psr-4": { "": "src/" }
     },
     "require": {
+        "php" : "^7.0",
         "symfony/yaml": "~2.6",
         "slim/slim": "^3.0",
         "slim/twig-view": "^2.2",
