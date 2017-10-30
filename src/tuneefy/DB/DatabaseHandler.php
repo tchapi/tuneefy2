@@ -326,7 +326,7 @@ class DatabaseHandler
 
     public function addApiClient(string $name, string $client_id, string $client_secret, string $description, string $email, string $url)
     {
-        $statement = $this->connection->prepare('INSERT INTO `oauth_clients` (`name`, `client_id`, `client_secret`, `description`, `email`, `url`, `createdAt`) VALUES (:name, :client_id, :client_secret, :description, :email, :url, NOW())');
+        $statement = $this->connection->prepare('INSERT INTO `oauth_clients` (`name`, `client_id`, `client_secret`, `description`, `email`, `url`, `created_at`) VALUES (:name, :client_id, :client_secret, :description, :email, :url, NOW())');
 
         $res = $statement->execute([
           ':name' => $name,
