@@ -97,7 +97,7 @@ track:
   mail: 
     action: "Send the link to this track via mail"
     subject: "Someone wants to share the track '%track%' (by '%artist%') with you"
-    body: "Click here to discover this track : %track%"
+    body: "Click here to discover this track : %link%"
   facebook_action: "Share music too !"
   twitter_status: "Listen to '%track%' by '%artist%'  %link% #tuneefy"
   seeOnTuneefy: "Go to the tuneefy page for this track"
@@ -114,7 +114,7 @@ album:
   mail:
     action: "Send the link to this album via mail"
     subject: "Someone wants to share the album '%album%' (by '%artist%') with you"
-    body: "Click here to discover this album : %album%"
+    body: "Click here to discover this album : %link%"
   facebook_action: "Share music too !"
   twitter_status: "Listen to the album '%album%' by '%artist%'  %link% #tuneefy"
   seeOnTuneefy: "Go to the tuneefy page for this album"
