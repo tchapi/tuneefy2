@@ -95,8 +95,8 @@ track:
   twitter: "Partager sur Twitter"
   mail: 
     action: "Envoyer le lien par mail"
-    subject: "Un ami veut partager la chanson '%track%' (de '%artist%') avec toi :"
-    body: "Clique ici pour la découvrir :  %track%"
+    subject: "Un ami veut partager la chanson '%track%' (de '%artist%') avec toi"
+    body: "Clique ici pour la découvrir : %link%"
   facebook_action: "Partagez !"
   twitter_status: "Écoutez '%track%', par '%artist%'  %link% %%23tuneefy"
   seeOnTuneefy: "Voir la page tuneefy de cette chanson"
@@ -112,8 +112,8 @@ album:
   twitter: "Partager cet album sur Twitter"
   mail:
     action: "Envoyer le lien par mail"
-    subject: "Un ami veut partager l'album '%album%' (de '%artist%') avec toi :"
-    body: "Clique ici pour le découvrir : %album%"
+    subject: "Un ami veut partager l'album '%album%' (de '%artist%') avec toi"
+    body: "Clique ici pour le découvrir : %link%"
   facebook_action: "Partagez !"
   twitter_status: "Écoutez l'album '%album%', par '%artist%'  %link% %%23tuneefy"
   seeOnTuneefy: "Voir la page tuneefy de cet album"
