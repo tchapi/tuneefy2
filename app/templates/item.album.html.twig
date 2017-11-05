@@ -93,7 +93,7 @@
       <a id="embed" onclick="toggleEmbed(); return false;" title="{{ "album_embed"|trans }}"></a>
       <a id="facebookShare" onclick="postToFeed('{{ params.urls.front ~ path_for('show', { uid: uid, type: "album" }) }}', '{{ item.getPicture?:'/img/nothumb_album.png' }}', '{{ item.getSafeTitle ~ ' | ' ~ item.getArtist }}', '{{ "album.description"|trans({"%album%": item.getSafeTitle, "%artist%": item.getArtist}) }}', '{{ "album.facebook_action"|trans }}', '{{ params.urls.front}}'); return false;" title="{{ "album_facebook"|trans }}"></a>
       <a id="twitterShare" onclick="newTweet('{{ "album.twitter_status"|trans({"%album%": item.getSafeTitle, "%artist%": item.getArtist, "%link%": params.urls.front ~ path_for('show', { uid: uid, type: "album" })})|url_encode }}'); return false;" title="{{ "album_twitter"|trans }}"></a>
-      <a id="mailShare" title="{{ "album_mail"|trans }}" href="mailto:?subject={{ "album_mail_subject"|trans({name: item.getSafeTitle|url_encode, artist: item.getArtist|url_encode}) }}&body={{ "album_mail_body"|trans({link: params.urls.front ~ path_for('show', { uid: uid, type: "album" }) }) }}"></a>
+      <a id="mailShare" title="{{ "album.mail"|trans }}" href="mailto:?subject={{ "album.mail.subject"|trans({name: item.getSafeTitle|url_encode, artist: item.getArtist|url_encode}) }}&body={{ "album.mail.body"|trans({link: params.urls.front ~ path_for('show', { uid: uid, type: "album" }) }) }}"></a>
     </div>
     
     <div id="embedHolder" class="boxSinv" style="display: none;">

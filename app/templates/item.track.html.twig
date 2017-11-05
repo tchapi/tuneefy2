@@ -94,7 +94,7 @@
       <a id="embed" onclick="toggleEmbed(); return false;" title="{{ "track_embed"|trans }}"></a>
       <a id="facebookShare" onclick="postToFeed('{{ params.urls.front ~ path_for('show', { uid: uid, type: "track" }) }}', '{{ item.getAlbumPicture?:'/img/nothumb_track.png' }}', '{{ item.getSafeTitle ~ ' | ' ~ item.getArtist }}', '{{ "track.description"|trans({"%track%": item.getSafeTitle, "%artist%": item.getArtist}) }}', '{{ "track.facebook_action"|trans }}', '{{ params.urls.front}}'); return false;" title="{{ "track_facebook"|trans }}"></a>
       <a id="twitterShare" onclick="newTweet('{{ "track.twitter_status"|trans({"%track%": item.getSafeTitle, "%artist%": item.getArtist, "%link%": params.urls.front ~ path_for('show', { uid: uid, type: "track" })})|url_encode }}'); return false;" title="{{ "track_twitter"|trans }}"></a>
-      <a id="mailShare" title="{{ "track_mail"|trans }}" href="mailto:?subject={{ "track_mail_subject"|trans({name: item.getSafeTitle|url_encode, artist: item.getArtist|url_encode}) }}&body={{ "track_mail_body"|trans({link: params.urls.front ~ path_for('show', { uid: uid, type: "track" }) }) }}"></a>
+      <a id="mailShare" title="{{ "track.mail"|trans }}" href="mailto:?subject={{ "track.mail.subject"|trans({name: item.getSafeTitle|url_encode, artist: item.getArtist|url_encode}) }}&body={{ "track.mail.body"|trans({link: params.urls.front ~ path_for('show', { uid: uid, type: "track" }) }) }}"></a>
     </div>
     
     <div id="embedHolder" class="boxSinv" style="display: none;">
