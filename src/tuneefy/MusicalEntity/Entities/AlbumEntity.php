@@ -133,8 +133,15 @@ class AlbumEntity extends MusicalEntity
 
         if ($a->getPicture() === '') {
             $picture = $b->getPicture();
-        } else {
+        } elseif ($b->getPicture() === '') {
             $picture = $a->getPicture();
+        } else {
+            // They both have pictures, prefer NOT deezer
+            if (strpos($a->getPicture(), 'api.deezer.com') === false) {
+                $picture = $a->getPicture();
+            } else {
+                $picture = $b->getPicture();
+            }
         }
 
         // Create the result
