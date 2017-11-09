@@ -139,10 +139,7 @@
     left: 0;
     margin-top: 10px;
   }
-  #todaysPickOverlay {
-    display: none;
-  }
-  #pickPager {
+  #todaysPickOverlay, #todaysPick, #pickPager {
     display: none;
   }
   #globalStats {
@@ -202,5 +199,240 @@
   }
   #stats h2 {
     font-size: 1.4em;
+  }
+
+  #footer {
+    .conditions, .copyright {
+      float: none;
+      text-align: center;
+      padding-top: 2px;
+    }
+    .copycon {
+      padding-bottom: 60px;
+    }
+  }
+  #advanced, #availablePlatforms {
+    width: auto;
+  }
+  #mergeResults {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 10px;
+  }
+  #waiting {
+    right: 57px;
+  }
+
+  #shareTitle{
+    padding-top: 10px;
+    line-height: 1.2em;
+   }
+
+  #shareBox{
+    font-size: 0.75em;
+    width: 100%;
+    margin: 15px auto;
+  }
+
+  #trackInfo{
+    height: 100px;
+    display: table;
+    margin: 0 auto;
+    width: 100%;
+    padding-bottom: 10px;
+  }
+
+  .boxed{
+    background: #151515;
+    position: relative;
+  }
+
+  #trackInfo .cover{
+    float: left;
+    position: relative;
+    margin-top: 10px;
+    margin-left: 10px;
+  }
+
+  #trackInfo .coverlay{
+    width: 80px;
+    height: 80px;
+  }
+
+  #trackInfo .info{
+    float: left;
+    height: 90px;
+    width: auto;
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+
+  #trackInfo .infoWrapper{
+    display: table-cell;
+    vertical-align: middle;
+    height: 90px;
+  }
+
+  #trackInfo .infoContent{
+    vertical-align: middle;
+  }
+
+  #trackInfo .title{
+    font-weight: bold;
+    max-width: 180px;
+    font-size:1.5em;
+    line-height: 0.9em;
+    color: #A2A2A2;
+    padding-top: 4px;
+  }
+
+  #trackInfo .artist{
+    font-size: 1.2em;
+    max-width: 180px;
+    line-height: 1.3em;
+    color: #474747;
+    padding-top: 4px;
+  }
+
+  #trackInfo .album{
+    font-size: 0.75em;
+    max-width: 180px;
+    color: #474747;
+    text-transform: uppercase;
+  }
+
+  #platforms, #share{
+    padding: 10px;
+    display: table;
+    text-align: center;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  #platforms{
+    padding-bottom: 5px;
+  }
+
+  #platforms .listenTitle, #share .shareTitle{
+    text-transform: uppercase;
+    font-size: 0.75em;
+    color: #AAAAAA;
+    margin-bottom: 10px;
+  }
+
+  #platforms .btns_full{
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
+
+
+  #socialHolder{
+    background: #1F1F1F;
+    display: block;
+    border: 1px solid black;
+    padding: 8px 8px 5px 8px;
+    position: relative;
+    border-radius: 3px;
+    float: none;
+  }
+  #linkHolder{
+    display: none;
+  }
+  #embed {
+    display: none;
+  }
+
+  /* RESULTS */
+  #results .nbResults{
+    text-align: center;
+    padding: 5px 10px;
+    color: #5F5F5F;
+    font-size: 0.75em;
+  }
+
+  .tHeader{
+    display: none;
+  }
+
+  .tResult{
+    position: relative;
+    background: #262626;
+    height: 74px;
+    padding-left: 88px;
+    padding-top: 6px;
+    border-bottom: 1px solid #1E1E1E;
+    border-top: 1px solid #303030;
+  }
+
+  li.tResult:last-child{
+    border-bottom: 1px solid #2A2A2A;
+  }
+
+  .tImage{
+    position: absolute;
+    top: 4px;
+    left: 4px;
+  }
+  .tImage img{
+    height: 74px;
+    width: 74px;
+  }
+
+  .tImage .coverlay{
+    height: 72px;
+    width: 72px;
+  }
+
+  .tTitle{
+    color: #CFCFCF;
+    font-size: 0.75em;
+  }
+
+  .tArtist{
+    font-size: .7em;
+    color: #7A7A7A;
+  }
+  .tAlbum{
+    font-size: .4em;
+    text-transform: uppercase;
+    color: #646464;
+  }
+
+  .tTitle, .tArtist, .tAlbum {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 73%;
+    width: auto;
+    white-space: nowrap;
+    display: block;
+    float: none;
+    height: auto;
+  }
+
+  .wrapper {
+    height: auto;
+  }
+  .tFeat{ display: none;}
+
+  .tLinks{
+    float: right;
+    width: 109px;
+    overflow: hidden;
+    margin-top: -68px;
+    zoom: 0.7;
+    margin-right: 2px;
+    text-align: right;
+    height: 102px;
+  }
+
+  a.tShare{
+    float: left;
+    margin-top: 0;
+    margin-left: 8px;
+    display: inline;
+  }
+
+  a.backToTop{
+    display:none;
   }
 }
