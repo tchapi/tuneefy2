@@ -435,4 +435,26 @@
   a.backToTop{
     display:none;
   }
+
+  // Trends
+  #mostViewedArtists {
+    display: none;
+  }
+  #mostViewedTracks, #mostViewedAlbums {
+    text-align: center;
+  }
+  #mostViewedTracks ul li, #mostViewedAlbums ul li {
+    margin: auto;
+    width: 100%;
+    span.count, span.order, span.title, span.artist, a {
+      width: 100%;
+      max-width: none;
+      display: block;
+    }
+    a {
+      height: auto;
+      padding: 90px 0;
+      box-sizing: border-box;
+    }
+  }
 }
