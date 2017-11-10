@@ -184,6 +184,8 @@ class Application
           'domain' => $this->params['website']['cookie_domain'],
           'lifetime' => '5 minutes',
         ]));
+        ini_set('session.gc_probability', 0); // This is because the Session constructor has calls to ini_set
+                                              // and PHP doesn't have the rights to gc the session folder
     }
 
     public function setupV2ApiRoutes()
