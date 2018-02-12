@@ -116,7 +116,8 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
 
         // Check if parts[2] is something like "official video"
         if (count($parts) > 1) {
-            if (preg_match("/(?P<title>.*)[\(\[](.*official.*video.*)[\)\]]/iu", $parts[1], $matches)) {
+            // Inspired by https://github.com/tomahawk-player/tomahawk-resolvers/blob/master/youtube/content/contents/code/youtube.js#L578
+            if (preg_match("/(?P<title>[^\(^\[]*)(?:[\(\[].*?(?:offici(?:a|e)l|clip).*?(?:[\)\]])|(?:(?:offici(?:a|e)l|video)).*?(?:video|clip))/iu", $parts[1], $matches)) {
                 $title = trim($matches['title']);
 
                 return [$title, trim($parts[0])];
