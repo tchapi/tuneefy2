@@ -7,7 +7,6 @@ use tuneefy\Platform\Platform;
 use tuneefy\Platform\Platforms\AmazonMusicPlatform;
 use tuneefy\Platform\Platforms\DeezerPlatform;
 use tuneefy\Platform\Platforms\GooglePlayMusicPlatform;
-use tuneefy\Platform\Platforms\GrooveMusicPlatform;
 use tuneefy\Platform\Platforms\ItunesPlatform;
 use tuneefy\Platform\Platforms\LastFMPlatform;
 use tuneefy\Platform\Platforms\MixcloudPlatform;
@@ -41,7 +40,6 @@ class PlatformEngine
           // Streaming platforms
           'deezer' => DeezerPlatform::getInstance(),
           'spotify' => SpotifyPlatform::getInstance(),
-          'groove' => GrooveMusicPlatform::getInstance(),
           'qobuz' => QobuzPlatform::getInstance(),
           'soundcloud' => SoundcloudPlatform::getInstance(),
           'mixcloud' => MixcloudPlatform::getInstance(),
