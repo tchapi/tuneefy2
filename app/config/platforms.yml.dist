@@ -102,19 +102,6 @@ itunes:
   secret: ""
   default: true
   order: 9
-xbox:
-  class: tuneefy\Platform\XboxPlatform
-  enable:
-    api: true
-    website: true
-  capabilities:
-    track_search: true
-    album_search: true
-    lookup: true
-  key: ""
-  secret: ""
-  default: true
-  order: 10
 beats:
   class: tuneefy\Platform\BeatsPlatform
   enable:
