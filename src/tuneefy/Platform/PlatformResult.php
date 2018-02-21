@@ -39,7 +39,7 @@ class PlatformResult
 
     public function toArray(): array
     {
-        if ($this->musical_entity === null) {
+        if (null === $this->musical_entity) {
             return [
                 'metadata' => $this->metadata,
             ];
@@ -59,7 +59,7 @@ class PlatformResult
     {
         $thatMusicalEntity = $that->getMusicalEntity();
 
-        if ($this->musical_entity !== null && $thatMusicalEntity !== null) {
+        if (null !== $this->musical_entity && null !== $thatMusicalEntity) {
             // Merge musical entities
             if ($this->musical_entity instanceof TrackEntity) {
                 $this->musical_entity = TrackEntity::merge($this->musical_entity, $thatMusicalEntity);

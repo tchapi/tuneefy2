@@ -60,11 +60,11 @@ class AlbumEntity extends MusicalEntity
           'picture' => $this->picture,
         ];
 
-        if ($this->countLinkedPlatforms() !== 0) {
+        if (0 !== $this->countLinkedPlatforms()) {
             $result['links'] = $this->links;
         }
 
-        if ($this->introspected === true) {
+        if (true === $this->introspected) {
             $result['safe_title'] = $this->safe_title;
             $result['extra_info'] = $this->extra_info;
         }
@@ -78,7 +78,7 @@ class AlbumEntity extends MusicalEntity
     */
     public function introspect(): MusicalEntityInterface
     {
-        if ($this->introspected === false) {
+        if (false === $this->introspected) {
             // https://secure.php.net/manual/en/function.extract.php
             extract(parent::parse($this->title));
             $this->safe_title = $safe_title;
@@ -99,7 +99,7 @@ class AlbumEntity extends MusicalEntity
 
     public function getHash(bool $aggressive = false): string
     {
-        if ($aggressive === true) {
+        if (true === $aggressive) {
             return Utils::flatten([$this->getExtraInfoHash(), $this->safe_title]);
         } else {
             return Utils::flatten([$this->getExtraInfoHash(), $this->artist, $this->safe_title]);
@@ -117,7 +117,7 @@ class AlbumEntity extends MusicalEntity
 
         // $a has precedence
 
-        if ($a->getTitle() === '') {
+        if ('' === $a->getTitle()) {
             $title = $b->getTitle();
             $safe_title = $b->getSafeTitle();
         } else {
@@ -125,19 +125,19 @@ class AlbumEntity extends MusicalEntity
             $safe_title = $a->getSafeTitle();
         }
 
-        if ($a->getArtist() === '') {
+        if ('' === $a->getArtist()) {
             $artist = $b->getArtist();
         } else {
             $artist = $a->getArtist();
         }
 
-        if ($a->getPicture() === '') {
+        if ('' === $a->getPicture()) {
             $picture = $b->getPicture();
-        } elseif ($b->getPicture() === '') {
+        } elseif ('' === $b->getPicture()) {
             $picture = $a->getPicture();
         } else {
             // They both have pictures, prefer NOT deezer
-            if (strpos($a->getPicture(), 'api.deezer.com') === false) {
+            if (false === strpos($a->getPicture(), 'api.deezer.com')) {
                 $picture = $a->getPicture();
             } else {
                 $picture = $b->getPicture();

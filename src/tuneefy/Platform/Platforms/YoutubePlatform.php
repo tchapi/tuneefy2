@@ -50,7 +50,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
 
     public function hasPermalink(string $permalink): bool
     {
-        return strpos($permalink, 'youtube.') !== false;
+        return false !== strpos($permalink, 'youtube.');
     }
 
     protected function addContextOptions(array $data): array
@@ -75,7 +75,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         if (preg_match(self::REGEX_YOUTUBE_ALL, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['video_id']);
 
-            if ($response === null) {
+            if (null === $response) {
                 throw new PlatformException($this);
             }
 
@@ -84,7 +84,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
 
                 // Extract title and author
                 list($title, $artist) = $this->parseYoutubeMusicVideoTitle($entity->snippet->title);
-                if ($title !== null && $artist !== null) {
+                if (null !== $title && null !== $artist) {
                     $musical_entity = new TrackEntity($title, new AlbumEntity('', $artist, $entity->snippet->thumbnails->medium->url));
 
                     $musical_entity->addLink(static::TAG, $this->getPermalinkFromTrackId($entity->id));
@@ -102,7 +102,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         // Consolidate results
         $metadata = ['query_words' => $query_words];
 
-        if ($musical_entity !== null) {
+        if (null !== $musical_entity) {
             $metadata['platform'] = $this->getName();
         }
 
@@ -141,10 +141,10 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         for ($i = 0; $i < $length; ++$i) {
             $current_item = $entities[$i];
 
-            if ($type === Platform::SEARCH_TRACK) {
+            if (Platform::SEARCH_TRACK === $type) {
                 // Extract title and author
                 list($title, $artist) = $this->parseYoutubeMusicVideoTitle($current_item->snippet->title);
-                if ($title === null || $artist === null) {
+                if (null === $title || null === $artist) {
                     continue;
                 }
 

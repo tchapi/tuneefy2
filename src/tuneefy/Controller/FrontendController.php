@@ -56,7 +56,7 @@ class FrontendController
             $lastShared['album']['uid'] = Utils::toUId($lastShared['album']['id']);
         }
 
-        if ($request->getQueryParam('widget') == '42') {
+        if ('42' == $request->getQueryParam('widget')) {
             return $this->container->get('view')->render($response, '_widget.html.twig', [
                 'query' => $request->getQueryParam('q'),
                 'params' => $this->container->get('params'),
@@ -152,7 +152,7 @@ class FrontendController
     // Handles legacy routes as well with a 301
     public function show($request, $response, $args)
     {
-        if ($args['uid'] === null || $args['uid'] === '') {
+        if (null === $args['uid'] || '' === $args['uid']) {
             return $response->withStatus(404);
         }
 
@@ -186,7 +186,7 @@ class FrontendController
 
         if (!is_null($item)) {
             // Override, just to get the page in JSON
-            if ($request->getQueryParam('format') === 'json') {
+            if ('json' === $request->getQueryParam('format')) {
                 $response = $this->renderer->render($request->withHeader('Accept', 'application/json'), $response, $item->toArray());
 
                 return $response->withStatus(200);
@@ -195,7 +195,7 @@ class FrontendController
                     'params' => $this->container->get('params'),
                     'uid' => $args['uid'],
                     'item' => $item,
-                    'embed' => ($request->getQueryParam('embed') !== null),
+                    'embed' => (null !== $request->getQueryParam('embed')),
                 ]);
             }
         } else {
@@ -207,7 +207,7 @@ class FrontendController
     {
         $platform = strtolower($args['platform']);
 
-        if ($args['uid'] === null || $args['uid'] === '') {
+        if (null === $args['uid'] || '' === $args['uid']) {
             return $response->withStatus(404);
         }
 
@@ -247,7 +247,7 @@ class FrontendController
 
         $link = $request->getQueryParam('l');
 
-        if ($link === null || $link === '') {
+        if (null === $link || '' === $link) {
             return $response->withStatus(404);
         }
 

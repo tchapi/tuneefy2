@@ -54,7 +54,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
 
     public function hasPermalink(string $permalink): bool
     {
-        return strpos($permalink, 'lastfm.') !== false || strpos($permalink, 'last.fm') !== false;
+        return false !== strpos($permalink, 'lastfm.') || false !== strpos($permalink, 'last.fm');
     }
 
     protected function addContextOptions(array $data): array
@@ -76,7 +76,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
             $this->options[Platform::LOOKUP_TRACK]['artist'] = $match['artist_slug'];
             $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['track_slug']);
 
-            if ($response === null || property_exists($response->data, 'error')) {
+            if (null === $response || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 
@@ -105,7 +105,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
             $this->options[Platform::LOOKUP_ALBUM]['artist'] = $match['artist_slug'];
             $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_slug']);
 
-            if ($response === null || property_exists($response->data, 'error')) {
+            if (null === $response || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 
@@ -128,7 +128,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         } elseif (preg_match(self::REGEX_LASTFM_ARTIST, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_slug']);
 
-            if ($response === null || property_exists($response->data, 'error')) {
+            if (null === $response || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 
@@ -138,7 +138,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         // Consolidate results
         $metadata = ['query_words' => $query_words];
 
-        if ($musical_entity !== null) {
+        if (null !== $musical_entity) {
             $metadata['platform'] = $this->getName();
         }
 
@@ -168,7 +168,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         for ($i = 0; $i < $length; ++$i) {
             $current_item = $results[$i];
 
-            if ($type === Platform::SEARCH_TRACK) {
+            if (Platform::SEARCH_TRACK === $type) {
                 if (property_exists($current_item, 'image')) {
                     $picture = get_object_vars($current_item->image[2]);
                     $picture = $picture['#text'];

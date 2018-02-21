@@ -54,7 +54,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
 
     public function hasPermalink(string $permalink): bool
     {
-        return strpos($permalink, 'tidal.') !== false || strpos($permalink, 'tidalhifi.') !== false;
+        return false !== strpos($permalink, 'tidal.') || false !== strpos($permalink, 'tidalhifi.');
     }
 
     protected function addContextOptions(array $data): array
@@ -79,7 +79,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         if (preg_match(self::REGEX_TIDAL_TRACK, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['track_id']);
 
-            if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
+            if (null === $response || (property_exists($response->data, 'status') && 'error' === $response->data->status)) {
                 throw new PlatformException($this);
             }
 
@@ -94,7 +94,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         } elseif (preg_match(self::REGEX_TIDAL_ALBUM, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_id']);
 
-            if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
+            if (null === $response || (property_exists($response->data, 'status') && 'error' === $response->data->status)) {
                 throw new PlatformException($this);
             }
 
@@ -109,7 +109,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         } elseif (preg_match(self::REGEX_TIDAL_ARTIST, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_id']);
 
-            if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
+            if (null === $response || (property_exists($response->data, 'status') && 'error' === $response->data->status)) {
                 throw new PlatformException($this);
             }
 
@@ -119,7 +119,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         // Consolidate results
         $metadata = ['query_words' => $query_words];
 
-        if ($musical_entity !== null) {
+        if (null !== $musical_entity) {
             $metadata['platform'] = $this->getName();
         }
 
@@ -140,7 +140,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         for ($i = 0; $i < $length; ++$i) {
             $current_item = $entities[$i];
 
-            if ($type === Platform::SEARCH_TRACK) {
+            if (Platform::SEARCH_TRACK === $type) {
                 $musical_entity = new TrackEntity($current_item->title, new AlbumEntity($current_item->album->title, $current_item->artist->name, $this->getCoverUrlFromCoverHash($current_item->album->cover)));
                 $musical_entity->addLink(static::TAG, $current_item->url);
             } else /*if ($type === Platform::SEARCH_ALBUM)*/ {

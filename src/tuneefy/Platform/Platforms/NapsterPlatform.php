@@ -61,7 +61,7 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
 
     public function hasPermalink(string $permalink): bool
     {
-        return strpos($permalink, 'napster.com') !== false;
+        return false !== strpos($permalink, 'napster.com');
     }
 
     public function expandPermalink(string $permalink, int $mode)//: ?PlatformResult
@@ -104,7 +104,7 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
         for ($i = 0; $i < $length; ++$i) {
             $current_item = $results->data[$i];
 
-            if ($type === Platform::SEARCH_TRACK) {
+            if (Platform::SEARCH_TRACK === $type) {
                 $picture = sprintf(self::PICTURE_PATH, $current_item->albumId);
                 $musical_entity = new TrackEntity($current_item->name, new AlbumEntity($current_item->albumName, $current_item->artistName, $picture));
                 $musical_entity->addLink(static::TAG, sprintf(self::WEB_LINK, $current_item->shortcut));

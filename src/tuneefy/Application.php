@@ -81,7 +81,7 @@ class Application
 
             // If we want to add specific data to the context, it's here
             $view->getEnvironment()->addGlobal('context', [
-                'slack' => isset($_SERVER['HTTP_USER_AGENT']) ? (preg_match('/Slackbot/', $_SERVER['HTTP_USER_AGENT']) !== 0) : false,  // ** Detect Slack
+                'slack' => isset($_SERVER['HTTP_USER_AGENT']) ? (0 !== preg_match('/Slackbot/', $_SERVER['HTTP_USER_AGENT'])) : false,  // ** Detect Slack
             ]);
 
             // Set a fallback language incase you don't have a translation in the default language
@@ -144,7 +144,7 @@ class Application
             throw new \Exception('No config files found: '.$e->getMessage());
         }
 
-        if ($platforms === null || $this->params === null) {
+        if (null === $platforms || null === $this->params) {
             // TODO  : translate / template : this will not happen in Slim's run loop, handle differently
             throw new \Exception('Bad config files');
         }
@@ -155,7 +155,7 @@ class Application
         foreach ($platforms as $key => $platform) {
             $p = $this->engine->getPlatformByTag($key);
 
-            if ($p === null) {
+            if (null === $p) {
                 continue;
             }
 

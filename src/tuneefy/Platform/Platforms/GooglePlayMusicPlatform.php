@@ -59,7 +59,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
 
     public function hasPermalink(string $permalink): bool
     {
-        return strpos($permalink, 'play.google.com') !== false;
+        return false !== strpos($permalink, 'play.google.com');
     }
 
     /**
@@ -105,7 +105,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
 
         $params = explode("\n", $result);
         $token = array_reduce($params, function ($carry, $e) {
-            if (substr($e, 0, 6) === 'Token=') {
+            if ('Token=' === substr($e, 0, 6)) {
                 return substr($e, 6);
             }
 
@@ -150,7 +150,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
 
         $params = explode("\n", $result);
         $token = array_reduce($params, function ($carry, $e) {
-            if (substr($e, 0, 5) === 'Auth=') {
+            if ('Auth=' === substr($e, 0, 5)) {
                 return substr($e, 5);
             }
 
@@ -164,11 +164,11 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
     // sometimes not.
     private function createAlbumOrTrackLink(string $albumId, string $trackId = null): string
     {
-        if ($trackId && $trackId[0] !== 'T') {
+        if ($trackId && 'T' !== $trackId[0]) {
             $trackId = 'T'.$trackId;
         }
 
-        if ($albumId[0] !== 'B') {
+        if ('B' !== $albumId[0]) {
             $albumId = 'B'.$albumId;
         }
 
@@ -189,7 +189,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         if (preg_match(self::REGEX_GOOGLE_PLAY_TRACK, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['track_id']);
 
-            if ($response === null || !property_exists($response, 'data') || property_exists($response->data, 'error')) {
+            if (null === $response || !property_exists($response, 'data') || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 
@@ -204,7 +204,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         } elseif (preg_match(self::REGEX_GOOGLE_PLAY_ALBUM, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_id']);
 
-            if ($response === null || !property_exists($response, 'data') || property_exists($response->data, 'error')) {
+            if (null === $response || !property_exists($response, 'data') || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 
@@ -219,7 +219,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         } elseif (preg_match(self::REGEX_GOOGLE_PLAY_ARTIST, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_id']);
 
-            if ($response === null || !property_exists($response, 'data') || property_exists($response->data, 'error')) {
+            if (null === $response || !property_exists($response, 'data') || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 
@@ -229,7 +229,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         // Consolidate results
         $metadata = ['query_words' => $query_words];
 
-        if ($musical_entity !== null) {
+        if (null !== $musical_entity) {
             $metadata['platform'] = $this->getName();
         }
 
@@ -252,7 +252,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         for ($i = 0; $i < $length; ++$i) {
             $current_item = $results[$i];
 
-            if ($type === Platform::SEARCH_TRACK) {
+            if (Platform::SEARCH_TRACK === $type) {
                 $musical_entity = new TrackEntity($current_item->track->title, new AlbumEntity($current_item->track->album, $current_item->track->artist, $current_item->track->albumArtRef[0]->url));
                 $musical_entity->addLink(static::TAG, $this->createAlbumOrTrackLink($current_item->track->albumId, $current_item->track->storeId));
             } else /*if ($type === Platform::SEARCH_ALBUM)*/ {

@@ -68,7 +68,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
 
     public function hasPermalink(string $permalink): bool
     {
-        return strpos($permalink, 'qobuz.com') !== false;
+        return false !== strpos($permalink, 'qobuz.com');
     }
 
     protected function addContextOptions(array $data): array
@@ -98,7 +98,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         if (preg_match(self::REGEX_QOBUZ_TRACK, $permalink, $match) || preg_match(self::NEW_REGEX_QOBUZ_TRACK, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['track_id']);
 
-            if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
+            if (null === $response || (property_exists($response->data, 'status') && 'error' === $response->data->status)) {
                 throw new PlatformException($this);
             }
 
@@ -112,7 +112,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
             ];
         } elseif (preg_match(self::REGEX_QOBUZ_ALBUM, $permalink, $match) || preg_match(self::REGEX_QOBUZ_ALBUM_SITE, $permalink, $match) || preg_match(self::NEW_REGEX_QOBUZ_ALBUM, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_id']);
-            if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
+            if (null === $response || (property_exists($response->data, 'status') && 'error' === $response->data->status)) {
                 throw new PlatformException($this);
             }
 
@@ -126,7 +126,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
             ];
         } elseif (preg_match(self::REGEX_QOBUZ_ARTIST, $permalink, $match) || preg_match(self::NEW_REGEX_QOBUZ_ARTIST, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_id']);
-            if ($response === null || (property_exists($response->data, 'status') && $response->data->status === 'error')) {
+            if (null === $response || (property_exists($response->data, 'status') && 'error' === $response->data->status)) {
                 throw new PlatformException($this);
             }
 
@@ -136,7 +136,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         // Consolidate results
         $metadata = ['query_words' => $query_words];
 
-        if ($musical_entity !== null) {
+        if (null !== $musical_entity) {
             $metadata['platform'] = $this->getName();
         }
 
@@ -163,10 +163,10 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         for ($i = 0; $i < $length; ++$i) {
             $current_item = $results[$i];
 
-            if ($type === Platform::SEARCH_TRACK && $current_item->album->artist->name !== null) {
+            if (Platform::SEARCH_TRACK === $type && null !== $current_item->album->artist->name) {
                 $musical_entity = new TrackEntity($current_item->title, new AlbumEntity($current_item->album->title, $current_item->album->artist->name, $current_item->album->image->small));
                 $musical_entity->addLink(static::TAG, $this->getPlayerUrlFromTrackId(''.$current_item->id));
-            } elseif ($type === Platform::SEARCH_ALBUM) {
+            } elseif (Platform::SEARCH_ALBUM === $type) {
                 $musical_entity = new AlbumEntity($current_item->title, $current_item->artist->name, $current_item->image->small);
                 $musical_entity->addLink(static::TAG, $this->getPlayerUrlFromAlbumId(''.$current_item->id));
             } else {

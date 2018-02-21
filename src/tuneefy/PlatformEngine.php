@@ -81,15 +81,15 @@ class PlatformEngine
 
     public function translateFlag(string $namespace, string $flag = null): int
     {
-        if ($flag === null || $flag === '') {
+        if (null === $flag || '' === $flag) {
             $flag = '*';
         }
 
         $path = $namespace.'/'.$flag;
 
-        if (!isset($this->flags[$path]) && $namespace === 'type') {
+        if (!isset($this->flags[$path]) && 'type' === $namespace) {
             throw new \Exception('BAD_MUSICAL_TYPE');
-        } elseif (!isset($this->flags[$path]) && $namespace === 'mode') {
+        } elseif (!isset($this->flags[$path]) && 'mode' === $namespace) {
             throw new \Exception('BAD_MODE');
         }
 
@@ -117,7 +117,7 @@ class PlatformEngine
             }
         }
 
-        if ($platform === null) {
+        if (null === $platform) {
             return ['errors' => [ApiController::ERRORS['PERMALINK_UNKNOWN']]];
         }
 
@@ -127,15 +127,15 @@ class PlatformEngine
 
     public function search(Platform $platform, int $type, string $query, int $limit, int $mode): array
     {
-        if (($platform->isCapableOfSearchingTracks() && $type === Platform::SEARCH_TRACK)
-         || ($platform->isCapableOfSearchingAlbums() && $type === Platform::SEARCH_ALBUM)) {
+        if (($platform->isCapableOfSearchingTracks() && Platform::SEARCH_TRACK === $type)
+         || ($platform->isCapableOfSearchingAlbums() && Platform::SEARCH_ALBUM === $type)) {
             $results = Platform::search($platform, $type, $query, $limit, $mode);
             array_map(function ($e) { return $e->store($this->token); }, $results);
 
             return ['results' => $results];
-        } elseif ($type === Platform::SEARCH_TRACK) {
+        } elseif (Platform::SEARCH_TRACK === $type) {
             return ['errors' => [ApiController::ERRORS['NOT_CAPABLE_TRACKS']]];
-        } elseif ($type === Platform::SEARCH_ALBUM) {
+        } elseif (Platform::SEARCH_ALBUM === $type) {
             return ['errors' => [ApiController::ERRORS['NOT_CAPABLE_ALBUMS']]];
         }
     }
@@ -145,8 +145,8 @@ class PlatformEngine
         $result = [];
 
         $filtered_platforms = array_filter($platforms, function ($p) use ($type) {
-            return ($p->isCapableOfSearchingTracks() && $type === Platform::SEARCH_TRACK)
-             || ($p->isCapableOfSearchingAlbums() && $type === Platform::SEARCH_ALBUM);
+            return ($p->isCapableOfSearchingTracks() && Platform::SEARCH_TRACK === $type)
+             || ($p->isCapableOfSearchingAlbums() && Platform::SEARCH_ALBUM === $type);
         });
 
         $resultArray = Platform::aggregate($filtered_platforms, $type, $query, Platform::AGGREGATE_LIMIT, $mode);
@@ -161,7 +161,7 @@ class PlatformEngine
         foreach ($results as $result) {
             $current_entity = $result->getMusicalEntity();
 
-            if ($current_entity === null) {
+            if (null === $current_entity) {
                 continue;
             }
 

@@ -53,7 +53,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
 
     public function hasPermalink(string $permalink): bool
     {
-        return strpos($permalink, 'itunes.apple.') !== false;
+        return false !== strpos($permalink, 'itunes.apple.');
     }
 
     public function expandPermalink(string $permalink, int $mode): PlatformResult
@@ -66,7 +66,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         if (preg_match(self::REGEX_ITUNES_ALBUM, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_id']);
 
-            if ($response === null) {
+            if (null === $response) {
                 throw new PlatformException($this);
             }
 
@@ -83,7 +83,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         } elseif (preg_match(self::REGEX_ITUNES_ARTIST, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_id']);
 
-            if ($response === null) {
+            if (null === $response) {
                 throw new PlatformException($this);
             }
 
@@ -95,7 +95,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         // Consolidate results
         $metadata = ['query_words' => $query_words];
 
-        if ($musical_entity !== null) {
+        if (null !== $musical_entity) {
             $metadata['platform'] = $this->getName();
         }
 
@@ -116,7 +116,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         for ($i = 0; $i < $length; ++$i) {
             $current_item = $entities[$i];
 
-            if ($type === Platform::SEARCH_TRACK) {
+            if (Platform::SEARCH_TRACK === $type) {
                 $musical_entity = new TrackEntity($current_item->trackName, new AlbumEntity($current_item->collectionName, $current_item->artistName, $current_item->artworkUrl100));
                 $musical_entity->addLink(static::TAG, $current_item->trackViewUrl);
             } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
