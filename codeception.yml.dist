@@ -1,0 +1,34 @@
+# Suite configuration
+# Assumes your local dev server is at localhost:8000 :
+#   php -S localhost:8000 -t web
+#
+suites:
+    api:
+        actor: ApiTester
+        path: api
+        modules:
+            enabled:
+                - Asserts
+                - REST:
+                    url: http://localhost:8000/api.php/v2
+                    depends: PhpBrowser
+    backend:
+        actor: ApiTester
+        path: backend
+        modules:
+            enabled:
+                - REST:
+                    url: http://admin:pwd@localhost:8000/index.php/admin
+                    depends: PhpBrowser
+    unit:
+        path: unit
+
+paths:
+    tests: tests
+    output: tests/_output
+    data: tests/_data
+    support: tests/_support
+
+settings:
+    shuffle: false
+    lint: true
