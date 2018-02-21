@@ -49,7 +49,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
 
     public function hasPermalink(string $permalink): bool
     {
-        return strpos($permalink, 'soundcloud.') !== false;
+        return false !== strpos($permalink, 'soundcloud.');
     }
 
     protected function addContextOptions(array $data): array
@@ -69,7 +69,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         if (preg_match(self::REGEX_SOUNDCLOUD_ALL, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_TRACK, $permalink);
 
-            if ($response === null || property_exists($response->data, 'errors')) {
+            if (null === $response || property_exists($response->data, 'errors')) {
                 throw new PlatformException($this);
             }
 
@@ -87,7 +87,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         // Consolidate results
         $metadata = ['query_words' => $query_words];
 
-        if ($musical_entity !== null) {
+        if (null !== $musical_entity) {
             $metadata['platform'] = $this->getName();
         }
 
@@ -104,14 +104,14 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
 
         $musical_entities = [];
 
-        if (count($entities) === 0) {
+        if (0 === count($entities)) {
             return [];
         }
 
         // Tracks bear a "playback_count" score
         // that we're using to rate the results
         $max_playback_count = 1;
-        if ($type === Platform::SEARCH_TRACK) {
+        if (Platform::SEARCH_TRACK === $type) {
             $max_playback_count = max(intval($entities[0]->playback_count), 1);
         }
 
@@ -119,7 +119,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         for ($i = 0; $i < $length; ++$i) {
             $current_item = $entities[$i];
 
-            if ($type === Platform::SEARCH_TRACK) {
+            if (Platform::SEARCH_TRACK === $type) {
                 $musical_entity = new TrackEntity($current_item->title, new AlbumEntity('', $current_item->user->username, $current_item->artwork_url ? $current_item->artwork_url : ''));
                 $musical_entity->addLink(static::TAG, $current_item->permalink_url);
 

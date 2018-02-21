@@ -75,11 +75,11 @@ class TrackEntity extends MusicalEntity
           'album' => $album,
         ];
 
-        if ($this->countLinkedPlatforms() !== 0) {
+        if (0 !== $this->countLinkedPlatforms()) {
             $result['links'] = $this->links;
         }
 
-        if ($this->introspected === true) {
+        if (true === $this->introspected) {
             $result['safe_title'] = $this->safe_track_title;
             $result['extra_info'] = $this->extra_info;
         }
@@ -93,7 +93,7 @@ class TrackEntity extends MusicalEntity
     */
     public function introspect(): MusicalEntityInterface
     {
-        if ($this->introspected === false) {
+        if (false === $this->introspected) {
             // https://secure.php.net/manual/en/function.extract.php
             extract(parent::parse($this->track_title));
             $this->safe_track_title = $safe_title;
@@ -116,7 +116,7 @@ class TrackEntity extends MusicalEntity
 
     public function getHash(bool $aggressive = false): string
     {
-        if ($aggressive === true) {
+        if (true === $aggressive) {
             return Utils::flatten([$this->getExtraInfoHash(), $this->album->getArtist(), $this->safe_track_title]);
         } else {
             return Utils::flatten([$this->getExtraInfoHash(), $this->album->getArtist(), $this->album->getSafeTitle(), $this->safe_track_title]);
@@ -133,7 +133,7 @@ class TrackEntity extends MusicalEntity
         }
 
         // $a has precedence
-        if ($a->getTitle() === '') {
+        if ('' === $a->getTitle()) {
             $title = $b->getTitle();
             $safe_title = $b->getSafeTitle();
         } else {

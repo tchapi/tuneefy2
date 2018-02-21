@@ -66,12 +66,12 @@ class ApiController
 
         $platforms = $this->engine->getAllPlatforms();
 
-        if ($type != '') {
+        if ('' != $type) {
             $platforms = array_values(array_filter($platforms, function ($e) use ($type) {
                 return $e->getType() === $type;
             }));
 
-            if (count($platforms) === 0) {
+            if (0 === count($platforms)) {
                 $response->write('BAD_PLATFORM_TYPE');
 
                 return $response->withStatus(400);
@@ -114,7 +114,7 @@ class ApiController
         }
 
         // Permalink could be null, but we don't accept that
-        if ($permalink === null || $permalink === '') {
+        if (null === $permalink || '' === $permalink) {
             $response->write('MISSING_PERMALINK');
 
             return $response->withStatus(400);
@@ -127,7 +127,7 @@ class ApiController
         }
 
         // From the try/catch up there
-        if ($result === false) {
+        if (false === $result) {
             $data = ['errors' => [self::ERRORS['FETCH_PROBLEM']]];
             // If we have a result
         } elseif (isset($result['result'])) {
@@ -167,14 +167,14 @@ class ApiController
             return $response->withStatus(400);
         }
 
-        if ($query === null || $query === '') {
+        if (null === $query || '' === $query) {
             $response->write('MISSING_QUERY');
 
             return $response->withStatus(400);
         }
 
         $platform = $this->engine->getPlatformByTag($args['platform_str']);
-        if ($platform === null) {
+        if (null === $platform) {
             $response->write('BAD_PLATFORM');
 
             return $response->withStatus(400);
@@ -187,7 +187,7 @@ class ApiController
         }
 
         // From the try/catch up there
-        if ($result === false) {
+        if (false === $result) {
             $data = ['errors' => [self::ERRORS['FETCH_PROBLEM']]];
             // If we have a result
         } elseif (isset($result['results'])) {
@@ -215,7 +215,7 @@ class ApiController
         $query = $request->getQueryParam('q');
         $limit = $request->getQueryParam('limit') ?? Platform::LIMIT;
         $include = strtolower($request->getQueryParam('include'));
-        $aggressive = true && ($request->getQueryParam('aggressive') && $request->getQueryParam('aggressive') == 'true');
+        $aggressive = true && ($request->getQueryParam('aggressive') && 'true' == $request->getQueryParam('aggressive'));
 
         try {
             $real_type = $this->engine->translateFlag('type', strtolower($args['type']));
@@ -226,14 +226,14 @@ class ApiController
             return $response->withStatus(400);
         }
 
-        if ($query === null || $query === '') {
+        if (null === $query || '' === $query) {
             $response->write('MISSING_QUERY');
 
             return $response->withStatus(400);
         }
 
         $platforms = $this->engine->getPlatformsByTags(explode(',', $include));
-        if ($include === null || $include === '' || $platforms === null) { // Silently fails if a name is invalid, that's ok
+        if (null === $include || '' === $include || null === $platforms) { // Silently fails if a name is invalid, that's ok
             $platforms = $this->engine->getAllPlatforms();
         }
 
@@ -244,7 +244,7 @@ class ApiController
         }
 
         // From the try/catch up there
-        if ($result === false) {
+        if (false === $result) {
             $data = ['errors' => [self::ERRORS['FETCH_PROBLEMS']]];
             // If we have a result
         } elseif (isset($result['results'])) {
@@ -270,7 +270,7 @@ class ApiController
     {
         $intent = $args['intent'];
 
-        if ($intent === null || $intent === '') {
+        if (null === $intent || '' === $intent) {
             $response->write('NO_INTENT');
 
             return $response->withStatus(400);

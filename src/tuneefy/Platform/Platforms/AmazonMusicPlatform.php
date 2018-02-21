@@ -52,7 +52,7 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
 
     public function hasPermalink(string $permalink): bool
     {
-        return strpos($permalink, 'amazon.') !== false;
+        return false !== strpos($permalink, 'amazon.');
     }
 
     protected function addContextOptions(array $data): array
@@ -78,7 +78,7 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
         if (preg_match(self::REGEX_AMAZON_ALL, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['asin']);
 
-            if ($response === null) {
+            if (null === $response) {
                 throw new PlatformException($this);
             }
 
@@ -108,7 +108,7 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
         // Consolidate results
         $metadata = ['query_words' => $query_words];
 
-        if ($musical_entity !== null) {
+        if (null !== $musical_entity) {
             $metadata['platform'] = $this->getName();
         }
 
@@ -117,7 +117,7 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
 
     public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
-        if (!property_exists($response->data->results, 'result') || $response->data->results->stats->totalCount === 0) {
+        if (!property_exists($response->data->results, 'result') || 0 === $response->data->results->stats->totalCount) {
             return [];
         }
 
@@ -131,13 +131,13 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
 
         // Normalizing each track found
         for ($i = 0; $i < $length; ++$i) {
-            if ($response->data->results->stats->totalCount == 1) {
+            if (1 == $response->data->results->stats->totalCount) {
                 $entity = $entities;
             } else {
                 $entity = $entities[$i];
             }
 
-            if ($type === Platform::SEARCH_TRACK) {
+            if (Platform::SEARCH_TRACK === $type) {
                 $current_item = $entity->track;
 
                 $musical_entity = new TrackEntity($current_item->title, new AlbumEntity($current_item->album, $current_item->creator, $current_item->imageMedium));

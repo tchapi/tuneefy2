@@ -61,13 +61,13 @@ class DatabaseHandler
           ':id' => $id,
         ]);
 
-        if ($res === false) {
+        if (false === $res) {
             throw new \Exception('Error getting item : '.$statement->errorInfo()[2]);
         }
 
         $row = $statement->fetch(\PDO::FETCH_ASSOC);
 
-        if ($row === false) {
+        if (false === $row) {
             throw new \Exception('No item with the requested id : '.$id);
         }
 
@@ -77,7 +77,7 @@ class DatabaseHandler
 
         $result = unserialize($row['object'], ['allowed_classes' => [TrackEntity::class, AlbumEntity::class]]);
 
-        if ($result === false || !($result instanceof MusicalEntityInterface)) {
+        if (false === $result || !($result instanceof MusicalEntityInterface)) {
             throw new \Exception('Stored object is not unserializable');
         }
 
@@ -100,13 +100,13 @@ class DatabaseHandler
         $resUpdate = $statementUpdate->execute([':intent' => $intent]);
         $res = $this->connection->commit();
 
-        if ($res === false || $resSelect === false || $resUpdate === false) {
+        if (false === $res || false === $resSelect || false === $resUpdate) {
             throw new \Exception('Error making intent : '.$intent.' permanent '.$statementSelect->errorInfo()[2].' '.$statementUpdate->errorInfo()[2]);
         }
 
         $row = $statementSelect->fetch(\PDO::FETCH_ASSOC);
 
-        if ($row == null) {
+        if (null == $row) {
             throw new \Exception('NO_OR_EXPIRED_INTENT');
         }
 
@@ -116,7 +116,7 @@ class DatabaseHandler
 
         $result = unserialize($row['object'], ['allowed_classes' => [TrackEntity::class, AlbumEntity::class]]);
 
-        if ($result === false || !($result instanceof MusicalEntityInterface)) {
+        if (false === $result || !($result instanceof MusicalEntityInterface)) {
             throw new \Exception('SERIALIZATION_ERROR');
         }
 
@@ -139,15 +139,15 @@ class DatabaseHandler
         $res = $statement->execute([
           ':intent' => $result->getIntent(),
           ':object' => $entityAsString,
-          ':track' => ($entity->getType() === 'track') ? $entity->getSafeTitle() : null,
-          ':album' => ($entity->getType() === 'track') ? $entity->getAlbum()->getSafeTitle() : $entity->getSafeTitle(),
+          ':track' => ('track' === $entity->getType()) ? $entity->getSafeTitle() : null,
+          ':album' => ('track' === $entity->getType()) ? $entity->getAlbum()->getSafeTitle() : $entity->getSafeTitle(),
           ':artist' => $entity->getArtist(),
           ':expires' => $expires->format('Y-m-d H:i:s'),
           ':signature' => hash_hmac('md5', $entityAsString, $this->parameters['intents']['secret']),
           ':client_id' => $client_id,
         ]);
 
-        if ($res === false) {
+        if (false === $res) {
             throw new \Exception('Error adding intent : '.$statement->errorInfo()[2]);
         }
 
@@ -164,7 +164,7 @@ class DatabaseHandler
           ':index' => $index,
         ]);
 
-        if ($res === false) {
+        if (false === $res) {
             throw new \Exception('Error adding listening stat : '.$statement->errorInfo()[2]);
         }
     }
@@ -177,7 +177,7 @@ class DatabaseHandler
           ':platform' => $platformTag,
         ]);
 
-        if ($res === false) {
+        if (false === $res) {
             throw new \Exception('Error adding listening stat : '.$statement->errorInfo()[2]);
         }
     }
@@ -191,7 +191,7 @@ class DatabaseHandler
           ':referer' => isset($_SERVER['HTTP_REFERER']) ?: null,
         ]);
 
-        if ($res === false) {
+        if (false === $res) {
             throw new \Exception('Error adding viewing stat : '.$statement->errorInfo()[2]);
         }
     }
@@ -202,7 +202,7 @@ class DatabaseHandler
 
         $res = $statement->execute();
 
-        if ($res === false) {
+        if (false === $res) {
             throw new \Exception('Error getting platform share stats : '.$statement->errorInfo()[2]);
         }
 
@@ -216,7 +216,7 @@ class DatabaseHandler
 
         $res = $statement->execute();
 
-        if ($res === false) {
+        if (false === $res) {
             throw new \Exception('Error getting most viewed items : '.$statement->errorInfo()[2]);
         }
 
@@ -244,7 +244,7 @@ class DatabaseHandler
 
         $res = $statement->execute();
 
-        if ($res === false) {
+        if (false === $res) {
             throw new \Exception('Error getting most viewed item : '.$statement->errorInfo()[2]);
         }
 
@@ -264,7 +264,7 @@ class DatabaseHandler
 
         $res = $statement->execute();
 
-        if ($res === false) {
+        if (false === $res) {
             throw new \Exception('Error getting last shared items : '.$statement->errorInfo()[2]);
         }
 
@@ -298,7 +298,7 @@ class DatabaseHandler
 
         $res = $statement->execute();
 
-        if ($res === false) {
+        if (false === $res) {
             throw new \Exception('Error getting items stats : '.$statement->errorInfo()[2]);
         }
 
@@ -317,7 +317,7 @@ class DatabaseHandler
 
         $res = $statement->execute();
 
-        if ($res === false) {
+        if (false === $res) {
             throw new \Exception('Error getting api clients : '.$statement->errorInfo()[2]);
         }
 
@@ -337,7 +337,7 @@ class DatabaseHandler
           ':url' => $url,
         ]);
 
-        if ($res === false) {
+        if (false === $res) {
             throw new \Exception('Error adding api client : '.$statement->errorInfo()[2]);
         }
 

@@ -34,7 +34,8 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.2",
-        "phpunit/phpunit": "^6.1",
-        "deployer/deployer": "^4.2.1"
+        "deployer/deployer": "^4.2.1",
+        "codeception/codeception": "^2.3",
+        "flow/jsonpath": "^0.3.4"
     }
 }

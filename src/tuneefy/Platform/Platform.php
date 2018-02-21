@@ -91,7 +91,7 @@ abstract class Platform implements GeneralPlatformInterface
     public static function getInstance(): Platform
     {
         $class = get_called_class();
-        if (!isset(static::$instances[$class]) || static::$instances[$class] === null) {
+        if (!isset(static::$instances[$class]) || null === static::$instances[$class]) {
             static::$instances[$class] = new static();
         }
 
@@ -223,7 +223,7 @@ abstract class Platform implements GeneralPlatformInterface
     {
         $url = $this->endpoints[$type];
 
-        if ($this->terms[$type] === null) {
+        if (null === $this->terms[$type]) {
             $url = sprintf($url, $query);
             $data = $this->options[$type];
         } else {
@@ -255,9 +255,9 @@ abstract class Platform implements GeneralPlatformInterface
             CURLOPT_TIMEOUT_MS => 2000,
         ]);
 
-        if (static::API_METHOD === self::METHOD_GET) {
+        if (self::METHOD_GET === static::API_METHOD) {
             curl_setopt($ch, CURLOPT_URL, $url.'?'.http_build_query($data)); // It's ok to have a trailing "?"
-        } elseif (static::API_METHOD === self::METHOD_POST) {
+        } elseif (self::METHOD_POST === static::API_METHOD) {
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
@@ -268,11 +268,11 @@ abstract class Platform implements GeneralPlatformInterface
 
     private function postProcessResult(string $response)
     {
-        if ($response === false) {
+        if (false === $response) {
             // Error in the request, we should gracefully fail returning null
             return null;
         } else {
-            if (static::RETURN_CONTENT_TYPE === self::RETURN_XML) {
+            if (self::RETURN_XML === static::RETURN_CONTENT_TYPE) {
                 $response = Utils::flattenMetaXMLNodes($response);
                 $converter = new XmlToJsonConverter();
                 try {
@@ -309,7 +309,7 @@ abstract class Platform implements GeneralPlatformInterface
     {
         $response = self::fetch($platform, $type, $query);
 
-        if ($response === null) {
+        if (null === $response) {
             throw new PlatformException($platform);
         }
 
@@ -345,7 +345,7 @@ abstract class Platform implements GeneralPlatformInterface
 
             $response = $object['platform']->postProcessResult($response);
 
-            if ($response === null) {
+            if (null === $response) {
                 $errors[] = ['FETCH_PROBLEM' => (new PlatformException($object['platform']))->getMessage()];
                 continue;
             }

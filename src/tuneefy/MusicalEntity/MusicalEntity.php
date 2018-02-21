@@ -109,7 +109,7 @@ abstract class MusicalEntity implements MusicalEntityInterface
 
     public function isEdit(): bool
     {
-        return isset($this->extra_info['edit']) && $this->extra_info['edit'] !== '';
+        return isset($this->extra_info['edit']) && '' !== $this->extra_info['edit'];
     }
 
     public function getExtraInfoHash(): string
@@ -136,9 +136,9 @@ abstract class MusicalEntity implements MusicalEntityInterface
         $extra_info['is_cover'] = (
             strlen($str) > 8 &&
             (
-                (static::TYPE == TrackEntity::TYPE && preg_match('/[\-\—\–\(\[].*(originally\sperformed|cover|tribute|karaoke)/iu', $str) === 1)
+                (TrackEntity::TYPE == static::TYPE && 1 === preg_match('/[\-\—\–\(\[].*(originally\sperformed|cover|tribute|karaoke)/iu', $str))
                 ||
-                (static::TYPE == AlbumEntity::TYPE && preg_match('/.*(originally\sperformed|cover(.*)(vol|sessions)|tribute|karaoke)/iu', $str) === 1)
+                (AlbumEntity::TYPE == static::TYPE && 1 === preg_match('/.*(originally\sperformed|cover(.*)(vol|sessions)|tribute|karaoke)/iu', $str))
             )
         );
 

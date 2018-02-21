@@ -5,7 +5,6 @@ declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 use tuneefy\MusicalEntity\Entities\AlbumEntity;
 use tuneefy\MusicalEntity\Entities\TrackEntity;
-use tuneefy\MusicalEntity\MusicalEntity;
 
 /**
  * @covers \MusicalEntity
@@ -191,12 +190,12 @@ final class MusicalEntityTest extends TestCase
         ],
     ];
 
-    public function testParse()
+    public function testParseTracks()
     {
         foreach ($this->parsableMusicalStrings as $key => $value) {
             $this->assertEquals(
               $value,
-              MusicalEntity::parse($key)
+              TrackEntity::parse($key)
             );
         }
     }

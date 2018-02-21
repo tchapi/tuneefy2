@@ -47,7 +47,7 @@ class Utils
         // Cut the string
         $out = trim(substr($text, 0, $max));
 
-        if (strpos($text, ' ') === false) {
+        if (false === strpos($text, ' ')) {
             // If it's a single word, just return with the suffix
             return $out.$append;
         } else {

@@ -2,19 +2,12 @@
 
 declare(strict_types=1);
 
-use PHPUnit\Framework\TestCase;
-use Slim\Http\Environment;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Codeception\Util\HttpCode;
+use tuneefy\Application;
 use tuneefy\PlatformEngine;
 
-/**
- * @covers \Api
- */
-final class ApiTest extends TestCase
+final class ApiCest
 {
-    protected $app;
-
     const TRACK_QUERY = 'sufjan+stevens+should';
     const TRACK_QUERY_ERROR = 'xzqwqsxws';
     const ALBUM_QUERY = 'radiohead+computer';
@@ -150,66 +143,6 @@ final class ApiTest extends TestCase
             'https://open.spotify.com/artist/2m62cc253Xvd9qYQ8d2X3d' => [
                 'query_words' => [
                     'The Alan Parsons Project',
-                ],
-            ],
-        ],
-        'groove' => [
-            'http://music.xbox.com/Album/C954F807-0100-11DB-89CA-0019B92A3933' => [
-                'musical_entity' => [
-                    'type' => 'album',
-                    'title' => 'Give Me Strength: The ‘74/’75 Studio Recordings',
-                    'artist' => 'Eric Clapton',
-                    'picture' => 'https://musicimage.xboxlive.com/content/music.c954f807-0100-11db-89ca-0019b92a3933/image?locale=fr-FR',
-                    'links' => [
-                        'groove' => [
-                            'https://music.microsoft.com/album/eric-clapton/give-me-strength-the-‘74-75-studio-recordings/c954f807-0100-11db-89ca-0019b92a3933?partnerID=AppId:00000000441C7CAD',
-                        ],
-                    ],
-                    'safe_title' => 'Give Me Strength: The ‘74/’75 Studio Recordings',
-                    'extra_info' => [
-                        'is_cover' => false,
-                        'is_remix' => false,
-                        'acoustic' => false,
-                        'context' => [],
-                    ],
-                ],
-                'query_words' => [
-                    'Eric Clapton',
-                    'Give Me Strength: The ‘74/’75 Studio Recordings',
-                ],
-            ],
-            'http://music.xbox.com/Track/87CF3706-0100-11DB-89CA-0019B92A3933' => [
-                'musical_entity' => [
-                    'type' => 'track',
-                    'title' => 'Test',
-                    'album' => [
-                        'title' => 'Little Dragon',
-                        'artist' => 'Little Dragon',
-                        'picture' => 'https://musicimage.xboxlive.com/content/music.03732806-0100-11db-89ca-0019b92a3933/image?locale=fr-FR',
-                        'safe_title' => 'Little Dragon',
-                        'extra_info' => [
-                            'is_cover' => false,
-                            'is_remix' => false,
-                            'acoustic' => false,
-                            'context' => [],
-                        ],
-                    ],
-                    'links' => [
-                        'groove' => [
-                            'https://music.microsoft.com/track/little-dragon/little-dragon/test/87cf3706-0100-11db-89ca-0019b92a3933?partnerID=AppId:00000000441C7CAD',
-                        ],
-                    ],
-                    'safe_title' => 'Test',
-                    'extra_info' => [
-                        'is_cover' => false,
-                        'is_remix' => false,
-                        'acoustic' => false,
-                        'context' => [],
-                    ],
-                ],
-                'query_words' => [
-                    'Little Dragon',
-                    'Test',
                 ],
             ],
         ],
@@ -694,7 +627,7 @@ final class ApiTest extends TestCase
                     'picture' => 'http://is1.mzstatic.com/image/thumb/Music60/v4/f8/52/ef/f852efd1-3221-6ce7-d5aa-e320a9d8879e/source/100x100bb.jpg',
                     'links' => [
                         'itunes' => [
-                            'https://itunes.apple.com/us/album/weezer/id1136784464?uo=4',
+                            'https://itunes.apple.com/us/album/weezer/1136784464?uo=4',
                         ],
                     ],
                     'safe_title' => 'Weezer',
@@ -777,91 +710,65 @@ final class ApiTest extends TestCase
         ],
     ];
 
-    public function setUp()
+    public function testDocumentationRedirect(ApiTester $I)
     {
-        $this->app = new tuneefy\Application();
-        $this->app->configure();
+        $I->stopFollowingRedirects();
+        $I->sendGET('/');
+        $I->seeResponseCodeIs(301);
     }
 
-    private function get(string $endpoint)
+    public function testListPlatforms(ApiTester $I)
     {
-        $env = Environment::mock([
-            'REQUEST_METHOD' => 'GET',
-            'REQUEST_URI' => '/api'.$endpoint,
-            ]);
-        $req = Request::createFromEnvironment($env);
-        $req = $req->withHeader('Accept', 'application/json');
-        $this->app->set('request', $req);
-        $this->app->set('response', new Response());
+        $I->sendGET('/platforms');
+        $I->seeResponseCodeIs(HttpCode::OK);
+        $I->seeResponseIsJson();
 
-        return $this->app->run(true);
-    }
+        $I->seeResponseJsonMatchesJsonPath('$.platforms');
 
-    public function testDocumentation()
-    {
-        $response = $this->get(''); // "/api"
-        $this->assertSame($response->getStatusCode(), 200);
-    }
+        $platforms = $I->grabDataFromResponseByJsonPath('$.platforms.*');
 
-    public function testListPlatforms()
-    {
-        $response = $this->get('/platforms');
-        $this->assertSame($response->getStatusCode(), 200);
+        $I->assertCount(12, $platforms);
 
-        $result = json_decode($response->getBody()->__toString(), true);
-
-        $this->assertArrayHasKey('platforms', $result);
-
-        $result = $result['platforms'];
-
-        // 14 platforms
-        $this->assertEquals(count($result), 13);
-
-        foreach ($result as $key => $platform) {
-            $this->assertCount(7, $platform);
-            $this->assertNotEquals('', $platform['tag']);
-            $this->assertNotEquals('', $platform['type']);
-            $this->assertNotEquals('', $platform['name']);
-            $this->assertNotEquals('', $platform['homepage']);
-            $this->assertNotEquals('', $platform['mainColorAccent']);
-            $this->assertCount(2, $platform['enabled']);
-            $this->assertCount(3, $platform['capabilities']);
+        foreach ($platforms as $key => $platform) {
+            $I->assertCount(7, $platform);
+            $I->assertNotEquals('', $platform['tag']);
+            $I->assertNotEquals('', $platform['type']);
+            $I->assertNotEquals('', $platform['name']);
+            $I->assertNotEquals('', $platform['homepage']);
+            $I->assertNotEquals('', $platform['mainColorAccent']);
+            $I->assertCount(2, $platform['enabled']);
+            $I->assertCount(3, $platform['capabilities']);
         }
     }
 
-    public function testListPlatformsWithBadType()
+    public function testListPlatformsWithBadType(ApiTester $I)
     {
-        $response = $this->get('/platforms?type=coucou');
-        $this->assertSame($response->getStatusCode(), 400);
-
-        $result = json_decode($response->getBody()->__toString(), true);
-
-        $this->assertArrayHasKey('errors', $result);
+        $I->sendGET('/platforms?type=coucou');
+        $I->seeResponseCodeIs(400);
+        $I->seeResponseJsonMatchesJsonPath('$.errors');
     }
 
-    public function testListPlatformsWithType()
+    public function testListPlatformsWithType(ApiTester $I)
     {
-        $response = $this->get('/platforms?type=streaming');
-        $this->assertSame($response->getStatusCode(), 200);
+        $I->sendGET('/platforms?type=streaming');
+        $I->seeResponseCodeIs(HttpCode::OK);
+        $I->seeResponseJsonMatchesJsonPath('$.platforms');
 
-        $result = json_decode($response->getBody()->__toString(), true);
+        $platforms = $I->grabDataFromResponseByJsonPath('$.platforms.*');
 
-        $this->assertArrayHasKey('platforms', $result);
+        $I->assertCount(9, $platforms);
 
-        $result = $result['platforms'];
-
-        // 14 platforms
-        $this->assertEquals(count($result), 10);
-
-        foreach ($result as $key => $platform) {
-            $this->assertCount(7, $platform);
-            $this->assertEquals('streaming', $platform['type']);
+        foreach ($platforms as $key => $platform) {
+            $I->assertCount(7, $platform);
+            $I->assertEquals('streaming', $platform['type']);
         }
     }
 
-    public function testLookupPermalink()
+    public function testLookupPermalink(ApiTester $I)
     {
-        $engine = new PlatformEngine();
+        $app = new Application();
+        $app->configure();
+        $engine = $app->getEngine();
 
         foreach (self::PERMALINKS as $platformTag => $permalinks) {
             $platform = $engine->getPlatformByTag($platformTag);
@@ -870,115 +777,119 @@ final class ApiTest extends TestCase
             }
 
             foreach ($permalinks as $permalink => $expectedResult) {
-                $response = $this->get('/lookup?q='.urlencode($permalink));
-                $this->assertSame($response->getStatusCode(), 200);
+                $I->sendGET('/lookup?q='.urlencode($permalink));
+                $I->seeResponseCodeIs(HttpCode::OK);
 
-                $result = json_decode($response->getBody()->__toString(), true);
+                $result = $I->grabDataFromResponseByJsonPath('.')[0];
 
-                $this->assertArrayHasKey('result', $result);
-                $this->assertArrayHasKey('metadata', $result['result']);
-                $this->assertArrayHasKey('query_words', $result['result']['metadata']);
-                $this->assertEquals(
+                $I->assertArrayHasKey('result', $result);
+                $I->assertArrayHasKey('metadata', $result['result']);
+                $I->assertArrayHasKey('query_words', $result['result']['metadata']);
+                $I->assertEquals(
                     $result['result']['metadata']['query_words'],
                     $expectedResult['query_words']
                 );
                 if (isset($expectedResult['musical_entity'])) {
-                    $this->assertEquals(
+                    $I->assertEquals(
                         $result['result']['musical_entity'],
                         $expectedResult['musical_entity']
                     );
-                    $this->assertArrayHasKey('platform', $result['result']['metadata']);
-                    $this->assertEquals(
+                    $I->assertArrayHasKey('platform', $result['result']['metadata']);
+                    $I->assertEquals(
                         $result['result']['metadata']['platform'],
                         $platform->getName()
                     );
                 } else {
-                    $this->assertArrayHasKey('errors', $result);
+                    $I->assertArrayHasKey('errors', $result);
                 }
-                //error_log($permalink.' ✅');
+                codecept_debug($permalink.' ✅');
             }
         }
     }
 
-    public function testLookupWithNoPermalink()
+    public function testLookupWithNoPermalink(ApiTester $I)
     {
-        $response = $this->get('/lookup');
-        $this->assertSame($response->getStatusCode(), 400);
-
-        $result = json_decode($response->getBody()->__toString(), true);
-        $this->assertArrayHasKey('errors', $result);
+        $I->sendGET('/lookup');
+        $I->seeResponseCodeIs(400);
+        $I->seeResponseJsonMatchesJsonPath('$.errors');
     }
 
-    public function testSearchTrack()
+    public function testSearchTrack(ApiTester $I)
     {
-        $engine = new PlatformEngine();
+        $app = new Application();
+        $app->configure();
+        $engine = $app->getEngine();
         $platforms = $engine->getAllPlatforms();
 
         foreach ($platforms as $platform) {
             if (!$platform->isCapableOfSearchingTracks()) {
                 continue;
             }
-            $response = $this->get('/search/track/'.$platform->getTag().'?q='.self::TRACK_QUERY.'&limit=1');
-            $this->assertSame($response->getStatusCode(), 200);
+            $I->sendGET('/search/track/'.$platform->getTag().'?q='.self::TRACK_QUERY.'&limit=1');
+            $I->seeResponseCodeIs(HttpCode::OK);
+            $I->seeResponseIsJson();
 
-            $result = json_decode($response->getBody()->__toString(), true);
+            $result = $I->grabDataFromResponseByJsonPath('.')[0];
+
             if (!isset($result['results'])) {
-                $this->assertArrayHasKey('errors', $result);
-                $this->markAsRisky('No results for track search on platform '.$platform->getName());
+                $I->assertArrayHasKey('errors', $result);
+                //$I->markAsRisky('No results for track search on platform '.$platform->getName());
             } else {
-                $this->assertArrayHasKey('results', $result);
-                $this->assertCount(1, $result['results']);
+                $I->assertArrayHasKey('results', $result);
+                $I->assertCount(1, $result['results']);
             }
         }
     }
 
-    public function testSearchTrackModeOk()
+    public function testSearchTrackModeOk(ApiTester $I)
     {
         $engine = new PlatformEngine();
         $platform = $engine->getPlatformByTag('spotify');
 
-        $response = $this->get('/search/track/'.$platform->getTag().'?q='.self::TRACK_QUERY.'&limit=1&mode=eager');
-        $this->assertSame($response->getStatusCode(), 200);
+        $I->sendGET('/search/track/'.$platform->getTag().'?q='.self::TRACK_QUERY.'&limit=1&mode=eager');
+        $I->seeResponseCodeIs(HttpCode::OK);
+        $I->seeResponseIsJson();
 
-        $result = json_decode($response->getBody()->__toString(), true);
-        $this->assertArrayHasKey('results', $result);
-        $this->assertCount(1, $result['results']);
+        $I->seeResponseJsonMatchesJsonPath('$.results');
+
+        $result = $I->grabDataFromResponseByJsonPath('.results');
+        $I->assertCount(1, $result);
     }
 
-    public function testSearchTrackWithNoQuery()
+    public function testSearchTrackWithNoQuery(ApiTester $I)
     {
         $engine = new PlatformEngine();
         $platforms = $engine->getAllPlatforms();
 
         foreach ($platforms as $platform) {
-            $response = $this->get('/search/track/'.$platform->getTag());
-            $this->assertSame($response->getStatusCode(), 400);
-
-            $result = json_decode($response->getBody()->__toString(), true);
-            $this->assertArrayHasKey('errors', $result);
+            $I->sendGET('/search/track/'.$platform->getTag());
+            $I->seeResponseCodeIs(400);
+            $I->seeResponseIsJson();
+            $I->seeResponseJsonMatchesJsonPath('$.errors');
         }
     }
 
-    public function testSearchTrackWithNoMatch()
+    public function testSearchTrackWithNoMatch(ApiTester $I)
     {
         $engine = new PlatformEngine();
         $platforms = $engine->getAllPlatforms();
 
         foreach ($platforms as $platform) {
-            $response = $this->get('/search/track/'.$platform->getTag().'?q='.self::TRACK_QUERY_ERROR.'&limit=2');
-            $this->assertSame($response->getStatusCode(), 200);
+            $I->sendGET('/search/track/'.$platform->getTag().'?q='.self::TRACK_QUERY_ERROR.'&limit=2');
+            $I->seeResponseCodeIs(HttpCode::OK);
+            $I->seeResponseIsJson();
 
-            $result = json_decode($response->getBody()->__toString(), true);
-            if ($platform->getTag() === 'napster') {
+            $result = $I->grabDataFromResponseByJsonPath('.')[0];
+            if ('napster' === $platform->getTag()) {
                 // Napster always returns something
-                $this->assertArrayHasKey('results', $result);
+                $I->assertArrayHasKey('results', $result);
             } else {
-                $this->assertArrayHasKey('errors', $result);
+                $I->assertArrayHasKey('errors', $result);
             }
         }
     }
 
-    public function testSearchAlbum()
+    public function testSearchAlbum(ApiTester $I)
     {
         $engine = new PlatformEngine();
         $platforms = $engine->getAllPlatforms();
@@ -987,124 +898,132 @@ final class ApiTest extends TestCase
             if (!$platform->isCapableOfSearchingAlbums()) {
                 continue;
             }
-            $response = $this->get('/search/album/'.$platform->getTag().'?q='.self::ALBUM_QUERY.'&limit=1');
-            $this->assertSame($response->getStatusCode(), 200);
+            $I->sendGET('/search/album/'.$platform->getTag().'?q='.self::ALBUM_QUERY.'&limit=1');
+            $I->seeResponseCodeIs(HttpCode::OK);
+            $I->seeResponseIsJson();
 
-            $result = json_decode($response->getBody()->__toString(), true);
+            $result = $I->grabDataFromResponseByJsonPath('.')[0];
+
             if (!isset($result['results'])) {
-                $this->assertArrayHasKey('errors', $result);
-                $this->markAsRisky('No results for album search on platform '.$platform->getName());
+                $I->assertArrayHasKey('errors', $result);
+                //$I->markAsRisky('No results for album search on platform '.$platform->getName());
             } else {
-                $this->assertArrayHasKey('results', $result);
-                $this->assertCount(1, $result['results']);
+                $I->assertArrayHasKey('results', $result);
+                $I->assertCount(1, $result['results']);
             }
         }
     }
 
-    public function testSearchAlbumWithNoQuery()
+    public function testSearchAlbumWithNoQuery(ApiTester $I)
     {
         $engine = new PlatformEngine();
         $platforms = $engine->getAllPlatforms();
 
         foreach ($platforms as $platform) {
-            $response = $this->get('/search/album/'.$platform->getTag());
-            $this->assertSame($response->getStatusCode(), 400);
-
-            $result = json_decode($response->getBody()->__toString(), true);
-            $this->assertArrayHasKey('errors', $result);
+            $I->sendGET('/search/album/'.$platform->getTag());
+            $I->seeResponseCodeIs(400);
+            $I->seeResponseIsJson();
+            $I->seeResponseJsonMatchesJsonPath('$.errors');
         }
     }
 
-    public function testSearchAlbumWithNoMatch()
+    public function testSearchAlbumWithNoMatch(ApiTester $I)
     {
         $engine = new PlatformEngine();
         $platforms = $engine->getAllPlatforms();
 
         foreach ($platforms as $platform) {
-            $response = $this->get('/search/album/'.$platform->getTag().'?q='.self::ALBUM_QUERY_ERROR.'&limit=2');
-            $this->assertSame($response->getStatusCode(), 200);
+            $I->sendGET('/search/album/'.$platform->getTag().'?q='.self::ALBUM_QUERY_ERROR.'&limit=2');
+            $I->seeResponseCodeIs(HttpCode::OK);
+            $I->seeResponseIsJson();
 
-            $result = json_decode($response->getBody()->__toString(), true);
-            if ($platform->getTag() === 'napster') {
+            $result = $I->grabDataFromResponseByJsonPath('.')[0];
+            if ('napster' === $platform->getTag()) {
                 // Napster always returns something
-                $this->assertArrayHasKey('results', $result);
+                $I->assertArrayHasKey('results', $result);
             } else {
-                $this->assertArrayHasKey('errors', $result);
+                $I->assertArrayHasKey('errors', $result);
             }
         }
     }
 
-    public function testAggregateTrack()
+    public function testAggregateTrack(ApiTester $I)
     {
         $engine = new PlatformEngine();
 
-        $response = $this->get('/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY.'&limit=1');
-        $this->assertSame($response->getStatusCode(), 200);
+        $I->sendGET('/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY.'&limit=1');
+        $I->seeResponseCodeIs(HttpCode::OK);
+        $I->seeResponseIsJson();
 
-        $result = json_decode($response->getBody()->__toString(), true);
-        $this->assertArrayHasKey('results', $result);
-        $this->assertCount(1, $result['results']);
+        $I->seeResponseJsonMatchesJsonPath('$.results');
+        $result = $I->grabDataFromResponseByJsonPath('$.results.*');
 
-        $this->assertArrayHasKey('musical_entity', $result['results'][0]);
-        $this->assertGreaterThan(7, $result['results'][0]['musical_entity']['links']);
-        $this->assertGreaterThan(7, $result['results'][0]['metadata']['merges']);
+        $I->assertCount(1, $result);
+
+        $I->assertArrayHasKey('musical_entity', $result[0]);
+        $I->assertGreaterThan(7, $result[0]['musical_entity']['links']);
+        $I->assertGreaterThan(7, $result[0]['metadata']['merges']);
     }
 
-    public function testAggregateAggressive()
+    public function testAggregateAggressive(ApiTester $I)
     {
         $engine = new PlatformEngine();
 
-        $response = $this->get('/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY.'&limit=1&aggressive=true&include=deezer,spotify');
-        $this->assertSame($response->getStatusCode(), 200);
+        $I->sendGET('/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY.'&limit=1&aggressive=true&include=deezer,spotify');
+        $I->seeResponseCodeIs(HttpCode::OK);
+        $I->seeResponseIsJson();
 
-        $result = json_decode($response->getBody()->__toString(), true);
+        $I->seeResponseJsonMatchesJsonPath('$.results');
+        $result = $I->grabDataFromResponseByJsonPath('$.results.*');
 
-        $this->assertArrayHasKey('results', $result);
-        $this->assertCount(1, $result['results']);
+        $I->assertCount(1, $result);
 
-        $this->assertArrayHasKey('musical_entity', $result['results'][0]);
-        $this->assertCount(2, $result['results'][0]['musical_entity']['links']);
-        $this->assertGreaterThan(0, $result['results'][0]['metadata']['merges']);
+        $I->assertArrayHasKey('musical_entity', $result[0]);
+        $I->assertCount(2, $result[0]['musical_entity']['links']);
+        $I->assertGreaterThan(0, $result[0]['metadata']['merges']);
 
-        $this->assertArrayHasKey('deezer', $result['results'][0]['musical_entity']['links']);
-        $this->assertArrayHasKey('spotify', $result['results'][0]['musical_entity']['links']);
-        $this->assertGreaterThan(0, $result['results'][0]['musical_entity']['links']['spotify']);
+        $I->assertArrayHasKey('deezer', $result[0]['musical_entity']['links']);
+        $I->assertArrayHasKey('spotify', $result[0]['musical_entity']['links']);
+        $I->assertGreaterThan(0, $result[0]['musical_entity']['links']['spotify']);
     }
 
-    public function testAggregateInclude()
+    public function testAggregateInclude(ApiTester $I)
     {
         $engine = new PlatformEngine();
 
-        $response = $this->get('/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY.'&limit=1&include=deezer,spotify');
-        $this->assertSame($response->getStatusCode(), 200);
+        $I->sendGET('/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY.'&limit=1&include=deezer,spotify');
+        $I->seeResponseCodeIs(HttpCode::OK);
+        $I->seeResponseIsJson();
 
-        $result = json_decode($response->getBody()->__toString(), true);
+        $I->seeResponseJsonMatchesJsonPath('$.results');
+        $result = $I->grabDataFromResponseByJsonPath('$.results.*');
 
-        $this->assertArrayHasKey('results', $result);
-        $this->assertCount(1, $result['results']);
+        $I->assertCount(1, $result);
 
-        $this->assertArrayHasKey('musical_entity', $result['results'][0]);
-        $this->assertCount(2, $result['results'][0]['musical_entity']['links']);
-        $this->assertEquals(1, $result['results'][0]['metadata']['merges']);
+        $I->assertArrayHasKey('musical_entity', $result[0]);
+        $I->assertCount(2, $result[0]['musical_entity']['links']);
+        $I->assertEquals(1, $result[0]['metadata']['merges']);
 
-        $this->assertArrayHasKey('deezer', $result['results'][0]['musical_entity']['links']);
-        $this->assertArrayHasKey('spotify', $result['results'][0]['musical_entity']['links']);
+        $I->assertArrayHasKey('deezer', $result[0]['musical_entity']['links']);
+        $I->assertArrayHasKey('spotify', $result[0]['musical_entity']['links']);
     }
 
-    public function testAggregateTrackBadQuery()
+    public function testAggregateTrackBadQuery(ApiTester $I)
     {
         $engine = new PlatformEngine();
 
-        $response = $this->get('/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY_ERROR.'&limit=1');
-        $this->assertSame($response->getStatusCode(), 200);
+        $I->sendGET('/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY_ERROR.'&limit=1');
+        $I->seeResponseCodeIs(HttpCode::OK);
+        $I->seeResponseIsJson();
 
-        $result = json_decode($response->getBody()->__toString(), true);
-        $this->assertArrayHasKey('results', $result);
-        $this->assertCount(1, $result['results']);
+        $I->seeResponseJsonMatchesJsonPath('$.results');
+        $result = $I->grabDataFromResponseByJsonPath('$.results.*');
 
-        $this->assertArrayHasKey('musical_entity', $result['results'][0]);
-        $this->assertCount(1, $result['results'][0]['musical_entity']['links']);
+        $I->assertCount(1, $result);
+
+        $I->assertArrayHasKey('musical_entity', $result[0]);
+        $I->assertCount(1, $result[0]['musical_entity']['links']);
         // Only the Napster platform returns a result
-        $this->assertArrayHasKey('napster', $result['results'][0]['musical_entity']['links']);
+        $I->assertArrayHasKey('napster', $result[0]['musical_entity']['links']);
     }
 }

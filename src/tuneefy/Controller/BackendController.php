@@ -74,14 +74,14 @@ class BackendController
         $statement = $connection->prepare('SET FOREIGN_KEY_CHECKS=0; TRUNCATE TABLE `stats_listening`; TRUNCATE TABLE `stats_viewing`; TRUNCATE TABLE `items`;');
         $res = $statement->execute();
 
-        if ($res === false) {
+        if (false === $res) {
             throw new \Exception('Could not truncate table : '.$statement->errorInfo()[2]);
         }
 
         $statement = $connection->prepare('ALTER TABLE `items` AUTO_INCREMENT=1; SET FOREIGN_KEY_CHECKS=1;');
         $res = $statement->execute();
 
-        if ($res === false) {
+        if (false === $res) {
             throw new \Exception('Could not reset auto increment : '.$statement->errorInfo()[2]);
         }
 
@@ -89,7 +89,7 @@ class BackendController
         $statement = $connection->prepare('SELECT COUNT(`id`) FROM `items_legacy`;');
         $res = $statement->execute();
 
-        if ($res === false) {
+        if (false === $res) {
             throw new \Exception('Error getting item count : '.$statement->errorInfo()[2]);
         }
 
@@ -108,7 +108,7 @@ class BackendController
             $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
             foreach ($rows as $row) {
-                if ($row['type'] == 0) {
+                if (0 == $row['type']) {
                     // Track
                     $album = new AlbumEntity($row['album'], $row['artist'], $row['image']);
                     $entity = new TrackEntity($row['name'], $album);
@@ -116,28 +116,28 @@ class BackendController
                     $entity = new AlbumEntity($row['album'], $row['artist'], $row['image']);
                 }
 
-                if ($row['link_DEEZER'] != null) {
+                if (null != $row['link_DEEZER']) {
                     $entity->addLink('deezer', $row['link_DEEZER']);
                 }
-                if ($row['link_SPOTIFY'] != null) {
+                if (null != $row['link_SPOTIFY']) {
                     $entity->addLink('spotify', $row['link_SPOTIFY']);
                 }
-                if ($row['link_LASTFM'] != null) {
+                if (null != $row['link_LASTFM']) {
                     $entity->addLink('lastfm', $row['link_LASTFM']);
                 }
-                if ($row['link_SOUNDCLOUD'] != null) {
+                if (null != $row['link_SOUNDCLOUD']) {
                     $entity->addLink('soundcloud', $row['link_SOUNDCLOUD']);
                 }
-                if ($row['link_YOUTUBE'] != null) {
+                if (null != $row['link_YOUTUBE']) {
                     $entity->addLink('youtube', $row['link_YOUTUBE']);
                 }
-                if ($row['link_MIXCLOUD'] != null) {
+                if (null != $row['link_MIXCLOUD']) {
                     $entity->addLink('mixcloud', $row['link_MIXCLOUD']);
                 }
-                if ($row['link_ITUNES'] != null) {
+                if (null != $row['link_ITUNES']) {
                     $entity->addLink('itunes', $row['link_ITUNES']);
                 }
-                if ($row['link_QOBUZ'] != null) {
+                if (null != $row['link_QOBUZ']) {
                     $entity->addLink('qobuz', $row['link_QOBUZ']);
                 }
 
@@ -152,8 +152,8 @@ class BackendController
                   ':id' => $row['id'],
                   ':intent' => null,
                   ':object' => $entityAsString,
-                  ':track' => ($entity->getType() === 'track') ? $entity->getTitle() : null,
-                  ':album' => ($entity->getType() === 'track') ? $entity->getAlbum()->getTitle() : $entity->getTitle(),
+                  ':track' => ('track' === $entity->getType()) ? $entity->getTitle() : null,
+                  ':album' => ('track' === $entity->getType()) ? $entity->getAlbum()->getTitle() : $entity->getTitle(),
                   ':artist' => $entity->getArtist(),
                   ':date' => $row['date'],
                   ':expires' => null,
@@ -161,7 +161,7 @@ class BackendController
                   ':client_id' => 'legacy',
                 ]);
 
-                if ($res === false) {
+                if (false === $res) {
                     throw new \Exception('Error adding intent : '.$statement->errorInfo()[2]);
                 }
             }

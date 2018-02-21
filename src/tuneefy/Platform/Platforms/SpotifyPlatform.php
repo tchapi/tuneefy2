@@ -58,7 +58,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
 
     public function hasPermalink(string $permalink): bool
     {
-        return strpos($permalink, 'spotify:') !== false || strpos($permalink, 'open.spotify.') !== false || strpos($permalink, 'play.spotify.') !== false;
+        return false !== strpos($permalink, 'spotify:') || false !== strpos($permalink, 'open.spotify.') || false !== strpos($permalink, 'play.spotify.');
     }
 
     protected function addContextHeaders(): array
@@ -96,12 +96,12 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
             $object_type = $this->lookup_type_correspondance[$match['type']];
             $response = self::fetch($this, $object_type, $match['item_id']);
 
-            if ($response === null || property_exists($response->data, 'error')) {
+            if (null === $response || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
             $entity = $response->data;
 
-            if ($object_type === Platform::LOOKUP_TRACK) {
+            if (Platform::LOOKUP_TRACK === $object_type) {
                 $musical_entity = new TrackEntity($entity->name, new AlbumEntity($entity->album->name, $entity->artists[0]->name, $entity->album->images[1]->url));
                 $musical_entity->addLink(static::TAG, $entity->external_urls->spotify);
 
@@ -109,7 +109,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
                     $musical_entity->getAlbum()->getArtist(),
                     $musical_entity->getSafeTitle(),
                 ];
-            } elseif ($object_type === Platform::LOOKUP_ALBUM) {
+            } elseif (Platform::LOOKUP_ALBUM === $object_type) {
                 $musical_entity = new AlbumEntity($entity->name, $entity->artists[0]->name, $entity->images[1]->url);
                 $musical_entity->addLink(static::TAG, $entity->external_urls->spotify);
 
@@ -117,7 +117,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
                     $musical_entity->getArtist(),
                     $musical_entity->getSafeTitle(),
                 ];
-            } elseif ($object_type === Platform::LOOKUP_ARTIST) {
+            } elseif (Platform::LOOKUP_ARTIST === $object_type) {
                 $query_words = [$entity->name];
             }
         } elseif (preg_match(self::REGEX_SPOTIFY_LOCAL, $permalink, $match)) {
@@ -128,7 +128,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
         // Consolidate results
         $metadata = ['query_words' => $query_words];
 
-        if ($musical_entity !== null) {
+        if (null !== $musical_entity) {
             $metadata['platform'] = $this->getName();
         }
 
@@ -157,14 +157,14 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
         // Tracks bear a popularity score
         // that we're using to rate the results
         $max_track_popularity = 1;
-        if ($type === Platform::SEARCH_TRACK) {
+        if (Platform::SEARCH_TRACK === $type) {
             $max_track_popularity = max(intval($results[0]->popularity), 1);
         }
 
         for ($i = 0; $i < $length; ++$i) {
             $current_item = $results[$i];
 
-            if ($type === Platform::SEARCH_TRACK) {
+            if (Platform::SEARCH_TRACK === $type) {
                 $musical_entity = new TrackEntity($current_item->name, new AlbumEntity($current_item->album->name, $current_item->artists[0]->name, $current_item->album->images[1]->url));
                 $musical_entity->addLink(static::TAG, $current_item->external_urls->spotify);
 

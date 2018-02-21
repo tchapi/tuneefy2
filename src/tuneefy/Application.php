@@ -81,7 +81,7 @@ class Application
 
             // If we want to add specific data to the context, it's here
             $view->getEnvironment()->addGlobal('context', [
-                'slack' => isset($_SERVER['HTTP_USER_AGENT']) ? (preg_match('/Slackbot/', $_SERVER['HTTP_USER_AGENT']) !== 0) : false,  // ** Detect Slack
+                'slack' => isset($_SERVER['HTTP_USER_AGENT']) ? (0 !== preg_match('/Slackbot/', $_SERVER['HTTP_USER_AGENT'])) : false,  // ** Detect Slack
             ]);
 
             // Set a fallback language incase you don't have a translation in the default language
@@ -115,22 +115,14 @@ class Application
         return dirname(__FILE__).self::PATHS[$which];
     }
 
-    public function set(string $key, $value)
+    public function getEngine()
     {
-        $container = $this->slimApp->getContainer();
-        $container[$key] = $value;
+        return $this->engine;
     }
 
-    public function get(string $key)
+    public function run()
     {
-        $container = $this->slimApp->getContainer();
-
-        return $container[$key];
-    }
-
-    public function run(bool $returnObject = false)
-    {
-        return $this->slimApp->run($returnObject);
+        return $this->slimApp->run();
     }
 
     public function configure()
@@ -144,7 +136,7 @@ class Application
             throw new \Exception('No config files found: '.$e->getMessage());
         }
 
-        if ($platforms === null || $this->params === null) {
+        if (null === $platforms || null === $this->params) {
             // TODO  : translate / template : this will not happen in Slim's run loop, handle differently
             throw new \Exception('Bad config files');
         }
@@ -155,7 +147,7 @@ class Application
         foreach ($platforms as $key => $platform) {
             $p = $this->engine->getPlatformByTag($key);
 
-            if ($p === null) {
+            if (null === $p) {
                 continue;
             }
 

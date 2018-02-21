@@ -57,7 +57,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
 
     public function hasPermalink(string $permalink): bool
     {
-        return strpos($permalink, 'deezer.') !== false;
+        return false !== strpos($permalink, 'deezer.');
     }
 
     public function expandPermalink(string $permalink, int $mode): PlatformResult
@@ -70,7 +70,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         if (preg_match(self::REGEX_DEEZER_TRACK, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['track_id']);
 
-            if ($response === null || property_exists($response->data, 'error')) {
+            if (null === $response || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 
@@ -85,7 +85,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         } elseif (preg_match(self::REGEX_DEEZER_ALBUM, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_id']);
 
-            if ($response === null || property_exists($response->data, 'error')) {
+            if (null === $response || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 
@@ -100,7 +100,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         } elseif (preg_match(self::REGEX_DEEZER_ARTIST, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_id']);
 
-            if ($response === null || property_exists($response->data, 'error')) {
+            if (null === $response || property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 
@@ -110,7 +110,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         // Consolidate results
         $metadata = ['query_words' => $query_words];
 
-        if ($musical_entity !== null) {
+        if (null !== $musical_entity) {
             $metadata['platform'] = $this->getName();
         }
 
@@ -131,7 +131,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         for ($i = 0; $i < $length; ++$i) {
             $current_item = $entities->data[$i];
 
-            if ($type === Platform::SEARCH_TRACK) {
+            if (Platform::SEARCH_TRACK === $type) {
                 if (property_exists($current_item->album, 'cover')) {
                     $picture = $current_item->album->cover;
                 } else {

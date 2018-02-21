@@ -61,10 +61,14 @@ The source is in `src/tuneefy` and is organised as such :
 
 ### Tests
 
-The tests are under the `./tests` folder and I use **PHPUnit 6.1** to run them.
+The tests are under the `./tests` folder and I use **Codeception** to run them.
 Just run :
 
-    vendor/bin/phpunit -v
+    vendor/bin/codecept run --steps
+
+Beforehand, do not forget to launch a development web server so that the functional tests have an endpoint to test. For instance :
+
+    php -S localhost:8000 -t web
 
 There should be 36 tests containing 673 assertions.
 
