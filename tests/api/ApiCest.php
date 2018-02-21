@@ -802,7 +802,7 @@ final class ApiCest
                 } else {
                     $I->assertArrayHasKey('errors', $result);
                 }
-                //error_log($permalink.' ✅');
+                codecept_debug($permalink.' ✅');
             }
         }
     }
