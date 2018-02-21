@@ -66,6 +66,10 @@ Just run :
 
     vendor/bin/codecept run --steps
 
+Beforehand, do not forget to launch a development web server so that the functional tests have an endpoint to test. For instance :
+
+    php -S localhost:8000 -t web
+
 There should be 36 tests containing 673 assertions.
 
 > Sometimes a platform fails to respond correctly due to network latencies or such. Re-run the tests in this case, it should pass fine the second time.
