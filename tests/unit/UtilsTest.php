@@ -7,9 +7,6 @@ use Symfony\Component\Yaml\Yaml;
 use tuneefy\Application;
 use tuneefy\Utils\Utils;
 
-/**
- * @covers \Utils
- */
 final class UtilsTest extends TestCase
 {
     protected $params;
