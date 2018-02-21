@@ -110,7 +110,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
     }
 
     // We want title like "ARTIST - TITLE [Official Video]" only
-    private function parseYoutubeMusicVideoTitle(string $string): array
+    public function parseYoutubeMusicVideoTitle(string $string): array
     {
         $parts = explode(' - ', $string);
 
