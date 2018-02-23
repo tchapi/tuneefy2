@@ -3,6 +3,7 @@
 $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__.'/src')
     ->in(__DIR__.'/tests')
+    ->exclude(['_support', '_data', '_output'])
 ; 
 
 return PhpCsFixer\Config::create()
