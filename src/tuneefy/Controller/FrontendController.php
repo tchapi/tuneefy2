@@ -167,7 +167,7 @@ class FrontendController
         }
 
         // Check the type and redirect if necessary
-        if ($item->getType() !== $args['type']) {
+        if (!isset($args['type']) || $item->getType() !== $args['type']) {
             $route = $this->container->get('router')->pathFor('show', [
                 'params' => $this->container->get('params'),
                 'type' => $item->getType(),
