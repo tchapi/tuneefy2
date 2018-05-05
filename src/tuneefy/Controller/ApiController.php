@@ -156,7 +156,7 @@ class ApiController
         $this->engine->setCurrentToken($this->container['token']);
 
         $query = $request->getQueryParam('q');
-        $limit = $request->getQueryParam('limit') ?? Platform::LIMIT;
+        $limit = $request->getQueryParam('limit') ? max(0,min(intval($request->getQueryParam('limit')), Platform::LIMIT*2)) : Platform::LIMIT;
 
         try {
             $real_type = $this->engine->translateFlag('type', $args['type']);
@@ -181,7 +181,7 @@ class ApiController
         }
 
         try {
-            $result = $this->engine->search($platform, $real_type, $query, intval($limit), $real_mode);
+            $result = $this->engine->search($platform, $real_type, $query, $limit, $real_mode);
         } catch (PlatformException $e) {
             $result = false;
         }
@@ -213,7 +213,8 @@ class ApiController
         $this->engine->setCurrentToken($this->container['token']);
 
         $query = $request->getQueryParam('q');
-        $limit = $request->getQueryParam('limit') ?? Platform::LIMIT;
+        $limit = $request->getQueryParam('limit') ? max(0,min(intval($request->getQueryParam('limit')), Platform::LIMIT*2)) : Platform::LIMIT;
+
         $include = strtolower($request->getQueryParam('include'));
         $aggressive = true && ($request->getQueryParam('aggressive') && 'true' == $request->getQueryParam('aggressive'));
 
@@ -238,7 +239,7 @@ class ApiController
         }
 
         try {
-            $result = $this->engine->aggregate($platforms, $real_type, $query, intval($limit), $real_mode, $aggressive);
+            $result = $this->engine->aggregate($platforms, $real_type, $query, $limit, $real_mode, $aggressive);
         } catch (PlatformException $e) {
             $result = false;
         }
