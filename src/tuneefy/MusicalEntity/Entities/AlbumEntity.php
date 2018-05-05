@@ -18,7 +18,7 @@ class AlbumEntity extends MusicalEntity
     // Introspection
     private $safe_title;
 
-    public function __construct(string $title = '', string $artist = '', string $picture = '')
+    public function __construct(string $title = '', string $artist = '', ?string $picture = '')
     {
         parent::__construct();
         $this->title = $title;
