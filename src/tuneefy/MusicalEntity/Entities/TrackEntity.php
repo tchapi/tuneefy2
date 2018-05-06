@@ -59,7 +59,7 @@ class TrackEntity extends MusicalEntity
         return $this->album->getSafeTitle();
     }
 
-    public function getAlbumPicture(): string
+    public function getAlbumPicture(): ?string
     {
         return $this->album->getPicture();
     }

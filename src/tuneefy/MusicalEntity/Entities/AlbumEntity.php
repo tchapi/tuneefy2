@@ -46,7 +46,7 @@ class AlbumEntity extends MusicalEntity
         return $this->safe_title;
     }
 
-    public function getPicture(): string
+    public function getPicture(): ?string
     {
         return $this->picture;
     }
