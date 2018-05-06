@@ -33,7 +33,7 @@
         "bryanjhv/slim-session": "~3.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.2",
+        "friendsofphp/php-cs-fixer": "^2.11",
         "deployer/deployer": "^4.2.1",
         "codeception/codeception": "^2.3",
         "flow/jsonpath": "^0.3.4"
