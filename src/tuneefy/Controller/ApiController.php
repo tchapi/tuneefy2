@@ -129,7 +129,7 @@ class ApiController
         // From the try/catch up there
         if (false === $result) {
             $data = ['errors' => [self::ERRORS['FETCH_PROBLEM']]];
-            // If we have a result
+        // If we have a result
         } elseif (isset($result['result'])) {
             if ($result['result']->getMusicalEntity()) {
                 $data = [
@@ -156,7 +156,7 @@ class ApiController
         $this->engine->setCurrentToken($this->container['token']);
 
         $query = $request->getQueryParam('q');
-        $limit = $request->getQueryParam('limit') ? max(0,min(intval($request->getQueryParam('limit')), Platform::LIMIT*2)) : Platform::LIMIT;
+        $limit = $request->getQueryParam('limit') ? max(0, min(intval($request->getQueryParam('limit')), Platform::LIMIT * 2)) : Platform::LIMIT;
 
         try {
             $real_type = $this->engine->translateFlag('type', $args['type']);
@@ -189,7 +189,7 @@ class ApiController
         // From the try/catch up there
         if (false === $result) {
             $data = ['errors' => [self::ERRORS['FETCH_PROBLEM']]];
-            // If we have a result
+        // If we have a result
         } elseif (isset($result['results'])) {
             if (count($result['results']) > 0) {
                 $data = [
@@ -213,7 +213,7 @@ class ApiController
         $this->engine->setCurrentToken($this->container['token']);
 
         $query = $request->getQueryParam('q');
-        $limit = $request->getQueryParam('limit') ? max(0,min(intval($request->getQueryParam('limit')), Platform::LIMIT*2)) : Platform::LIMIT;
+        $limit = $request->getQueryParam('limit') ? max(0, min(intval($request->getQueryParam('limit')), Platform::LIMIT * 2)) : Platform::LIMIT;
 
         $include = strtolower($request->getQueryParam('include'));
         $aggressive = true && ($request->getQueryParam('aggressive') && 'true' == $request->getQueryParam('aggressive'));
@@ -247,7 +247,7 @@ class ApiController
         // From the try/catch up there
         if (false === $result) {
             $data = ['errors' => [self::ERRORS['FETCH_PROBLEMS']]];
-            // If we have a result
+        // If we have a result
         } elseif (isset($result['results'])) {
             if (count($result['results']) > 0) {
                 $data = [

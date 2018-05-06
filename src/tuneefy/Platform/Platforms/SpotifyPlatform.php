@@ -166,13 +166,13 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
 
             if (Platform::SEARCH_TRACK === $type) {
                 $images = $current_item->album->images;
-                $musical_entity = new TrackEntity($current_item->name, new AlbumEntity($current_item->album->name, $current_item->artists[0]->name, (isset($images[1])?$images[1]->url:$images[0]->url)));
+                $musical_entity = new TrackEntity($current_item->name, new AlbumEntity($current_item->album->name, $current_item->artists[0]->name, (isset($images[1]) ? $images[1]->url : $images[0]->url)));
                 $musical_entity->addLink(static::TAG, $current_item->external_urls->spotify);
 
                 $musical_entities[] = new PlatformResult(['score' => round($current_item->popularity / $max_track_popularity, 2)], $musical_entity);
             } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
                 $images = $current_item->images;
-                $musical_entity = new AlbumEntity($current_item->name, $current_item->artists[0]->name, (isset($images[1])?$images[1]->url:$images[0]->url));
+                $musical_entity = new AlbumEntity($current_item->name, $current_item->artists[0]->name, (isset($images[1]) ? $images[1]->url : $images[0]->url));
                 $musical_entity->addLink(static::TAG, $current_item->external_urls->spotify);
 
                 $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity);
