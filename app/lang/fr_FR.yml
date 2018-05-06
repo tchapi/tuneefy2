@@ -122,12 +122,16 @@ album:
 # ERRORS
 error:
   action: "Retour à l'accueil"
+  action.api: "Revenir à la documentation de l'API"
   404:
     title: "Page introuvable"
     description: "404. Et pourtant on a cherché partout. Mais alors partout. Rien à faire. On sait pas où on l'a mise. La boulette, quoi.<br/>En même temps si vous tapiez pas n'importe quoi dans la barre d'adresse aussi ..."
   500:
     title: "Wooooooooops"
     description: "500. Oui alors bon, on a peut-être fait une erreur de code qui a provoqué un bug. Ou alors le serveur vit ses dernières heures.<br />Pas d'inquiétudes. On vous tient au courant."
+  503:
+    title: "On se calme"
+    description: "Vous dépassez la limite de requêtes par minute pour l'API.<br />Veuillez attendre un instant, puis recommmencez.<br />À noter: votre IP peut être bloquée si vous faites une utilisation abusive de l'API, dans ce cas, n'hésitez pas à nous contacter pour trouver une solution."
 
 # ABOUT PAGE
 contact_us: 

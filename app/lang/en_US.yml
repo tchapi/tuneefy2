@@ -125,12 +125,16 @@ iframe.code: "<iframe src='%link%?embed' allowtransparency='yes' border='no' fra
 # ERRORS
 error:
   action: "Go back home"
+  action.api: "Go back to API documentation"
   404:
     title: "Couldn't find this page"
     description: "404. Looks like you broke the Internet.<br/>We're pretty sure you typed gibberish in the url bar, you fool.<br />(Or it may just be a dead link. Maybe.)"
   500:
     title: "Wooooooooops"
     description: "500. This occurs when our code blows up or when the server is dying.<br />Chuck Norris is on site right now. We'll keep you updated soon."
+  503:
+    title: "Let's calm down"
+    description: "You are over the rate limit for the number of requests per minute for the API.<br/>Please wait a few moments, then retry your request.<br/>Please note that your IP can be blocked if you make too many requests for too long. In this case, contact us so we can work out a solution."
 
 # ABOUT PAGE
 contact_us: 

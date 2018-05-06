@@ -254,6 +254,7 @@ class Application
         $this->slimApp->get('/about', FrontendController::class.':about')->setName('about');
         $this->slimApp->get('/trends', FrontendController::class.':trends')->setName('trends');
         $this->slimApp->post('/mail', FrontendController::class.':mail')->setName('mail');
+        $this->slimApp->get('/rate-limiting', FrontendController::class.':apiRateLimiting');
 
         /* The backend routes */
         $admin = $this->slimApp->group('/admin', function () {

@@ -268,4 +268,9 @@ class FrontendController
     {
         return $this->container->get('view')->render($response, 'api.html');
     }
+
+    public function apiRateLimiting($request, $response, $args)
+    {
+        return $this->container->get('view')->render($response, '503.html.twig');
+    }
 }
