@@ -121,6 +121,10 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
     {
         $entities = $response->data;
 
+        if (!isset($entities->data)) {
+            return [];
+        }
+
         // We actually don't pass the limit to the fetch()
         // request since it's not really useful, in fact
         $length = min(count($entities->data), $limit ? $limit : Platform::LIMIT);
