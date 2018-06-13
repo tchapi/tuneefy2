@@ -624,7 +624,7 @@ final class ApiCest
                     'type' => 'album',
                     'title' => 'Weezer',
                     'artist' => 'Weezer',
-                    'picture' => 'http://is1.mzstatic.com/image/thumb/Music60/v4/f8/52/ef/f852efd1-3221-6ce7-d5aa-e320a9d8879e/source/100x100bb.jpg',
+                    'picture' => 'https://is1-ssl.mzstatic.com/image/thumb/Music60/v4/f8/52/ef/f852efd1-3221-6ce7-d5aa-e320a9d8879e/source/100x100bb.jpg',
                     'links' => [
                         'itunes' => [
                             'https://itunes.apple.com/us/album/weezer/1136784464?uo=4',
