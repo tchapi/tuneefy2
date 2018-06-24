@@ -43,17 +43,18 @@ class FrontendController
 
         // Get the most viewed and last shared
         $db = DatabaseHandler::getInstance(null);
-        $mostViewed = $db->getMostViewedItemThisWeek();
-        if ($mostViewed['id']) {
+        $hot = $db->getHotItems();
+
+        $mostViewed = $hot['most'];
+        if (isset($mostViewed['id'])) {
             $mostViewed['uid'] = Utils::toUId($mostViewed['id']);
         }
 
-        $lastShared = $db->getLastSharedItems();
-        if (isset($lastShared['track']) && $lastShared['track']['id']) {
-            $lastShared['track']['uid'] = Utils::toUId($lastShared['track']['id']);
+        if (isset($hot['track']) && $hot['track']['id']) {
+            $hot['track']['uid'] = Utils::toUId($hot['track']['id']);
         }
-        if (isset($lastShared['album']) && $lastShared['album']['id']) {
-            $lastShared['album']['uid'] = Utils::toUId($lastShared['album']['id']);
+        if (isset($hot['album']) && $hot['album']['id']) {
+            $hot['album']['uid'] = Utils::toUId($hot['album']['id']);
         }
 
         if ('42' == $request->getQueryParam('widget')) {
@@ -68,7 +69,7 @@ class FrontendController
                 'params' => $this->container->get('params'),
                 'platforms' => $this->engine->getAllPlatforms(),
                 'default_platforms' => $default_platforms,
-                'last_shared' => $lastShared,
+                'last_shared' => $hot,
                 'most_viewed' => $mostViewed,
             ]);
         }
@@ -115,31 +116,34 @@ class FrontendController
     {
         $db = DatabaseHandler::getInstance(null);
         $platforms = $this->engine->getAllPlatforms();
-        $stats = [];
 
-        // Get platform shares
-        $shares = $db->getPlatformShares();
+        $all = $db->getAllTrends();
+
         $total = 0;
+        $stats = [
+            'hits' => [],
+            'tracks' => [],
+            'albums' => [],
+            'artists' => [],
+        ];
 
-        $stats['hits'] = [];
-        foreach ($shares as $key => $value) {
-            $stats['hits'][$key] = [
-                'platform' => $this->engine->getPlatformByTag($key),
-                'count' => $value['count'],
-            ];
-            $total = $total + intval($value['count']);
+        foreach ($all as $value) {
+            if ('platform' === $value['type']) {
+                $stats['hits'][] = [
+                    'platform' => $this->engine->getPlatformByTag($value['platform']) ?? ['name' => ucfirst($value['platform'])], // For legacy platforms
+                    'count' => $value['count'],
+                ];
+                $total = $total + intval($value['count']);
+            } elseif ('track' === $value['type']) {
+                $value['uid'] = Utils::toUId($value['id']);
+                $stats['tracks'][] = $value;
+            } elseif ('album' === $value['type']) {
+                $value['uid'] = Utils::toUId($value['id']);
+                $stats['albums'][] = $value;
+            } elseif ('artist' === $value['type']) {
+                $stats['artists'][] = $value;
+            }
         }
-
-        $stats['tracks'] = $db->getMostViewedTracks();
-        foreach ($stats['tracks'] as $key => $item) {
-            $stats['tracks'][$key]['uid'] = Utils::toUId($item['id']);
-        }
-        $stats['albums'] = $db->getMostViewedAlbums();
-        foreach ($stats['albums'] as $key => $item) {
-            $stats['albums'][$key]['uid'] = Utils::toUId($item['id']);
-        }
-
-        $stats['artists'] = $db->getMostViewedArtists();
 
         return $this->container->get('view')->render($response, 'trends.html.twig', [
             'params' => $this->container->get('params'),

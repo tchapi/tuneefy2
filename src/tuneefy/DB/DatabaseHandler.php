@@ -196,96 +196,51 @@ class DatabaseHandler
         }
     }
 
-    public function getPlatformShares()
+    public function getAllTrends()
     {
-        $statement = $this->connection->prepare('SELECT `platform`, COUNT(`id`) AS `count` FROM `stats_listening` GROUP BY `platform` ORDER BY `count` DESC');
+        $statement = $this->connection->prepare('SELECT * FROM `trends_mv` ORDER BY type, count DESC');
 
         $res = $statement->execute();
 
         if (false === $res) {
-            throw new \Exception('Error getting platform share stats : '.$statement->errorInfo()[2]);
-        }
-
-        return $statement->fetchAll(\PDO::FETCH_UNIQUE);
-    }
-
-    private function getMostViewed(string $flavour = null, string $grouping = 'GROUP BY `stats_viewing`.`item_id`')
-    {
-        $limit = intval($this->parameters['website']['stats_limit']);
-        $statement = $this->connection->prepare('SELECT `items`.`id`, `items`.`track`, `items`.`album`, `items`.`artist`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` LEFT JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` '.$flavour.' '.$grouping.' ORDER BY `count` DESC LIMIT '.$limit);
-
-        $res = $statement->execute();
-
-        if (false === $res) {
-            throw new \Exception('Error getting most viewed items : '.$statement->errorInfo()[2]);
+            throw new \Exception('Error getting trends : '.$statement->errorInfo()[2]);
         }
 
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function getMostViewedTracks()
+    public function getHotItems()
     {
-        return $this->getMostViewed('WHERE `items`.`track` IS NOT NULL');
-    }
-
-    public function getMostViewedAlbums()
-    {
-        return $this->getMostViewed('WHERE `items`.`track` IS NULL');
-    }
-
-    public function getMostViewedArtists()
-    {
-        return $this->getMostViewed(null, 'GROUP BY UPPER(`items`.`artist`)');
-    }
-
-    public function getMostViewedItemThisWeek()
-    {
-        $statement = $this->connection->prepare('SELECT `items`.`id`, `items`.`object`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` LEFT JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` WHERE `stats_viewing`.`viewed_at` > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY `items`. `id` ORDER BY `count` DESC LIMIT 1');
+        $statement = $this->connection->prepare('SELECT * FROM `hot_items_mv`');
 
         $res = $statement->execute();
 
         if (false === $res) {
-            throw new \Exception('Error getting most viewed item : '.$statement->errorInfo()[2]);
-        }
-
-        $row = $statement->fetch(\PDO::FETCH_ASSOC);
-
-        $result = [
-            'id' => $row['id'],
-            'entity' => unserialize($row['object'], ['allowed_classes' => [TrackEntity::class, AlbumEntity::class]]),
-        ];
-
-        return $result;
-    }
-
-    public function getLastSharedItems(): array
-    {
-        $statement = $this->connection->prepare('(SELECT "track" as `type`, `items`.`id`, `items`.`object` FROM `items` WHERE `track` IS NOT NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` DESC LIMIT 1) UNION (SELECT  "album" as `type`, `items`.`id`, `object` FROM `items` WHERE `track` IS NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` DESC LIMIT 1)');
-
-        $res = $statement->execute();
-
-        if (false === $res) {
-            throw new \Exception('Error getting last shared items : '.$statement->errorInfo()[2]);
+            throw new \Exception('Error getting stats for hot items : '.$statement->errorInfo()[2]);
         }
 
         $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
+        // Unserialize the object column
         $result = [];
-
-        if (count($rows) > 0) {
-            $result[$rows[0]['type']] = [
-                'id' => $rows[0]['id'],
-                'entity' => unserialize($rows[0]['object'], ['allowed_classes' => [TrackEntity::class, AlbumEntity::class]]),
-            ];
-        }
-        if (count($rows) > 1) {
-            $result[$rows[1]['type']] = [
-                'id' => $rows[1]['id'],
-                'entity' => unserialize($rows[1]['object'], ['allowed_classes' => [AlbumEntity::class]]),
+        foreach ($rows as $row) {
+            $result[$row['type']] = [
+                'id' => $row['id'],
+                'entity' => unserialize($rows[1]['object'], ['allowed_classes' => [TrackEntity::class, AlbumEntity::class]]),
             ];
         }
 
         return $result;
+    }
+
+    public function updateMaterializedViews()
+    {
+        $statement = $this->connection->prepare('CALL refresh_trends_mv_now(@rc); CALL refresh_hot_items_mv_now(@rc);');
+        $res = $statement->execute();
+
+        if (false === $res) {
+            throw new \Exception('Error refreshing views : '.$statement->errorInfo()[2]);
+        }
     }
 
     public function getItemsStats(): array
@@ -342,5 +297,15 @@ class DatabaseHandler
         }
 
         return true;
+    }
+
+    public function cleanExpiredIntents()
+    {
+        $statement = $this->connection->prepare('DELETE FROM items WHERE intent IS NOT NULL AND expires_at IS NOT NULL AND expires_at < NOW()');
+        $res = $statement->execute();
+
+        if (false === $res) {
+            throw new \Exception('Error deleting expired intents : '.$statement->errorInfo()[2]);
+        }
     }
 }

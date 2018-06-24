@@ -1,6 +1,5 @@
 /* Tuneefy tables */
 
--- Create syntax for TABLE 'items'
 CREATE TABLE `items` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `intent` varchar(170) DEFAULT NULL,
@@ -63,3 +62,74 @@ CREATE TABLE oauth_refresh_tokens (refresh_token VARCHAR(40) NOT NULL, client_id
 CREATE TABLE oauth_users (username VARCHAR(255) NOT NULL, password VARCHAR(2000), first_name VARCHAR(255), last_name VARCHAR(255), CONSTRAINT username_pk PRIMARY KEY (username));
 CREATE TABLE oauth_scopes (scope TEXT, is_default BOOLEAN);
 CREATE TABLE oauth_jwt (client_id VARCHAR(80) NOT NULL, subject VARCHAR(80), public_key VARCHAR(2000), CONSTRAINT jwt_client_id_pk PRIMARY KEY (client_id));
+
+
+-- Materialised views for stats / trends
+
+CREATE TABLE trends_mv (
+    type VARCHAR(20)  NOT NULL,
+    id INT(11),
+    track VARCHAR(170),
+    album VARCHAR(170),
+    artist VARCHAR(170),
+    platform VARCHAR(170),
+    count INT(11) NOT NULL
+);
+
+DROP PROCEDURE refresh_trends_mv_now;
+
+DELIMITER $$
+
+CREATE PROCEDURE refresh_trends_mv_now (
+    OUT rc INT
+)
+BEGIN
+
+  TRUNCATE TABLE trends_mv;
+
+  INSERT INTO trends_mv (`type`, `platform`, `id`, `track`, `album`, `artist`, `count`)
+    (SELECT 'platform' as `type`, `platform`, NULL as `id`,  NULL as `track`, NULL as `album`, NULL as `artist`,  COUNT(`id`) AS `count` FROM `stats_listening` GROUP BY `platform` ORDER BY `count` DESC)
+    UNION
+    (SELECT 'track' as `type`, NULL as `platform`, `items`.`id`, `items`.`track`, `items`.`album`, `items`.`artist`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` LEFT JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` WHERE `items`.`track` IS NOT NULL GROUP BY `stats_viewing`.`item_id` ORDER BY `count` DESC LIMIT 5)
+    UNION
+    (SELECT 'album' as `type`, NULL as `platform`, `items`.`id`, NULL as `track`, `items`.`album`, `items`.`artist`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` LEFT JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` WHERE `items`.`track` IS NULL GROUP BY `stats_viewing`.`item_id` ORDER BY `count` DESC LIMIT 5)
+    UNION
+    (SELECT 'artist' as `type`, NULL as `platform`, NULL as `id`,  NULL as `track`, NULL as `album`,`items`.`artist`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` LEFT JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id`  GROUP BY `items`.`artist` ORDER BY `count` DESC LIMIT 5);
+
+  SET rc = 0;
+END;
+$$
+
+DELIMITER ;
+
+
+-- Materialised views for hot items (home page)
+
+CREATE TABLE hot_items_mv (
+    type VARCHAR(20)  NOT NULL,
+    id INT(11),
+    object blob,
+    count INT(11)
+);
+
+DROP PROCEDURE refresh_hot_items_mv_now;
+
+DELIMITER $$
+
+CREATE PROCEDURE refresh_hot_items_mv_now (
+    OUT rc INT
+)
+BEGIN
+
+  TRUNCATE TABLE hot_items_mv;
+
+  INSERT INTO hot_items_mv (`type`, `id`, `object`, `count`)
+    (SELECT "track" as `type`, `items`.`id`, `items`.`object`, NULL as `count` FROM `items` WHERE `track` IS NOT NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` DESC LIMIT 1) UNION (SELECT  "album" as `type`, `items`.`id`, `object`, NULL as `count` FROM `items` WHERE `track` IS NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` DESC LIMIT 1)
+    UNION
+    (SELECT 'most' as `type`, `items`.`id`, `items`.`object`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` LEFT JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` WHERE `stats_viewing`.`viewed_at` > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY `items`. `id` ORDER BY `count` DESC LIMIT 1);
+
+  SET rc = 0;
+END;
+$$
+
+DELIMITER ;
