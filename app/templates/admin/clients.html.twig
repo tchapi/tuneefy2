@@ -8,31 +8,32 @@
 <p><a class="ui button green" href="{{ path_for('admin_new_client') }}"><i class="ui icon add"></i> Create new client</a></p>
 
 <h3 class="ui dividing header">List</h3>
-<table class="ui structured celled sortable table">
+<table class="ui structured celled table">
   <thead>
     <tr>
       <th>Name</th>
-      <th>Since</th>
-      <th>URL</th>
-      <th>Email</th>
-      <th>Items created and shared</th>
+      <th><i class="ui icon calendar"></i> Since</th>
+      <th>Description</th>
+      <th><i class="ui icon hashtag"></i> Key</th>
+      <!-- <th><i class="ui icon key"></i> Secret</th> -->
+      <th>Items</th>
+      <th>Calls</th>
     </tr>
   </thead>
   <tbody>
     {% for client in clients %}
     {% set revoked = (client.client_id[:8] == "REVOKED_")?" class='negative'":"" %}
     <tr{{ revoked|raw }}>
-      <td rowspan="3"><strong>{{ client.name }}</strong></td>
-      <td><i class="ui icon calendar"></i> {{ client.created_at|date('d/m/Y') }}</td>
-      <td><a href="{{ client.url }}" target="_blank">{{ client.url|default('N/A') }}</a></td>
-      <td><a href="mailto:{{ client.email }}"><i class="ui icon mail"></i> {{ client.email }}</a></td>
+      <td><strong>{{ client.name }}</strong></td>
+      <td>{{ client.created_at|date('d/m/y') }}</td>
+      <td>
+          {% if client.description %}{{ client.description|default('N/A')}}<br>{% endif %}
+          {% if client.url %}<a href="{{ client.url }}" target="_blank">Website</a><br>{% endif %}
+          <a href="mailto:{{ client.email }}">{{ client.email }}</a></td>
+      <td>{% if client.client_id[:8] == "REVOKED_" %}<span style="text-decoration: line-through;">{{ client.client_id[8:] }}</span>{% else %}{{ client.client_id }}{% endif %}</td>
+      <!-- <td>{{ client.client_secret }}</td> -->
       <td>{{ client.items|number_format(0,'.',' ') }}</td>
-    </tr>
-    <tr{{ revoked|raw }}>
-      <td colspan="5"><strong>Description :</strong><br><br>{{ client.description }}</td>
-    </tr>
-    <tr{{ revoked|raw }}>
-      <td colspan="5"><div class="ui label"><i class="ui icon hashtag"></i> {{ client.client_id }}</div> — <div class="ui label"><i class="ui icon key"></i> {{ client.client_secret }}</div></td>
+      <td>—</td>
     </tr>
     {% endfor %}
   </tbody>
@@ -41,10 +42,13 @@
 
 {% block javascript %}
   {{ parent() }}
-  <script type="text/javascript" src="/js/vendor/tablesort.js"></script>
   <script type="text/javascript">
-    $(document).ready(function() {
-      $('table').tablesort()
-    });
+    $(document).ready( function () {
+      $('table').DataTable({
+        "order": [[ 4, "desc" ]],
+        "paging": false,
+        "info": false
+      });
+  } );
   </script
 {% endblock %}
