@@ -308,4 +308,14 @@ class DatabaseHandler
             throw new \Exception('Error deleting expired intents : '.$statement->errorInfo()[2]);
         }
     }
+
+    public function cleanExpiredAccessTokens()
+    {
+        $statement = $this->connection->prepare('DELETE FROM oauth_access_tokens WHERE expires < NOW() - INTERVAL 2 MONTH');
+        $res = $statement->execute();
+
+        if (false === $res) {
+            throw new \Exception('Error deleting expired access tokens : '.$statement->errorInfo()[2]);
+        }
+    }
 }

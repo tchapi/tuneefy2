@@ -17,6 +17,7 @@ class ExpiredIntentsCleanerCommand
         try {
             $db = new DatabaseHandler($params);
             $result = $db->cleanExpiredIntents();
+            $result = $db->cleanExpiredAccessTokens();
         } catch (\Exception $e) {
             throw new \Exception('Problem with database instantiation : '.$e->getMessage());
         }
