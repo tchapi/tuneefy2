@@ -265,7 +265,7 @@ class DatabaseHandler
     public function getApiClients()
     {
         $statement = $this->connection->prepare('
-            SELECT clients.*, COUNT(`items`.`id`) AS `items`, COUNT(`items`.`intent`) AS `intents` FROM `oauth_clients` `clients`
+            SELECT clients.*, COUNT(`items`.`id`) AS `items` FROM `oauth_clients` `clients`
             LEFT JOIN `items` ON `items`.`client_id` = `clients`.`client_id`
             GROUP BY `clients`.`client_id`
         ');

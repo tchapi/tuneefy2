@@ -15,24 +15,23 @@
       <th>Since</th>
       <th>URL</th>
       <th>Email</th>
-      <th>Items created</th>
-      <th>Items shared</th>
+      <th>Items created and shared</th>
     </tr>
   </thead>
   <tbody>
     {% for client in clients %}
-    <tr>
+    {% set revoked = (client.client_id[:8] == "REVOKED_")?" class='negative'":"" %}
+    <tr{{ revoked|raw }}>
       <td rowspan="3"><strong>{{ client.name }}</strong></td>
       <td><i class="ui icon calendar"></i> {{ client.created_at|date('d/m/Y') }}</td>
       <td><a href="{{ client.url }}" target="_blank">{{ client.url|default('N/A') }}</a></td>
       <td><a href="mailto:{{ client.email }}"><i class="ui icon mail"></i> {{ client.email }}</a></td>
       <td>{{ client.items|number_format(0,'.',' ') }}</td>
-      <td>{{ (client.items - client.intents)|number_format(0,'.',' ') }} ({{ ((client.items==0)?0:((client.items - client.intents)/client.items*100))|number_format }}%)</td>
     </tr>
-    <tr>
+    <tr{{ revoked|raw }}>
       <td colspan="5"><strong>Description :</strong><br><br>{{ client.description }}</td>
     </tr>
-    <tr>
+    <tr{{ revoked|raw }}>
       <td colspan="5"><div class="ui label"><i class="ui icon hashtag"></i> {{ client.client_id }}</div> — <div class="ui label"><i class="ui icon key"></i> {{ client.client_secret }}</div></td>
     </tr>
     {% endfor %}
