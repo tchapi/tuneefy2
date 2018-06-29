@@ -1,16 +1,16 @@
 /* Tuneefy tables */
 
 CREATE TABLE `items` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `intent` varchar(170) DEFAULT NULL,
-  `object` blob NOT NULL,
-  `track` varchar(170) DEFAULT NULL,
-  `album` varchar(170) DEFAULT NULL,
-  `artist` varchar(170) DEFAULT NULL,
-  `created_at` datetime NOT NULL,
-  `expires_at` datetime DEFAULT NULL,
-  `signature` varchar(170) NOT NULL DEFAULT '',
-  `client_id` varchar(80) DEFAULT NULL,
+  `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
+  `intent` VARCHAR(170) DEFAULT NULL,
+  `object` BLOB NOT NULL,
+  `track` VARCHAR(170) DEFAULT NULL,
+  `album` VARCHAR(170) DEFAULT NULL,
+  `artist` VARCHAR(170) DEFAULT NULL,
+  `created_at` DATETIME NOT NULL,
+  `expires_at` DATETIME DEFAULT NULL,
+  `signature` VARCHAR(170) NOT NULL DEFAULT '',
+  `client_id` VARCHAR(80) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `track` (`track`),
   KEY `album` (`album`),
@@ -18,10 +18,10 @@ CREATE TABLE `items` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `stats_viewing` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `item_id` int(11) unsigned NOT NULL,
-  `referer` varchar(170) DEFAULT NULL,
-  `viewed_at` datetime NOT NULL,
+  `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
+  `item_id` INT(11) unsigned NOT NULL,
+  `referer` VARCHAR(170) DEFAULT NULL,
+  `viewed_at` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
   KEY `item_id` (`item_id`),
   KEY `viewed_at` (`viewed_at`)
@@ -79,13 +79,13 @@ CREATE TABLE oauth_jwt (client_id VARCHAR(80) NOT NULL, subject VARCHAR(80), pub
 -- Materialised views for stats / trends
 
 CREATE TABLE trends_mv (
-    type VARCHAR(20)  NOT NULL,
-    id INT(11),
-    track VARCHAR(170),
-    album VARCHAR(170),
-    artist VARCHAR(170),
-    platform VARCHAR(170),
-    count INT(11) NOT NULL
+    `type` VARCHAR(20)  NOT NULL,
+    `id` INT(11),
+    `track` VARCHAR(170),
+    `album` VARCHAR(170),
+    `artist` VARCHAR(170),
+    `platform` VARCHAR(170),
+    `count` INT(11) NOT NULL
 );
 
 DROP PROCEDURE refresh_trends_mv_now;
@@ -99,7 +99,7 @@ BEGIN
 
   TRUNCATE TABLE trends_mv;
 
-  INSERT INTO trends_mv (`type`, `platform`, `id`, `track`, `album`, `artist`, `count`)
+  INSERT INTO `trends_mv` (`type`, `platform`, `id`, `track`, `album`, `artist`, `count`)
     (SELECT 'platform' as `type`, `platform`, NULL as `id`,  NULL as `track`, NULL as `album`, NULL as `artist`,  COUNT(`id`) AS `count` FROM `stats_listening` GROUP BY `platform` ORDER BY `count` DESC)
     UNION
     (SELECT 'track' as `type`, NULL as `platform`, `items`.`id`, `items`.`track`, `items`.`album`, `items`.`artist`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` LEFT JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` WHERE `items`.`track` IS NOT NULL GROUP BY `stats_viewing`.`item_id` ORDER BY `count` DESC LIMIT 5)
@@ -118,10 +118,10 @@ DELIMITER ;
 -- Materialised views for hot items (home page)
 
 CREATE TABLE hot_items_mv (
-    type VARCHAR(20)  NOT NULL,
-    id INT(11),
-    object blob,
-    count INT(11)
+    `type` VARCHAR(20)  NOT NULL,
+    `id` INT(11),
+    `object` BLOB,
+    `count` INT(11)
 );
 
 DROP PROCEDURE refresh_hot_items_mv_now;
@@ -135,7 +135,7 @@ BEGIN
 
   TRUNCATE TABLE hot_items_mv;
 
-  INSERT INTO hot_items_mv (`type`, `id`, `object`, `count`)
+  INSERT INTO `hot_items_mv` (`type`, `id`, `object`, `count`)
     (SELECT "track" as `type`, `items`.`id`, `items`.`object`, NULL as `count` FROM `items` WHERE `track` IS NOT NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` DESC LIMIT 1) UNION (SELECT  "album" as `type`, `items`.`id`, `object`, NULL as `count` FROM `items` WHERE `track` IS NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` DESC LIMIT 1)
     UNION
     (SELECT 'most' as `type`, `items`.`id`, `items`.`object`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` LEFT JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` WHERE `stats_viewing`.`viewed_at` > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY `items`. `id` ORDER BY `count` DESC LIMIT 1);
