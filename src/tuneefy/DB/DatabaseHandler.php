@@ -10,6 +10,22 @@ use tuneefy\Utils\Utils;
 
 class DatabaseHandler
 {
+    const METHOD_OTHER = 0;
+    const METHOD_PLATFORMS = 1;
+    const METHOD_LOOKUP = 2;
+    const METHOD_SEARCH = 3;
+    const METHOD_AGGREGATE = 4;
+    const METHOD_SHARE = 5;
+
+    const METHOD_NAMES = [
+        self::METHOD_OTHER => 'misc',
+        self::METHOD_PLATFORMS => 'platforms',
+        self::METHOD_LOOKUP => 'lookup',
+        self::METHOD_SEARCH => 'search',
+        self::METHOD_AGGREGATE => 'aggregate',
+        self::METHOD_SHARE => 'share',
+    ];
+
     /**
      * The singleton instance of the class.
      */
@@ -196,6 +212,20 @@ class DatabaseHandler
         }
     }
 
+    public function addApiCallingStat(?string $client_id = null, int $method)
+    {
+        $statement = $this->connection->prepare('INSERT INTO `stats_api` (`client_id`, `method`, `called_at`) VALUES (:client_id, :method, NOW())');
+
+        $res = $statement->execute([
+          ':client_id' => $client_id,
+          ':method' => $method,
+        ]);
+
+        if (false === $res) {
+            throw new \Exception('Error adding api calling stat : '.$statement->errorInfo()[2]);
+        }
+    }
+
     public function getAllTrends()
     {
         $statement = $this->connection->prepare('SELECT * FROM `trends_mv` ORDER BY type, count DESC');
@@ -233,9 +263,22 @@ class DatabaseHandler
         return $result;
     }
 
+    public function getApiStats()
+    {
+        $statement = $this->connection->prepare('SELECT * FROM `stats_api_mv` ORDER BY client_id, method DESC');
+
+        $res = $statement->execute();
+
+        if (false === $res) {
+            throw new \Exception('Error getting api stats : '.$statement->errorInfo()[2]);
+        }
+
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     public function updateMaterializedViews()
     {
-        $statement = $this->connection->prepare('CALL refresh_trends_mv_now(@rc); CALL refresh_hot_items_mv_now(@rc);');
+        $statement = $this->connection->prepare('CALL refresh_trends_mv_now(@rc); CALL refresh_hot_items_mv_now(@rc); CALL refresh_stats_api_mv_now(@rc);');
         $res = $statement->execute();
 
         if (false === $res) {
@@ -279,9 +322,23 @@ class DatabaseHandler
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function addApiClient(string $name, string $client_id, string $client_secret, string $description, string $email, string $url)
+    public function isClientActive(string $clientId)
     {
-        $statement = $this->connection->prepare('INSERT INTO `oauth_clients` (`name`, `client_id`, `client_secret`, `description`, `email`, `url`, `created_at`) VALUES (:name, :client_id, :client_secret, :description, :email, :url, NOW())');
+        $statement = $this->connection->prepare('SELECT active FROM `oauth_clients` WHERE client_id = :client_id');
+
+        $res = $statement->execute([
+          ':client_id' => $clientId,
+        ]);
+        if (false === $res) {
+            throw new \Exception('Error retrieving client : '.$statement->errorInfo()[2]);
+        }
+
+        return $statement->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function addApiClient(string $name, string $client_id, string $client_secret, string $description, string $email, string $url, bool $active)
+    {
+        $statement = $this->connection->prepare('INSERT INTO `oauth_clients` (`name`, `client_id`, `client_secret`, `description`, `email`, `url`, `created_at`, `active`) VALUES (:name, :client_id, :client_secret, :description, :email, :url, NOW(), :active)');
 
         $res = $statement->execute([
           ':name' => $name,
@@ -290,6 +347,7 @@ class DatabaseHandler
           ':description' => $description,
           ':email' => $email,
           ':url' => $url,
+          ':active' => $active,
         ]);
 
         if (false === $res) {
