@@ -7,29 +7,47 @@
 <h3 class="ui dividing header">Create a new client</h3>
 
 <form class="ui form" method="POST">
-  <div class="field">
-    <label>Name</label>
-    <input type="text" name="name" placeholder="API User ">
+  <div class="two fields">
+    <div class="field">
+      <label>Name</label>
+      <input type="text" name="name" placeholder="API User ">
+    </div>
+    <div class="field">
+      <div class="ui toggle checkbox" style="margin-top: 30px;">
+        <input type="checkbox" checked="" name="active" tabindex="0" class="hidden">
+        <label>Active</label>
+      </div>
+    </div>
   </div>
-  <div class="field">
-    <label>Client ID</label>
-    <input type="text" name="client_id" placeholder="">
+  <div class="two fields">
+    <div class="field">
+      <label>Email</label>
+      <input type="email" name="email" placeholder="user@example.org">
+    </div>
+    <div class="field">
+      <label>Url</label>
+      <input type="text" name="url" placeholder="http://site.com">
+    </div>
   </div>
-  <div class="field">
-    <label>Client Secret</label>
-    <input type="text" name="client_secret" placeholder="">
+  <div class="two fields">
+    <div class="field">
+      <label>Client ID</label>
+      <div class="ui action input">
+        <input type="text" name="client_id" placeholder="">
+        <button type="button" class="keygen ui primary button" data-length="32">Generate</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Client Secret</label>
+      <div class="ui action input">
+      <input type="text" name="client_secret" placeholder="">
+        <button type="button" class="keygen ui primary button" data-length="40">Generate</button>
+      </div>
+    </div>
   </div>
   <div class="field">
     <label>Description</label>
     <input type="text" name="description" placeholder="">
-  </div>
-  <div class="field">
-    <label>Email</label>
-    <input type="email" name="email" placeholder="user@example.org">
-  </div>
-  <div class="field">
-    <label>Url</label>
-    <input type="text" name="url" placeholder="http://site.com">
   </div>
   <a href="{{ path_for('admin_clients') }}" class="ui button" type="cancel"><i class="ui icon angle double left"></i> Back</a>
   <button class="ui button green" type="submit"><i class="ui icon check"></i> Save</button>
@@ -40,7 +58,22 @@
 {% block javascript %}
   {{ parent() }}
   <script type="text/javascript">
+    function generateKey(length) {
+        var d = new Date().getTime()
+        if (window.performance && typeof window.performance.now === "function") {
+          d += performance.now()
+        }
+
+        var uuid = "x".repeat(length).replace(/[xy]/g, function(c) {
+          var r = (d + Math.random()*16)%16 | 0
+          return (r).toString(16)
+        });
+
+      return uuid
+    }
+
     $(document).ready(function(){
+      $('.ui.checkbox').checkbox()
       $('.ui.form')
         .form({
           fields: {
@@ -49,7 +82,14 @@
             client_secret : 'empty',
             email         : ['minLength[6]', 'empty']
           }
-        });
+        })
+      /**
+       * Generate new key and insert into input value
+       */
+      $('.keygen').on('click', function () {
+        $(this).siblings('input').val(generateKey($(this).data('length')))
+      })
+      $('.keygen').trigger('click')
     })
   </script>
 {% endblock %}

@@ -36,6 +36,7 @@ class ApiController
         'NOT_CAPABLE_ALBUMS' => ['NOT_CAPABLE_ALBUMS' => 'This platform is not capable of searching albums'],
 
         'NOT_AUTHORIZED' => ['NOT_AUTHORIZED' => 'Not authorized, check the token'],
+        'NOT_ACTIVE' => ['NOT_ACTIVE' => 'Your client/secret pair is not active, contact us'],
         'NOT_FOUND' => ['NOT_FOUND' => 'Not found'],
         'NOT_ALLOWED' => ['NOT_ALLOWED' => 'Method not allowed'],
     ];
@@ -62,6 +63,7 @@ class ApiController
 
     public function getAllPlatforms($request, $response, $args)
     {
+        $this->container['api_method'] = DatabaseHandler::METHOD_PLATFORMS;
         $type = strtolower($request->getQueryParam('type'));
 
         $platforms = $this->engine->getAllPlatforms();
@@ -86,6 +88,7 @@ class ApiController
 
     public function getPlatform($request, $response, $args)
     {
+        $this->container['api_method'] = DatabaseHandler::METHOD_PLATFORMS;
         $platform = $this->engine->getPlatformByTag($args['tag']);
 
         if (!$platform) {
@@ -101,6 +104,7 @@ class ApiController
 
     public function lookup($request, $response, $args)
     {
+        $this->container['api_method'] = DatabaseHandler::METHOD_LOOKUP;
         $this->engine->setCurrentToken($this->container['token']);
 
         $permalink = $request->getQueryParam('q');
@@ -153,6 +157,7 @@ class ApiController
 
     public function search($request, $response, $args)
     {
+        $this->container['api_method'] = DatabaseHandler::METHOD_SEARCH;
         $this->engine->setCurrentToken($this->container['token']);
 
         $query = $request->getQueryParam('q');
@@ -210,6 +215,7 @@ class ApiController
 
     public function aggregate($request, $response, $args)
     {
+        $this->container['api_method'] = DatabaseHandler::METHOD_AGGREGATE;
         $this->engine->setCurrentToken($this->container['token']);
 
         $query = $request->getQueryParam('q');
@@ -269,6 +275,7 @@ class ApiController
 
     public function share($request, $response, $args)
     {
+        $this->container['api_method'] = DatabaseHandler::METHOD_SHARE;
         $intent = $args['intent'];
 
         if (null === $intent || '' === $intent) {

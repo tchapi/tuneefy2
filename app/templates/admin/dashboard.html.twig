@@ -8,7 +8,7 @@
 <div class="ui three statistics">
   <div class="statistic">
     <div class="value">
-      {{ stats.total|number_format(0, '.', ' ') }}
+      {{ itemsStats.total|number_format(0, '.', ' ') }}
     </div>
     <div class="label">
       Items total
@@ -16,7 +16,7 @@
   </div>
   <div class="statistic">
     <div class="value">
-      <img src="{{ params.urls.front }}/img/dashboard/song.png" class="ui circular inline image"> {{ stats.tracks|number_format(0, '.', ' ') }}
+      <img src="{{ params.urls.front }}/img/dashboard/song.png" class="ui circular inline image"> {{ itemsStats.tracks|number_format(0, '.', ' ') }}
     </div>
     <div class="label">
       Tracks
@@ -24,7 +24,7 @@
   </div>
   <div class="statistic">
     <div class="value">
-      <img src="{{ params.urls.front }}/img/dashboard/album.png" class="ui circular inline image"> {{ (stats.total - stats.tracks)|number_format(0, '.', ' ') }}
+      <img src="{{ params.urls.front }}/img/dashboard/album.png" class="ui circular inline image"> {{ (itemsStats.total - itemsStats.tracks)|number_format(0, '.', ' ') }}
     </div>
     <div class="label">
       Albums
@@ -32,26 +32,17 @@
   </div>
 </div>
 
-<h3 class="ui dividing header">Sharing</h3>
-<div class="ui two statistics">
-  <div class="statistic">
-    <div class="value">
-      {{ (stats.total - stats.intents)|number_format(0, '.', ' ') }}
-    </div>
-    <div class="label">
-      Shares
-    </div>
+<h3 class="ui dividing header">API</h3>
+<div class="ui seven small statistics">
+  <div class="blue statistic">
+    <div class="value"><img src="{{ params.urls.front }}/img/dashboard/users.png" class="ui circular inline image" style="max-height: 2rem; margin-right: 10px;">{{ activeClients|length }}</div>
+    <div class="label">Active Clients</div>
   </div>
-  <div class="statistic">
-    <div class="value">
-    {% if stats.total > 0 %}
-      {{ ((stats.total - stats.intents)*100/stats.total)|number_format }}%
-    {% else %} N/A
-    {% endif %}
+  {% for key in constant('tuneefy\\DB\\DatabaseHandler::METHOD_NAMES') %}
+    <div class="statistic">
+      <div class="value">{{ apiStats[key]|number_format(0, '.', ' ') }}</div>
+      <div class="label">/{{ key }}</div>
     </div>
-    <div class="label">
-      Conversion rate
-    </div>
-  </div>
+  {% endfor %}
 </div>
 {% endblock %}

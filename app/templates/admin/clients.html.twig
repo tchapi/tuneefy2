@@ -15,26 +15,28 @@
       <th><i class="ui icon calendar"></i> Since</th>
       <th>Description</th>
       <th><i class="ui icon hashtag"></i> Key</th>
-      <!-- <th><i class="ui icon key"></i> Secret</th> -->
-      <th>Items</th>
+      <th style="min-width: 60px">Items</th>
       <th>Calls</th>
     </tr>
   </thead>
   <tbody>
     {% for client in clients %}
-    {% set revoked = (client.client_id[:8] == "REVOKED_")?" class='negative'":"" %}
-    <tr{{ revoked|raw }}>
-      <td><strong>{{ client.name }}</strong></td>
-      <td>{{ client.created_at|date('d/m/y') }}</td>
-      <td>
-          {% if client.description %}{{ client.description|default('N/A')}}<br>{% endif %}
-          {% if client.url %}<a href="{{ client.url }}" target="_blank">Website</a><br>{% endif %}
-          <a href="mailto:{{ client.email }}">{{ client.email }}</a></td>
-      <td>{% if client.client_id[:8] == "REVOKED_" %}<span style="text-decoration: line-through;">{{ client.client_id[8:] }}</span>{% else %}{{ client.client_id }}{% endif %}</td>
-      <!-- <td>{{ client.client_secret }}</td> -->
-      <td>{{ client.items|number_format(0,'.',' ') }}</td>
-      <td>—</td>
-    </tr>
+      {% set revoked = client.active?"":" class='negative'" %}
+      <tr{{ revoked|raw }}>
+        <td><strong>{{ client.name }}</strong></td>
+        <td>{{ client.created_at|date('d/m/y') }}</td>
+        <td>
+            {% if client.description %}{{ client.description|default('N/A')}}<br>{% endif %}
+            {% if client.url %}<a href="{{ client.url }}" target="_blank">{{ client.url }}</a><br>{% endif %}
+            <a href="mailto:{{ client.email }}">{{ client.email }}</a></td>
+        <td><span{% if not client.active %} style="text-decoration: line-through;"{% endif %}>{{ client.client_id }}</span></td>
+        <td>{{ client.items|number_format(0,'.',' ') }}</td>
+        <td>
+          {% for item in stats[client.client_id] %}
+            {{ item['method'] }} → {{ item['count']|number_format(0,'.',' ') }}<br>
+          {% endfor %}
+        </td>
+      </tr>
     {% endfor %}
   </tbody>
 </table>
@@ -46,8 +48,9 @@
     $(document).ready( function () {
       $('table').DataTable({
         "order": [[ 4, "desc" ]],
-        "paging": false,
-        "info": false
+        "paging": true,
+        "pageLength": 50,
+        "info": true
       });
   } );
   </script

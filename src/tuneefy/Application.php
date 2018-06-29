@@ -17,7 +17,9 @@ use tuneefy\Controller\BackendController;
 use tuneefy\Controller\FrontendController;
 use tuneefy\DB\DatabaseHandler;
 use tuneefy\Platform\Platform;
+use tuneefy\Utils\ApiActiveMiddleware;
 use tuneefy\Utils\ApiBypassMiddleware;
+use tuneefy\Utils\ApiStatsMiddleware;
 use tuneefy\Utils\ContentTypeMiddleware;
 use tuneefy\Utils\CustomErrorHandler;
 use tuneefy\Utils\CustomNotFoundHandler;
@@ -217,6 +219,8 @@ class Application
             );
 
             /* OAuth2 Middleware for the API */
+            $api->add(new ApiStatsMiddleware($this->container));
+            $api->add(new ApiActiveMiddleware($this->container));
             $api->add(new Middleware\Authorization($this->oauth2Server, $this->container));
             $api->add(new ApiBypassMiddleware($this->params['api']));
 

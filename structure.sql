@@ -29,26 +29,38 @@ CREATE TABLE `stats_viewing` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `stats_listening` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `item_id` int(11) unsigned DEFAULT NULL,
-  `platform` varchar(25) NOT NULL,
-  `index` int(11) unsigned DEFAULT NULL,
-  `listened_at` datetime NOT NULL,
+  `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
+  `item_id` INT(11) unsigned DEFAULT NULL,
+  `platform` VARCHAR(25) NOT NULL,
+  `index` INT(11) unsigned DEFAULT NULL,
+  `listened_at` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
   KEY `item_id` (`item_id`),
   KEY `platform` (`platform`),
   CONSTRAINT `stats_listening_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+CREATE TABLE `stats_api` (
+  `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
+  `client_id` VARCHAR(80) NOT NULL,
+  `method` VARCHAR(170) DEFAULT NULL,
+  `called_at` DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `client_id` (`client_id`),
+  KEY `called_at` (`called_at`),
+  KEY `method` (`method`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
 /* OAuth tables */
 CREATE TABLE oauth_clients (
   client_id VARCHAR(80) NOT NULL,
   client_secret VARCHAR(80),
-  `created_at` datetime NOT NULL,
-  `email` varchar(170) NOT NULL,
-  `name` varchar(170) NOT NULL,
-  `url` varchar(170) DEFAULT NULL,
-  `description` text DEFAULT NULL,
+  `created_at` DATETIME NOT NULL,
+  `email` VARCHAR(170) NOT NULL,
+  `name` VARCHAR(170) NOT NULL,
+  `url` VARCHAR(170) DEFAULT NULL,
+  `description` TEXT DEFAULT NULL,
+  `active` BOOLEAN DEFAULT 0,
   redirect_uri VARCHAR(2000) DEFAULT  NULL,
   grant_types VARCHAR(80),
   scope VARCHAR(100),
@@ -127,6 +139,35 @@ BEGIN
     (SELECT "track" as `type`, `items`.`id`, `items`.`object`, NULL as `count` FROM `items` WHERE `track` IS NOT NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` DESC LIMIT 1) UNION (SELECT  "album" as `type`, `items`.`id`, `object`, NULL as `count` FROM `items` WHERE `track` IS NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` DESC LIMIT 1)
     UNION
     (SELECT 'most' as `type`, `items`.`id`, `items`.`object`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` LEFT JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` WHERE `stats_viewing`.`viewed_at` > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY `items`. `id` ORDER BY `count` DESC LIMIT 1);
+
+  SET rc = 0;
+END;
+$$
+
+DELIMITER ;
+
+
+-- Materialised views for api items
+
+CREATE TABLE stats_api_mv (
+    `client_id` VARCHAR(80) NOT NULL,
+    `method` VARCHAR(170) DEFAULT NULL,
+    `count` INT(11)
+);
+
+DROP PROCEDURE refresh_stats_api_mv_now;
+
+DELIMITER $$
+
+CREATE PROCEDURE refresh_stats_api_mv_now (
+    OUT rc INT
+)
+BEGIN
+
+  TRUNCATE TABLE stats_api_mv;
+
+  INSERT INTO `stats_api_mv` (`client_id`, `method`, `count`)
+    (SELECT client_id, method, count(id) AS count from stats_api group by client_id, method);
 
   SET rc = 0;
 END;
