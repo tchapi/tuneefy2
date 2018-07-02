@@ -33,7 +33,7 @@
         <td>{{ client.items|number_format(0,'.',' ') }}</td>
         <td>
           {% for item in stats[client.client_id] %}
-            {{ item['method'] }} → {{ item['count']|number_format(0,'.',' ') }}<br>
+            {{ item['method'] }}&nbsp;→&nbsp;{{ item['count']|number_format(0,'.',' ') }}<br>
           {% endfor %}
         </td>
       </tr>
