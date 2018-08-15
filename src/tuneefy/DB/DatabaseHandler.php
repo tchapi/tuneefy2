@@ -256,7 +256,7 @@ class DatabaseHandler
         foreach ($rows as $row) {
             $result[$row['type']] = [
                 'id' => $row['id'],
-                'entity' => unserialize($rows[1]['object'], ['allowed_classes' => [TrackEntity::class, AlbumEntity::class]]),
+                'entity' => unserialize($row['object'], ['allowed_classes' => [TrackEntity::class, AlbumEntity::class]]),
             ];
         }
 
