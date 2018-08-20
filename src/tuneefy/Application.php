@@ -207,7 +207,7 @@ class Application
             $this->get('/share/{intent}', ApiController::class.':share');
         });
 
-        if ($this->params['api']['use_oauth'] === true) {
+        if (true === $this->params['api']['use_oauth']) {
             /* Set up storage (tokens, credentials) for OAuth2 server */
             $storage = new OAuth2\Storage\Pdo($this->db->getConnection());
 

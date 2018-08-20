@@ -21,7 +21,7 @@ task('deploy', [
 ]);
 
 // Configuration
-serverList('deploy/servers.yml');
+inventory('deploy/servers.yml');
 
 set('bin/npm', function () {
     return (string)run('which npm');
@@ -30,7 +30,6 @@ set('bin/npm', function () {
 set('shared_files', ['app/config/parameters.yml', 'app/config/platforms.yml']);
 set('writable_dirs', ['var/cache']);
 
-set('env', 'prod');
 set('ssh_type', 'native');
 set('ssh_multiplexing', true);
 set('http_user', 'www-data');
@@ -54,8 +53,8 @@ set('clear_paths', [
 // Tasks
 desc('Deploy production parameters');
 task('deploy:parameters', function () {
-    upload('./deploy/parameters.{{env}}.yml', '{{deploy_path}}/shared/app/config/parameters.yml');
-    upload('./deploy/platforms.{{env}}.yml', '{{deploy_path}}/shared/app/config/platforms.yml');
+    upload('./deploy/parameters.prod.yml', '{{deploy_path}}/shared/app/config/parameters.yml');
+    upload('./deploy/platforms.prod.yml', '{{deploy_path}}/shared/app/config/platforms.yml');
 });
 
 desc('Install assets');
