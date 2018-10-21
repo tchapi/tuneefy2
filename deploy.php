@@ -28,7 +28,8 @@ set('bin/npm', function () {
 });
 
 set('shared_files', ['app/config/parameters.yml', 'app/config/platforms.yml']);
-set('writable_dirs', ['var/cache']);
+set('writable_dirs', ['var/cache', 'var/logs']);
+set('shared_dirs', ['var/cache', 'var/logs']);
 
 set('ssh_type', 'native');
 set('ssh_multiplexing', true);
@@ -86,8 +87,8 @@ task('deploy:crontab', function () {
         set('env_vars', $env_vars);
 
         cd('/etc/cron.d/');
-        run('echo \'*/14 * * * * {{env_vars}} {{bin/php}} {{current_path}}/src/tuneefy/cron_runner.php >> {{current_path}}/var/cron-job-{{stage}}.log 2>&1\' | sudo tee tuneefy.cron');
-        writeln('<info>Wrote /etc/cron.d/tuneefy.cron file</info>');
+        run('echo -e \'# Updating tuneefy stats and cleaning expired intents\n*/14 * * * * {{user}} {{env_vars}} {{bin/php}} {{current_path}}/src/tuneefy/cron_runner.php >> {{current_path}}/var/logs/cron-job-{{stage}}.log 2>&1\' | sudo tee tuneefy');
+        writeln('<info>Wrote /etc/cron.d/tuneefy file</info>');
     } else {
         writeln('<info>Not installing crontabs for a stage other than production</info>');
     }
