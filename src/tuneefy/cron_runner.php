@@ -7,6 +7,8 @@ $commands = [
   tuneefy\Command\ExpiredIntentsCleanerCommand::class,
 ];
 
+echo 'Starting at '.date(DATE_RFC2822)."\n";
+
 foreach ($commands as $command) {
     $classpath = explode('\\', $command);
     echo 'Running command : '.end($classpath).' ... ';
@@ -17,7 +19,7 @@ foreach ($commands as $command) {
         echo "[\033[01;32mOK\033[0m]";
     } catch (\Exception $e) {
         echo "[\033[01;31mFailed\033[0m]";
-        echo "\033[01;33m  Error: \033[0m".$e->getMessage();
+        echo "\n→ \033[01;33mError: \033[0m".$e->getMessage();
     }
 
     $elapsed = microtime(true) - $startingAt;
