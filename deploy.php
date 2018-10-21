@@ -74,8 +74,28 @@ task('php-fpm:restart', function () {
     run('sudo systemctl restart php7.1-fpm.service');
 });
 
+// Crontab
+desc('Add crontab for command');
+task('deploy:crontab', function () {
+    if (get('stage') === 'production') {
+        // Create a string of env_vars for the cron task
+        $env_vars = "";
+        foreach (get('env') as $key => $value) {
+            $env_vars .= $key."=".$value." ";
+        }
+        set('env_vars', $env_vars);
+
+        cd('/etc/cron.d/');
+        run('echo \'*/14 * * * * {{env_vars}} {{bin/php}} {{current_path}}/src/tuneefy/cron_runner.php >> {{current_path}}/var/cron-job-{{stage}}.log 2>&1\' | sudo tee tuneefy.cron');
+        writeln('<info>Wrote /etc/cron.d/tuneefy.cron file</info>');
+    } else {
+        writeln('<info>Not installing crontabs for a stage other than production</info>');
+    }
+});
+
 // Hooks
 after('deploy', 'success');
 after('deploy:symlink', 'php-fpm:restart');
+after('deploy:symlink', 'deploy:crontab');
 after('deploy:update_code', 'deploy:parameters');
 after('deploy:failed', 'deploy:unlock');
