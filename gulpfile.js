@@ -13,46 +13,50 @@ let log = function (error) {
     }
 }
 
-gulp.task('javascript', function () {
+gulp.task('javascript', function (done) {
   pump([
         gulp.src(resourcesFolder + 'js/**/*.js'),
         uglify(),
         gulp.dest(webFolder + 'js')
     ],
-    log
+    log,
+    done
     );
 });
 
-gulp.task('twig', function () {
+gulp.task('twig', function (done) {
   pump([
         gulp.src(resourcesFolder + 'js/**/*.twig'),
         gulp.dest(webFolder + 'js')
     ],
-    log
+    log,
+    done
     );
 });
 
-gulp.task('sass', function () {
+gulp.task('sass', function (done) {
   pump([
         gulp.src(resourcesFolder + 'scss/styles.scss'),
         sass({outputStyle: 'compressed'}).on('error', sass.logError),
         gulp.dest(webFolder + 'css')
     ],
-    log
+    log,
+    done
     );
 });
 
-gulp.task('embed', function () {
+gulp.task('embed', function (done) {
   pump([
         gulp.src(resourcesFolder + 'scss/partials/embed.scss'),
         sass({outputStyle: 'compressed'}).on('error', sass.logError),
         gulp.dest(webFolder + 'css')
     ],
-    log
+    log,
+    done
     );
 });
 
-gulp.task('widget', function () {
+gulp.task('widget', function (done) {
   pump([
         gulp.src([resourcesFolder + 'scss/partials/reset.scss', resourcesFolder + 'widget/widget.scss']),
         concat('widget.scss'),
@@ -73,8 +77,9 @@ gulp.task('widget', function () {
         uglify(),
         gulp.dest(webFolder + 'js')
     ],
-    log
+    log,
+    done
     );
 });
 
-gulp.task('default', ['widget', 'embed', 'sass', 'javascript', 'twig']);
+gulp.task('default', gulp.parallel('widget', 'embed', 'sass', 'javascript', 'twig'));
