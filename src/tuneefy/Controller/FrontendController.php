@@ -97,20 +97,20 @@ class FrontendController
         $verification_params = http_build_query([
             'secret' => $params['mail']['captcha_secret'],
             'response' => $allPostVars['captcha'],
-            'remoteip' => $_SERVER['REMOTE_ADDR']
+            'remoteip' => $_SERVER['REMOTE_ADDR'],
         ]);
 
-        $verification = file_get_contents("https://www.google.com/recaptcha/api/siteverify?". $verification_params);
+        $verification = file_get_contents('https://www.google.com/recaptcha/api/siteverify?'.$verification_params);
         $json = json_decode($verification, true);
 
-        if ($json['success'] === false) {
+        if (false === $json['success']) {
             $body = $response->getBody();
             $body->write(0);
+
             return $response;
         }
 
         try {
-
             $sanitized_email = filter_var($allPostVars['mail'], FILTER_SANITIZE_EMAIL);
 
             // Create the Transport
@@ -126,9 +126,8 @@ class FrontendController
 
             // Send the message
             $result = $mailer->send($message);
-
-        } catch(\Exception $e) {
-            error_log("Mail sending from contact form: " . $e->getMessage());
+        } catch (\Exception $e) {
+            error_log('Mail sending from contact form: '.$e->getMessage());
             $result = 0;
         }
 
