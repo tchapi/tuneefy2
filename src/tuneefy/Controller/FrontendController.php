@@ -45,9 +45,13 @@ class FrontendController
         $db = DatabaseHandler::getInstance(null);
         $hot = $db->getHotItems();
 
-        $mostViewed = $hot['most'];
-        if (isset($mostViewed['id'])) {
-            $mostViewed['uid'] = Utils::toUId($mostViewed['id']);
+        if (isset($hot['most'])) {
+            $mostViewed = $hot['most'];
+            if (isset($$mostViewed['id'])) {
+                $mostViewed['uid'] = Utils::toUId($$mostViewed['id']);
+            }
+        } else {
+            $mostViewed = null;
         }
 
         if (isset($hot['track']) && $hot['track']['id']) {

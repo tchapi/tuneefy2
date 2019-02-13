@@ -27,7 +27,8 @@
       {% endfor %}
     </ul>
   </div>
-  
+
+  {% if stats.artists[0].count > 0 %}
   <div id="mostViewedArtists" class="boxed boxS">
     <h2 class="color">{{ "stats.most_viewed_artists"|trans({"%limit%": params.website.stats_limit})|raw }}</h2>
     <ul>
@@ -39,7 +40,9 @@
       {% endfor %}
     </ul>
   </div>
+  {% endif %}
   
+  {% if stats.tracks|length > 0%}
   <div id="mostViewedTracks">
     <h2 class="color">{{ "stats.most_viewed_tracks"|trans({"%limit%": params.website.stats_limit})|raw }}</h2>
     <ul>
@@ -51,7 +54,9 @@
         {% endfor %}
     </ul>
   </div>
+  {% endif %}
   
+  {% if stats.albums|length > 0%}
   <div id="mostViewedAlbums">
   <h2 class="color">{{ "stats.most_viewed_albums"|trans({"%limit%": params.website.stats_limit})|raw }}</h2>
     <ul>
@@ -63,6 +68,7 @@
         {% endfor %}
     </ul>
   </div>
+  {% endif %}
 </div>
 {% endblock %}
 
