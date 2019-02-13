@@ -47,6 +47,7 @@
     <h2 class="color aboutTitles">{{ "contact_us.title"|trans|raw }}</h2>
     <div id="contactFormWrapper">
       <form class="contactForm" action="{{ path_for('mail') }}">
+        <input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">
         <label for="email">{{ "contact_us.email"|trans|raw }}</label><input type="text" id="email" name="email" class="boxS5" />
         <label for="message">{{ "contact_us.message"|trans|raw }}</label><textarea  id="message" name="message" class="boxS5" ></textarea>
         <a id="send" class="btn btnSendEmail">{{ "contact_us.send"|trans|raw }}</a>
@@ -61,5 +62,13 @@
 
 {% block javascript %}
   {{ parent() }}
+  <script src="https://www.google.com/recaptcha/api.js?render={{ params.mail.captcha_key }}"></script>
   <script type="text/javascript" src="/js/about.js"></script>
+  <script>
+    grecaptcha.ready(function() {
+        grecaptcha.execute('{{ params.mail.captcha_key }}', {action: 'contact'}).then(function(token) {
+          document.getElementById('g-recaptcha-response').value = token;
+        });
+    });
+  </script>
 {% endblock %}

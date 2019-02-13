@@ -6,6 +6,7 @@ $(document).ready(function() {
 
       var e = $("form.contactForm #email");
       var m = $("form.contactForm #message");
+      var c = $("form.contactForm #g-recaptcha-response");
       var action = $("form").attr('action');
       
       m.removeClass("error");
@@ -24,7 +25,7 @@ $(document).ready(function() {
       $("form.contactForm").hide();
       $(".waitingMail").show();
 
-      $.post(action, {mail:e.val(), message: m.val()}, function(data){
+      $.post(action, {mail:e.val(), message: m.val(), captcha: c.val() }, function(data){
         
         $(".waitingMail").hide();
         

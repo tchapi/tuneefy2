@@ -31,6 +31,8 @@ mail:
   smtp_password: "pwd"
   contact_email: "contact@tuneefy.com"
   team_email: "team@tuneefy.com"
+  captcha_key : "test"
+  captcha_secret: "test"
 
 statistics:
   ga_tracker_id: 0

@@ -87,23 +87,46 @@ class FrontendController
     {
         $allPostVars = $request->getParsedBody();
 
-        $sanitized_email = filter_var($allPostVars['mail'], FILTER_SANITIZE_EMAIL);
-
         $params = $this->container->get('params');
 
-        // Create the Transport
-        $transport = (new \Swift_SmtpTransport($params['mail']['smtp_server'], 25))
-          ->setUsername($params['mail']['smtp_user'])
-          ->setPassword($params['mail']['smtp_password']);
-        $mailer = new \Swift_Mailer($transport);
+        // Check if spam
+        $verification_params = http_build_query([
+            'secret' => $params['mail']['captcha_secret'],
+            'response' => $allPostVars['captcha'],
+            'remoteip' => $_SERVER['REMOTE_ADDR']
+        ]);
 
-        $message = (new \Swift_Message('[CONTACT] '.$sanitized_email.' (via tuneefy.com)"'))
-          ->setFrom([$params['mail']['contact_email']])
-          ->setTo([$params['mail']['team_email']])
-          ->setBody($sanitized_email." sent a message from the site : \n\n".nl2br($allPostVars['message']));
+        $verification = file_get_contents("https://www.google.com/recaptcha/api/siteverify?". $verification_params);
+        $json = json_decode($verification, true);
 
-        // Send the message
-        $result = $mailer->send($message);
+        if ($json['success'] === false) {
+            $body = $response->getBody();
+            $body->write(0);
+            return $response;
+        }
+
+        try {
+
+            $sanitized_email = filter_var($allPostVars['mail'], FILTER_SANITIZE_EMAIL);
+
+            // Create the Transport
+            $transport = (new \Swift_SmtpTransport($params['mail']['smtp_server'], 25))
+              ->setUsername($params['mail']['smtp_user'])
+              ->setPassword($params['mail']['smtp_password']);
+            $mailer = new \Swift_Mailer($transport);
+
+            $message = (new \Swift_Message('[CONTACT] '.$sanitized_email.' (via tuneefy.com)"'))
+              ->setFrom([$params['mail']['contact_email']])
+              ->setTo([$params['mail']['team_email']])
+              ->setBody($sanitized_email." sent a message from the site : \n\n".nl2br($allPostVars['message']));
+
+            // Send the message
+            $result = $mailer->send($message);
+
+        } catch(\Exception $e) {
+            error_log("Mail sending from contact form: " . $e->getMessage());
+            $result = 0;
+        }
 
         // Return a response
         $body = $response->getBody();
