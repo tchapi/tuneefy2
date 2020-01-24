@@ -47,8 +47,8 @@ class FrontendController
 
         if (isset($hot['most'])) {
             $mostViewed = $hot['most'];
-            if (isset($$mostViewed['id'])) {
-                $mostViewed['uid'] = Utils::toUId($$mostViewed['id']);
+            if (isset($mostViewed['id'])) {
+                $mostViewed['uid'] = Utils::toUId($mostViewed['id']);
             }
         } else {
             $mostViewed = null;
