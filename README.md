@@ -69,6 +69,7 @@ Just run :
 Beforehand, do not forget to launch a development web server so that the functional tests have an endpoint to test. For instance :
 
     php -S localhost:8000 -t web
+    php -S localhost:8001 -t web_api
 
 There should be 36 tests containing 673 assertions.
 

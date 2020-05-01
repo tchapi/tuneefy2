@@ -2,7 +2,7 @@
 
 namespace tuneefy\Controller;
 
-use Interop\Container\ContainerInterface;
+use Slim\Container;
 use RKA\ContentTypeRenderer\Renderer;
 use tuneefy\DB\DatabaseHandler;
 use tuneefy\Platform\Platform;
@@ -42,7 +42,7 @@ class ApiController
     ];
 
     // constructor receives container instance
-    public function __construct(ContainerInterface $container)
+    public function __construct(Container $container)
     {
         // JSON / XML renderer
         $this->renderer = new Renderer();

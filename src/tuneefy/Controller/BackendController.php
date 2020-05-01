@@ -2,7 +2,7 @@
 
 namespace tuneefy\Controller;
 
-use Interop\Container\ContainerInterface;
+use Slim\Container;
 use tuneefy\DB\DatabaseHandler;
 
 class BackendController
@@ -10,7 +10,7 @@ class BackendController
     protected $container;
 
     // constructor receives container instance
-    public function __construct(ContainerInterface $container)
+    public function __construct(Container $container)
     {
         // Slim container
         $this->container = $container;
