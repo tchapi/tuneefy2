@@ -129,11 +129,16 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
 
     public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
+        // Catch errors
+        if ($response->data->error) {
+            throw new PlatformException($this, $response->data->error->errors[0]->message);
+        }
+
         $entities = $response->data->items;
 
         // We actually don't pass the limit to the fetch()
         // request since it's not really useful, in fact
-        $length = min(count($entities), $limit ? $limit : Platform::LIMIT);
+        $length = min($entities ? count($entities) : 0, $limit ? $limit : Platform::LIMIT);
 
         $musical_entities = [];
 

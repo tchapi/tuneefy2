@@ -89,7 +89,7 @@ final class ApiCest
                     'album' => [
                         'title' => 'Kasabian',
                         'artist' => 'Kasabian',
-                        'picture' => 'https://i.scdn.co/image/a9e6fab74c9840ae4194b2cd94f13a4731adbf72',
+                        'picture' => 'https://i.scdn.co/image/ab67616d00001e021db4ff9cdeeb1e18218e9b5b',
                         'safe_title' => 'Kasabian',
                         'extra_info' => [
                             'is_cover' => false,
@@ -121,7 +121,7 @@ final class ApiCest
                     'type' => 'album',
                     'title' => 'Inni',
                     'artist' => 'Sigur Rós',
-                    'picture' => 'https://i.scdn.co/image/f9a45d06203f6415eeba7f27ed2387eea1f3f9dd',
+                    'picture' => 'https://i.scdn.co/image/ab67616d00001e024eafa5dbb5cd7170d7e0191d',
                     'links' => [
                         'spotify' => [
                             'https://open.spotify.com/album/2bRcCP8NYDgO7gtRbkcqdk',
