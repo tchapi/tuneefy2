@@ -620,7 +620,7 @@ final class ApiCest
                 ],
             ],
             'https://itunes.apple.com/us/album/weezer/id1136784464' => [
-                 'musical_entity' => [
+                'musical_entity' => [
                     'type' => 'album',
                     'title' => 'Weezer',
                     'artist' => 'Weezer',
