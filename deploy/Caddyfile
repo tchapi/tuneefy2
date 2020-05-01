@@ -1,0 +1,15 @@
+tuneefy.com, www.tuneefy.com {
+    # cf. https://caddy.community/t/caddy2-symfony/6978
+    root * /path/to/project/current/web
+    php_fastcgi 127.0.0.1:8000 # change to accomodate your php-fpm settings
+    file_server
+}
+
+data.tuneefy.com {
+  root * /path/to/project/current/web_api
+  php_fastcgi 127.0.0.1:8000
+  header {
+    Access-Control-Allow-Origin https://tuneefy.com
+    Access-Control-Allow-Credentials true
+  }
+}
