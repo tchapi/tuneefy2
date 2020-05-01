@@ -12,10 +12,5 @@ codeception.yml
 var/*
 !var/.gitkeep
 
-app/templates/api.html
-
-web/js/*
-web/css/*
-
-deploy/*
-!deploy/nginx.conf
+deploy/vars.yml
+deploy/*.prod.yml

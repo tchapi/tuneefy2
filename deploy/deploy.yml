@@ -1,0 +1,79 @@
+---
+- hosts: "{{ tuneefy_hosts }}"
+  vars_files:
+    - ./vars.yml
+  tasks:
+    - name: Set some variables
+      set_fact:
+        release_path: "{{ project_path }}/releases/{{ lookup('pipe','date +%Y%m%d%H%M%S') }}"
+        current_path: "{{ project_path }}/current"
+        shared_path: "{{ project_path }}/shared"
+    - name: Retrieve current release folder
+      command: readlink -f current
+      register: current_release_path
+      ignore_errors: yes
+      args:
+        chdir: "{{ project_path }}"
+    - name: Ensure shared folder is present
+      file:
+        path: "{{ shared_path }}"
+        state: directory
+    - name: Create new folder
+      file:
+        dest={{ release_path }}
+        mode=0755
+        recurse=yes
+        state=directory
+    - name: Clone the repository
+      git:
+        repo: "git@github.com:tchapi/tuneefy2.git"
+        dest: "{{ release_path }}"
+    - name: Link platforms.yml file
+      file:
+        src={{ shared_path }}/platforms.yml
+        dest={{ release_path }}/app/config/platforms.yml
+        state=link
+    - name: Link parameters.yml file
+      file:
+        src={{ shared_path }}/parameters.yml
+        dest={{ release_path }}/app/config/parameters.yml
+        state=link
+    - name: Install composer dependencies
+      composer:
+        command: install
+        working_dir: "{{ release_path }}"
+        prefer_dist: yes
+    - name: Remove perilous files
+      file:
+        path: "{{ release_path }}/{{ item }}"
+        state: absent
+      with_items:
+        - .gitignore
+        - .git
+        - .php_cs
+        - deploy
+        - LICENSE
+        - README.md
+        - gulpfile.js
+        - package.json
+        - structure.sql
+        - codeception.yml.dist
+    - name: Creates a cron file under /etc/cron.d for updating stats and cleaning intents
+      become: yes
+      become_user: root
+      cron:
+        name: "Tuneefy: Update stats and clean expired intents"
+        minute: "14"
+        user: "{{ansible_user}}"
+        job: "{{current_path}}/src/tuneefy/cron_runner.php >> {{current_path}}/var/logs/cron-job.log >> /dev/null 2>&1"
+        cron_file: tuneefy_clean-expired-intents
+    - name: Update symlink
+      file:
+        src={{ release_path }}
+        dest={{ current_path }}
+        state=link
+    - name: Delete old dir
+      shell: rm -rf {{ current_release_path.stdout }}/
+      when: current_release_path.stdout != current_path
+      args:
+        warn: false
