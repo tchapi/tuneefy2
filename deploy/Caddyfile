@@ -11,5 +11,13 @@ data.tuneefy.com {
   header {
     Access-Control-Allow-Origin https://tuneefy.com
     Access-Control-Allow-Credentials true
+    Vary Origin
+  }
+  @options {
+    method OPTIONS
+  }
+  header @options {
+    Access-Control-Allow-Methods "GET, POST, OPTIONS, HEAD"
+    Access-Control-Allow-Headers X-Requested-With
   }
 }
