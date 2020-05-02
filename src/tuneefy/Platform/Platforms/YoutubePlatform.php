@@ -130,7 +130,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
     public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
         // Catch errors
-        if ($response->data->error) {
+        if (property_exists($response->data, 'error')) {
             throw new PlatformException($this, $response->data->error->errors[0]->message);
         }
 
