@@ -65,6 +65,11 @@ abstract class Platform implements GeneralPlatformInterface
     protected $terms = [];
     protected $options = [];
 
+    // For hosts that resolve sloowly, add the IP here. Quite dangerous but helpful
+    const RESOLVED_IPS = [
+        'listen.tidal.com:443:13.249.8.45'
+    ];
+
     /**
      * The singleton instance of the class.
      */
@@ -253,6 +258,7 @@ abstract class Platform implements GeneralPlatformInterface
             CURLOPT_FOLLOWLOCATION => 1, // Some APIs redirect to content with a 3XX code
             CURLOPT_CONNECTTIMEOUT => 2000,
             CURLOPT_TIMEOUT_MS => 2000,
+            CURLOPT_RESOLVE => static::RESOLVED_IPS
         ]);
 
         if (self::METHOD_GET === static::API_METHOD) {
