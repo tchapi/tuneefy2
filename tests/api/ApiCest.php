@@ -307,18 +307,18 @@ final class ApiCest
                     'Jay',
                 ],
             ],
-            'http://www.tidal.com/album/571179' => [
+            'http://www.tidal.com/album/138314944' => [
                 'musical_entity' => [
                   'type' => 'album',
-                  'title' => 'JAY Z: MTV Unplugged',
-                  'artist' => 'JAY-Z',
-                  'picture' => 'http://resources.wimpmusic.com/images/f1494811/b30e/45eb/8fe0/40137f1c0e58/320x320.jpg',
+                  'title' => 'Good Job',
+                  'artist' => 'Alicia Keys',
+                  'picture' => 'http://resources.wimpmusic.com/images/52cbc173/b409/4402/985a/208ddf816984/320x320.jpg',
                   'links' => [
                     'tidal' => [
-                      'http://www.tidal.com/album/571179',
+                      'http://www.tidal.com/album/138314944',
                     ],
                   ],
-                  'safe_title' => 'JAY Z: MTV Unplugged',
+                  'safe_title' => 'Good Job',
                   'extra_info' => [
                     'is_cover' => false,
                     'is_remix' => false,
@@ -328,8 +328,8 @@ final class ApiCest
                   ],
                 ],
                 'query_words' => [
-                    'JAY-Z',
-                    'JAY Z: MTV Unplugged',
+                    'Alicia Keys',
+                    'Good Job',
                   ],
             ],
             'http://www.tidal.com/artist/3528326' => [
@@ -422,7 +422,7 @@ final class ApiCest
             'https://play.google.com/store/music/album?id=Bbebqssprhgc27hq6xlqzrm45g4&tid=song-Ttbq3os2bblfjndnztz43sf2c2i' => [
                 'musical_entity' => [
                   'type' => 'track',
-                  'title' => 'Break On Through',
+                  'title' => 'Break on Through (To the Other Side) [New Stereo Mix]',
                   'album' => [
                     'title' => 'The Very Best Of The Doors',
                     'artist' => 'The Doors',
@@ -441,18 +441,20 @@ final class ApiCest
                       'https://play.google.com/store/music/album?id=Bbebqssprhgc27hq6xlqzrm45g4&tid=song-Ttbq3os2bblfjndnztz43sf2c2i',
                     ],
                   ],
-                  'safe_title' => 'Break On Through',
+                  'safe_title' => 'Break on Through',
                   'extra_info' => [
                     'is_cover' => false,
-                    'is_remix' => false,
+                    'is_remix' => true,
                     'acoustic' => false,
                     'context' => [
+                        'To the Other Side',
+                        'New Stereo Mix',
                     ],
                   ],
                 ],
                 'query_words' => [
                     'The Doors',
-                    'Break On Through',
+                    'Break on Through',
                   ],
             ],
             'https://play.google.com/store/music/artist/James_McAlister?id=Anop7xijqkhvkjc4q7mo6drwyu4' => [
@@ -503,7 +505,7 @@ final class ApiCest
         'mixcloud' => [
             'https://www.mixcloud.com/aphex-twin/' => [
                 'query_words' => [
-                    'Aphex Twin',
+                    'MP 7',
                 ],
             ],
             'https://www.mixcloud.com/LeFtOoO/709-season-finale-w-niveau4-lor-du-commun-darrell-cole-new-spaven-mura-masa-budgie/' => [
@@ -553,7 +555,7 @@ final class ApiCest
                     'album' => [
                         'title' => 'The Singles',
                         'artist' => 'The Clash',
-                        'picture' => 'https://lastfm-img2.akamaized.net/i/u/174s/7d8eeb8f69e84736ab2cd659c03a1581.png',
+                        'picture' => 'https://lastfm.freetls.fastly.net/i/u/174s/7d8eeb8f69e84736ab2cd659c03a1581.png',
                         'safe_title' => 'The Singles',
                         'extra_info' => [
                             'is_cover' => false,
@@ -585,7 +587,7 @@ final class ApiCest
                     'type' => 'album',
                     'title' => 'London Calling',
                     'artist' => 'The Clash',
-                    'picture' => 'https://lastfm-img2.akamaized.net/i/u/174s/7d8eeb8f69e84736ab2cd659c03a1581.png',
+                    'picture' => 'https://lastfm.freetls.fastly.net/i/u/174s/7d8eeb8f69e84736ab2cd659c03a1581.png',
                     'safe_title' => 'The Singles',
                     'extra_info' => [
                         'is_cover' => false,
@@ -619,28 +621,56 @@ final class ApiCest
                     'Jack Johnson',
                 ],
             ],
-            'https://itunes.apple.com/us/album/weezer/id1136784464' => [
+            'https://music.apple.com/us/album/in-between-dreams-bonus-track-version/1440857781' => [
                 'musical_entity' => [
                     'type' => 'album',
-                    'title' => 'Weezer',
-                    'artist' => 'Weezer',
-                    'picture' => 'https://is1-ssl.mzstatic.com/image/thumb/Music60/v4/f8/52/ef/f852efd1-3221-6ce7-d5aa-e320a9d8879e/source/100x100bb.jpg',
+                    'title' => 'In Between Dreams (Bonus Track Version)',
+                    'artist' => 'Jack Johnson',
+                    'picture' => 'https://is2-ssl.mzstatic.com/image/thumb/Music118/v4/24/46/97/24469731-f56f-29f6-67bd-53438f59ebcb/source/100x100bb.jpg',
                     'links' => [
                         'itunes' => [
-                            'https://itunes.apple.com/us/album/weezer/1136784464?uo=4',
+                            'https://music.apple.com/us/album/in-between-dreams-bonus-track-version/1440857781?uo=4',
                         ],
                     ],
-                    'safe_title' => 'Weezer',
+                    'safe_title' => 'In Between Dreams',
                     'extra_info' => [
                         'is_cover' => false,
                         'is_remix' => false,
                         'acoustic' => false,
-                        'context' => [],
+                        'context' => [
+                            'Bonus Track Version'
+                        ],
                     ],
                 ],
                 'query_words' => [
-                    'Weezer',
-                    'Weezer',
+                    'Jack Johnson',
+                    'In Between Dreams',
+                ],
+            ],
+            'https://itunes.apple.com/us/album/in-between-dreams-bonus-track-version/id1440857781' => [
+                'musical_entity' => [
+                    'type' => 'album',
+                    'title' => 'In Between Dreams (Bonus Track Version)',
+                    'artist' => 'Jack Johnson',
+                    'picture' => 'https://is2-ssl.mzstatic.com/image/thumb/Music118/v4/24/46/97/24469731-f56f-29f6-67bd-53438f59ebcb/source/100x100bb.jpg',
+                    'links' => [
+                        'itunes' => [
+                            'https://music.apple.com/us/album/in-between-dreams-bonus-track-version/1440857781?uo=4',
+                        ],
+                    ],
+                    'safe_title' => 'In Between Dreams',
+                    'extra_info' => [
+                        'is_cover' => false,
+                        'is_remix' => false,
+                        'acoustic' => false,
+                        'context' => [
+                            'Bonus Track Version'
+                        ],
+                    ],
+                ],
+                'query_words' => [
+                    'Jack Johnson',
+                    'In Between Dreams',
                 ],
             ],
         ],
@@ -674,7 +704,7 @@ final class ApiCest
             'http://www.amazon.com/dp/B00GLQQ0JW/ref=dm_ws_tlw_trk1' => [
                 'musical_entity' => [
                     'type' => 'track',
-                    'title' => 'Frozen Heart',
+                    'title' => 'Frozen Heart (From "Frozen"/Soundtrack Version)',
                     'album' => [
                         'title' => 'Frozen (Deluxe Edition)',
                         'artist' => 'Cast - Frozen',
@@ -699,7 +729,9 @@ final class ApiCest
                         'is_cover' => false,
                         'is_remix' => false,
                         'acoustic' => false,
-                        'context' => [],
+                        'context' => [
+                            'From "Frozen"/Soundtrack Version'
+                        ],
                     ],
                 ],
                 'query_words' => [
