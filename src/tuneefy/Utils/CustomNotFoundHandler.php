@@ -32,7 +32,8 @@ class CustomNotFoundHandler
     {
         // Depending on the group we should render an error page or a structured response
         if (!$this->isApiRoute) {
-            $response = new Response($this->status);
+            $response = $response->withStatus($this->status)
+                                 ->withHeader('Content-Type', 'text/html; charset=UTF-8');
 
             return $this->view->render($response, '404.html.twig');
         } else {
