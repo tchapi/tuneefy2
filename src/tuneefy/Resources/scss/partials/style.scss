@@ -153,8 +153,9 @@ h2.infoTitle, h2.pickTitle{
 
 /* TODAYS PICK */
 #todaysPick{
-  position: relative;
-  float: right;
+  position: absolute;
+  right: 0;
+  top: 0;
   height: 129px;
   width: 300px;
   margin-top: 1px;
