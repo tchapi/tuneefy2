@@ -65,9 +65,39 @@ abstract class Platform implements GeneralPlatformInterface
     protected $terms = [];
     protected $options = [];
 
-    // For hosts that resolve sloowly, add the IP here. Quite dangerous but helpful
-    const RESOLVED_IPS = [
-        'listen.tidal.com:443:13.249.8.45'
+    // For hosts that resolve slooooooowly, add the IP here. Quite dangerous but helpful
+    /*
+        $hosts = [
+          'listen.tidal.com',
+          'www.amazon.com',
+          'api.deezer.com',
+          'www.googleapis.com',
+          'itunes.apple.com',
+          'ws.audioscrobbler.com',
+          'api.mixcloud.com',
+          'api.napster.com',
+          'www.qobuz.com',
+          'api.soundcloud.com',
+        ];
+
+        echo "[\n";
+        foreach ($hosts as $id => $value) {
+            $ips = gethostbynamel($value);
+            echo "  '".$value.':443'.':'.$ips[0]."',\n";
+        }
+        echo "];\n";
+    */
+    const RESOLVED_IPS =[
+      'listen.tidal.com:443:143.204.201.46',
+      'www.amazon.com:443:13.224.193.233',
+      'api.deezer.com:443:185.60.92.36',
+      'www.googleapis.com:443:216.58.215.42',
+      'itunes.apple.com:443:2.16.118.43',
+      'ws.audioscrobbler.com:443:64.30.224.206',
+      'api.mixcloud.com:443:46.23.65.210',
+      'api.napster.com:443:92.123.148.44',
+      'www.qobuz.com:443:52.209.137.233',
+      'api.soundcloud.com:443:143.204.204.53',
     ];
 
     /**
