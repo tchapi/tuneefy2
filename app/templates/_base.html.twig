@@ -33,7 +33,7 @@
   <link rel="publisher" href="{{ params.google_plus.publisher_id }}">
 
   <link rel="icon" type="image/png" href="/favicon.png" />
-  <!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="//favicon.ico" /><![endif]-->
+  <!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" /><![endif]-->
 
   <meta content="yes" name="apple-mobile-web-app-capable" />
   <link href="/img/social.png" rel="apple-touch-icon" />
@@ -110,16 +110,6 @@
         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
-  {% endif %}
-  {% if params.uservoice.enabled and not embed %}
-    <script type="text/javascript">
-      var uvOptions = {};
-      (function() {
-        var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
-        uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/{{ params.uservoice.client_id }}.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
       })();
     </script>
   {% endif %}

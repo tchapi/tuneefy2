@@ -37,10 +37,6 @@ mail:
 statistics:
   ga_tracker_id: 0
 
-uservoice:
-  enabled: false
-  client_id: 0 
-
 facebook:
   admin_user: ""
   app_id: 0
