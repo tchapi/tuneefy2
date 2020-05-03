@@ -2,8 +2,8 @@
 
 namespace tuneefy\Controller;
 
-use Slim\Container;
 use RKA\ContentTypeRenderer\Renderer;
+use Slim\Container;
 use tuneefy\DB\DatabaseHandler;
 use tuneefy\Platform\Platform;
 use tuneefy\Platform\PlatformException;

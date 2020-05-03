@@ -638,7 +638,7 @@ final class ApiCest
                         'is_remix' => false,
                         'acoustic' => false,
                         'context' => [
-                            'Bonus Track Version'
+                            'Bonus Track Version',
                         ],
                     ],
                 ],
@@ -664,7 +664,7 @@ final class ApiCest
                         'is_remix' => false,
                         'acoustic' => false,
                         'context' => [
-                            'Bonus Track Version'
+                            'Bonus Track Version',
                         ],
                     ],
                 ],
@@ -730,7 +730,7 @@ final class ApiCest
                         'is_remix' => false,
                         'acoustic' => false,
                         'context' => [
-                            'From "Frozen"/Soundtrack Version'
+                            'From "Frozen"/Soundtrack Version',
                         ],
                     ],
                 ],

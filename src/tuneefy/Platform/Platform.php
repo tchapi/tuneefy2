@@ -87,7 +87,7 @@ abstract class Platform implements GeneralPlatformInterface
         }
         echo "];\n";
     */
-    const RESOLVED_IPS =[
+    const RESOLVED_IPS = [
       'listen.tidal.com:443:143.204.201.46',
       'www.amazon.com:443:13.224.193.233',
       'api.deezer.com:443:185.60.92.36',
@@ -288,7 +288,7 @@ abstract class Platform implements GeneralPlatformInterface
             CURLOPT_FOLLOWLOCATION => 1, // Some APIs redirect to content with a 3XX code
             CURLOPT_CONNECTTIMEOUT => 2000,
             CURLOPT_TIMEOUT_MS => 2000,
-            CURLOPT_RESOLVE => static::RESOLVED_IPS
+            CURLOPT_RESOLVE => static::RESOLVED_IPS,
         ]);
 
         if (self::METHOD_GET === static::API_METHOD) {
