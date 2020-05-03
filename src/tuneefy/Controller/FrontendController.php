@@ -6,6 +6,7 @@ use RKA\ContentTypeRenderer\Renderer;
 use Slim\Container;
 use tuneefy\DB\DatabaseHandler;
 use tuneefy\PlatformEngine;
+use tuneefy\Utils\CustomNotFoundHandler;
 use tuneefy\Utils\Utils;
 
 class FrontendController
@@ -13,6 +14,7 @@ class FrontendController
     protected $container;
     private $renderer;
     private $engine;
+    private $notFound;
 
     // constructor receives container instance
     public function __construct(Container $container)
@@ -25,6 +27,9 @@ class FrontendController
 
         // Slim container
         $this->container = $container;
+
+        // 404 handler
+        $this->notFound = new CustomNotFoundHandler($container->get('view'), false, 404, 'NOT_FOUND');
     }
 
     public function home($request, $response)
@@ -183,7 +188,7 @@ class FrontendController
     public function show($request, $response, $args)
     {
         if (null === $args['uid'] || '' === $args['uid']) {
-            return $response->withStatus(404);
+            return call_user_func($this->notFound, $request, $response);
         }
 
         $db = DatabaseHandler::getInstance(null);
@@ -193,10 +198,10 @@ class FrontendController
         try {
             $item = $db->getItemById($id);
         } catch (\Exception $e) {
-            return $response->withStatus(404);
+            return call_user_func($this->notFound, $request, $response);
         }
 
-        // Check the type and redirect if necessary
+        // Check the type (track || album) and redirect if necessary
         if (!isset($args['type']) || $item->getType() !== $args['type']) {
             $route = $this->container->get('router')->pathFor('show', [
                 'params' => $this->container->get('params'),
@@ -229,7 +234,7 @@ class FrontendController
                 ]);
             }
         } else {
-            return $response->withStatus(404);
+            return call_user_func($this->notFound, $request, $response);
         }
     }
 
@@ -238,7 +243,7 @@ class FrontendController
         $platform = strtolower($args['platform']);
 
         if (null === $args['uid'] || '' === $args['uid']) {
-            return $response->withStatus(404);
+            return call_user_func($this->notFound, $request, $response);
         }
 
         $db = DatabaseHandler::getInstance(null);
@@ -248,16 +253,16 @@ class FrontendController
         try {
             $item = $db->getItemById($id);
         } catch (\Exception $e) {
-            return $response->withStatus(404);
+            return call_user_func($this->notFound, $request, $response);
         }
+
+        $index = intval($args['i'] ?? 0);
 
         // Check we have a 'platform' link
         $links = $item->getLinksForPlatform($platform);
 
-        $index = intval($args['i'] ?? 0);
-
         if ($links === [] || count($links) <= $index) {
-            return $response->withStatus(404);
+            return call_user_func($this->notFound, $request, $response);
         }
 
         // Increment stats
@@ -278,7 +283,7 @@ class FrontendController
         $link = $request->getQueryParam('l');
 
         if (null === $link || '' === $link) {
-            return $response->withStatus(404);
+            return call_user_func($this->notFound, $request, $response);
         }
 
         $db = DatabaseHandler::getInstance(null);
