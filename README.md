@@ -18,6 +18,8 @@ Tuneefy needs a variety of tables to work properly; you can populate your databa
 
 To build the assets and the API documentation, I use **npm** and some modules.
 
+> NB: Use Node 8 for aglio !
+
     npm install
 
     npm run build-assets
