@@ -18,6 +18,10 @@
       file:
         path: "{{ shared_path }}"
         state: directory
+    - name: Ensure shared logs folder is present
+      file:
+        path: "{{ shared_path }}/logs"
+        state: directory
     - name: Create new folder
       file:
         dest={{ release_path }}
@@ -65,7 +69,7 @@
         name: "Tuneefy: Update stats and clean expired intents"
         minute: "14"
         user: "{{ansible_user}}"
-        job: "/usr/bin/php {{current_path}}/src/tuneefy/cron_runner.php >> {{current_path}}/var/logs/cron-job.log >> /dev/null 2>&1"
+        job: "/usr/bin/php {{current_path}}/src/tuneefy/cron_runner.php >> {{shared_path}}/logs/cron-job.log >> /dev/null 2>&1"
         cron_file: tuneefy_clean-expired-intents
     - name: Update symlink
       file:
