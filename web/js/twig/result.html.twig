@@ -63,6 +63,6 @@
           {% endfor %}
         </div>
     </div>
-    <a data-href="{{ linkIntent|replace({'%intent%': intent}) }}" title="{{ shareTip }}" class="btn tShare sharePage" target="_top">{{ share }}</a>
+    <a data-href="{{ linkIntent|replace({'%intent%': intent}) }}" title="{{ shareTip|escape('html_attr') }}" class="btn tShare sharePage" target="_top">{{ share }}</a>
 </li>
 {% endspaceless %}
