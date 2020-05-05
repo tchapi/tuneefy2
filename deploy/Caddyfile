@@ -1,4 +1,8 @@
 tuneefy.com, www.tuneefy.com {
+    @redirwww {
+        host www.tuneefy.com
+    }
+    redir @redirwww https://tuneefy.com{uri} permanent
     # cf. https://caddy.community/t/caddy2-symfony/6978
     root * /path/to/project/current/web
     php_fastcgi 127.0.0.1:8000 # change to accomodate your php-fpm settings
