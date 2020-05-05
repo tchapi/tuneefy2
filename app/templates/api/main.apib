@@ -614,9 +614,9 @@ GET aggregate/track?q=test&include=deezer,spotify,qobuz
 
 If an unknown platform tag is passed, it is ignored. If the `include` parameter is empty or not given, the API will agreggate the results of all available platforms that are capable of searching this musical entity type.
 
-**Merging aggressively (tracks only)**
+**Merging aggressively**
 
-The `aggressive` parameter allows to merge tracks without taking the album name into account. This works for a majority of scenarios since it's quite rare that an artist released two tracks with exactly the same name, but it can sometimes confuse **live** or **edit** versions, for instance.
+The `aggressive` parameter allows to merge tracks without taking the album name into account, or to merge albums without taking the artist name into account. This works for a majority of scenarios since it's quite rare that an artist released two tracks with exactly the same name for instance, but it can sometimes confuse **live** or **edit** versions, for instance.
 
 Acoustic versions, covers or remix should be correctly differentiated even if you merge aggressively.
 
@@ -624,7 +624,7 @@ Acoustic versions, covers or remix should be correctly differentiated even if yo
     + type: `track` (required, string) ... The type of musical entity to search for. Can be **track** or **album** for now.
     + q: `karma+police` (required, string) ... The text to search for
     + mode: `lazy` (optional, string) ... The lookup mode, defaults to `lazy`
-    + aggressive: `false` (optional, boolean) ... Whether to merge tracks without looking at the album name. Defaults to `false`
+    + aggressive: `false` (optional, boolean) ... Whether to merge tracks without looking at the album name or album without looking at the artist name. Defaults to `false`
     + include: `deezer,spotify,qobuz` (optional, string) ... A list of comma separated platform tags from which to aggregate results.
 
 + Request Example
