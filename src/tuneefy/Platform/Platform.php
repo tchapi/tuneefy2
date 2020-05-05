@@ -288,6 +288,7 @@ abstract class Platform implements GeneralPlatformInterface
             CURLOPT_FOLLOWLOCATION => 1, // Some APIs redirect to content with a 3XX code
             CURLOPT_CONNECTTIMEOUT => 2000,
             CURLOPT_TIMEOUT_MS => 2000,
+            CURLOPT_ENCODING => '',
             CURLOPT_RESOLVE => static::RESOLVED_IPS,
         ]);
 
