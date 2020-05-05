@@ -123,9 +123,11 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
 
         $entities = $response->data->results->result;
 
+        $entitiesCount = is_array($entities) ? count($entities ?? []) : 1;
+
         // We actually don't pass the limit to the fetch()
         // request since it's not really useful, in fact
-        $length = min(count($entities ?? []), $limit ? $limit : Platform::LIMIT);
+        $length = min($entitiesCount, $limit ? $limit : Platform::LIMIT);
 
         $musical_entities = [];
 
