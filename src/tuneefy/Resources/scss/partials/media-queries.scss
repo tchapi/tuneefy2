@@ -362,6 +362,7 @@
     padding-top: 6px;
     border-bottom: 1px solid #1E1E1E;
     border-top: 1px solid #303030;
+    display: block;
   }
 
   li.tResult:last-child{
@@ -405,7 +406,6 @@
     width: auto;
     white-space: nowrap;
     display: block;
-    float: none;
     height: auto;
   }
 
@@ -416,13 +416,12 @@
 
   .tLinks{
     float: right;
-    width: 109px;
+    width: 110px;
     overflow: hidden;
-    margin-top: -68px;
-    zoom: 0.7;
+    margin-top: -38px;
     margin-right: 2px;
     text-align: right;
-    height: 102px;
+    height: 68px;
   }
 
   a.tShare{

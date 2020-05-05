@@ -620,9 +620,9 @@ h2.infoTitle, h2.pickTitle{
   border-top: 1px solid #202020;
   border-radius: 4px 4px 0 0;
   font-weight: bold;
+  display: flex;
 }
 .tHeader_t, .tHeader_a, .tHeader_c, .tHeader_p, .tHeader_af, .tHeader_bf, .tHeader_tA, .tHeader_aA{
-  display: inline-block;
   height: 50px;
   border-left: 1px solid #2F2F2F;
   border-right: 1px solid #050505;
@@ -661,6 +661,7 @@ h2.infoTitle, h2.pickTitle{
   padding: 10px;
   border-bottom: 1px solid #1E1E1E;
   border-top: 1px solid #303030;
+  display: flex;
 }
 li.tResult:last-child{
   border-radius: 0 0 4px 4px;
@@ -671,7 +672,6 @@ li.tResult:last-child{
 
 .tImage{
   position: relative;
-  float: left;
   width: 73px;
   height: 73px;
   margin-right: 13px;
@@ -683,7 +683,6 @@ li.tResult:last-child{
 }
 
 .tTitle, .tAlbumA {
-  float: left;
   width: 260px;
   height: 80px;
   margin-left: 10px;
@@ -692,7 +691,6 @@ li.tResult:last-child{
 }
 
 .tArtist, .tAlbum, .tArtistA{
-  float: left;
   width: 121px;
   margin-left: 10px;
   font-size: .75em;
@@ -708,6 +706,9 @@ li.tResult:last-child{
   display: table-cell;
   vertical-align: middle;
 }
+.tLinks .wrapper {
+  vertical-align: top;
+}
 
 .tFeat{
   color:#888;
@@ -716,15 +717,14 @@ li.tResult:last-child{
 }
 
 .tLinks{
-  float: left;
   margin: 0 0 0 10px;
   width: 220px;
-  height: 80px;
+  height: 67px;
+  overflow: hidden;
 }
 
 .tShare{
-  float: right;
-  margin: 26px 0 0 0;
+  margin: auto;
 }
 
 /* PAGER */
