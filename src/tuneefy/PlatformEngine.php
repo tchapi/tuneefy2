@@ -4,6 +4,7 @@ namespace tuneefy;
 
 use tuneefy\Controller\ApiController;
 use tuneefy\Platform\Platform;
+use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\Platforms\AmazonMusicPlatform;
 use tuneefy\Platform\Platforms\DeezerPlatform;
 use tuneefy\Platform\Platforms\GooglePlayMusicPlatform;
@@ -127,6 +128,17 @@ class PlatformEngine
 
     public function search(Platform $platform, int $type, string $query, int $limit, int $mode): array
     {
+        try {
+            $lookup = $this->lookup($query, $mode);
+
+            if (array_key_exists('result', $lookup) && $lookup['result'] instanceof PlatformResult) {
+                $metadata = $lookup['result']->getMetadata();
+                $query = implode(' ', $metadata['query_words']);
+            }
+        } catch (PlatformException $e) {
+            // Do nothing ?
+        }
+
         if (($platform->isCapableOfSearchingTracks() && Platform::SEARCH_TRACK === $type)
          || ($platform->isCapableOfSearchingAlbums() && Platform::SEARCH_ALBUM === $type)) {
             $results = Platform::search($platform, $type, $query, $limit, $mode);
@@ -142,6 +154,17 @@ class PlatformEngine
 
     public function aggregate(array $platforms, int $type, string $query, int $limit, int $mode, bool $aggressive): array
     {
+        try {
+            $lookup = $this->lookup($query, $mode);
+
+            if (array_key_exists('result', $lookup) && $lookup['result'] instanceof PlatformResult) {
+                $metadata = $lookup['result']->getMetadata();
+                $query = implode(' ', $metadata['query_words']);
+            }
+        } catch (PlatformException $e) {
+            // Do nothing ?
+        }
+
         $result = [];
 
         $filtered_platforms = array_filter($platforms, function ($p) use ($type) {
