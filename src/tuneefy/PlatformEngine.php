@@ -4,6 +4,7 @@ namespace tuneefy;
 
 use tuneefy\Controller\ApiController;
 use tuneefy\Platform\Platform;
+use tuneefy\Platform\PlatformException;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\Platforms\AmazonMusicPlatform;
 use tuneefy\Platform\Platforms\DeezerPlatform;
