@@ -65,7 +65,7 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
     private function getPermalinkFromASIN(string $asin): string
     {
         /// Returns the global amazon.com link, by default...
-        return sprintf('http://www.amazon.com/gp/product/%s', $asin);
+        return sprintf('https://www.amazon.com/gp/product/%s', $asin);
     }
 
     public function expandPermalink(string $permalink, int $mode): PlatformResult

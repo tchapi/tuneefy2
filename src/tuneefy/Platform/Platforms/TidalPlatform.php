@@ -13,7 +13,7 @@ use tuneefy\Utils\Utils;
 class TidalPlatform extends Platform implements WebStreamingPlatformInterface
 {
     const NAME = 'Tidal';
-    const HOMEPAGE = 'http://tidal.com/';
+    const HOMEPAGE = 'https://tidal.com/';
     const TAG = 'tidal';
     const COLOR = '00FFFF';
 
@@ -66,7 +66,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
 
     private function getCoverUrlFromCoverHash(?string $cover_hash = ''): string
     {
-        return sprintf('http://resources.wimpmusic.com/images/%s/320x320.jpg', str_replace('-', '/', $cover_hash));
+        return sprintf('https://resources.wimpmusic.com/images/%s/320x320.jpg', str_replace('-', '/', $cover_hash));
     }
 
     public function expandPermalink(string $permalink, int $mode): PlatformResult
@@ -142,10 +142,10 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
 
             if (Platform::SEARCH_TRACK === $type) {
                 $musical_entity = new TrackEntity($current_item->title, new AlbumEntity($current_item->album->title, $current_item->artist->name, $this->getCoverUrlFromCoverHash($current_item->album->cover)));
-                $musical_entity->addLink(static::TAG, $current_item->url);
+                $musical_entity->addLink(static::TAG, str_replace('http://', 'https://', $current_item->url));
             } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
                 $musical_entity = new AlbumEntity($current_item->title, $current_item->artist->name, $this->getCoverUrlFromCoverHash($current_item->cover));
-                $musical_entity->addLink(static::TAG, $current_item->url);
+                $musical_entity->addLink(static::TAG, str_replace('http://', 'https://', $current_item->url));
             }
 
             // Tidal has a $current_item->popularity key, but right now, it's kind of ... empty.

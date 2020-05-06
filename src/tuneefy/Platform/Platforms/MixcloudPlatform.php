@@ -16,7 +16,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
     const TAG = 'mixcloud';
     const COLOR = 'afd8db';
 
-    const API_ENDPOINT = 'http://api.mixcloud.com/';
+    const API_ENDPOINT = 'https://api.mixcloud.com/';
     const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [

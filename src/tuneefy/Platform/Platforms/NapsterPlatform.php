@@ -12,11 +12,11 @@ use tuneefy\Utils\Utils;
 class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
 {
     const NAME = 'Napster';
-    const HOMEPAGE = 'http://napster.com';
+    const HOMEPAGE = 'https://napster.com';
     const TAG = 'napster';
     const COLOR = '0682AA';
 
-    const API_ENDPOINT = 'http://api.napster.com/v2.1/';
+    const API_ENDPOINT = 'https://api.napster.com/v2.2/';
     const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
@@ -31,8 +31,8 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_TRACK => null,
         Platform::LOOKUP_ALBUM => null,
         Platform::LOOKUP_ARTIST => null,
-        Platform::SEARCH_TRACK => 'q',
-        Platform::SEARCH_ALBUM => 'q',
+        Platform::SEARCH_TRACK => 'query',
+        Platform::SEARCH_ALBUM => 'query',
         //Platform::SEARCH_ARTIST => 'q',
     ];
     protected $options = [
@@ -49,8 +49,8 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
     const REGEX_NAPSTER_ALBUM = "/\/artist\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/album\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
     const REGEX_NAPSTER_TRACK = "/\/artist\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/album\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")\/track\/(?P<track_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
-    const PICTURE_PATH = 'http://direct.rhapsody.com/imageserver/v2/albums/%s/images/400x400.jpg';
-    const WEB_LINK = 'http://napster.com/%s';
+    const PICTURE_PATH = 'https://direct.rhapsody.com/imageserver/v2/albums/%s/images/400x400.jpg';
+    const WEB_LINK = 'https://napster.com/%s';
 
     protected function addContextOptions(array $data): array
     {
@@ -94,15 +94,15 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
 
     public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
-        $results = $response->data;
+        $results = $response->data->search->data->{$this->search_types[$type]};
 
-        $length = min(count($results->data), $limit ? $limit : Platform::LIMIT);
+        $length = min(count($results), $limit ? $limit : Platform::LIMIT);
 
         $musical_entities = [];
 
         // Normalizing each track found
         for ($i = 0; $i < $length; ++$i) {
-            $current_item = $results->data[$i];
+            $current_item = $results[$i];
 
             if (Platform::SEARCH_TRACK === $type) {
                 $picture = sprintf(self::PICTURE_PATH, $current_item->albumId);

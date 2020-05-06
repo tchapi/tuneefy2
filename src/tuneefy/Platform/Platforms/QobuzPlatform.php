@@ -13,11 +13,11 @@ use tuneefy\Utils\Utils;
 class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
 {
     const NAME = 'Qobuz';
-    const HOMEPAGE = 'http://www.qobuz.com/';
+    const HOMEPAGE = 'https://www.qobuz.com/';
     const TAG = 'qobuz';
     const COLOR = '2C8FAE';
 
-    const API_ENDPOINT = 'http://www.qobuz.com/api.json/0.2/';
+    const API_ENDPOINT = 'https://www.qobuz.com/api.json/0.2/';
     const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
@@ -80,12 +80,12 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
 
     private function getPlayerUrlFromTrackId(string $id): string
     {
-        return sprintf('http://open.qobuz.com/track/%s', $id);
+        return sprintf('https://open.qobuz.com/track/%s', $id);
     }
 
     private function getPlayerUrlFromAlbumId(string $id): string
     {
-        return sprintf('http://open.qobuz.com/album/%s', $id);
+        return sprintf('https://open.qobuz.com/album/%s', $id);
     }
 
     public function expandPermalink(string $permalink, int $mode): PlatformResult
