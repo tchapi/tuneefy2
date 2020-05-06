@@ -315,6 +315,7 @@ abstract class Platform implements GeneralPlatformInterface
                 $response = Utils::flattenMetaXMLNodes($response);
                 $converter = new XmlToJsonConverter();
                 try {
+                    // libxml_use_internal_errors(true); // We need to set our own error handler in this case TODO
                     $xml = new \SimpleXMLElement($response);
                     $response = $converter->convert($xml);
                 } catch (\Exception $e) {
