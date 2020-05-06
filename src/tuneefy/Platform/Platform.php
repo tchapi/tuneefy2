@@ -28,6 +28,8 @@ abstract class Platform implements GeneralPlatformInterface
     const SEARCH_ALBUM = 4;
     const SEARCH_ARTIST = 5;
 
+    const DEFAULT_COUNTRY_CODE = 'FR';
+
     // The 'mode' indicates whether
     // we're going to eagerly fetch data
     // when it's missing from the platform
@@ -226,7 +228,7 @@ abstract class Platform implements GeneralPlatformInterface
     // This function, or its children class' counterpart,
     // is called in the fetch method to give the child
     // class a chance to add other contextual options
-    protected function addContextOptions(array $data): array
+    protected function addContextOptions(array $data, string $countryCode = null): array
     {
         return $data;
     }
@@ -254,7 +256,7 @@ abstract class Platform implements GeneralPlatformInterface
         return $result;
     }
 
-    private function prepareCall(int $type, string $query)
+    private function prepareCall(int $type, string $query, string $countryCode = null)
     {
         $url = $this->endpoints[$type];
 
@@ -268,7 +270,7 @@ abstract class Platform implements GeneralPlatformInterface
         // Gives the child class a chance to add options and headers that are
         // contextual to the request, eg. for Xbox, a token, or
         // just simply the API key ...
-        $data = $this->addContextOptions($data);
+        $data = $this->addContextOptions($data, $countryCode);
         $headers = $this->addContextHeaders();
 
         if (static::NEEDS_OAUTH) {
@@ -333,18 +335,18 @@ abstract class Platform implements GeneralPlatformInterface
         }
     }
 
-    protected static function fetch(Platform $platform, int $type, string $query)
+    protected static function fetch(Platform $platform, int $type, string $query, string $countryCode = null)
     {
-        $ch = $platform->prepareCall($type, $query);
+        $ch = $platform->prepareCall($type, $query, $countryCode);
         $response = curl_exec($ch);
         curl_close($ch);
 
         return $platform->postProcessResult($response);
     }
 
-    public static function search(Platform $platform, int $type, string $query, int $limit, int $mode)
+    public static function search(Platform $platform, int $type, string $query, int $limit, int $mode, string $countryCode = null)
     {
-        $response = self::fetch($platform, $type, $query);
+        $response = self::fetch($platform, $type, $query, $countryCode);
 
         if (null === $response) {
             throw new PlatformException($platform);
@@ -353,14 +355,14 @@ abstract class Platform implements GeneralPlatformInterface
         return $platform->extractSearchResults($response, $type, $query, $limit, $mode);
     }
 
-    public static function aggregate(array $platforms, int $type, string $query, int $limit, int $mode): array
+    public static function aggregate(array $platforms, int $type, string $query, int $limit, int $mode, string $countryCode = null): array
     {
         // Create the multiple cURL handle
         $mh = curl_multi_init();
         $handles = [];
 
         foreach ($platforms as $platform) {
-            $ch = $platform->prepareCall($type, $query);
+            $ch = $platform->prepareCall($type, $query, $countryCode);
             curl_multi_add_handle($mh, $ch);
             $handles[] = [
                 'handle' => $ch,

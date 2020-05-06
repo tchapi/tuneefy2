@@ -52,7 +52,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         return false !== strpos($permalink, 'soundcloud.');
     }
 
-    protected function addContextOptions(array $data): array
+    protected function addContextOptions(array $data, string $countryCode = null): array
     {
         $data['client_id'] = $this->key;
 

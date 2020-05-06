@@ -55,7 +55,7 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
         return false !== strpos($permalink, 'amazon.');
     }
 
-    protected function addContextOptions(array $data): array
+    protected function addContextOptions(array $data, string $countryCode = null): array
     {
         $data['clientid'] = $this->key;
 

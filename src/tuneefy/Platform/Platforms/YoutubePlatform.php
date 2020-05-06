@@ -53,9 +53,10 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         return false !== strpos($permalink, 'youtube.');
     }
 
-    protected function addContextOptions(array $data): array
+    protected function addContextOptions(array $data, string $countryCode = null): array
     {
         $data['key'] = $this->key;
+        $data['regionCode'] = strtolower($countryCode ?: self::DEFAULT_COUNTRY_CODE);
 
         return $data;
     }

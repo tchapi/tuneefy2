@@ -37,11 +37,11 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
        // Platform::SEARCH_ARTIST => "query"
     ];
     protected $options = [
-        Platform::LOOKUP_TRACK => ['countryCode' => 'FR'],
-        Platform::LOOKUP_ALBUM => ['countryCode' => 'FR'],
-        Platform::LOOKUP_ARTIST => ['countryCode' => 'FR'],
-        Platform::SEARCH_TRACK => ['countryCode' => 'FR', 'limit' => Platform::LIMIT],
-        Platform::SEARCH_ALBUM => ['countryCode' => 'FR', 'limit' => Platform::LIMIT],
+        Platform::LOOKUP_TRACK => null,
+        Platform::LOOKUP_ALBUM => null,
+        Platform::LOOKUP_ARTIST => null,
+        Platform::SEARCH_TRACK => ['limit' => Platform::LIMIT],
+        Platform::SEARCH_ALBUM => ['limit' => Platform::LIMIT],
        // Platform::SEARCH_ARTIST => Map { "countryCode" => "FR", "limit" => Platform::LIMIT }
     ];
 
@@ -57,9 +57,10 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         return false !== strpos($permalink, 'tidal.') || false !== strpos($permalink, 'tidalhifi.');
     }
 
-    protected function addContextOptions(array $data): array
+    protected function addContextOptions(array $data, string $countryCode = null): array
     {
         $data['token'] = $this->key;
+        $data['countryCode'] = $countryCode ?: self::DEFAULT_COUNTRY_CODE;
 
         return $data;
     }

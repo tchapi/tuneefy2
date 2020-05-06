@@ -52,9 +52,15 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
     const PICTURE_PATH = 'https://direct.rhapsody.com/imageserver/v2/albums/%s/images/400x400.jpg';
     const WEB_LINK = 'https://napster.com/%s';
 
-    protected function addContextOptions(array $data): array
+    private $search_types = [
+        Platform::SEARCH_TRACK => 'tracks',
+        Platform::SEARCH_ALBUM => 'albums',
+    ];
+
+    protected function addContextOptions(array $data, string $countryCode = null): array
     {
         $data['apikey'] = $this->key;
+        $data['catalog'] = strtoupper($countryCode ?: self::DEFAULT_COUNTRY_CODE);
 
         return $data;
     }

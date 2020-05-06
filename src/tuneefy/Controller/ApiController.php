@@ -160,6 +160,7 @@ class ApiController
         $this->container['api_method'] = DatabaseHandler::METHOD_SEARCH;
         $this->engine->setCurrentToken($this->container['token']);
 
+        $countryCode = $request->getQueryParam('countryCode');
         $query = $request->getQueryParam('q');
         $limit = $request->getQueryParam('limit') ? max(0, min(intval($request->getQueryParam('limit')), Platform::LIMIT * 2)) : Platform::LIMIT;
 
@@ -186,7 +187,7 @@ class ApiController
         }
 
         try {
-            $result = $this->engine->search($platform, $real_type, $query, $limit, $real_mode);
+            $result = $this->engine->search($platform, $real_type, $query, $limit, $real_mode, $countryCode);
         } catch (PlatformException $e) {
             $result = false;
         }
@@ -218,6 +219,7 @@ class ApiController
         $this->container['api_method'] = DatabaseHandler::METHOD_AGGREGATE;
         $this->engine->setCurrentToken($this->container['token']);
 
+        $countryCode = $request->getQueryParam('countryCode');
         $query = $request->getQueryParam('q');
         $limit = $request->getQueryParam('limit') ? max(0, min(intval($request->getQueryParam('limit')), Platform::LIMIT * 2)) : Platform::LIMIT;
 
@@ -245,7 +247,7 @@ class ApiController
         }
 
         try {
-            $result = $this->engine->aggregate($platforms, $real_type, $query, $limit, $real_mode, $aggressive);
+            $result = $this->engine->aggregate($platforms, $real_type, $query, $limit, $real_mode, $aggressive, $countryCode);
         } catch (PlatformException $e) {
             $result = false;
         }

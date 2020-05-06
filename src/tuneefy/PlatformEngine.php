@@ -127,7 +127,7 @@ class PlatformEngine
         return ['result' => $platform->expandPermalink($permalink, $mode)->store($this->token)];
     }
 
-    public function search(Platform $platform, int $type, string $query, int $limit, int $mode): array
+    public function search(Platform $platform, int $type, string $query, int $limit, int $mode, string $countryCode = null): array
     {
         try {
             $lookup = $this->lookup($query, $mode);
@@ -142,7 +142,7 @@ class PlatformEngine
 
         if (($platform->isCapableOfSearchingTracks() && Platform::SEARCH_TRACK === $type)
          || ($platform->isCapableOfSearchingAlbums() && Platform::SEARCH_ALBUM === $type)) {
-            $results = Platform::search($platform, $type, $query, $limit, $mode);
+            $results = Platform::search($platform, $type, $query, $limit, $mode, $countryCode);
             array_map(function ($e) { return $e->store($this->token); }, $results);
 
             return ['results' => $results];
@@ -153,7 +153,7 @@ class PlatformEngine
         }
     }
 
-    public function aggregate(array $platforms, int $type, string $query, int $limit, int $mode, bool $aggressive): array
+    public function aggregate(array $platforms, int $type, string $query, int $limit, int $mode, bool $aggressive, string $countryCode = null): array
     {
         try {
             $lookup = $this->lookup($query, $mode);
@@ -173,7 +173,7 @@ class PlatformEngine
              || ($p->isCapableOfSearchingAlbums() && Platform::SEARCH_ALBUM === $type);
         });
 
-        $resultArray = Platform::aggregate($filtered_platforms, $type, $query, Platform::AGGREGATE_LIMIT, $mode);
+        $resultArray = Platform::aggregate($filtered_platforms, $type, $query, Platform::AGGREGATE_LIMIT, $mode, $countryCode);
 
         return ['results' => $this->mergeResults($resultArray['results'], $aggressive, $limit), 'errors' => $resultArray['errors']];
     }

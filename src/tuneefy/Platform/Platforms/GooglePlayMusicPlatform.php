@@ -115,6 +115,13 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         echo 'Your master token is : '.$token;
     }
 
+    protected function addContextOptions(array $data, string $countryCode = null): array
+    {
+        $data['tier'] = strtolower($countryCode ?: self::DEFAULT_COUNTRY_CODE);
+
+        return $data;
+    }
+
     protected function addContextHeaders(): array
     {
         // From https://github.com/jamon/playmusic/blob/master/play.js
