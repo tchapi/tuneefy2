@@ -17,7 +17,8 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
     const TAG = 'googleplay';
     const COLOR = 'ef6c00';
 
-    const API_ENDPOINT = 'https://www.googleapis.com/sj/v1.11/';
+    // https://github.com/simon-weber/gmusicapi
+    const API_ENDPOINT = 'https://mclients.googleapis.com/sj/v2.5/';
     const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
@@ -40,8 +41,8 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         Platform::LOOKUP_TRACK => ['alt' => 'json'],
         Platform::LOOKUP_ALBUM => ['alt' => 'json'],
         Platform::LOOKUP_ARTIST => ['alt' => 'json'],
-        Platform::SEARCH_TRACK => ['ct' => '1', 'max-results' => Platform::LIMIT],
-        Platform::SEARCH_ALBUM => ['ct' => '3', 'max-results' => Platform::LIMIT],
+        Platform::SEARCH_TRACK => ['ct' => '1', 'dv' => 0, 'hl' => 'en_US', 'max-results' => Platform::LIMIT],
+        Platform::SEARCH_ALBUM => ['ct' => '3', 'dv' => 0, 'hl' => 'en_US', 'max-results' => Platform::LIMIT],
        // Platform::SEARCH_ARTIST => Map { "contentType" => "json", "filters" => "artists", "maxItems" => Platform::LIMIT }
     ];
 
