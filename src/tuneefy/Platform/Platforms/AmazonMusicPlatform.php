@@ -17,6 +17,7 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
     const TAG = 'amazon';
     const COLOR = 'E47911';
 
+    // https://github.com/mattdennewitz/python-amazon-mp3-api
     const API_ENDPOINT = 'https://www.amazon.com/gp/dmusic/aws/';
     const API_METHOD = Platform::METHOD_GET;
     const RETURN_CONTENT_TYPE = Platform::RETURN_XML;
