@@ -132,7 +132,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
     {
         // Catch errors
         if (property_exists($response->data, 'error')) {
-            throw new PlatformException($this, $response->data->error->errors[0]->message);
+            return [];
         }
 
         $entities = $response->data->items;
