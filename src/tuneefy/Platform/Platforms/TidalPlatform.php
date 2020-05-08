@@ -151,7 +151,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
             }
 
             // Tidal has a $current_item->popularity key, but right now, it's kind of ... empty.
-            $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity);
+            $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i), 'externalIds' => [static::TAG => $current_item->id]], $musical_entity);
         }
 
         return $musical_entities;

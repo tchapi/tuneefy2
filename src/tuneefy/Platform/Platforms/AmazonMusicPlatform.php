@@ -139,20 +139,21 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
             } else {
                 $entity = $entities[$i];
             }
-
             if (Platform::SEARCH_TRACK === $type) {
                 $current_item = $entity->track;
 
                 $musical_entity = new TrackEntity($current_item->title, new AlbumEntity($current_item->album, $current_item->creator, $current_item->imageMedium));
                 $musical_entity->addLink(static::TAG, $this->getPermalinkFromASIN($current_item->ASIN));
+                $externalIds = [static::TAG => $current_item->ASIN];
             } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
                 $current_item = $entity->album;
 
                 $musical_entity = new AlbumEntity($current_item->title, $current_item->creator, $current_item->imageMedium);
                 $musical_entity->addLink(static::TAG, $this->getPermalinkFromASIN($current_item->ASIN));
+                $externalIds = [static::TAG => $current_item->ASIN];
             }
 
-            $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity);
+            $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i), 'externalIds' => $externalIds], $musical_entity);
         }
 
         return $musical_entities;

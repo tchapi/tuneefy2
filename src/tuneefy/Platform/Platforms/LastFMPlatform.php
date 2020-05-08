@@ -191,7 +191,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
                 $musical_entity->addLink(static::TAG, $current_item->url);
             }
 
-            $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity);
+            $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i), 'externalIds' => [static::TAG => $current_item->mbid]], $musical_entity);
         }
 
         return $musical_entities;

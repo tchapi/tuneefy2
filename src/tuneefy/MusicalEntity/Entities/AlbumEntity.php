@@ -152,8 +152,8 @@ class AlbumEntity extends MusicalEntity
                 $a->addLink($platform, $link);
             }
         }
-
         $c->setLinks($a->getLinks());
+
         $c->setExtraInfo([
             'is_cover' => $a->isCover() || $b->isCover(),
             'is_remix' => $a->isRemix() || $b->isRemix(),

@@ -121,7 +121,7 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
                 $musical_entity->addLink(static::TAG, sprintf(self::WEB_LINK, $current_item->shortcut));
             }
 
-            $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity);
+            $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i), 'externalIds' => [static::TAG => $current_item->id]], $musical_entity);
         }
 
         return $musical_entities;

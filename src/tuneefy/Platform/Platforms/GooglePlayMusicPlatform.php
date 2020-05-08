@@ -263,12 +263,14 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
             if (Platform::SEARCH_TRACK === $type) {
                 $musical_entity = new TrackEntity($current_item->track->title, new AlbumEntity($current_item->track->album, $current_item->track->artist, (isset($current_item->track->albumArtRef) ? $current_item->track->albumArtRef[0]->url : null)));
                 $musical_entity->addLink(static::TAG, $this->createAlbumOrTrackLink($current_item->track->albumId, $current_item->track->storeId));
+                $externalIds = [static::TAG => $current_item->track->storeId];
             } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
                 $musical_entity = new AlbumEntity($current_item->album->name, $current_item->album->artist, (isset($current_item->album->albumArtRef) ? $current_item->album->albumArtRef : null));
                 $musical_entity->addLink(static::TAG, $this->createAlbumOrTrackLink($current_item->album->albumId));
-          }
+                $externalIds = [static::TAG => $current_item->album->albumId];
+            }
 
-            $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity);
+            $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i), 'externalIds' => $externalIds], $musical_entity);
         }
 
         return $musical_entities;

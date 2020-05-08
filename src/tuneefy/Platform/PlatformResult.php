@@ -73,8 +73,8 @@ class PlatformResult
                 $this->metadata['score'] = floatval($this->metadata['score']) + floatval($thatMetadata['score']);
             }
 
-            // Merge other metadata ?
-            // TODO
+            // Merge other metadata
+            $this->metadata['externalIds'] = array_merge($this->metadata['externalIds'], $thatMetadata['externalIds']);
 
             if (array_key_exists('merges', $this->metadata)) {
                 $this->metadata['merges'] = $this->metadata['merges'] + 1;

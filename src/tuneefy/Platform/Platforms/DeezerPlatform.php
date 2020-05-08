@@ -155,7 +155,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
                 $musical_entity->addLink(static::TAG, $current_item->link);
             }
 
-            $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity);
+            $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i), 'externalIds' => [static::TAG => $current_item->id]], $musical_entity);
         }
 
         return $musical_entities;

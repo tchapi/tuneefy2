@@ -124,7 +124,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
                 $musical_entity = new TrackEntity($current_item->title, new AlbumEntity('', $current_item->user->username, $current_item->artwork_url ? $current_item->artwork_url : ''));
                 $musical_entity->addLink(static::TAG, $current_item->permalink_url);
 
-                $musical_entities[] = new PlatformResult(['score' => $current_item->playback_count / $max_playback_count], $musical_entity);
+                $musical_entities[] = new PlatformResult(['score' => $current_item->playback_count / $max_playback_count, 'externalIds' => [static::TAG => $current_item->id]], $musical_entity);
             }
         }
 

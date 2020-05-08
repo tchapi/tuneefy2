@@ -157,7 +157,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
 
                 $musical_entity = new TrackEntity($title, new AlbumEntity('', $artist, $current_item->snippet->thumbnails->medium->url));
                 $musical_entity->addLink(static::TAG, $this->getPermalinkFromTrackId($current_item->id->videoId));
-                $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i)], $musical_entity);
+                $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i), 'externalIds' => [static::TAG => $current_item->id->videoId]], $musical_entity);
             }
         }
 
