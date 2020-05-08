@@ -16,6 +16,7 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
     const TAG = 'napster';
     const COLOR = '0682AA';
 
+    // https://developer.napster.com/api/v2.2#metadata-apis
     const API_ENDPOINT = 'https://api.napster.com/v2.2/';
     const API_METHOD = Platform::METHOD_GET;
 

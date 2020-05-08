@@ -17,6 +17,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
     const TAG = 'youtube';
     const COLOR = 'c8120b';
 
+    // https://developers.google.com/youtube/v3/docs/search
     const API_ENDPOINT = 'https://www.googleapis.com/youtube/v3/';
     const API_METHOD = Platform::METHOD_GET;
 

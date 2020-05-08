@@ -17,7 +17,8 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
     const TAG = 'tidal';
     const COLOR = '00FFFF';
 
-    const API_ENDPOINT = 'https://listen.tidal.com/v1/';
+    // https://github.com/spencercharest/tidal-api/blob/master/src/index.js
+    const API_ENDPOINT = 'https://api.tidal.com/v1/';
     const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [

@@ -16,6 +16,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
     const TAG = 'soundcloud';
     const COLOR = 'ff6600';
 
+    // https://developers.soundcloud.com/docs/api/reference#tracks
     const API_ENDPOINT = 'https://api.soundcloud.com/';
     const API_METHOD = Platform::METHOD_GET;
 
