@@ -109,21 +109,49 @@ class DatabaseHandler
         */
 
         $statementSelect = $this->connection->prepare('SELECT `id`, `object`, `signature` FROM `items` WHERE `intent` = :intent');
+        $statementSelectIdenticals = $this->connection->prepare('SELECT `id`, `object` FROM `items` WHERE `signature` = :signature AND `expires_at` IS NULL AND `intent` IS NULL LIMIT 1');
         $statementUpdate = $this->connection->prepare('UPDATE `items` SET `expires_at` = NULL, `intent` = NULL WHERE `intent` = :intent');
+        $statementDelete = $this->connection->prepare('DELETE FROM `items` WHERE `intent` = :intent');
 
-        $this->connection->beginTransaction();
         $resSelect = $statementSelect->execute([':intent' => $intent]);
-        $resUpdate = $statementUpdate->execute([':intent' => $intent]);
-        $res = $this->connection->commit();
 
-        if (false === $res || false === $resSelect || false === $resUpdate) {
-            throw new \Exception('Error making intent : '.$intent.' permanent '.$statementSelect->errorInfo()[2].' '.$statementUpdate->errorInfo()[2]);
+        if (false === $resSelect) {
+            throw new \Exception('Error getting intent : '.$intent.' - '.$statementSelect->errorInfo()[2]);
         }
 
         $row = $statementSelect->fetch(\PDO::FETCH_ASSOC);
 
         if (null == $row) {
             throw new \Exception('NO_OR_EXPIRED_INTENT');
+        }
+
+        $resSelectIdenticals = $statementSelectIdenticals->execute([':signature' => $row['signature']]);
+
+        if (false === $resSelectIdenticals) {
+            throw new \Exception('Error getting identical intents : '.$intent.' - '.$statementSelectIdenticals->errorInfo()[2]);
+        }
+
+        $rowIdenticals = $statementSelectIdenticals->fetch(\PDO::FETCH_ASSOC);
+
+        // If we have already tracks/albums of the same signature
+        if (false !== $rowIdenticals && count($rowIdenticals) > 0) {
+            $resultIdentical = unserialize($rowIdenticals['object'], ['allowed_classes' => [TrackEntity::class, AlbumEntity::class]]);
+
+            if (false === $resultIdentical || !($resultIdentical instanceof MusicalEntityInterface)) {
+                throw new \Exception('SERIALIZATION_ERROR');
+            }
+
+            // Delete the intent — we have found something identical
+            $statementDelete->execute([':intent' => $intent]);
+
+            return [$resultIdentical->getType(), Utils::toUId($rowIdenticals['id'])];
+        }
+
+        // No identical intent in database, "fix" this one
+        $resUpdate = $statementUpdate->execute([':intent' => $intent]);
+
+        if (false === $resUpdate) {
+            throw new \Exception('Error making intent : '.$intent.' permanent '.$statementUpdate->errorInfo()[2]);
         }
 
         if ($row['signature'] !== hash_hmac('md5', $row['object'], $this->parameters['intents']['secret'])) {

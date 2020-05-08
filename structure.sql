@@ -15,7 +15,8 @@ CREATE TABLE `items` (
   KEY `track` (`track`),
   KEY `album` (`album`),
   KEY `artist` (`artist`),
-  KEY `intent` (`intent`)
+  KEY `intent` (`intent`),
+  KEY `signature` (`signature`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `stats_viewing` (
