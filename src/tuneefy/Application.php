@@ -198,7 +198,6 @@ class Application
 
         /* The API group, behind an (optional) OAuth2 Server */
         $api = $this->slimApp->group('/v2', function () {
-            $this->options('/[{anything:.*}]', ApiController::class.':options');
             $this->get('/', ApiController::class.':redirect');
             $this->get('/platforms', ApiController::class.':getAllPlatforms');
             $this->get('/platform/{tag}', ApiController::class.':getPlatform');

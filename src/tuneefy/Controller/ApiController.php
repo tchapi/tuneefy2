@@ -54,11 +54,6 @@ class ApiController
         $this->container = $container;
     }
 
-    public function options($request, $response, $args)
-    {
-        return $response->withStatus(200);
-    }
-
     public function redirect($request, $response, $args)
     {
         $route = $this->container->get('router')->pathFor('api');
