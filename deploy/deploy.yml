@@ -82,6 +82,8 @@
       args:
         warn: false
     - name: Restart PHP-FPM
+      become: yes
+      become_user: root
       service:
         name: "php7.4-fpm"
         state: restarted
