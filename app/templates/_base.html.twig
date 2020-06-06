@@ -100,7 +100,7 @@
   <script type="text/javascript">
     var $DOMAIN = "{{ params.website.cookie_domain }}";
   </script>
-  {% if params.statistics.ga_tracker_id > 0 %}
+  {% if params.statistics.ga_tracker_id %}
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', '{{ params.statistics.ga_tracker_id }}']);
