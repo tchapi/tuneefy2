@@ -185,7 +185,7 @@ mail:
   error: "Il y a eu un petit problème lors de l'envoi du mail.<br />Réessayez s'il vous plaît."
 
 os:
-  title_long: "« http://tuneefy.com/t/oxtcm »"
+  title_long: "« https://tuneefy.com/s/track/oxtcm »"
   paragraph_1_important: "Tuneefy est un projet open-source. C'est (<em>et ça restera</em>) gratuit, sans publicité, et pas besoin de login ou d'infos personnelles. Juste, ça marche (<em>la plupart du temps ...</em>)."
   paragraph_1: >
     Mais tuneefy a un cout (certes minime) malgré tout, que nous payons avez plaisir pour offrir ce service. En gros, un serveur, un nom de domaine, ce qui fait à peu près 6€ par mois. Ce n'est pas énorme, mais c'est un coût.<br><br>

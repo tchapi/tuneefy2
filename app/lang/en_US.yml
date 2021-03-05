@@ -189,7 +189,7 @@ mail:
   error: "There has been an error sending your mail.<br />Please try again."
 
 os:
-  title_long: "« http://tuneefy.com/t/oxtcm »"
+  title_long: "« https://tuneefy.com/s/track/oxtcm »"
   paragraph_1_important: "Tuneefy is an open-source project. It is (<em>and always be</em>) free, ad-free, and it does not require any login or any personal information. It just works (<em>most of the time ...</em>)."
   paragraph_1: "But tuneefy has a (small) cost nonetheless, that we are happy to pay each month. This is basically the server and a domain name, which amounts to around 6€ per month. While it's not much, it still is something.<br><br>If you find the service useful and if you would like to support us, we are happy to welcome your tiny donations to keep the server and the domain going : either <a href='http://paypal.me/tchap'>paypal.me/tchap</a> or <a href='mailto:team@tuneefy.com'>team@tuneefy.com</a> if you want to reach out."
   paragraph_2: "We are also rewriting tuneefy from scratch to make it even more simple, fast and straight-forward, it takes some time, but you can have a look <a href='https://github.com/tchapi/tuneefy2'>here</a> and join forces if you have some spare time."
