@@ -1,7 +1,7 @@
 /* Tuneefy (c)2011-2017 */
 var host = 'http://localhost:1234'
 
-function addCSS (url) {
+function addCSS(url) {
   var headID = document.getElementsByTagName('head')[0]
   var cssNode = document.createElement('link')
   cssNode.type = 'text/css'
@@ -11,11 +11,11 @@ function addCSS (url) {
   headID.appendChild(cssNode)
 }
 
-function el (id) {
+function el(id) {
   return document.getElementById(id)
 }
 
-function elcl (className, parent) {
+function elcl(className, parent) {
   parent || (parent = document)
   var descendants = parent.getElementsByTagName('*')
 

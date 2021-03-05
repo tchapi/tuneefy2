@@ -7,7 +7,7 @@ Raphael.fn.pieChart = function (cx, cy, r, values, labels, stroke) {
   var chart = this.set()
 
   // Function to create a sector
-  function sector (cx, cy, r, startAngle, endAngle, params) {
+  function sector(cx, cy, r, startAngle, endAngle, params) {
     var x1 = cx + r * Math.cos(-startAngle * rad)
 
     var x2 = cx + r * Math.cos(-endAngle * rad)

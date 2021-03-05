@@ -6,7 +6,7 @@
   fjs.parentNode.insertBefore(js, fjs)
 }(document, 'script', 'facebook-jssdk'))
 
-function postToFeed (link, image, name, description, action, action_link) {
+function postToFeed(link, image, name, description, action, action_link) {
   var obj = {
     method: 'feed',
     link: link,
@@ -16,15 +16,15 @@ function postToFeed (link, image, name, description, action, action_link) {
     description: description,
     actions: [{ name: action, link: action_link }]
   }
-  FB.ui(obj, function () {})
+  FB.ui(obj, function () { })
 };
 
-function toggleEmbed () {
+function toggleEmbed() {
   $('#embedHolder').toggle()
   $('#embed').toggleClass('open')
 };
 
-function newTweet (status) {
+function newTweet(status) {
   var width = 575; var height = 400
 
   var left = ($(window).width() - width) / 2
@@ -34,10 +34,10 @@ function newTweet (status) {
   var url = 'https://twitter.com/home?status=' + status
 
   var opts = 'status=1' +
-               ',width=' + width +
-               ',height=' + height +
-               ',top=' + top +
-               ',left=' + left
+    ',width=' + width +
+    ',height=' + height +
+    ',top=' + top +
+    ',left=' + left
 
   window.open(url, 'twitter', opts)
 };

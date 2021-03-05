@@ -108,7 +108,7 @@ $(document).ready(function () {
   })
 
   // Gets the cookie for the 'tracks' vs 'albums' preference
-  cookieValue = document.cookie.split($COOKIE_SEARCH + '=')[1] || ''
+  cookieValue = document.cookie.split($COOKIE_SEARCH + '=')[1] || ''
 
   if (cookieValue !== null) {
     if (cookieValue.split(';')[0] === 'albums') {
@@ -291,7 +291,7 @@ $(document).ready(function () {
   })
 
   // When we blur() outside the advanced options div, we must close it
-  $('.hideAll').click(function () {}) // Trick for iPhone bug http://www.quirksmode.org/blog/archives/2010/09/click_event_del.html
+  $('.hideAll').click(function () { }) // Trick for iPhone bug http://www.quirksmode.org/blog/archives/2010/09/click_event_del.html
   $('html').click(function () {
     // Hiding advanced options
     advanced.hide()
