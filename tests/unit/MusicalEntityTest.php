@@ -468,7 +468,7 @@ final class MusicalEntityTest extends TestCase
         $b = new TrackEntity('test title b (extra)', $b_album);
 
         $this->expectException(tuneefy\MusicalEntity\MusicalEntityMergeException::class);
-        $c = TrackEntity::merge($a, $b); 
+        $c = TrackEntity::merge($a, $b);
     }
 
     public function testMergeTrackNotForced2()

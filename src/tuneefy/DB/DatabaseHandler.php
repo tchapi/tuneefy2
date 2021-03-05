@@ -46,7 +46,7 @@ class DatabaseHandler
     {
         if (is_null($this->connection)) {
             $this->connection = new \PDO(
-                'mysql:host='.$this->parameters['database']['server'].':'.($this->parameters['database']['port']?:3306).';dbname='.$this->parameters['database']['name'],
+                'mysql:host='.$this->parameters['database']['server'].':'.($this->parameters['database']['port'] ?: 3306).';dbname='.$this->parameters['database']['name'],
                 $this->parameters['database']['user'],
                 $this->parameters['database']['password']
             );

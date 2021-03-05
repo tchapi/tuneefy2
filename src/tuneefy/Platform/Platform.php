@@ -296,7 +296,7 @@ abstract class Platform implements GeneralPlatformInterface
         ]);
 
         if (self::METHOD_GET === static::API_METHOD) {
-            curl_setopt($ch, CURLOPT_URL, $url.($data ? '?' . http_build_query($data) : ''));
+            curl_setopt($ch, CURLOPT_URL, $url.($data ? '?'.http_build_query($data) : ''));
         } elseif (self::METHOD_POST === static::API_METHOD) {
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_POST, 1);

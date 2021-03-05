@@ -261,7 +261,7 @@ class FrontendController
         // Check we have a 'platform' link
         $links = $item->getLinksForPlatform($platform);
 
-        if ($links === [] || count($links) <= $index) {
+        if ([] === $links || count($links) <= $index) {
             return call_user_func($this->notFound, $request, $response);
         }
 
