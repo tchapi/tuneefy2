@@ -68,6 +68,7 @@ abstract class Platform implements GeneralPlatformInterface
     protected $options = [];
 
     // For hosts that resolve slooooooowly, add the IP here. Quite dangerous but helpful
+    // It's better to do this directly on the target server that will run the tuneefy api
     /*
         $hosts = [
           'listen.tidal.com',
@@ -90,16 +91,16 @@ abstract class Platform implements GeneralPlatformInterface
         echo "];\n";
     */
     const RESOLVED_IPS = [
-      'listen.tidal.com:443:143.204.201.46',
-      'www.amazon.com:443:13.224.193.233',
+      'listen.tidal.com:443:143.204.209.85',
+      'www.amazon.com:443:23.43.17.196',
       'api.deezer.com:443:185.60.92.36',
-      'www.googleapis.com:443:216.58.215.42',
-      'itunes.apple.com:443:2.16.118.43',
-      'ws.audioscrobbler.com:443:64.30.224.206',
-      'api.mixcloud.com:443:46.23.65.210',
-      'api.napster.com:443:23.51.122.14',
-      'www.qobuz.com:443:52.209.137.233',
-      'api.soundcloud.com:443:143.204.204.53',
+      'www.googleapis.com:443:142.250.185.74',
+      'itunes.apple.com:443:96.16.108.28',
+      'ws.audioscrobbler.com:443:130.211.19.189',
+      'api.mixcloud.com:443:46.23.65.220',
+      'api.napster.com:443:92.123.148.44',
+      'www.qobuz.com:443:18.203.143.35',
+      'api.soundcloud.com:443:143.204.203.38',
     ];
 
     /**
