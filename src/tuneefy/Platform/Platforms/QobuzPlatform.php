@@ -17,7 +17,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
     const TAG = 'qobuz';
     const COLOR = '2C8FAE';
 
-    const API_ENDPOINT = 'https://www.qobuz.com/api.json/0.2/';
+    const API_ENDPOINT = 'https://qobuz.com/api.json/0.2/';
     const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
