@@ -3,6 +3,7 @@ database:
   name: "tuneefy"
   user: "tuneefy"
   password: "ChangeMe"
+  port: 3306
 
 website:
   max_results: 100

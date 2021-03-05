@@ -1,6 +1,6 @@
 # tuneefy _2_
 
-A new version of [tuneefy](http://tuneefy.com) built for **PHP 7**, from the ground up, using the minimal [Slim](https://www.slimframework.com/) framework and a few helper libraries.
+A new version of [tuneefy](http://tuneefy.com) built for **PHP 7** and **Node 14**, from the ground up, using the minimal [Slim](https://www.slimframework.com/) framework and a few helper libraries.
 
 ### Installing
 
@@ -17,8 +17,6 @@ Tuneefy needs a variety of tables to work properly; you can populate your databa
 ### Building assets & API doc
 
 To build the assets and the API documentation, I use **npm** and some modules.
-
-> NB: Use Node 8 for aglio !
 
     npm install
 
