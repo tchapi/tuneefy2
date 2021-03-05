@@ -61,7 +61,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
         return false !== strpos($permalink, 'spotify:') || false !== strpos($permalink, 'open.spotify.') || false !== strpos($permalink, 'play.spotify.');
     }
 
-    protected function addContextOptions(array $data, string $countryCode = null): array
+    protected function addContextOptions(?array $data, string $countryCode = null): array
     {
         $data['market'] = strtoupper($countryCode ?: self::DEFAULT_COUNTRY_CODE);
 

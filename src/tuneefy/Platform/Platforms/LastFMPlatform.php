@@ -58,7 +58,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         return false !== strpos($permalink, 'lastfm.') || false !== strpos($permalink, 'last.fm');
     }
 
-    protected function addContextOptions(array $data, string $countryCode = null): array
+    protected function addContextOptions(?array $data, string $countryCode = null): array
     {
         $data['api_key'] = $this->key;
 

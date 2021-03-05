@@ -56,7 +56,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         return false !== strpos($permalink, 'music.apple.') || false !== strpos($permalink, 'itunes.apple.');
     }
 
-    protected function addContextOptions(array $data, string $countryCode = null): array
+    protected function addContextOptions(?array $data, string $countryCode = null): array
     {
         $data['country'] = strtoupper($countryCode ?: self::DEFAULT_COUNTRY_CODE);
 

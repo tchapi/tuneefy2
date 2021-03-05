@@ -116,7 +116,7 @@ class GooglePlayMusicPlatform extends Platform implements WebStreamingPlatformIn
         echo 'Your master token is : '.$token;
     }
 
-    protected function addContextOptions(array $data, string $countryCode = null): array
+    protected function addContextOptions(?array $data, string $countryCode = null): array
     {
         $data['tier'] = strtolower($countryCode ?: self::DEFAULT_COUNTRY_CODE);
 

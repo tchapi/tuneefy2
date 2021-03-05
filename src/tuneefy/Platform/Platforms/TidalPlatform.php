@@ -58,7 +58,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         return false !== strpos($permalink, 'tidal.') || false !== strpos($permalink, 'tidalhifi.');
     }
 
-    protected function addContextOptions(array $data, string $countryCode = null): array
+    protected function addContextOptions(?array $data, string $countryCode = null): array
     {
         $data['token'] = $this->key;
         $data['countryCode'] = $countryCode ?: self::DEFAULT_COUNTRY_CODE;

@@ -58,7 +58,7 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::SEARCH_ALBUM => 'albums',
     ];
 
-    protected function addContextOptions(array $data, string $countryCode = null): array
+    protected function addContextOptions(?array $data, string $countryCode = null): array
     {
         $data['apikey'] = $this->key;
         $data['catalog'] = strtoupper($countryCode ?: self::DEFAULT_COUNTRY_CODE);

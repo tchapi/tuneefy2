@@ -71,7 +71,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         return false !== strpos($permalink, 'qobuz.com');
     }
 
-    protected function addContextOptions(array $data, string $countryCode = null): array
+    protected function addContextOptions(?array $data, string $countryCode = null): array
     {
         $data['app_id'] = $this->key;
 
