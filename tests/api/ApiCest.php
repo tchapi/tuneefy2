@@ -82,15 +82,15 @@ final class ApiCest
             ],
         ],
         'spotify' => [
-            'https://open.spotify.com/track/5jhJur5n4fasblLSCOcrTp' => [
+            'https://open.spotify.com/track/39ekB6MRScT8azfz3dx804' => [
                 'musical_entity' => [
                     'type' => 'track',
                     'title' => 'Test Transmission',
                     'album' => [
-                        'title' => 'Kasabian',
+                        'title' => 'Kasabian/Empire',
                         'artist' => 'Kasabian',
-                        'picture' => 'https://i.scdn.co/image/ab67616d00001e021db4ff9cdeeb1e18218e9b5b',
-                        'safe_title' => 'Kasabian',
+                        'picture' => 'https://i.scdn.co/image/ab67616d00001e02ec71b6ad37827ed4ff4c04d1',
+                        'safe_title' => 'Kasabian/Empire',
                         'extra_info' => [
                             'is_cover' => false,
                             'is_remix' => false,
@@ -100,7 +100,7 @@ final class ApiCest
                     ],
                     'links' => [
                         'spotify' => [
-                            'https://open.spotify.com/track/5jhJur5n4fasblLSCOcrTp',
+                            'https://open.spotify.com/track/39ekB6MRScT8azfz3dx804',
                         ],
                     ],
                     'safe_title' => 'Test Transmission',
@@ -147,7 +147,7 @@ final class ApiCest
             ],
         ],
         'qobuz' => [
-            'http://open.qobuz.com/track/23860968' => [
+            'https://open.qobuz.com/track/23860968' => [
                 'musical_entity' => [
                   'type' => 'track',
                   'title' => 'Techno toujours pareil',
@@ -166,7 +166,7 @@ final class ApiCest
                   ],
                   'links' => [
                     'qobuz' => [
-                      'http://open.qobuz.com/track/23860968',
+                      'https://open.qobuz.com/track/23860968',
                     ],
                   ],
                   'safe_title' => 'Techno toujours pareil',
@@ -201,7 +201,7 @@ final class ApiCest
                     ],
                     'links' => [
                         'qobuz' => [
-                            'http://open.qobuz.com/track/1065478',
+                            'https://open.qobuz.com/track/1065478',
                         ],
                     ],
                     'safe_title' => 'Revolution 909',
@@ -217,7 +217,7 @@ final class ApiCest
                     'Revolution 909',
                 ],
             ],
-            'http://play.qobuz.com/album/0724384260958' => [
+            'https://play.qobuz.com/album/0724384260958' => [
                 'musical_entity' => [
                   'type' => 'album',
                   'title' => 'Homework',
@@ -225,7 +225,7 @@ final class ApiCest
                   'picture' => 'https://static.qobuz.com/images/covers/58/09/0724384260958_230.jpg',
                   'links' => [
                     'qobuz' => [
-                      'http://open.qobuz.com/album/0724384260958',
+                      'https://open.qobuz.com/album/0724384260958',
                     ],
                   ],
                   'safe_title' => 'Homework',
@@ -242,12 +242,12 @@ final class ApiCest
                     'Homework',
                   ],
             ],
-            'http://play.qobuz.com/artist/36819' => [
+            'https://play.qobuz.com/artist/36819' => [
                 'query_words' => [
                     'Daft Punk',
                   ],
             ],
-            'http://www.qobuz.com/fr-fr/album/mon-premier-ep-salut-cest-cool/0060254728859' => [
+            'https://www.qobuz.com/fr-fr/album/mon-premier-ep-salut-cest-cool/0060254728859' => [
                 'musical_entity' => [
                     'type' => 'album',
                     'title' => 'Mon premier EP',
@@ -255,7 +255,7 @@ final class ApiCest
                     'picture' => 'https://static.qobuz.com/images/covers/59/88/0060254728859_230.jpg',
                     'links' => [
                         'qobuz' => [
-                            'http://open.qobuz.com/album/0060254728859',
+                            'https://open.qobuz.com/album/0060254728859',
                         ],
                     ],
                     'safe_title' => 'Mon premier EP',
@@ -273,14 +273,14 @@ final class ApiCest
             ],
         ],
         'tidal' => [
-            'http://www.tidal.com/track/40358305' => [
+            'https://www.tidal.com/track/40358305' => [
                 'musical_entity' => [
                     'type' => 'track',
                     'title' => 'Jay',
                     'album' => [
                         'title' => 'It Follows',
                         'artist' => 'Disasterpeace',
-                        'picture' => 'http://resources.wimpmusic.com/images/fb4f3bf4/76be/4afa/bf1c/79681d92598e/320x320.jpg',
+                        'picture' => 'https://resources.wimpmusic.com/images/fb4f3bf4/76be/4afa/bf1c/79681d92598e/320x320.jpg',
                         'safe_title' => 'It Follows',
                         'extra_info' => [
                             'is_cover' => false,
@@ -307,12 +307,12 @@ final class ApiCest
                     'Jay',
                 ],
             ],
-            'http://www.tidal.com/album/138314944' => [
+            'https://www.tidal.com/album/138314944' => [
                 'musical_entity' => [
                   'type' => 'album',
                   'title' => 'Good Job',
                   'artist' => 'Alicia Keys',
-                  'picture' => 'http://resources.wimpmusic.com/images/52cbc173/b409/4402/985a/208ddf816984/320x320.jpg',
+                  'picture' => 'https://resources.wimpmusic.com/images/52cbc173/b409/4402/985a/208ddf816984/320x320.jpg',
                   'links' => [
                     'tidal' => [
                       'http://www.tidal.com/album/138314944',
@@ -332,7 +332,7 @@ final class ApiCest
                     'Good Job',
                   ],
             ],
-            'http://www.tidal.com/artist/3528326' => [
+            'https://www.tidal.com/artist/3528326' => [
                 'query_words' => [
                     'JAY',
                   ],
@@ -621,7 +621,7 @@ final class ApiCest
                     'Jack Johnson',
                 ],
             ],
-            'https://music.apple.com/us/album/in-between-dreams-bonus-track-version/1440857781' => [
+            'https://music.apple.com/fr/album/in-between-dreams-bonus-track-version/1440857781' => [
                 'musical_entity' => [
                     'type' => 'album',
                     'title' => 'In Between Dreams (Bonus Track Version)',
@@ -629,7 +629,7 @@ final class ApiCest
                     'picture' => 'https://is2-ssl.mzstatic.com/image/thumb/Music118/v4/24/46/97/24469731-f56f-29f6-67bd-53438f59ebcb/source/100x100bb.jpg',
                     'links' => [
                         'itunes' => [
-                            'https://music.apple.com/us/album/in-between-dreams-bonus-track-version/1440857781?uo=4',
+                            'https://music.apple.com/fr/album/in-between-dreams-bonus-track-version/1440857781?uo=4',
                         ],
                     ],
                     'safe_title' => 'In Between Dreams',
@@ -647,7 +647,7 @@ final class ApiCest
                     'In Between Dreams',
                 ],
             ],
-            'https://itunes.apple.com/us/album/in-between-dreams-bonus-track-version/id1440857781' => [
+            'https://itunes.apple.com/fr/album/in-between-dreams-bonus-track-version/id1440857781' => [
                 'musical_entity' => [
                     'type' => 'album',
                     'title' => 'In Between Dreams (Bonus Track Version)',
@@ -655,7 +655,7 @@ final class ApiCest
                     'picture' => 'https://is2-ssl.mzstatic.com/image/thumb/Music118/v4/24/46/97/24469731-f56f-29f6-67bd-53438f59ebcb/source/100x100bb.jpg',
                     'links' => [
                         'itunes' => [
-                            'https://music.apple.com/us/album/in-between-dreams-bonus-track-version/1440857781?uo=4',
+                            'https://music.apple.com/fr/album/in-between-dreams-bonus-track-version/1440857781?uo=4',
                         ],
                     ],
                     'safe_title' => 'In Between Dreams',
@@ -680,10 +680,10 @@ final class ApiCest
                     'type' => 'album',
                     'title' => 'Frozen (Deluxe Edition)',
                     'artist' => 'Various artists',
-                    'picture' => 'https://images-na.ssl-images-amazon.com/images/I/61gYerL61JL._SS160_.jpg',
+                    'picture' => 'https://images-na.ssl-images-amazon.com/images/I/61FFGp0yGVL._SS160_.jpg',
                     'links' => [
                         'amazon' => [
-                            'http://www.amazon.com/gp/product/B00GLQQ07E',
+                            'https://www.amazon.com/gp/product/B00GLQQ07E',
                         ],
                     ],
                     'safe_title' => 'Frozen',
@@ -708,7 +708,7 @@ final class ApiCest
                     'album' => [
                         'title' => 'Frozen (Deluxe Edition)',
                         'artist' => 'Cast - Frozen',
-                        'picture' => 'https://images-na.ssl-images-amazon.com/images/I/61gYerL61JL._SS160_.jpg',
+                        'picture' => 'https://images-na.ssl-images-amazon.com/images/I/61FFGp0yGVL._SS160_.jpg',
                         'safe_title' => 'Frozen',
                         'extra_info' => [
                             'is_cover' => false,
@@ -721,7 +721,7 @@ final class ApiCest
                     ],
                     'links' => [
                         'amazon' => [
-                            'http://www.amazon.com/gp/product/B00GLQQ0JW',
+                            'https://www.amazon.com/gp/product/B00GLQQ0JW',
                         ],
                     ],
                     'safe_title' => 'Frozen Heart',
@@ -809,6 +809,7 @@ final class ApiCest
             }
 
             foreach ($permalinks as $permalink => $expectedResult) {
+                // var_dump($permalink);
                 $I->sendGET('/lookup?q='.urlencode($permalink));
                 $I->seeResponseCodeIs(HttpCode::OK);
 
