@@ -8,7 +8,6 @@ use tuneefy\Platform\PlatformException;
 use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\Platforms\AmazonMusicPlatform;
 use tuneefy\Platform\Platforms\DeezerPlatform;
-use tuneefy\Platform\Platforms\GooglePlayMusicPlatform;
 use tuneefy\Platform\Platforms\ItunesPlatform;
 use tuneefy\Platform\Platforms\LastFMPlatform;
 use tuneefy\Platform\Platforms\MixcloudPlatform;
@@ -48,7 +47,6 @@ class PlatformEngine
           'tidal' => TidalPlatform::getInstance(),
           'youtube' => YoutubePlatform::getInstance(),
           'napster' => NapsterPlatform::getInstance(),
-          'googleplay' => GooglePlayMusicPlatform::getInstance(),
 
           // Blogs / Scrobbling
           'lastfm' => LastFMPlatform::getInstance(),

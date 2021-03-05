@@ -154,16 +154,3 @@ napster:
   secret: ""
   default: false
   order: 14
-googleplay:
-  class: tuneefy\Platform\GooglePlayMusicPlatform
-  enable:
-    api: true
-    website: true
-  capabilities:
-    track_search: true
-    album_search: true
-    lookup: true
-  key: ""
-  secret: ""
-  default: false
-  order: 15

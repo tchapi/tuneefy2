@@ -109,11 +109,10 @@ The API can limit the search to specific geographic markets (for `search` and `a
 GET search/track/qobuz?q=chopin&countryCode=IT
 ```
 
-> Note that this code is only used for **Spotify**, **Tidal**, **Napster**, **iTunes**, **Youtube**, and **Google Play**.<br> **Deezer**, **Qobuz**, **LastFM**, **Mixcloud**, **Soundcloud** and **Amazon Music** do not have this concept.
+> Note that this code is only used for **Spotify**, **Tidal**, **Napster**, **iTunes**, and **Youtube**.<br> **Deezer**, **Qobuz**, **LastFM**, **Mixcloud**, **Soundcloud** and **Amazon Music** do not have this concept.
 
 Bear in mind these specificities :
   - Youtube: the country code relates to the rights to view a video in a specific country;
-  - Google Play: the API denotes the country code as a « tier » but without any explanation of what it does.
 
 The default countryCode is `FR` (if you don't specify it in your query); As a majority of platforms need a market / country code identifier, you cannot use `null` or a non-valid value here.
 
