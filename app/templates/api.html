@@ -77,13 +77,11 @@
 <p>The API can limit the search to specific geographic markets (for <code>search</code> and <code>aggregate</code> methods) via the <code>countryCode</code> parameter. The code must be an <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO 3166-1 alpha-2</a> country code.</p>
 <pre><code class="language-http">GET search/track/qobuz?q=chopin&amp;countryCode=IT</code></pre>
 <blockquote>
-<p>Note that this code is only used for <strong>Spotify</strong>, <strong>Tidal</strong>, <strong>Napster</strong>, <strong>iTunes</strong>, <strong>Youtube</strong>, and <strong>Google Play</strong>.<br> <strong>Deezer</strong>, <strong>Qobuz</strong>, <strong>LastFM</strong>, <strong>Mixcloud</strong>, <strong>Soundcloud</strong> and <strong>Amazon Music</strong> do not have this concept.</p>
+<p>Note that this code is only used for <strong>Spotify</strong>, <strong>Tidal</strong>, <strong>Napster</strong>, <strong>iTunes</strong>, and <strong>Youtube</strong>.<br> <strong>Deezer</strong>, <strong>Qobuz</strong>, <strong>LastFM</strong>, <strong>Mixcloud</strong>, <strong>Soundcloud</strong> and <strong>Amazon Music</strong> do not have this concept.</p>
 </blockquote>
 <p>Bear in mind these specificities :</p>
 <ul>
-<li>
-<p>Youtube: the country code relates to the rights to view a video in a specific country;</p>
-</li>
+<li>Youtube: the country code relates to the rights to view a video in a specific country;</li>
 </ul>
 <p>The default countryCode is <code>FR</code> (if you don’t specify it in your query); As a majority of platforms need a market / country code identifier, you cannot use <code>null</code> or a non-valid value here.</p>
 <br>
