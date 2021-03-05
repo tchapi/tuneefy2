@@ -1,6 +1,7 @@
 # Suite configuration
-# Assumes your local dev server is at localhost:8000 :
+# Assumes your local dev server is at localhost:8000 and 8001 :
 #   php -S localhost:8000 -t web
+#   php -S localhost:8001 -t web_api
 #
 suites:
     api:
@@ -10,7 +11,7 @@ suites:
             enabled:
                 - Asserts
                 - REST:
-                    url: http://localhost:8000/api.php/v2
+                    url: http://localhost:8001/v2/
                     depends: PhpBrowser
     backend:
         actor: ApiTester
@@ -18,7 +19,7 @@ suites:
         modules:
             enabled:
                 - REST:
-                    url: http://admin:pwd@localhost:8000/index.php/admin
+                    url: http://admin:admin@localhost:8000/admin
                     depends: PhpBrowser
     unit:
         path: unit

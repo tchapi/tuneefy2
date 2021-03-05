@@ -11,7 +11,7 @@ final class UtilsTest extends TestCase
 {
     protected $params;
 
-    public function setUp()
+    public function setUp(): void
     {
         try {
             $this->params = Yaml::parse(file_get_contents(Application::getPath('parameters')));

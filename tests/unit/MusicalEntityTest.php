@@ -460,9 +460,6 @@ final class MusicalEntityTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \tuneefy\MusicalEntity\MusicalEntityMergeException
-     */
     public function testMergeTrackNotForced1()
     {
         $a_album = new AlbumEntity('test title a album (extra)');
@@ -470,12 +467,10 @@ final class MusicalEntityTest extends TestCase
         $b_album = new AlbumEntity('test title b album (extra)');
         $b = new TrackEntity('test title b (extra)', $b_album);
 
-        $c = TrackEntity::merge($a, $b);
+        $this->expectException(tuneefy\MusicalEntity\MusicalEntityMergeException::class);
+        $c = TrackEntity::merge($a, $b); 
     }
 
-    /**
-     * @expectedException \tuneefy\MusicalEntity\MusicalEntityMergeException
-     */
     public function testMergeTrackNotForced2()
     {
         $a_album = new AlbumEntity('test title a album (extra)');
@@ -483,12 +478,10 @@ final class MusicalEntityTest extends TestCase
         $b_album = new AlbumEntity('test title b album (extra)');
         $b = new TrackEntity('test title b (cover)', $b_album);
 
+        $this->expectException(tuneefy\MusicalEntity\MusicalEntityMergeException::class);
         $c = TrackEntity::merge($a, $b);
     }
 
-    /**
-     * @expectedException \tuneefy\MusicalEntity\MusicalEntityMergeException
-     */
     public function testMergeTrackNotForced3()
     {
         $a_album = new AlbumEntity('test title a album (cover)');
@@ -496,12 +489,10 @@ final class MusicalEntityTest extends TestCase
         $b_album = new AlbumEntity('test title b album (extra)');
         $b = new TrackEntity('test title b (extra)', $b_album);
 
+        $this->expectException(tuneefy\MusicalEntity\MusicalEntityMergeException::class);
         $c = TrackEntity::merge($a, $b);
     }
 
-    /**
-     * @expectedException \tuneefy\MusicalEntity\MusicalEntityMergeException
-     */
     public function testMergeTrackNotForced4()
     {
         $a_album = new AlbumEntity('test title a album (remix)');
@@ -509,6 +500,7 @@ final class MusicalEntityTest extends TestCase
         $b_album = new AlbumEntity('test title b album (extra)');
         $b = new TrackEntity('test title b (remix)', $b_album);
 
+        $this->expectException(tuneefy\MusicalEntity\MusicalEntityMergeException::class);
         $c = TrackEntity::merge($a, $b);
     }
 
