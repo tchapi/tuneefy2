@@ -55,12 +55,15 @@
         - .gitignore
         - .git
         - .php_cs
+        - .editorconfig
         - deploy
         - LICENSE
         - README.md
         - gulpfile.js
         - package.json
+        - package-lock.json
         - structure.sql
+        - codeception.yml
         - codeception.yml.dist
     - name: Creates a cron file under /etc/cron.d for updating stats and cleaning intents
       become: yes
