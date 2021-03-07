@@ -44,9 +44,6 @@ facebook:
   app_secret: ""
   page_id: 0
 
-google_plus:
-  publisher_id: "https://..."
-
 admin_secure: true
 admin_users:
   admin: admin
