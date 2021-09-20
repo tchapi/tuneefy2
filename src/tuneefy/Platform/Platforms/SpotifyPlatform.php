@@ -12,13 +12,13 @@ use tuneefy\Utils\Utils;
 
 class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
 {
-    const NAME = 'Spotify';
-    const HOMEPAGE = 'https://www.spotify.com/';
-    const TAG = 'spotify';
-    const COLOR = '4DA400';
+    public const NAME = 'Spotify';
+    public const HOMEPAGE = 'https://www.spotify.com/';
+    public const TAG = 'spotify';
+    public const COLOR = '4DA400';
 
-    const API_ENDPOINT = 'https://api.spotify.com/v1/';
-    const API_METHOD = Platform::METHOD_GET;
+    public const API_ENDPOINT = 'https://api.spotify.com/v1/';
+    public const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
         Platform::LOOKUP_TRACK => self::API_ENDPOINT.'tracks/%s',
@@ -46,7 +46,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
     ];
 
     // http://open.spotify.com/track/5jhJur5n4fasblLSCOcrTp
-    const REGEX_SPOTIFY_ALL = "/(?P<type>artist|album|track)(:|\/)(?P<item_id>[a-zA-Z0-9]*)[\/]?$/";
+    public const REGEX_SPOTIFY_ALL = "/(?P<type>artist|album|track)(:|\/)(?P<item_id>[a-zA-Z0-9]*)[\/]?$/";
     private $lookup_type_correspondance = [
         'track' => Platform::LOOKUP_TRACK,
         'album' => Platform::LOOKUP_ALBUM,
@@ -54,7 +54,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
     ];
 
     // LOCAL files : http://open.spotify.com/local/hang+the+bastard/raw+sorcery/doomed+fucking+doomed/206
-    const REGEX_SPOTIFY_LOCAL = "/local\/(?P<artist_name>".Platform::REGEX_FULLSTRING.")\/(?P<album_name>".Platform::REGEX_FULLSTRING.")\/(?P<track_name>".Platform::REGEX_FULLSTRING.")\/[0-9]+$/";
+    public const REGEX_SPOTIFY_LOCAL = "/local\/(?P<artist_name>".Platform::REGEX_FULLSTRING.")\/(?P<album_name>".Platform::REGEX_FULLSTRING.")\/(?P<track_name>".Platform::REGEX_FULLSTRING.")\/[0-9]+$/";
 
     public function hasPermalink(string $permalink): bool
     {

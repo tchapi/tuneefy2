@@ -10,14 +10,14 @@ use tuneefy\Utils\Utils;
 
 class DatabaseHandler
 {
-    const METHOD_OTHER = 0;
-    const METHOD_PLATFORMS = 1;
-    const METHOD_LOOKUP = 2;
-    const METHOD_SEARCH = 3;
-    const METHOD_AGGREGATE = 4;
-    const METHOD_SHARE = 5;
+    public const METHOD_OTHER = 0;
+    public const METHOD_PLATFORMS = 1;
+    public const METHOD_LOOKUP = 2;
+    public const METHOD_SEARCH = 3;
+    public const METHOD_AGGREGATE = 4;
+    public const METHOD_SHARE = 5;
 
-    const METHOD_NAMES = [
+    public const METHOD_NAMES = [
         self::METHOD_OTHER => 'misc',
         self::METHOD_PLATFORMS => 'platforms',
         self::METHOD_LOOKUP => 'lookup',

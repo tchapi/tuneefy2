@@ -11,14 +11,14 @@ use tuneefy\Utils\Utils;
 
 class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
 {
-    const NAME = 'Napster';
-    const HOMEPAGE = 'https://napster.com';
-    const TAG = 'napster';
-    const COLOR = '0682AA';
+    public const NAME = 'Napster';
+    public const HOMEPAGE = 'https://napster.com';
+    public const TAG = 'napster';
+    public const COLOR = '0682AA';
 
     // https://developer.napster.com/api/v2.2#metadata-apis
-    const API_ENDPOINT = 'https://api.napster.com/v2.2/';
-    const API_METHOD = Platform::METHOD_GET;
+    public const API_ENDPOINT = 'https://api.napster.com/v2.2/';
+    public const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
         // Platform::LOOKUP_TRACK => self::API_ENDPOINT.'tracks/%s',
@@ -46,12 +46,12 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
     ];
 
     // http://fr.napster.com/artist/ed-sheeran/album/shape-of-you/track/shape-of-you
-    const REGEX_NAPSTER_ARTIST = "/\/artist\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
-    const REGEX_NAPSTER_ALBUM = "/\/artist\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/album\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
-    const REGEX_NAPSTER_TRACK = "/\/artist\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/album\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")\/track\/(?P<track_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    public const REGEX_NAPSTER_ARTIST = "/\/artist\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    public const REGEX_NAPSTER_ALBUM = "/\/artist\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/album\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    public const REGEX_NAPSTER_TRACK = "/\/artist\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/album\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")\/track\/(?P<track_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
-    const PICTURE_PATH = 'https://direct.rhapsody.com/imageserver/v2/albums/%s/images/400x400.jpg';
-    const WEB_LINK = 'https://napster.com/%s';
+    public const PICTURE_PATH = 'https://direct.rhapsody.com/imageserver/v2/albums/%s/images/400x400.jpg';
+    public const WEB_LINK = 'https://napster.com/%s';
 
     private $search_types = [
         Platform::SEARCH_TRACK => 'tracks',

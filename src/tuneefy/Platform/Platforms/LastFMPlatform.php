@@ -12,14 +12,14 @@ use tuneefy\Utils\Utils;
 
 class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
 {
-    const NAME = 'Last.fm';
-    const HOMEPAGE = 'https://www.last.fm/';
-    const TAG = 'lastfm';
-    const COLOR = 'e41c1c';
+    public const NAME = 'Last.fm';
+    public const HOMEPAGE = 'https://www.last.fm/';
+    public const TAG = 'lastfm';
+    public const COLOR = 'e41c1c';
 
     // https://www.last.fm/api/show/album.search
-    const API_ENDPOINT = 'https://ws.audioscrobbler.com/2.0/';
-    const API_METHOD = Platform::METHOD_GET;
+    public const API_ENDPOINT = 'https://ws.audioscrobbler.com/2.0/';
+    public const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
         Platform::LOOKUP_TRACK => self::API_ENDPOINT,
@@ -47,11 +47,11 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
     ];
 
     // http://www.lastfm.fr/music/The+Clash/London+Calling/London+Calling
-    const REGEX_LASTFM_TRACK = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")\/(?P<track_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    public const REGEX_LASTFM_TRACK = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")\/(?P<track_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
     // http://www.lastfm.fr/music/The+Clash/London+Calling
-    const REGEX_LASTFM_ALBUM = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    public const REGEX_LASTFM_ALBUM = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
     // http://www.lastfm.fr/music/Sex+Pistols
-    const REGEX_LASTFM_ARTIST = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    public const REGEX_LASTFM_ARTIST = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
     public function hasPermalink(string $permalink): bool
     {

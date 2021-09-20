@@ -11,14 +11,14 @@ use tuneefy\Platform\WebStreamingPlatformInterface;
 
 class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterface
 {
-    const NAME = 'Soundcloud';
-    const HOMEPAGE = 'https://soundcloud.com/';
-    const TAG = 'soundcloud';
-    const COLOR = 'ff6600';
+    public const NAME = 'Soundcloud';
+    public const HOMEPAGE = 'https://soundcloud.com/';
+    public const TAG = 'soundcloud';
+    public const COLOR = 'ff6600';
 
     // https://developers.soundcloud.com/docs/api/reference#tracks
-    const API_ENDPOINT = 'https://api.soundcloud.com/';
-    const API_METHOD = Platform::METHOD_GET;
+    public const API_ENDPOINT = 'https://api.soundcloud.com/';
+    public const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
         Platform::LOOKUP_TRACK => self::API_ENDPOINT.'resolve.json',
@@ -46,7 +46,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
     ];
 
     // https://soundcloud.com/robbabicz/pink-trees-1
-    const REGEX_SOUNDCLOUD_ALL = "/\/".Platform::REGEX_FULLSTRING."\/".Platform::REGEX_FULLSTRING."[\/]?$/";
+    public const REGEX_SOUNDCLOUD_ALL = "/\/".Platform::REGEX_FULLSTRING."\/".Platform::REGEX_FULLSTRING."[\/]?$/";
 
     public function hasPermalink(string $permalink): bool
     {

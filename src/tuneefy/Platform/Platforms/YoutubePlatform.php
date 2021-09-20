@@ -12,14 +12,14 @@ use tuneefy\Utils\Utils;
 
 class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
 {
-    const NAME = 'Youtube';
-    const HOMEPAGE = 'https://youtube.com/';
-    const TAG = 'youtube';
-    const COLOR = 'c8120b';
+    public const NAME = 'Youtube';
+    public const HOMEPAGE = 'https://youtube.com/';
+    public const TAG = 'youtube';
+    public const COLOR = 'c8120b';
 
     // https://developers.google.com/youtube/v3/docs/search
-    const API_ENDPOINT = 'https://www.googleapis.com/youtube/v3/';
-    const API_METHOD = Platform::METHOD_GET;
+    public const API_ENDPOINT = 'https://www.googleapis.com/youtube/v3/';
+    public const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
         Platform::LOOKUP_TRACK => self::API_ENDPOINT.'videos',
@@ -47,7 +47,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
     ];
 
     // https://www.youtube.com/watch?v=FNdC_3LR2AI
-    const REGEX_YOUTUBE_ALL = "/\/watch\?v\=(?P<video_id>[a-zA-Z0-9\-\_]*)(|\&(.*))$/";
+    public const REGEX_YOUTUBE_ALL = "/\/watch\?v\=(?P<video_id>[a-zA-Z0-9\-\_]*)(|\&(.*))$/";
 
     public function hasPermalink(string $permalink): bool
     {

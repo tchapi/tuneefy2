@@ -7,7 +7,7 @@ use tuneefy\DB\DatabaseHandler;
 
 class ExpiredIntentsCleanerCommand
 {
-    const PATHS = [
+    public const PATHS = [
         'parameters' => '/../../../app/config/parameters.yml',
     ];
 

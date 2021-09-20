@@ -12,14 +12,14 @@ use tuneefy\Utils\Utils;
 
 class TidalPlatform extends Platform implements WebStreamingPlatformInterface
 {
-    const NAME = 'Tidal';
-    const HOMEPAGE = 'https://tidal.com/';
-    const TAG = 'tidal';
-    const COLOR = '00FFFF';
+    public const NAME = 'Tidal';
+    public const HOMEPAGE = 'https://tidal.com/';
+    public const TAG = 'tidal';
+    public const COLOR = '00FFFF';
 
     // https://github.com/spencercharest/tidal-api/blob/master/src/index.js
-    const API_ENDPOINT = 'https://api.tidal.com/v1/';
-    const API_METHOD = Platform::METHOD_GET;
+    public const API_ENDPOINT = 'https://api.tidal.com/v1/';
+    public const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
         Platform::LOOKUP_TRACK => self::API_ENDPOINT.'tracks/%s',
@@ -47,11 +47,11 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
     ];
 
     // http://www.tidal.com/track/40358305
-    const REGEX_TIDAL_TRACK = "/track\/(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const REGEX_TIDAL_TRACK = "/track\/(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
     // http://www.tidal.com/album/571179
-    const REGEX_TIDAL_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const REGEX_TIDAL_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
     // http://www.tidal.com/artist/3528326
-    const REGEX_TIDAL_ARTIST = "/artist\/(?P<artist_id>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    public const REGEX_TIDAL_ARTIST = "/artist\/(?P<artist_id>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
     public function hasPermalink(string $permalink): bool
     {

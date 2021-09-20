@@ -9,7 +9,7 @@ use tuneefy\Utils\Utils;
 
 class AlbumEntity extends MusicalEntity
 {
-    const TYPE = 'album';
+    public const TYPE = 'album';
 
     private $title;
     private $artist;

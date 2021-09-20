@@ -10,44 +10,44 @@ use tuneefy\Utils\Utils;
 
 abstract class Platform implements GeneralPlatformInterface
 {
-    const NAME = '';
-    const TAG = '';
-    const HOMEPAGE = '';
-    const COLOR = 'FFFFFF';
+    public const NAME = '';
+    public const TAG = '';
+    public const HOMEPAGE = '';
+    public const COLOR = 'FFFFFF';
 
     // Helper Regexes
-    const REGEX_FULLSTRING = "[a-zA-Z0-9%\+\-\s\_\.]*";
-    const REGEX_NUMERIC_ID = '[0-9]*';
+    public const REGEX_FULLSTRING = "[a-zA-Z0-9%\+\-\s\_\.]*";
+    public const REGEX_NUMERIC_ID = '[0-9]*';
 
     // Helper constants for API calls
-    const LOOKUP_TRACK = 0;
-    const LOOKUP_ALBUM = 1;
-    const LOOKUP_ARTIST = 2;
+    public const LOOKUP_TRACK = 0;
+    public const LOOKUP_ALBUM = 1;
+    public const LOOKUP_ARTIST = 2;
 
-    const SEARCH_TRACK = 3;
-    const SEARCH_ALBUM = 4;
-    const SEARCH_ARTIST = 5;
+    public const SEARCH_TRACK = 3;
+    public const SEARCH_ALBUM = 4;
+    public const SEARCH_ARTIST = 5;
 
-    const DEFAULT_COUNTRY_CODE = 'FR';
+    public const DEFAULT_COUNTRY_CODE = 'FR';
 
     // The 'mode' indicates whether
     // we're going to eagerly fetch data
     // when it's missing from the platform
     // response
-    const MODE_LAZY = 0;
-    const MODE_EAGER = 1;
+    public const MODE_LAZY = 0;
+    public const MODE_EAGER = 1;
 
     // Different HTTP Methods used
-    const METHOD_GET = 'GET';
-    const METHOD_POST = 'POST';
+    public const METHOD_GET = 'GET';
+    public const METHOD_POST = 'POST';
 
     // Different Return content-type
-    const RETURN_JSON = 1;
-    const RETURN_XML = 2;
+    public const RETURN_JSON = 1;
+    public const RETURN_XML = 2;
 
     // Default limit for requests
-    const LIMIT = 10; // 1 < LIMIT < 25
-    const AGGREGATE_LIMIT = 50; // The more the merrier
+    public const LIMIT = 10; // 1 < LIMIT < 25
+    public const AGGREGATE_LIMIT = 50; // The more the merrier
 
     protected $default;
 
@@ -58,10 +58,10 @@ abstract class Platform implements GeneralPlatformInterface
     protected $secret = '';
 
     // Redeclared in child classes
-    const API_ENDPOINT = '';
-    const API_METHOD = self::METHOD_GET;
-    const RETURN_CONTENT_TYPE = self::RETURN_JSON;
-    const NEEDS_OAUTH = false;
+    public const API_ENDPOINT = '';
+    public const API_METHOD = self::METHOD_GET;
+    public const RETURN_CONTENT_TYPE = self::RETURN_JSON;
+    public const NEEDS_OAUTH = false;
 
     protected $endpoints = [];
     protected $terms = [];
@@ -90,7 +90,7 @@ abstract class Platform implements GeneralPlatformInterface
         }
         echo "];\n";
     */
-    const RESOLVED_IPS = [
+    public const RESOLVED_IPS = [
       'listen.tidal.com:443:143.204.209.85',
       'www.amazon.com:443:23.43.17.196',
       'api.deezer.com:443:185.60.92.36',

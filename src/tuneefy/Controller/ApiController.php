@@ -15,7 +15,7 @@ class ApiController
     private $renderer;
     private $engine;
 
-    const ERRORS = [
+    public const ERRORS = [
         'GENERAL_ERROR' => ['GENERAL_ERROR' => 'An error was encountered'],
         'BAD_PLATFORM_TYPE' => ['BAD_PLATFORM_TYPE' => 'This type of platform does not exist'],
         'BAD_PLATFORM' => ['BAD_PLATFORM' => 'This platform does not exist'],

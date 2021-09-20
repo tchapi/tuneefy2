@@ -11,14 +11,14 @@ use tuneefy\Platform\WebStreamingPlatformInterface;
 
 class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
 {
-    const NAME = 'Mixcloud';
-    const HOMEPAGE = 'https://www.mixcloud.com/';
-    const TAG = 'mixcloud';
-    const COLOR = 'afd8db';
+    public const NAME = 'Mixcloud';
+    public const HOMEPAGE = 'https://www.mixcloud.com/';
+    public const TAG = 'mixcloud';
+    public const COLOR = 'afd8db';
 
     // https://www.mixcloud.com/developers/#search
-    const API_ENDPOINT = 'https://api.mixcloud.com/';
-    const API_METHOD = Platform::METHOD_GET;
+    public const API_ENDPOINT = 'https://api.mixcloud.com/';
+    public const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
         Platform::LOOKUP_TRACK => self::API_ENDPOINT.'%s',
@@ -46,10 +46,10 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
     ];
 
     // https://www.mixcloud.com/aphex-twin/
-    const REGEX_MIXCLOUD_ARTIST = "/mixcloud\.com\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    public const REGEX_MIXCLOUD_ARTIST = "/mixcloud\.com\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
     // https://www.mixcloud.com/LeFtOoO/678-new-section-boyz-onra-romare-drake-roman-rauch-clap-clap/
-    const REGEX_MIXCLOUD_TRACK = "/mixcloud\.com\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/(?P<track_long_slug>".Platform::REGEX_FULLSTRING."\/".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    public const REGEX_MIXCLOUD_TRACK = "/mixcloud\.com\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/(?P<track_long_slug>".Platform::REGEX_FULLSTRING."\/".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
     public function hasPermalink(string $permalink): bool
     {

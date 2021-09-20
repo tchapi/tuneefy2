@@ -27,9 +27,9 @@ use tuneefy\Utils\Utils;
 
 class Application
 {
-    const COOKIE_LANG = 'tuneefyLocale';
+    public const COOKIE_LANG = 'tuneefyLocale';
 
-    const PATHS = [
+    public const PATHS = [
         'parameters' => '/../../app/config/parameters.yml',
         'platforms' => '/../../app/config/platforms.yml',
         'templates' => '/../../app/templates',

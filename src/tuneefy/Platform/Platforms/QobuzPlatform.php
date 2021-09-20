@@ -12,13 +12,13 @@ use tuneefy\Utils\Utils;
 
 class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
 {
-    const NAME = 'Qobuz';
-    const HOMEPAGE = 'https://www.qobuz.com/';
-    const TAG = 'qobuz';
-    const COLOR = '2C8FAE';
+    public const NAME = 'Qobuz';
+    public const HOMEPAGE = 'https://www.qobuz.com/';
+    public const TAG = 'qobuz';
+    public const COLOR = '2C8FAE';
 
-    const API_ENDPOINT = 'https://qobuz.com/api.json/0.2/';
-    const API_METHOD = Platform::METHOD_GET;
+    public const API_ENDPOINT = 'https://qobuz.com/api.json/0.2/';
+    public const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
         Platform::LOOKUP_TRACK => self::API_ENDPOINT.'track/get',
@@ -46,25 +46,25 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
     ];
 
     // http://player.qobuz.com/#!/track/23860968
-    const REGEX_QOBUZ_TRACK = "/\/track\/(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const REGEX_QOBUZ_TRACK = "/\/track\/(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
     // http://player.qobuz.com/#!/album/0060254728859
-    const REGEX_QOBUZ_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const REGEX_QOBUZ_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
     // http://player.qobuz.com/#!/artist/2131688
-    const REGEX_QOBUZ_ARTIST = "/\/artist\/(?P<artist_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const REGEX_QOBUZ_ARTIST = "/\/artist\/(?P<artist_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
     // http://www.qobuz.com/fr-fr/album/mon-premier-ep-salut-cest-cool/0060254728859
-    const REGEX_QOBUZ_ALBUM_SITE = "/\/album\/".Platform::REGEX_FULLSTRING."\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const REGEX_QOBUZ_ALBUM_SITE = "/\/album\/".Platform::REGEX_FULLSTRING."\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
     // http://play.qobuz.com/album/0724384260958?track=1065478
-    const NEW_REGEX_QOBUZ_TRACK = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")\?track\=(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const NEW_REGEX_QOBUZ_TRACK = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")\?track\=(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
     // http://play.qobuz.com/album/0724384260958
-    const NEW_REGEX_QOBUZ_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const NEW_REGEX_QOBUZ_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
     // http://play.qobuz.com/artist/36819
-    const NEW_REGEX_QOBUZ_ARTIST = "/\/artist\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const NEW_REGEX_QOBUZ_ARTIST = "/\/artist\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
     public function hasPermalink(string $permalink): bool
     {

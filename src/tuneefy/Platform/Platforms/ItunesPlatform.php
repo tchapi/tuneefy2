@@ -12,13 +12,13 @@ use tuneefy\Utils\Utils;
 
 class ItunesPlatform extends Platform implements WebStoreInterface
 {
-    const NAME = 'iTunes';
-    const HOMEPAGE = 'https://itunes.apple.com';
-    const TAG = 'itunes';
-    const COLOR = '216be4';
+    public const NAME = 'iTunes';
+    public const HOMEPAGE = 'https://itunes.apple.com';
+    public const TAG = 'itunes';
+    public const COLOR = '216be4';
 
-    const API_ENDPOINT = 'https://itunes.apple.com/';
-    const API_METHOD = Platform::METHOD_GET;
+    public const API_ENDPOINT = 'https://itunes.apple.com/';
+    public const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
         Platform::LOOKUP_TRACK => null,
@@ -46,10 +46,10 @@ class ItunesPlatform extends Platform implements WebStoreInterface
     ];
 
     // https://itunes.apple.com/us/artist/jack-johnson/id909253
-    const REGEX_ITUNES_ARTIST = "/\/artist\/(?P<artist_name>".Platform::REGEX_FULLSTRING.")\/(id)?(?P<artist_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const REGEX_ITUNES_ARTIST = "/\/artist\/(?P<artist_name>".Platform::REGEX_FULLSTRING.")\/(id)?(?P<artist_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
     // https://itunes.apple.com/us/album/weezer/id1136784464
-    const REGEX_ITUNES_ALBUM = "/\/album\/(?P<album_name>".Platform::REGEX_FULLSTRING.")\/(id)?(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const REGEX_ITUNES_ALBUM = "/\/album\/(?P<album_name>".Platform::REGEX_FULLSTRING.")\/(id)?(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
     public function hasPermalink(string $permalink): bool
     {

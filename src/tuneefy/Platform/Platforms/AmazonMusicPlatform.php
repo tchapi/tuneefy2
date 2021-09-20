@@ -12,15 +12,15 @@ use tuneefy\Utils\Utils;
 
 class AmazonMusicPlatform extends Platform implements WebStoreInterface
 {
-    const NAME = 'Amazon Music';
-    const HOMEPAGE = 'https://music.amazon.com/home';
-    const TAG = 'amazon';
-    const COLOR = 'E47911';
+    public const NAME = 'Amazon Music';
+    public const HOMEPAGE = 'https://music.amazon.com/home';
+    public const TAG = 'amazon';
+    public const COLOR = 'E47911';
 
     // https://github.com/mattdennewitz/python-amazon-mp3-api
-    const API_ENDPOINT = 'https://www.amazon.com/gp/dmusic/aws/';
-    const API_METHOD = Platform::METHOD_GET;
-    const RETURN_CONTENT_TYPE = Platform::RETURN_XML;
+    public const API_ENDPOINT = 'https://www.amazon.com/gp/dmusic/aws/';
+    public const API_METHOD = Platform::METHOD_GET;
+    public const RETURN_CONTENT_TYPE = Platform::RETURN_XML;
 
     protected $endpoints = [
         Platform::LOOKUP_TRACK => self::API_ENDPOINT.'lookup.html',
@@ -49,7 +49,7 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
 
     // http://www.amazon.com/gp/product/B00GLQQ07E/whatever
     // http://www.amazon.com/dp/B00GLQQ0JW/ref=dm_ws_tlw_trk1
-    const REGEX_AMAZON_ALL = "/\/(?:gp\/product|dp)\/(?P<asin>".Platform::REGEX_FULLSTRING.")[\/]?.*$/";
+    public const REGEX_AMAZON_ALL = "/\/(?:gp\/product|dp)\/(?P<asin>".Platform::REGEX_FULLSTRING.")[\/]?.*$/";
 
     public function hasPermalink(string $permalink): bool
     {

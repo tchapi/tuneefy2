@@ -7,7 +7,7 @@ use tuneefy\MusicalEntity\Entities\TrackEntity;
 
 abstract class MusicalEntity implements MusicalEntityInterface
 {
-    const TYPE = 'musical_entity';
+    public const TYPE = 'musical_entity';
 
     protected $links;
 

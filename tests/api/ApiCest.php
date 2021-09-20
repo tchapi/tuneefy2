@@ -8,14 +8,14 @@ use tuneefy\PlatformEngine;
 
 final class ApiCest
 {
-    const TRACK_QUERY = 'sufjan+stevens+should';
-    const TRACK_QUERY_ERROR = 'xzqwqsxws';
-    const ALBUM_QUERY = 'radiohead+computer';
-    const ALBUM_QUERY_ERROR = 'xzqwqsxws';
-    const TRACK_AGGREGATE_QUERY = 'bruno+mars+24K';
-    const TRACK_AGGREGATE_QUERY_ERROR = 'ZERTHJYUKIKHUazzfdegrh';
+    public const TRACK_QUERY = 'sufjan+stevens+should';
+    public const TRACK_QUERY_ERROR = 'xzqwqsxws';
+    public const ALBUM_QUERY = 'radiohead+computer';
+    public const ALBUM_QUERY_ERROR = 'xzqwqsxws';
+    public const TRACK_AGGREGATE_QUERY = 'bruno+mars+24K';
+    public const TRACK_AGGREGATE_QUERY_ERROR = 'ZERTHJYUKIKHUazzfdegrh';
 
-    const PERMALINKS = [
+    public const PERMALINKS = [
         'deezer' => [
             'http://www.deezer.com/track/10444623' => [
                 'musical_entity' => [

@@ -12,13 +12,13 @@ use tuneefy\Utils\Utils;
 
 class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
 {
-    const NAME = 'Deezer';
-    const HOMEPAGE = 'https://www.deezer.com/';
-    const TAG = 'deezer';
-    const COLOR = '181818';
+    public const NAME = 'Deezer';
+    public const HOMEPAGE = 'https://www.deezer.com/';
+    public const TAG = 'deezer';
+    public const COLOR = '181818';
 
-    const API_ENDPOINT = 'https://api.deezer.com/';
-    const API_METHOD = Platform::METHOD_GET;
+    public const API_ENDPOINT = 'https://api.deezer.com/';
+    public const API_METHOD = Platform::METHOD_GET;
 
     protected $endpoints = [
         Platform::LOOKUP_TRACK => self::API_ENDPOINT.'track/%s',
@@ -48,12 +48,12 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
     // NOT VALID ANYMORE http://www.deezer.com/listen-10236179
     // NOT VALID ANYMORE http://www.deezer.com/music/track/10240179
     // http://www.deezer.com/track/10444623
-    const REGEX_DEEZER_TRACK = "/(?:listen-|music\/track\/|\/track\/)(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const REGEX_DEEZER_TRACK = "/(?:listen-|music\/track\/|\/track\/)(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
     // NOT VALID ANYMORE http://www.deezer.com/fr/music/rjd2/deadringer-144183
     // http://www.deezer.com/fr/album/955330
-    const REGEX_DEEZER_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const REGEX_DEEZER_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
     // http://www.deezer.com/fr/artist/16948
-    const REGEX_DEEZER_ARTIST = "/\/artist\/(?P<artist_id>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    public const REGEX_DEEZER_ARTIST = "/\/artist\/(?P<artist_id>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
     public function hasPermalink(string $permalink): bool
     {
