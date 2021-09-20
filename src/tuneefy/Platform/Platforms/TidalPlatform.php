@@ -81,7 +81,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         if (preg_match(self::REGEX_TIDAL_TRACK, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['track_id']);
 
-            if (null === $response || (property_exists($response->data, 'status') && 'error' === $response->data->status)) {
+            if (null === $response || (property_exists($response->data, 'status') && ('error' === $response->data->status || 404 === $response->data->status))) {
                 throw new PlatformException($this);
             }
 
@@ -96,7 +96,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         } elseif (preg_match(self::REGEX_TIDAL_ALBUM, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_id']);
 
-            if (null === $response || (property_exists($response->data, 'status') && 'error' === $response->data->status)) {
+            if (null === $response || (property_exists($response->data, 'status') && ('error' === $response->data->status || 404 === $response->data->status))) {
                 throw new PlatformException($this);
             }
 

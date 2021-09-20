@@ -53,11 +53,27 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         return false !== strpos($permalink, 'soundcloud.');
     }
 
-    protected function addContextOptions(?array $data, string $countryCode = null): array
+    protected function addContextHeaders(): array
     {
-        $data['client_id'] = $this->key;
+        // From https://developers.soundcloud.com/blog/security-updates-api
+        $serviceauth = 'https://api.soundcloud.com/oauth2/token';
+        $grantType = 'client_credentials';
 
-        return $data;
+        $requestData = ['client_id' => $this->key, 'client_secret' => $this->secret, 'grant_type' => $grantType];
+
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+          CURLOPT_URL => $serviceauth,
+          CURLOPT_POST => 1,
+          CURLOPT_RETURNTRANSFER => 1,
+          CURLOPT_POSTFIELDS => http_build_query($requestData),
+        ]);
+
+        $result = json_decode(curl_exec($ch), true);
+
+        curl_close($ch);
+
+        return ['Authorization: OAuth '.$result['access_token']];
     }
 
     public function expandPermalink(string $permalink, int $mode): PlatformResult
@@ -98,6 +114,10 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
     public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
         $entities = $response->data;
+
+        if (null === $entities) {
+            return [];
+        }
 
         // We actually don't pass the limit to the fetch()
         // request since it's not really useful, in fact

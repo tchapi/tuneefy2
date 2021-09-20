@@ -278,7 +278,7 @@ final class ApiCest
                     'type' => 'track',
                     'title' => 'Jay',
                     'album' => [
-                        'title' => 'It Follows',
+                        'title' => 'It Follows (Original Motion Picture Soundtrack)',
                         'artist' => 'Disasterpeace',
                         'picture' => 'https://resources.wimpmusic.com/images/fb4f3bf4/76be/4afa/bf1c/79681d92598e/320x320.jpg',
                         'safe_title' => 'It Follows',
@@ -286,7 +286,9 @@ final class ApiCest
                             'is_cover' => false,
                             'is_remix' => false,
                             'acoustic' => false,
-                            'context' => [],
+                            'context' => [
+                              'Original Motion Picture Soundtrack',
+                            ],
                         ],
                     ],
                     'links' => [
@@ -307,18 +309,18 @@ final class ApiCest
                     'Jay',
                 ],
             ],
-            'https://www.tidal.com/album/138314944' => [
+            'https://www.tidal.com/album/195728118' => [
                 'musical_entity' => [
                   'type' => 'album',
-                  'title' => 'Good Job',
-                  'artist' => 'Alicia Keys',
-                  'picture' => 'https://resources.wimpmusic.com/images/52cbc173/b409/4402/985a/208ddf816984/320x320.jpg',
+                  'title' => 'Donda',
+                  'artist' => 'Kanye West',
+                  'picture' => 'https://resources.wimpmusic.com/images/5e41d98e/abbf/40bd/a225/af82ad8a6552/320x320.jpg',
                   'links' => [
                     'tidal' => [
-                      'http://www.tidal.com/album/138314944',
+                      'http://www.tidal.com/album/195728118',
                     ],
                   ],
-                  'safe_title' => 'Good Job',
+                  'safe_title' => 'Donda',
                   'extra_info' => [
                     'is_cover' => false,
                     'is_remix' => false,
@@ -328,8 +330,8 @@ final class ApiCest
                   ],
                 ],
                 'query_words' => [
-                    'Alicia Keys',
-                    'Good Job',
+                    'Kanye West',
+                    'Donda',
                   ],
             ],
             'https://www.tidal.com/artist/3528326' => [
@@ -485,7 +487,7 @@ final class ApiCest
                     'album' => [
                         'title' => 'The Singles',
                         'artist' => 'The Clash',
-                        'picture' => 'https://lastfm.freetls.fastly.net/i/u/174s/7d8eeb8f69e84736ab2cd659c03a1581.png',
+                        'picture' => 'https://lastfm.freetls.fastly.net/i/u/174s/680af088e127e474fc536a5cfad36f3e.png',
                         'safe_title' => 'The Singles',
                         'extra_info' => [
                             'is_cover' => false,
@@ -517,7 +519,7 @@ final class ApiCest
                     'type' => 'album',
                     'title' => 'London Calling',
                     'artist' => 'The Clash',
-                    'picture' => 'https://lastfm.freetls.fastly.net/i/u/174s/7d8eeb8f69e84736ab2cd659c03a1581.png',
+                    'picture' => 'https://lastfm.freetls.fastly.net/i/u/174s/680af088e127e474fc536a5cfad36f3e.jpg',
                     'safe_title' => 'The Singles',
                     'extra_info' => [
                         'is_cover' => false,
@@ -556,7 +558,7 @@ final class ApiCest
                     'type' => 'album',
                     'title' => 'In Between Dreams (Bonus Track Version)',
                     'artist' => 'Jack Johnson',
-                    'picture' => 'https://is2-ssl.mzstatic.com/image/thumb/Music118/v4/24/46/97/24469731-f56f-29f6-67bd-53438f59ebcb/source/100x100bb.jpg',
+                    'picture' => 'https://is4-ssl.mzstatic.com/image/thumb/Music125/v4/db/d9/1a/dbd91afa-044d-637b-c557-847863c85a79/source/100x100bb.jpg',
                     'links' => [
                         'itunes' => [
                             'https://music.apple.com/fr/album/in-between-dreams-bonus-track-version/1440857781?uo=4',
@@ -582,7 +584,7 @@ final class ApiCest
                     'type' => 'album',
                     'title' => 'In Between Dreams (Bonus Track Version)',
                     'artist' => 'Jack Johnson',
-                    'picture' => 'https://is2-ssl.mzstatic.com/image/thumb/Music118/v4/24/46/97/24469731-f56f-29f6-67bd-53438f59ebcb/source/100x100bb.jpg',
+                    'picture' => 'https://is4-ssl.mzstatic.com/image/thumb/Music125/v4/db/d9/1a/dbd91afa-044d-637b-c557-847863c85a79/source/100x100bb.jpg',
                     'links' => [
                         'itunes' => [
                             'https://music.apple.com/fr/album/in-between-dreams-bonus-track-version/1440857781?uo=4',
@@ -689,7 +691,7 @@ final class ApiCest
 
         $platforms = $I->grabDataFromResponseByJsonPath('$.platforms.*');
 
-        $I->assertCount(12, $platforms);
+        $I->assertCount(11, $platforms);
 
         foreach ($platforms as $key => $platform) {
             $I->assertCount(7, $platform);
@@ -718,7 +720,7 @@ final class ApiCest
 
         $platforms = $I->grabDataFromResponseByJsonPath('$.platforms.*');
 
-        $I->assertCount(9, $platforms);
+        $I->assertCount(8, $platforms);
 
         foreach ($platforms as $key => $platform) {
             $I->assertCount(7, $platform);
