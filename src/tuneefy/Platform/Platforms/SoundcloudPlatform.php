@@ -115,7 +115,8 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
     {
         $entities = $response->data;
 
-        if (null === $entities) {
+        if (null === $entities || (property_exists($entities, 'code') && $entities->code === 401)) {
+            // 401 = unauthorized, probably a rate limit
             return [];
         }
 
