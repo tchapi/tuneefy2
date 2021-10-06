@@ -10,7 +10,7 @@
     <div id="info">
       <h2 class="infoTitle color">{{ "pages.home.welcome"|trans }}</h2>
       <p class="infoContent">{{ "pages.home.content"|trans|raw }}</p>
-      <a class="btn btn_more" href="{{ path_for('about') }}">{{ "pages.home.more_info"|trans }}</a>
+      <a class="btn btn_more" href="{{ url_for('about') }}">{{ "pages.home.more_info"|trans }}</a>
     </div>
 
     <div id="todaysPickOverlay"></div>
@@ -37,7 +37,7 @@
             <div class="album">{% if last_shared.track.entity.album.safeTitle and (last_shared.track.entity.album.safeTitle)|lower != 'null' %}{{ tools.ellipsis(last_shared.track.entity.album.safeTitle, 36) }}{% else %}{{ "results.various_albums"|trans }}{% endif %}</div>
           </div>
         </div>
-        <a class="btn btn_picks" href="{{ params.urls.front }}{{ path_for('show', { uid: last_shared.track.uid, type: "track" }) }}">{{ "picks.discover"|trans }}</a>
+        <a class="btn btn_picks" href="{{ params.urls.front }}{{ url_for('show', { uid: last_shared.track.uid, type: "track" }) }}">{{ "picks.discover"|trans }}</a>
       </div>
     {% endif %}
 
@@ -54,7 +54,7 @@
             <div class="artist">{{ tools.ellipsis(last_shared.album.entity.artist, 40) }}</div>
           </div>
         </div>
-        <a class="btn btn_picks" href="{{ params.urls.front }}{{ path_for('show', { uid: last_shared.album.uid, type: "album" }) }}">{{ "picks.discover"|trans }}</a>
+        <a class="btn btn_picks" href="{{ params.urls.front }}{{ url_for('show', { uid: last_shared.album.uid, type: "album" }) }}">{{ "picks.discover"|trans }}</a>
       </div>
     {% endif %}
 
@@ -73,7 +73,7 @@
             {% if isTrack %}<div class="album">{{ most_viewed.entity.getAlbumTitle() }}</div>{% endif %}
           </div>
         </div>
-        <a class="btn btn_picks" href="{{ params.urls.front }}{{ path_for('show', { uid: most_viewed.uid, type: "mixed" }) }}">{{ "picks.discover"|trans }}</a>
+        <a class="btn btn_picks" href="{{ params.urls.front }}{{ url_for('show', { uid: most_viewed.uid, type: "mixed" }) }}">{{ "picks.discover"|trans }}</a>
       </div>
     {% endif %}
 
@@ -137,7 +137,7 @@
   <div class="above">
       <div class="nbResults">{{ "results.results_found"|trans|raw }}</div>
   </div>
-  {% spaceless %}
+  {% apply spaceless %}
   <ul>
       <li class="tHeader">
           <div class="tHeader_bf">&nbsp;</div>
@@ -150,7 +150,7 @@
           <div class="tHeader_af">&nbsp;</div>
       </li>
   </ul>
-  {% endspaceless %}
+  {% endapply %}
 
   <div class="below">
       <a class="btn backToTop" href="#preSearch">{{ "back_to_top"|trans }}</a>
@@ -168,7 +168,7 @@
     var $listen_to = "{{ "results.listen_to"|trans|raw }}";
     var $share = "{{ "results.share"|trans|raw }}";
     var $share_tip = "{{ "results.share_tip"|trans|raw }}";
-    var $path = "{{ path_for('listen_direct', {'platform': '%key%'}) }}";
+    var $path = "{{ url_for('listen_direct', {'platform': '%key%'}) }}";
     var $pathIntent = "{{ params.api.front }}/share/%intent%";
   </script>
   <script type="text/javascript" src="/js/vendor/iphone-style.js"></script>

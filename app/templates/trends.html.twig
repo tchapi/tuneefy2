@@ -9,7 +9,7 @@
   <div id="globalStats">
     <h2 class="color">{{ "stats.global"|trans|raw }}</h2>
       <table style="display:none;" id="pieData">
-          {% for hit in stats.hits if hit.platform.tag %}
+          {% for hit in stats.hits|filter(hit => hit.platform.tag is not null) %}
             <tr><th scope="row">
                 <span class="id">{{ hit.platform.tag }}</span>
                 <span class="name">{{ hit.platform.name }}</span>
@@ -49,7 +49,7 @@
         {% for key, data in stats.tracks %}
             {% set fontSize = 2.3*(1-loop.index/5) + (loop.index/5)*0.6 %}
             <li><span class="count bdBot">{{ "stats.views"|trans({"%val%": data.count})|raw }}</span>
-            <span class="order bdTop bdBot">{{ loop.index }}</span><span class="title"><a style="font-size: {{ fontSize }}em" href="{{ path_for('show', {uid: data.uid, type: 'track'}) }}">{{ data.track }}</a></span><span class="artist bdTop">{{ data.artist }}</span>
+            <span class="order bdTop bdBot">{{ loop.index }}</span><span class="title"><a style="font-size: {{ fontSize }}em" href="{{ url_for('show', {uid: data.uid, type: 'track'}) }}">{{ data.track }}</a></span><span class="artist bdTop">{{ data.artist }}</span>
             </li>
         {% endfor %}
     </ul>
@@ -63,7 +63,7 @@
         {% for key, data in stats.albums %}
             {% set fontSize = 2.3*(1-loop.index/5) + (loop.index/5)*0.6 %}
             <li><span class="count bdBot">{{ "stats.views"|trans({"%val%": data.count})|raw }}
-            </span><span class="order bdTop bdBot">{{ loop.index }}</span><span class="title"><a style="font-size: {{ fontSize }}em" href="{{ path_for('show', {uid: data.uid, type: 'album'}) }}">{{ data.album }}</a></span><span class="artist bdTop">{{ data.artist }}</span>
+            </span><span class="order bdTop bdBot">{{ loop.index }}</span><span class="title"><a style="font-size: {{ fontSize }}em" href="{{ url_for('show', {uid: data.uid, type: 'album'}) }}">{{ data.album }}</a></span><span class="artist bdTop">{{ data.artist }}</span>
             </li>
         {% endfor %}
     </ul>

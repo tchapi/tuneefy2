@@ -43,13 +43,13 @@
     var $listen_to = "{{ "results.listen_to"|trans|raw }}";
     var $share = "{{ "results.share"|trans|raw }}";
     var $share_tip = "{{ "results.share_tip"|trans|raw }}";
-    var $path = "{{ path_for('listen_direct', {'platform': '%key%'}) }}";
+    var $path = "{{ url_for('listen_direct', {'platform': '%key%'}) }}";
   </script>
   <script type="text/javascript" src="/js/vendor/twig.min.js"></script>
   <script type="text/javascript" src="/js/search.js"></script>
   <script type="text/javascript">
       $(document).ready(function(){
-        search("{{ path_for('aggregate', {type: 'track'}) }}", "{{ query }}", {
+        search("{{ url_for('aggregate', {type: 'track'}) }}", "{{ query }}", {
             itemType: "track",
             selectedPlatforms: $default_platforms,
             strictMode: false,

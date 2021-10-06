@@ -5,7 +5,7 @@
 {% block social %}
   <title>{{ item.getSafeTitle }} | {{ item.getArtist }} — tuneefy</title>
   <meta property="og:title" content="{{ item.getSafeTitle }} | {{ item.getArtist }}"/>
-  <meta property="og:url" content="{{ params.urls.front }}{{ path_for('show', { uid: uid, type: "album" }) }}"/>
+  <meta property="og:url" content="{{ params.urls.front }}{{ url_for('show', { uid: uid, type: "album" }) }}"/>
   <meta property="og:image" content="{{ item.getPicture }}"/>
   <meta property="tuneefy:artist" content="{{ item.getArtist }}"/>
   <meta property="tuneefy:album" content="{{ item.getSafeTitle }}>" />
@@ -27,7 +27,7 @@
 
   <div id="trackInfo" class="bdBot">
     {% if embed %}
-    <a href="{{ params.urls.front }}{{ path_for('show', { uid: uid, type: "album" }) }}" target="_blank" title="{{ "album.seeOnTuneefy"|trans }}">
+    <a href="{{ params.urls.front }}{{ url_for('show', { uid: uid, type: "album" }) }}" target="_blank" title="{{ "album.seeOnTuneefy"|trans }}">
     {% endif %}
     <div class="cover">
       <img src="{{ item.getPicture?:'/img/nothumb_album.png' }}" width="82" height="82" />
@@ -39,7 +39,7 @@
       <div class="infoWrapper">
         <div class="infoContent">
           {% if embed %}
-            <a href="{{ params.urls.front }}{{ path_for('show', { uid: uid, type: "album" }) }}" target="_blank" title="{{ "album.seeOnTuneefy"|trans }}" >
+            <a href="{{ params.urls.front }}{{ url_for('show', { uid: uid, type: "album" }) }}" target="_blank" title="{{ "album.seeOnTuneefy"|trans }}" >
               <div class="title">{{ tools.ellipsis(item.getSafeTitle, 40) }}
                 <img class="newWindow" src="{{ params.url.frontend }}/img/new_window.png" width="14" />
               </div>
@@ -52,10 +52,10 @@
           <div id="platforms">
             {% for key, links in item.links %}
               {% if links|length > 0 and compact|default(true) %}
-                  <a target="_blank" class="btns btn_{{ key }}" href="{{ path_for('listen', { 'type': 'album', 'uid': uid, 'platform': key, 'i': 0 }) }}" title="{{ "listen_to"|trans({name: item.getSafeTitle, platform: platform.name}) }}"></a>
+                  <a target="_blank" class="btns btn_{{ key }}" href="{{ url_for('listen', { 'type': 'album', 'uid': uid, 'platform': key, 'i': 0 }) }}" title="{{ "listen_to"|trans({name: item.getSafeTitle, platform: platform.name}) }}"></a>
               {% else %}
                 {% for i, link in links %}
-                    <a target="_blank" class="btns btn_{{ key }}" href="{{ path_for('listen', { 'type': 'album', 'uid': uid, 'platform': key, 'i': i }) }}" title="{{ "listen_to"|trans({name: item.getSafeTitle, platform: platform.name}) }}"></a>
+                    <a target="_blank" class="btns btn_{{ key }}" href="{{ url_for('listen', { 'type': 'album', 'uid': uid, 'platform': key, 'i': i }) }}" title="{{ "listen_to"|trans({name: item.getSafeTitle, platform: platform.name}) }}"></a>
                 {% endfor %}
               {% endif %}
             {% endfor %}
@@ -72,10 +72,10 @@
 
       {% for key, links in item.links %}
         {% if links|length > 0 and compact|default(true) %}
-            <a target="_top" class="btns_full btn_full_{{ key }}" href="{{ path_for('listen', { 'type': 'album', 'uid': uid, 'platform': key, 'i': 0 }) }}" title="{{ "listen_to"|trans({name: item.getSafeTitle, platform: platform.name}) }}"></a>
+            <a target="_top" class="btns_full btn_full_{{ key }}" href="{{ url_for('listen', { 'type': 'album', 'uid': uid, 'platform': key, 'i': 0 }) }}" title="{{ "listen_to"|trans({name: item.getSafeTitle, platform: platform.name}) }}"></a>
         {% else %}
           {% for i, link in links %}
-              <a target="_top" class="btns_full btn_full_{{ key }}" href="{{ path_for('listen', { 'type': 'album', 'uid': uid, 'platform': key, 'i': i }) }}" title="{{ "listen_to"|trans({name: item.getSafeTitle, platform: platform.name}) }}"></a>
+              <a target="_top" class="btns_full btn_full_{{ key }}" href="{{ url_for('listen', { 'type': 'album', 'uid': uid, 'platform': key, 'i': i }) }}" title="{{ "listen_to"|trans({name: item.getSafeTitle, platform: platform.name}) }}"></a>
           {% endfor %}
         {% endif %}
       {% endfor %}
@@ -86,18 +86,18 @@
     <div class="shareTitle">{{ "album.share"|trans }}</div>
     
     <div id="linkHolder" class="boxSinv">
-      <input type="text" readonly="readonly" value="{{ params.urls.front }}{{ path_for('show', { uid: uid, type: "album" }) }}" id="shareLink" class="boxS5"/>
+      <input type="text" readonly="readonly" value="{{ params.urls.front }}{{ url_for('show', { uid: uid, type: "album" }) }}" id="shareLink" class="boxS5"/>
     </div>
   
     <div id="socialHolder" class="boxSinv">
       <a id="embed" onclick="toggleEmbed(); return false;" title="{{ "album_embed"|trans }}"></a>
-      <a id="facebookShare" onclick='postToFeed("{{ params.urls.front ~ path_for('show', { uid: uid, type: "album" }) }}", "{{ item.getPicture?:'/img/nothumb_album.png' }}", "{{ item.getSafeTitle ~ ' | ' ~ item.getArtist }}", "{{ "album.description"|trans({"%album%": item.getSafeTitle, "%artist%": item.getArtist}) }}", "{{ "album.facebook_action"|trans }}", "{{ params.urls.front}}"); return false;' title="{{ "album_facebook"|trans }}"></a>
-      <a id="twitterShare" onclick="newTweet('{{ "album.twitter_status"|trans({"%album%": item.getSafeTitle, "%artist%": item.getArtist, "%link%": params.urls.front ~ path_for('show', { uid: uid, type: "album" })})|url_encode }}'); return false;" title="{{ "album_twitter"|trans }}"></a>
-      <a id="mailShare" title="{{ "album.mail.action"|trans }}" href="mailto:?subject={{ "album.mail.subject"|trans({ "%album%": item.getSafeTitle, "%artist%": item.getArtist})|url_encode }}&body={{ "album.mail.body"|trans({"%link%": params.urls.front ~ path_for('show', { uid: uid, type: "album" }) })|url_encode }}"></a>
+      <a id="facebookShare" onclick='postToFeed("{{ params.urls.front ~ url_for('show', { uid: uid, type: "album" }) }}", "{{ item.getPicture?:'/img/nothumb_album.png' }}", "{{ item.getSafeTitle ~ ' | ' ~ item.getArtist }}", "{{ "album.description"|trans({"%album%": item.getSafeTitle, "%artist%": item.getArtist}) }}", "{{ "album.facebook_action"|trans }}", "{{ params.urls.front}}"); return false;' title="{{ "album_facebook"|trans }}"></a>
+      <a id="twitterShare" onclick="newTweet('{{ "album.twitter_status"|trans({"%album%": item.getSafeTitle, "%artist%": item.getArtist, "%link%": params.urls.front ~ url_for('show', { uid: uid, type: "album" })})|url_encode }}'); return false;" title="{{ "album_twitter"|trans }}"></a>
+      <a id="mailShare" title="{{ "album.mail.action"|trans }}" href="mailto:?subject={{ "album.mail.subject"|trans({ "%album%": item.getSafeTitle, "%artist%": item.getArtist})|url_encode }}&body={{ "album.mail.body"|trans({"%link%": params.urls.front ~ url_for('show', { uid: uid, type: "album" }) })|url_encode }}"></a>
     </div>
     
     <div id="embedHolder" class="boxSinv" style="display: none;">
-      <textarea readonly="readonly" id="embedContent" class="boxS5">{{ "iframe.code"|trans({"%link%": params.urls.front ~ path_for('show', { uid: uid, type: "album" }) }) }}</textarea>
+      <textarea readonly="readonly" id="embedContent" class="boxS5">{{ "iframe.code"|trans({"%link%": params.urls.front ~ url_for('show', { uid: uid, type: "album" }) }) }}</textarea>
     </div>
     <div style="clear: both"></div>
   
