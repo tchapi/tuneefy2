@@ -39,6 +39,9 @@ class ApiController
         'NOT_ACTIVE' => ['NOT_ACTIVE' => 'Your client/secret pair is not active, contact us'],
         'NOT_FOUND' => ['NOT_FOUND' => 'Not found'],
         'NOT_ALLOWED' => ['NOT_ALLOWED' => 'Method not allowed'],
+
+        404 => ['NOT_FOUND' => 'Not found'],
+        405 => ['NOT_ALLOWED' => 'Method not allowed'],
     ];
 
     // constructor receives container instance
