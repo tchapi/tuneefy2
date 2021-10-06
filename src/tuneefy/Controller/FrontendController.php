@@ -2,11 +2,12 @@
 
 namespace tuneefy\Controller;
 
+use Psr\Container\ContainerInterface;
 use RKA\ContentTypeRenderer\Renderer;
-use Slim\Container;
+use Slim\Exception\HttpNotFoundException;
+use Slim\Views\Twig;
 use tuneefy\DB\DatabaseHandler;
 use tuneefy\PlatformEngine;
-use tuneefy\Utils\CustomNotFoundHandler;
 use tuneefy\Utils\Utils;
 
 class FrontendController
@@ -17,7 +18,7 @@ class FrontendController
     private $notFound;
 
     // constructor receives container instance
-    public function __construct(Container $container)
+    public function __construct(ContainerInterface $container)
     {
         // JSON / XML renderer
         $this->renderer = new Renderer();
@@ -27,13 +28,13 @@ class FrontendController
 
         // Slim container
         $this->container = $container;
-
-        // 404 handler
-        $this->notFound = new CustomNotFoundHandler($container->get('view'), false, 404, 'NOT_FOUND');
     }
 
     public function home($request, $response)
     {
+        $view = Twig::fromRequest($request);
+        $params = $request->getQueryParams();
+
         // Let's bypass OAuth by setting a session secret
         $session = new \SlimSession\Helper();
         $session->bypassSecret = $this->container->get('params')['api']['bypassSecret'];
@@ -66,15 +67,15 @@ class FrontendController
             $hot['album']['uid'] = Utils::toUId($hot['album']['id']);
         }
 
-        if ('42' == $request->getQueryParam('widget')) {
-            return $this->container->get('view')->render($response, '_widget.html.twig', [
-                'query' => $request->getQueryParam('q'),
+        if (isset($params['widget']) && '42' == $params['widget']) {
+            return $view->render($response, '_widget.html.twig', [
+                'query' => $params['q'] ?? null,
                 'params' => $this->container->get('params'),
                 'default_platforms' => $default_platforms,
             ]);
         } else {
-            return $this->container->get('view')->render($response, 'home.html.twig', [
-                'query' => $request->getQueryParam('q'),
+            return $view->render($response, 'home.html.twig', [
+                'query' => $params['q'] ?? null,
                 'params' => $this->container->get('params'),
                 'platforms' => $this->engine->getAllPlatforms(),
                 'default_platforms' => $default_platforms,
@@ -86,7 +87,9 @@ class FrontendController
 
     public function about($request, $response)
     {
-        return $this->container->get('view')->render($response, 'about.html.twig', [
+        $view = Twig::fromRequest($request);
+
+        return $view->render($response, 'about.html.twig', [
             'params' => $this->container->get('params'),
             'platforms' => $this->engine->getAllPlatforms(),
         ]);
@@ -145,6 +148,7 @@ class FrontendController
 
     public function trends($request, $response)
     {
+        $view = Twig::fromRequest($request);
         $db = DatabaseHandler::getInstance(null);
         $platforms = $this->engine->getAllPlatforms();
 
@@ -176,7 +180,7 @@ class FrontendController
             }
         }
 
-        return $this->container->get('view')->render($response, 'trends.html.twig', [
+        return $view->render($response, 'trends.html.twig', [
             'params' => $this->container->get('params'),
             'platforms' => $this->engine->getAllPlatforms(),
             'stats' => $stats,
@@ -185,10 +189,12 @@ class FrontendController
     }
 
     // Handles legacy routes as well with a 301
-    public function show($request, $response, $args)
+    public function show($request, $response, array $args)
     {
+        $view = Twig::fromRequest($request);
+        $params = $request->getQueryParams();
         if (null === $args['uid'] || '' === $args['uid']) {
-            return call_user_func($this->notFound, $request, $response);
+            throw new HttpNotFoundException($request);
         }
 
         $db = DatabaseHandler::getInstance(null);
@@ -198,7 +204,7 @@ class FrontendController
         try {
             $item = $db->getItemById($id);
         } catch (\Exception $e) {
-            return call_user_func($this->notFound, $request, $response);
+            throw new HttpNotFoundException($request);
         }
 
         // Check the type (track || album) and redirect if necessary
@@ -221,29 +227,29 @@ class FrontendController
 
         if (!is_null($item)) {
             // Override, just to get the page in JSON
-            if ('json' === $request->getQueryParam('format')) {
+            if (isset($params['format']) && 'json' === $params['format']) {
                 $response = $this->renderer->render($request->withHeader('Accept', 'application/json'), $response, $item->toArray());
 
                 return $response->withStatus(200);
             } else {
-                return $this->container->get('view')->render($response, 'item.'.$args['type'].'.html.twig', [
+                return $view->render($response, 'item.'.$args['type'].'.html.twig', [
                     'params' => $this->container->get('params'),
                     'uid' => $args['uid'],
                     'item' => $item,
-                    'embed' => (null !== $request->getQueryParam('embed')),
+                    'embed' => isset($params['embed']) && (null !== $params['embed']),
                 ]);
             }
         } else {
-            return call_user_func($this->notFound, $request, $response);
+            throw new HttpNotFoundException($request);
         }
     }
 
-    public function listen($request, $response, $args)
+    public function listen($request, $response, array $args)
     {
         $platform = strtolower($args['platform']);
 
         if (null === $args['uid'] || '' === $args['uid']) {
-            return call_user_func($this->notFound, $request, $response);
+            throw new HttpNotFoundException($request);
         }
 
         $db = DatabaseHandler::getInstance(null);
@@ -253,7 +259,7 @@ class FrontendController
         try {
             $item = $db->getItemById($id);
         } catch (\Exception $e) {
-            return call_user_func($this->notFound, $request, $response);
+            throw new HttpNotFoundException($request);
         }
 
         $index = intval($args['i'] ?? 0);
@@ -262,7 +268,7 @@ class FrontendController
         $links = $item->getLinksForPlatform($platform);
 
         if ([] === $links || count($links) <= $index) {
-            return call_user_func($this->notFound, $request, $response);
+            throw new HttpNotFoundException($request);
         }
 
         // Increment stats
@@ -276,14 +282,14 @@ class FrontendController
         return $response->withStatus(303)->withHeader('Location', $links[$index]);
     }
 
-    public function listenDirect($request, $response, $args)
+    public function listenDirect($request, $response, array $args)
     {
         $platform = strtolower($args['platform']);
 
-        $link = $request->getQueryParam('l');
+        $link = $request->getQueryParams()['l'] ?? null;
 
         if (null === $link || '' === $link) {
-            return call_user_func($this->notFound, $request, $response);
+            throw new HttpNotFoundException($request);
         }
 
         $db = DatabaseHandler::getInstance(null);
@@ -299,13 +305,17 @@ class FrontendController
         return $response->withStatus(303)->withHeader('Location', $link);
     }
 
-    public function api($request, $response, $args)
+    public function api($request, $response, array $args)
     {
-        return $this->container->get('view')->render($response, 'api.html');
+        $view = Twig::fromRequest($request);
+
+        return $view->render($response, 'api.html');
     }
 
-    public function apiRateLimiting($request, $response, $args)
+    public function apiRateLimiting($request, $response, array $args)
     {
-        return $this->container->get('view')->render($response, '503.html.twig');
+        $view = Twig::fromRequest($request);
+
+        return $view->render($response, '503.html.twig');
     }
 }

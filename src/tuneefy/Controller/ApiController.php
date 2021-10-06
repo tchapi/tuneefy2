@@ -2,8 +2,8 @@
 
 namespace tuneefy\Controller;
 
+use Psr\Container\ContainerInterface;
 use RKA\ContentTypeRenderer\Renderer;
-use Slim\Container;
 use tuneefy\DB\DatabaseHandler;
 use tuneefy\Platform\Platform;
 use tuneefy\Platform\PlatformException;
@@ -42,7 +42,7 @@ class ApiController
     ];
 
     // constructor receives container instance
-    public function __construct(Container $container)
+    public function __construct(ContainerInterface $container)
     {
         // JSON / XML renderer
         $this->renderer = new Renderer();
@@ -64,7 +64,7 @@ class ApiController
     public function getAllPlatforms($request, $response, $args)
     {
         $this->container['api_method'] = DatabaseHandler::METHOD_PLATFORMS;
-        $type = strtolower($request->getQueryParam('type'));
+        $type = strtolower($request->getQueryParams()['type'] ?? '');
 
         $platforms = $this->engine->getAllPlatforms();
 
@@ -107,10 +107,12 @@ class ApiController
         $this->container['api_method'] = DatabaseHandler::METHOD_LOOKUP;
         $this->engine->setCurrentToken($this->container['token']);
 
-        $permalink = $request->getQueryParam('q');
+        $params = $request->getQueryParams();
+
+        $permalink = $params['q'] ?? null;
 
         try {
-            $real_mode = $this->engine->translateFlag('mode', $request->getQueryParam('mode'));
+            $real_mode = $this->engine->translateFlag('mode', $params['mode'] ?? null);
         } catch (\Exception $e) {
             $response->write($e->getMessage());
 
@@ -160,13 +162,15 @@ class ApiController
         $this->container['api_method'] = DatabaseHandler::METHOD_SEARCH;
         $this->engine->setCurrentToken($this->container['token']);
 
-        $countryCode = $request->getQueryParam('countryCode');
-        $query = $request->getQueryParam('q');
-        $limit = $request->getQueryParam('limit') ? max(0, min(intval($request->getQueryParam('limit')), Platform::LIMIT * 2)) : Platform::LIMIT;
+        $params = $request->getQueryParams();
+
+        $countryCode = $params['countryCode'] ?? null;
+        $query = $params['q'] ?? null;
+        $limit = isset($params['limit']) ? max(0, min(intval($params['limit']), Platform::LIMIT * 2)) : Platform::LIMIT;
 
         try {
             $real_type = $this->engine->translateFlag('type', $args['type']);
-            $real_mode = $this->engine->translateFlag('mode', $request->getQueryParam('mode'));
+            $real_mode = $this->engine->translateFlag('mode', $params['mode'] ?? null);
         } catch (\Exception $e) {
             $response->write($e->getMessage());
 
@@ -219,16 +223,18 @@ class ApiController
         $this->container['api_method'] = DatabaseHandler::METHOD_AGGREGATE;
         $this->engine->setCurrentToken($this->container['token']);
 
-        $countryCode = $request->getQueryParam('countryCode');
-        $query = $request->getQueryParam('q');
-        $limit = $request->getQueryParam('limit') ? max(0, min(intval($request->getQueryParam('limit')), Platform::LIMIT * 2)) : Platform::LIMIT;
+        $params = $request->getQueryParams();
 
-        $include = strtolower($request->getQueryParam('include'));
-        $aggressive = true && ($request->getQueryParam('aggressive') && 'true' == $request->getQueryParam('aggressive'));
+        $countryCode = $params['countryCode'] ?? null;
+        $query = $params['q'] ?? null;
+        $limit = isset($params['limit']) ? max(0, min(intval($params['limit']), Platform::LIMIT * 2)) : Platform::LIMIT;
+
+        $include = strtolower($params['include'] ?? '');
+        $aggressive = true && (isset($params['aggressive']) && 'true' == $params['aggressive']);
 
         try {
             $real_type = $this->engine->translateFlag('type', strtolower($args['type']));
-            $real_mode = $this->engine->translateFlag('mode', strtolower($request->getQueryParam('mode')));
+            $real_mode = $this->engine->translateFlag('mode', $params['mode'] ?? null);
         } catch (\Exception $e) {
             $response->write($e->getMessage());
 
