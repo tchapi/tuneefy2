@@ -2,9 +2,10 @@
 
 namespace tuneefy\Utils;
 
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use RKA\ContentTypeRenderer\Renderer;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Slim\Psr7\Response;
 use tuneefy\Controller\ApiController;
 
 class ContentTypeMiddleware
@@ -16,19 +17,14 @@ class ContentTypeMiddleware
         'json' => 'application/json',
     ];
 
-    public function __construct($container)
-    {
-        $this->container = $container;
-    }
-
-    public function __invoke(Request $request, Response $response, $next)
+    public function __invoke(Request $request, RequestHandler $handler): Response
     {
         $request = $this->resolveContentType($request);
 
         /**
          * Process All Middlewares.
          */
-        $response = $next($request, $response);
+        $response = $handler->handle($request);
 
         $renderer = new Renderer();
         if (401 === $response->getStatusCode()) {
@@ -57,7 +53,8 @@ class ContentTypeMiddleware
     {
         // Accept the 'format' modifier
         $contentType = $this->defaultContentType;
-        $format = $request->getParam('format');
+        $params = $request->getQueryParams();
+        $format = $params['format'] ?? null;
 
         if ($format && isset($this->allowedContentTypes[$format])) {
             return $request->withHeader('Accept', $this->allowedContentTypes[$format]);

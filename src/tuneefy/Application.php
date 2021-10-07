@@ -216,7 +216,7 @@ class Application
             /* The token route for OAuth */
             $this->slimApp->post('/v2/auth'.Routes\Token::ROUTE, new Routes\Token($this->oauth2Server))->setName('token');
         } else {
-            $this->container['token'] = null;
+            $this->container->set('token', null);
         }
 
         $this->slimApp->add(new ContentTypeMiddleware($this->container));

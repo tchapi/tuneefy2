@@ -30,6 +30,7 @@ class CustomNotFoundHandler implements ErrorHandlerInterface
                                  ->withHeader('Content-Type', 'text/html; charset=UTF-8');
 
             $twig = Twig::fromRequest($request);
+
             return $twig->render($response, '404.html.twig');
         } else {
             $response->withStatus($status);
