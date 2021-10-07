@@ -66,7 +66,7 @@ class ApiController
 
     public function getAllPlatforms($request, $response, $args)
     {
-        $this->container['api_method'] = DatabaseHandler::METHOD_PLATFORMS;
+        $this->container->set('api_method', DatabaseHandler::METHOD_PLATFORMS);
         $type = strtolower($request->getQueryParams()['type'] ?? '');
 
         $platforms = $this->engine->getAllPlatforms();
@@ -91,7 +91,7 @@ class ApiController
 
     public function getPlatform($request, $response, $args)
     {
-        $this->container['api_method'] = DatabaseHandler::METHOD_PLATFORMS;
+        $this->container->set('api_method', DatabaseHandler::METHOD_PLATFORMS);
         $platform = $this->engine->getPlatformByTag($args['tag']);
 
         if (!$platform) {
@@ -107,8 +107,8 @@ class ApiController
 
     public function lookup($request, $response, $args)
     {
-        $this->container['api_method'] = DatabaseHandler::METHOD_LOOKUP;
-        $this->engine->setCurrentToken($this->container['token']);
+        $this->container->set('api_method', DatabaseHandler::METHOD_LOOKUP);
+        $this->engine->setCurrentToken($this->container->get('token'));
 
         $params = $request->getQueryParams();
 
@@ -162,8 +162,8 @@ class ApiController
 
     public function search($request, $response, $args)
     {
-        $this->container['api_method'] = DatabaseHandler::METHOD_SEARCH;
-        $this->engine->setCurrentToken($this->container['token']);
+        $this->container->set('api_method', DatabaseHandler::METHOD_SEARCH);
+        $this->engine->setCurrentToken($this->container->get('token'));
 
         $params = $request->getQueryParams();
 
@@ -223,8 +223,8 @@ class ApiController
 
     public function aggregate($request, $response, $args)
     {
-        $this->container['api_method'] = DatabaseHandler::METHOD_AGGREGATE;
-        $this->engine->setCurrentToken($this->container['token']);
+        $this->container->set('api_method', DatabaseHandler::METHOD_AGGREGATE);
+        $this->engine->setCurrentToken($this->container->get('token'));
 
         $params = $request->getQueryParams();
 
@@ -286,7 +286,7 @@ class ApiController
 
     public function share($request, $response, $args)
     {
-        $this->container['api_method'] = DatabaseHandler::METHOD_SHARE;
+        $this->container->set('api_method', DatabaseHandler::METHOD_SHARE);
         $intent = $args['intent'];
 
         if (null === $intent || '' === $intent) {
