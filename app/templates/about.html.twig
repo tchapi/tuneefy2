@@ -13,7 +13,7 @@
   
   <div class="aboutRow">
     <div class="item1 img_pertinence">{{ "facts.pertinence"|trans|raw }}</div>
-    <div class="item2 img_widget">{{ "facts.minify"|trans({"%minified%": "javascript:(function(){tb=document.createElement('SCRIPT');a.type='text/javascript';a.src='" ~ params.urls.front  ~ "/js/widget.js?x='+(Math.random());document.getElementsByTagName('head')[0].appendChild(a);})();"})|raw }}</div>
+    <div class="item2 img_widget">{{ "facts.minify"|trans({"%minified%": "javascript:(function(){tb=document.createElement('SCRIPT');a.type='text/javascript';a.src='" ~ params.urls.front  ~ "/build/js/widget.js?x='+(Math.random());document.getElementsByTagName('head')[0].appendChild(a);})();"})|raw }}</div>
   </div>
   
   <div class="aboutRow boxed boxS">
@@ -63,7 +63,7 @@
 {% block javascript %}
   {{ parent() }}
   <script src="https://www.google.com/recaptcha/api.js?render={{ params.mail.captcha_key }}"></script>
-  <script type="text/javascript" src="/js/about.js"></script>
+  <script type="text/javascript" src="/build/js/about.js"></script>
   <script>
     grecaptcha.ready(function() {
         grecaptcha.execute('{{ params.mail.captcha_key }}', {action: 'contact'}).then(function(token) {

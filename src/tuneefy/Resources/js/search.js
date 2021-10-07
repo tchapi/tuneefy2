@@ -142,7 +142,7 @@ $(document).ready(function () {
           // Display correct headers
           $('.tHeader_disp[rel=' + options.itemType + ']').show()
           Twig.twig({
-            href: 'js/twig/result.html.twig',
+            href: 'build/js/twig/result.html.twig',
             async: true,
             load: function (template) {
               for (var key in data.results) {

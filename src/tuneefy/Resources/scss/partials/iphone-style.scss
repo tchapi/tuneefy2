@@ -39,7 +39,7 @@ label.iPhoneCheckLabelOn,
 label.iPhoneCheckLabelOn2
  {
   color: white;
-  background: url('../img/iphone-style/on.png') no-repeat;
+  background: url('../../img/iphone-style/on.png') no-repeat;
   text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.6);
   left: 0;
   padding-top: 5px; }
@@ -48,7 +48,7 @@ label.iPhoneCheckLabelOn2
 label.iPhoneCheckLabelOff,
 label.iPhoneCheckLabelOff2 {
   color: #8b8b8b;
-  background: url('../img/iphone-style/off.png') no-repeat right 0;
+  background: url('../../img/iphone-style/off.png') no-repeat right 0;
   text-shadow: 0px 0px 2px rgba(255, 255, 255, 0.6);
   text-align: right;
   right: 0; }
@@ -64,7 +64,7 @@ label.iPhoneCheckLabelOff2 {
   top: 0;
   left: 0;
   width: 0;
-  background: url('../img/iphone-style/slider_left.png') no-repeat;
+  background: url('../../img/iphone-style/slider_left.png') no-repeat;
   padding-left: 3px; }
 
 .iPhoneCheckHandle2{
@@ -77,13 +77,13 @@ label.iPhoneCheckLabelOff2 {
   height: 100%;
   width: 100%;
   padding-right: 3px;
-  background: url('../img/iphone-style/slider_right.png') no-repeat right 0; }
+  background: url('../../img/iphone-style/slider_right.png') no-repeat right 0; }
 
 .iPhoneCheckHandleCenter,
 .iPhoneCheckHandleCenter2 {
   height: 100%;
   width: 100%;
-  background: url('../img/iphone-style/slider_center.png'); }
+  background: url('../../img/iphone-style/slider_center.png'); }
 
 /* tchap : for CSS */
 .iPhoneCheckContainer { width: 92px; }
@@ -115,10 +115,10 @@ label.iPhoneCheckLabelOff2 {
 }
 
 .activeTracks{
-  background: url('../img/track_on.png') no-repeat 9px 3px;
+  background: url('../../img/track_on.png') no-repeat 9px 3px;
 }
 .activeAlbums{
-  background: url('../img/album_on.png') no-repeat 9px 3px;
+  background: url('../../img/album_on.png') no-repeat 9px 3px;
 }
 
 .otherContainer label {
@@ -126,8 +126,8 @@ label.iPhoneCheckLabelOff2 {
 }
 
 label.iPhoneCheckLabelOn.albums{
-  background: url('../img/album_off.png') no-repeat 13px 4px;
+  background: url('../../img/album_off.png') no-repeat 13px 4px;
 }
 label.iPhoneCheckLabelOff.tracks{
-  background: url('../img/track_off.png') no-repeat 54px 3px;
+  background: url('../../img/track_off.png') no-repeat 54px 3px;
 }

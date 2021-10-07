@@ -64,19 +64,19 @@ a.btns{
 a.btns:hover{ background-position: 0px -32px; }
 a.btns.off{ background-position: 0px -64px; }
 
-a.btn_deezer{ background: url("../img/platforms/platform_deezer.png") no-repeat;}
-a.btn_spotify{ background: url("../img/platforms/platform_spotify.png") no-repeat;}
-a.btn_qobuz{ background: url("../img/platforms/platform_qobuz.png") no-repeat;}
-a.btn_lastfm{ background: url("../img/platforms/platform_lastfm.png") no-repeat;}
-a.btn_itunes{ background: url("../img/platforms/platform_itunes.png") no-repeat;}
-a.btn_youtube{ background: url("../img/platforms/platform_youtube.png") no-repeat;}
-a.btn_soundcloud{ background: url("../img/platforms/platform_soundcloud.png") no-repeat;}
-a.btn_mixcloud{ background: url("../img/platforms/platform_mixcloud.png") no-repeat;}
-a.btn_groove{ background: url("../img/platforms/platform_groove.png") no-repeat;}
-a.btn_napster{ background: url("../img/platforms/platform_napster.png") no-repeat;}
-a.btn_tidal{ background: url("../img/platforms/platform_tidal.png") no-repeat;}
-a.btn_amazon{ background: url("../img/platforms/platform_amazon.png") no-repeat;}
-a.btn_hypem{ background: url("../img/platforms/platform_hypem.png") no-repeat;}
+a.btn_deezer{ background: url("../../img/platforms/platform_deezer.png") no-repeat;}
+a.btn_spotify{ background: url("../../img/platforms/platform_spotify.png") no-repeat;}
+a.btn_qobuz{ background: url("../../img/platforms/platform_qobuz.png") no-repeat;}
+a.btn_lastfm{ background: url("../../img/platforms/platform_lastfm.png") no-repeat;}
+a.btn_itunes{ background: url("../../img/platforms/platform_itunes.png") no-repeat;}
+a.btn_youtube{ background: url("../../img/platforms/platform_youtube.png") no-repeat;}
+a.btn_soundcloud{ background: url("../../img/platforms/platform_soundcloud.png") no-repeat;}
+a.btn_mixcloud{ background: url("../../img/platforms/platform_mixcloud.png") no-repeat;}
+a.btn_groove{ background: url("../../img/platforms/platform_groove.png") no-repeat;}
+a.btn_napster{ background: url("../../img/platforms/platform_napster.png") no-repeat;}
+a.btn_tidal{ background: url("../../img/platforms/platform_tidal.png") no-repeat;}
+a.btn_amazon{ background: url("../../img/platforms/platform_amazon.png") no-repeat;}
+a.btn_hypem{ background: url("../../img/platforms/platform_hypem.png") no-repeat;}
 
 a.btns_full{
   display: inline-block;
@@ -86,25 +86,25 @@ a.btns_full{
 
 a.btns_full:hover{ background-position: 0px -32px; }
 
-a.btn_full_deezer{ background: url("../img/platforms/platform_full_deezer.png") no-repeat; width: 98px;}
-a.btn_full_spotify{ background: url("../img/platforms/platform_full_spotify.png") no-repeat; width: 97px; }
-a.btn_full_qobuz{ background: url("../img/platforms/platform_full_qobuz.png") no-repeat; width: 84px; }
-a.btn_full_lastfm{ background: url("../img/platforms/platform_full_lastfm.png") no-repeat; width: 93px; }
-a.btn_full_itunes{ background: url("../img/platforms/platform_full_itunes.png") no-repeat; width: 87px; }
-a.btn_full_youtube{ background: url("../img/platforms/platform_full_youtube.png") no-repeat; width: 136px; }
-a.btn_full_soundcloud{ background: url("../img/platforms/platform_full_soundcloud.png") no-repeat; width: 130px; }
-a.btn_full_mixcloud{ background: url("../img/platforms/platform_full_mixcloud.png") no-repeat; width: 130px; }
-a.btn_full_groove{ background: url("../img/platforms/platform_full_groove.png") no-repeat; width: 123px; }
-a.btn_full_napster{ background: url("../img/platforms/platform_full_napster.png") no-repeat; width: 101px; }
-a.btn_full_tidal{ background: url("../img/platforms/platform_full_tidal.png") no-repeat; width: 79px; }
-a.btn_full_amazon{ background: url("../img/platforms/platform_full_amazon.png") no-repeat; width: 102px; }
-a.btn_full_hypem{ background: url("../img/platforms/platform_full_hypem.png") no-repeat; width: 70px; }
+a.btn_full_deezer{ background: url("../../img/platforms/platform_full_deezer.png") no-repeat; width: 98px;}
+a.btn_full_spotify{ background: url("../../img/platforms/platform_full_spotify.png") no-repeat; width: 97px; }
+a.btn_full_qobuz{ background: url("../../img/platforms/platform_full_qobuz.png") no-repeat; width: 84px; }
+a.btn_full_lastfm{ background: url("../../img/platforms/platform_full_lastfm.png") no-repeat; width: 93px; }
+a.btn_full_itunes{ background: url("../../img/platforms/platform_full_itunes.png") no-repeat; width: 87px; }
+a.btn_full_youtube{ background: url("../../img/platforms/platform_full_youtube.png") no-repeat; width: 136px; }
+a.btn_full_soundcloud{ background: url("../../img/platforms/platform_full_soundcloud.png") no-repeat; width: 130px; }
+a.btn_full_mixcloud{ background: url("../../img/platforms/platform_full_mixcloud.png") no-repeat; width: 130px; }
+a.btn_full_groove{ background: url("../../img/platforms/platform_full_groove.png") no-repeat; width: 123px; }
+a.btn_full_napster{ background: url("../../img/platforms/platform_full_napster.png") no-repeat; width: 101px; }
+a.btn_full_tidal{ background: url("../../img/platforms/platform_full_tidal.png") no-repeat; width: 79px; }
+a.btn_full_amazon{ background: url("../../img/platforms/platform_full_amazon.png") no-repeat; width: 102px; }
+a.btn_full_hypem{ background: url("../../img/platforms/platform_full_hypem.png") no-repeat; width: 70px; }
 
 /* Main colors */
 .color{ color: #76bad0; }
 .color a{ color: #76bad0; }
 .Fcolor{ background: #76bad0; }
-.Bcolor{ background: url('../img/background.png') repeat scroll 0 0 #1D1D1D; }
+.Bcolor{ background: url('../../img/background.png') repeat scroll 0 0 #1D1D1D; }
 
 /* Borders - separators */
 .bdTop{ border-top: 1px solid #303030; }
@@ -164,13 +164,13 @@ a.btn:active{ box-shadow: 0 3px 3px #171717 inset,  0 1px #171717;  }
   top:4px;
   left:4px;
   border: 1px solid #AAA;
-  background: url("../img/coverlay.png") center center;
+  background: url("../../img/coverlay.png") center center;
 }
 .cover img, .tImage img{
   border: 4px solid white;
   box-shadow: 0px 0px 3px black;
   display: block;
-  background: url("../img/nothumb_track.png") no-repeat scroll center center;
+  background: url("../../img/nothumb_track.png") no-repeat scroll center center;
 }
 
 
@@ -224,10 +224,10 @@ a.btn:active{ box-shadow: 0 3px 3px #171717 inset,  0 1px #171717;  }
   font-size: 0.75em;
 }
 
-.browser_ie a{ background: url("../img/browsers.png") no-repeat scroll -284px 0;}
-.browser_ff a{ background: url("../img/browsers.png") no-repeat scroll -73px 0;}
-.browser_gc a{ background: url("../img/browsers.png") no-repeat scroll 0px 0;}
-.browser_as a{ background: url("../img/browsers.png") no-repeat scroll -211px 0;}
+.browser_ie a{ background: url("../../img/browsers.png") no-repeat scroll -284px 0;}
+.browser_ff a{ background: url("../../img/browsers.png") no-repeat scroll -73px 0;}
+.browser_gc a{ background: url("../../img/browsers.png") no-repeat scroll 0px 0;}
+.browser_as a{ background: url("../../img/browsers.png") no-repeat scroll -211px 0;}
 
 #error-wrapper ul.browserList li a{
   color: white;

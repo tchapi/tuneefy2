@@ -36,8 +36,8 @@
   <meta content="yes" name="apple-mobile-web-app-capable" />
   <link href="/img/social.png" rel="apple-touch-icon" />
 
-  <link rel="stylesheet" href="/css/styles.css"/>
-  {% if embed %}<link rel="stylesheet" href="/css/embed.css"/>{% endif %}
+  <link rel="stylesheet" href="/build/css/styles.css"/>
+  {% if embed %}<link rel="stylesheet" href="/build/css/embed.css"/>{% endif %}
 
   <script type="text/javascript">var fb_app_id = '{{ params.facebook.app_id }}';</script>
 </head>
@@ -111,8 +111,8 @@
       })();
     </script>
   {% endif %}
-  <script type="text/javascript" src="/js/vendor/jquery-3.6.0.min.js"></script>
-  <script type="text/javascript" src="/js/main.js"></script>
+  <script type="text/javascript" src="/build/js/vendor/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="/build/js/main.js"></script>
 {% endblock %}
 
 </body>

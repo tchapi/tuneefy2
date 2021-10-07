@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta http-equiv="content-language" content="{{ locale }}">
-  <link rel="stylesheet" href="/css/widget.css"/>
+  <link rel="stylesheet" href="/build/css/widget.css"/>
 </head>
 <body>
   <div id="wrapper">
@@ -34,8 +34,8 @@
       })();
     </script>
   {% endif %}
-  <script type="text/javascript" src="/js/vendor/jquery-3.2.1.min.js"></script>
-  <script type="text/javascript" src="/js/main.js"></script>
+  <script type="text/javascript" src="/build/js/vendor/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/build/js/main.js"></script>
   <script type="text/javascript">
     var $default_platforms = "{{ default_platforms }}";
     var $error_message = "{{ "search.error_message"|trans }}";
@@ -45,8 +45,8 @@
     var $share_tip = "{{ "results.share_tip"|trans|raw }}";
     var $path = "{{ url_for('listen_direct', {'platform': '%key%'}) }}";
   </script>
-  <script type="text/javascript" src="/js/vendor/twig.min.js"></script>
-  <script type="text/javascript" src="/js/search.js"></script>
+  <script type="text/javascript" src="/build/js/vendor/twig.min.js"></script>
+  <script type="text/javascript" src="/build/js/search.js"></script>
   <script type="text/javascript">
       $(document).ready(function(){
         search("{{ url_for('aggregate', {type: 'track'}) }}", "{{ query }}", {

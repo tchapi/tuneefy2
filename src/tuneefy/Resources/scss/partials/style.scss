@@ -30,7 +30,7 @@
 
 #lang .activeLang{
   color: white;
-  background: url("../img/lang_underlay.png") no-repeat scroll center bottom;
+  background: url("../../img/lang_underlay.png") no-repeat scroll center bottom;
 }
 #lang span:hover{
   color: white;
@@ -66,7 +66,7 @@
 #navigation li a.current{
   border-top: none;
   box-shadow: none;
-  background: url("../img/background_menu.png") repeat scroll center top transparent;
+  background: url("../../img/background_menu.png") repeat scroll center top transparent;
 }
 
 #navigation li a:hover{
@@ -262,7 +262,7 @@ h2.infoTitle, h2.pickTitle{
 }
 
 #query{
-  background: url("../img/icon_search.png") no-repeat scroll 17px 16px #c3c3c3;
+  background: url("../../img/icon_search.png") no-repeat scroll 17px 16px #c3c3c3;
   box-sizing: border-box;
   height: 54px;
   width: 100%;
@@ -350,7 +350,7 @@ h2.infoTitle, h2.pickTitle{
   top: 10px;
   right: 310px;
   border: none;
-  background: url("../img/reset.png") no-repeat scroll center top transparent;
+  background: url("../../img/reset.png") no-repeat scroll center top transparent;
   width: 29px;
   height: 55px;
   cursor: pointer;
@@ -365,7 +365,7 @@ h2.infoTitle, h2.pickTitle{
   width: 56px;
   right: 8px;
   top: 9px;
-  background: url("../img/options_down.png") no-repeat scroll 21px 23px transparent;
+  background: url("../../img/options_down.png") no-repeat scroll 21px 23px transparent;
   border-left: 1px solid #363636;
   cursor: pointer;
   border-radius: 0 5px 5px 0;
@@ -473,7 +473,7 @@ h2.infoTitle, h2.pickTitle{
   font-weight: bold;
 }
 #help span.closeHelp{
-  background: url("../img/close.png") no-repeat scroll center top transparent;
+  background: url("../../img/close.png") no-repeat scroll center top transparent;
   display: block;
   float: right;
   height: 32px;
@@ -498,7 +498,7 @@ h2.infoTitle, h2.pickTitle{
 }
 
 #help .searchForIt{
-  background: url("../img/icon_search_help.png") no-repeat scroll 5px 4px #DBDBDB;
+  background: url("../../img/icon_search_help.png") no-repeat scroll 5px 4px #DBDBDB;
   border-radius: 3px 3px 3px 3px;
   color: #484848;
   padding: 5px;
@@ -562,7 +562,7 @@ h2.infoTitle, h2.pickTitle{
   cursor: pointer;
   color: red;
   font-weight: bold;
-  background: url("../img/reset.png") no-repeat scroll center -63px transparent;
+  background: url("../../img/reset.png") no-repeat scroll center -63px transparent;
   width: 39px;
   height: 39px;
   position: absolute;
@@ -879,7 +879,7 @@ li.tResult:last-child{
 }
 
 #embed, #facebookShare, #twitterShare, #mailShare{
-  background: url("../img/share.png") no-repeat scroll 0px 0px transparent;
+  background: url("../../img/share.png") no-repeat scroll 0px 0px transparent;
   display: inline-block;
   height: 33px;
   width: 35px;
@@ -944,13 +944,13 @@ h2.aboutTitle, h2.aboutTitles{
   height: 100%;
 }
 
-.img_info{ background: url("../img/fact_sharing.png") no-repeat scroll left top transparent;}
-.img_friends{ background: url("../img/fact_friends.png") no-repeat scroll left top transparent;}
-.img_pertinence{ background: url("../img/fact_pertinence.png") no-repeat scroll left top transparent;}
-.img_widget{ background: url("../img/fact_widget.png") no-repeat scroll left top transparent;}
-.img_picks{ background: url("../img/fact_picks.png") no-repeat scroll left top transparent;}
-.img_patterns{ background: url("../img/fact_patterns.png") no-repeat scroll left top transparent;}
-.img_free{ background: url("../img/fact_free.png") no-repeat scroll left top transparent;}
+.img_info{ background: url("../../img/fact_sharing.png") no-repeat scroll left top transparent;}
+.img_friends{ background: url("../../img/fact_friends.png") no-repeat scroll left top transparent;}
+.img_pertinence{ background: url("../../img/fact_pertinence.png") no-repeat scroll left top transparent;}
+.img_widget{ background: url("../../img/fact_widget.png") no-repeat scroll left top transparent;}
+.img_picks{ background: url("../../img/fact_picks.png") no-repeat scroll left top transparent;}
+.img_patterns{ background: url("../../img/fact_patterns.png") no-repeat scroll left top transparent;}
+.img_free{ background: url("../../img/fact_free.png") no-repeat scroll left top transparent;}
 
 #about-wrapper a.widgetBookmark{
   display: block;
@@ -1009,16 +1009,16 @@ h2.aboutTitle, h2.aboutTitles{
 }
 
 #about-wrapper li.song{ 
-  background: url("../img/song_link.png") no-repeat scroll 12px center transparent;
+  background: url("../../img/song_link.png") no-repeat scroll 12px center transparent;
   border-bottom: 1px solid #101010;
 }
 #about-wrapper li.artist{ 
-  background: url("../img/artist_link.png") no-repeat scroll 12px center transparent;
+  background: url("../../img/artist_link.png") no-repeat scroll 12px center transparent;
   border-bottom: 1px solid #101010;
   border-top: 1px solid #242424;
 }
 #about-wrapper li.album{
-  background: url("../img/album_link.png") no-repeat scroll 12px center transparent;
+  background: url("../../img/album_link.png") no-repeat scroll 12px center transparent;
   border-top: 1px solid #242424;
 }
 
@@ -1052,8 +1052,8 @@ h2.aboutTitle, h2.aboutTitles{
   color: #76bad0;
 }
 
-#team-wrapper .creator.idea{ background: url("../img/creator_idea.png") no-repeat scroll center top transparent; }
-#team-wrapper .creator.design{ background: url("../img/creator_design.png") no-repeat scroll center top transparent; }
+#team-wrapper .creator.idea{ background: url("../../img/creator_idea.png") no-repeat scroll center top transparent; }
+#team-wrapper .creator.design{ background: url("../../img/creator_design.png") no-repeat scroll center top transparent; }
 
 #team-wrapper .creator.idea:hover{
   background-position: center -180px;
@@ -1142,8 +1142,8 @@ h2.aboutTitle, h2.aboutTitles{
   padding-top: 89px;
 }
 
-#contactFormWrapper .successMail{ background: url("../img/success.png") no-repeat scroll center center transparent; }
-#contactFormWrapper .errorMail{ background: url("../img/error.png") no-repeat scroll center center transparent; }
+#contactFormWrapper .successMail{ background: url("../../img/success.png") no-repeat scroll center center transparent; }
+#contactFormWrapper .errorMail{ background: url("../../img/error.png") no-repeat scroll center center transparent; }
 
 #contactFormWrapper a{
   float: none;
@@ -1493,7 +1493,7 @@ tr.platformsEnum{
 #footer a:hover{ color: #AAAAAA; }
 
 #footer a.twitterLink{
-  background: url('../img/twitter.png') no-repeat scroll 0px 1px;
+  background: url('../../img/twitter.png') no-repeat scroll 0px 1px;
   padding-left: 18px;
 }
 #footer a.twitterLink:hover{
@@ -1521,6 +1521,6 @@ tr.platformsEnum{
   vertical-align: text-bottom;
 }
 
-.extra.extra-cover { background-image: url('../img/extra_cover.png')}
-.extra.extra-acoustic { background-image: url('../img/extra_acoustic.png')}
-.extra.extra-remix { background-image: url('../img/extra_remix.png')}
+.extra.extra-cover { background-image: url('../../img/extra_cover.png')}
+.extra.extra-acoustic { background-image: url('../../img/extra_acoustic.png')}
+.extra.extra-remix { background-image: url('../../img/extra_remix.png')}

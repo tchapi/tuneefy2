@@ -14,3 +14,6 @@ var/*
 
 deploy/vars.yml
 deploy/*.prod.yml
+
+TODO.*
+/web/build

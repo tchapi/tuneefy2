@@ -1,6 +1,6 @@
 {
   "name": "tuneefy",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "A new version of [tuneefy](http://tuneefy.com) built for PHP 7, from the ground up, using the minimal Slim framework and a few helper libraries.",
   "main": "index.js",
   "directories": {
@@ -20,13 +20,14 @@
     "url": "https://github.com/tchapi/tuneefy2/issues"
   },
   "homepage": "https://github.com/tchapi/tuneefy2#readme",
-  "dependencies": {
+  "devDependencies": {
     "aglio": "^2.3.0",
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
-    "gulp-sass": "^4.1.0",
     "gulp-uglify": "^3.0.2",
     "pump": "^3.0",
-    "standard": "^16.0.3"
+    "standard": "^16.0.3",
+    "gulp-sass": "^5.0.0",
+    "sass": "^1.42.1"
   }
 }
