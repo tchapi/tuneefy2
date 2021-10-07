@@ -4,6 +4,7 @@ namespace tuneefy\Controller;
 
 use Psr\Container\ContainerInterface;
 use RKA\ContentTypeRenderer\Renderer;
+use Slim\Routing\RouteContext;
 use tuneefy\DB\DatabaseHandler;
 use tuneefy\Platform\Platform;
 use tuneefy\Platform\PlatformException;
@@ -59,7 +60,10 @@ class ApiController
 
     public function redirect($request, $response, $args)
     {
-        $route = $this->container->get('router')->pathFor('api');
+        $routeContext = RouteContext::fromRequest($request);
+        $routeParser = $routeContext->getRouteParser();
+
+        $route = $routeParser->urlFor('api');
 
         return $response->withStatus(301)->withHeader('Location', $route);
     }
