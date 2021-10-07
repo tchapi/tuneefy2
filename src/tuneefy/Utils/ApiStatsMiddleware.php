@@ -2,8 +2,9 @@
 
 namespace tuneefy\Utils;
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
+use Slim\Psr7\Response;
 use tuneefy\DB\DatabaseHandler;
 
 class ApiStatsMiddleware
@@ -13,9 +14,9 @@ class ApiStatsMiddleware
         $this->container = $container;
     }
 
-    public function __invoke(Request $request, Response $response, $next)
+    public function __invoke(Request $request, RequestHandler $handler): Response
     {
-        $response = $next($request, $response);
+        $response = $handler->handle($request);
 
         $method = $this->container->has('api_method') ? $this->container->get('api_method') : null;
         $clientId = $this->container->has('token') ? $this->container->get('token')['client_id'] : null;

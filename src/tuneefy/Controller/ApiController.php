@@ -38,8 +38,6 @@ class ApiController
 
         'NOT_AUTHORIZED' => ['NOT_AUTHORIZED' => 'Not authorized, check the token'],
         'NOT_ACTIVE' => ['NOT_ACTIVE' => 'Your client/secret pair is not active, contact us'],
-        'NOT_FOUND' => ['NOT_FOUND' => 'Not found'],
-        'NOT_ALLOWED' => ['NOT_ALLOWED' => 'Method not allowed'],
 
         404 => ['NOT_FOUND' => 'Not found'],
         405 => ['NOT_ALLOWED' => 'Method not allowed'],

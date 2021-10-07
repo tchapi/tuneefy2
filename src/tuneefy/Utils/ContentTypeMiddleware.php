@@ -38,7 +38,7 @@ class ContentTypeMiddleware
             ]);
         } elseif (4 === intval($response->getStatusCode() / 100)) {
             $response = $renderer->render($request, $response, [
-                'errors' => [ApiController::ERRORS['NOT_FOUND']],
+                'errors' => [ApiController::ERRORS[404]],
             ]);
         } elseif (5 === intval($response->getStatusCode() / 100)) {
             $response = $renderer->render($request, $response, [
