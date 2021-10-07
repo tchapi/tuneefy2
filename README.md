@@ -27,7 +27,7 @@ To build the assets and the API documentation, I use **npm** and some modules.
 
   - [Composer](https://getcomposer.org/), providing a nice package manager *and* a practical PSR-4 autoloader
   - [Symfony\Yaml](http://symfony.com/doc/current/components/yaml/introduction.html) to parse the configuration files
-  - [Slim](http://www.slimframework.com/), a lightweight RESTful framework
+  - [Slim 4](http://www.slimframework.com/), a lightweight RESTful framework
   - [Twig](http://twig.sensiolabs.org/), a template engine
   - [XmlToJsonConverter](https://github.com/markwilson/xml-to-json) to convert Amazon XML to correct JSON
   - [RKA Content-Type renderer](https://github.com/akrabat/rka-content-type-renderer) to output JSON / XML / HTML for the API
