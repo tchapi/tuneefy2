@@ -2,7 +2,8 @@
 
 namespace tuneefy\Controller;
 
-use Slim\Container;
+use Psr\Container\ContainerInterface;
+use Slim\Views\Twig;
 use tuneefy\DB\DatabaseHandler;
 
 class BackendController
@@ -10,7 +11,7 @@ class BackendController
     protected $container;
 
     // constructor receives container instance
-    public function __construct(Container $container)
+    public function __construct(ContainerInterface $container)
     {
         // Slim container
         $this->container = $container;
@@ -18,6 +19,7 @@ class BackendController
 
     public function dashboard($request, $response)
     {
+        $view = Twig::fromRequest($request);
         $db = DatabaseHandler::getInstance(null);
 
         $statsRaw = $db->getApiStats();
@@ -26,14 +28,14 @@ class BackendController
         $stats = [];
 
         foreach ($statsRaw as $stat) {
-            if (isset($stats[$stat['method']])) {
+            if (isset($stats[DatabaseHandler::METHOD_NAMES[$stat['method']]])) {
                 $stats[DatabaseHandler::METHOD_NAMES[$stat['method']]] += $stat['count'];
             } else {
                 $stats[DatabaseHandler::METHOD_NAMES[$stat['method']]] = $stat['count'];
             }
         }
 
-        return $this->container->get('view')->render($response, 'admin/dashboard.html.twig', [
+        return $view->render($response, 'admin/dashboard.html.twig', [
             'params' => $this->container->get('params'),
             'itemsStats' => $db->getItemsStats(),
             'apiStats' => $stats,
@@ -44,6 +46,7 @@ class BackendController
 
     public function clients($request, $response)
     {
+        $view = Twig::fromRequest($request);
         $db = DatabaseHandler::getInstance(null);
         $clients = $db->getApiClients();
         $statsRaw = $db->getApiStats();
@@ -56,7 +59,7 @@ class BackendController
             ];
         }
 
-        return $this->container->get('view')->render($response, 'admin/clients.html.twig', [
+        return $view->render($response, 'admin/clients.html.twig', [
             'params' => $this->container->get('params'),
             'clients' => $clients,
             'stats' => $stats,
@@ -65,7 +68,7 @@ class BackendController
 
     public function createClient($request, $response)
     {
-        if ($request->isPost()) {
+        if ('POST' === $request->getMethod()) {
             $db = DatabaseHandler::getInstance(null);
             $db->addApiClient(
                 $request->getParsedBodyParam('name'),
@@ -77,12 +80,18 @@ class BackendController
                 $request->getParsedBodyParam('active')
             );
 
-            $uri = $request->getUri()->withPath($this->container->get('router')->pathFor('admin_clients'));
+            $routeContext = RouteContext::fromRequest($request);
+            $routeParser = $routeContext->getRouteParser();
+
+            $route = $routeParser->urlFor('admin_clients');
+            $uri = $request->getUri()->withPath($route);
 
             return $response->withRedirect($uri);
         }
 
-        return $this->container->get('view')->render($response, 'admin/clients.new.html.twig', [
+        $view = Twig::fromRequest($request);
+
+        return $view->render($response, 'admin/clients.new.html.twig', [
             'params' => $this->container->get('params'),
         ]);
     }
