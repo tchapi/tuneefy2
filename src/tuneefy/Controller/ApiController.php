@@ -79,7 +79,7 @@ class ApiController
             }));
 
             if (0 === count($platforms)) {
-                $response->write('BAD_PLATFORM_TYPE');
+                $response->getBody()->write('BAD_PLATFORM_TYPE');
 
                 return $response->withStatus(400);
             }
@@ -97,7 +97,7 @@ class ApiController
         $platform = $this->engine->getPlatformByTag($args['tag']);
 
         if (!$platform) {
-            $response->write('BAD_PLATFORM');
+            $response->getBody()->write('BAD_PLATFORM');
 
             return $response->withStatus(404);
         }
@@ -119,14 +119,14 @@ class ApiController
         try {
             $real_mode = $this->engine->translateFlag('mode', $params['mode'] ?? null);
         } catch (\Exception $e) {
-            $response->write($e->getMessage());
+            $response->getBody()->write($e->getMessage());
 
             return $response->withStatus(400);
         }
 
         // Permalink could be null, but we don't accept that
         if (null === $permalink || '' === $permalink) {
-            $response->write('MISSING_PERMALINK');
+            $response->getBody()->write('MISSING_PERMALINK');
 
             return $response->withStatus(400);
         }
@@ -177,20 +177,20 @@ class ApiController
             $real_type = $this->engine->translateFlag('type', $args['type']);
             $real_mode = $this->engine->translateFlag('mode', $params['mode'] ?? null);
         } catch (\Exception $e) {
-            $response->write($e->getMessage());
+            $response->getBody()->write($e->getMessage());
 
             return $response->withStatus(400);
         }
 
         if (null === $query || '' === $query) {
-            $response->write('MISSING_QUERY');
+            $response->getBody()->write('MISSING_QUERY');
 
             return $response->withStatus(400);
         }
 
         $platform = $this->engine->getPlatformByTag($args['platform_str']);
         if (null === $platform) {
-            $response->write('BAD_PLATFORM');
+            $response->getBody()->write('BAD_PLATFORM');
 
             return $response->withStatus(400);
         }
@@ -241,13 +241,13 @@ class ApiController
             $real_type = $this->engine->translateFlag('type', strtolower($args['type']));
             $real_mode = $this->engine->translateFlag('mode', $params['mode'] ?? null);
         } catch (\Exception $e) {
-            $response->write($e->getMessage());
+            $response->getBody()->write($e->getMessage());
 
             return $response->withStatus(400);
         }
 
         if (null === $query || '' === $query) {
-            $response->write('MISSING_QUERY');
+            $response->getBody()->write('MISSING_QUERY');
 
             return $response->withStatus(400);
         }
@@ -292,7 +292,7 @@ class ApiController
         $intent = $args['intent'];
 
         if (null === $intent || '' === $intent) {
-            $response->write('NO_INTENT');
+            $response->getBody()->write('NO_INTENT');
 
             return $response->withStatus(400);
         }
@@ -302,7 +302,7 @@ class ApiController
         try {
             list($type, $uid) = $db->fixItemWithIntent($intent);
         } catch (\Exception $e) {
-            $response->write($e->getMessage());
+            $response->getBody()->write($e->getMessage());
 
             return $response->withStatus(400);
         }
