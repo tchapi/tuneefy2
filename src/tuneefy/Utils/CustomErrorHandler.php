@@ -2,43 +2,58 @@
 
 namespace tuneefy\Utils;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 use RKA\ContentTypeRenderer\Renderer;
-use Slim\Http\Response;
+use Slim\Interfaces\ErrorHandlerInterface;
+use Slim\Psr7\Response;
 use Slim\Views\Twig;
 use tuneefy\Controller\ApiController;
 
-class CustomErrorHandler
+class CustomErrorHandler implements ErrorHandlerInterface
 {
-    private $status;
-    private $message;
+    private bool $isApiRoute;
+    private Twig $twig;
+    private $logger;
 
-    private $view;
-
-    private $renderer;
-
-    public function __construct(Twig $view, bool $isApiRoute, int $status, string $message)
+    public function __construct(bool $isApiRoute, Twig $twig, LoggerInterface $logger)
     {
         $this->isApiRoute = $isApiRoute;
-        $this->view = $view;
-        $this->status = $status;
-        $this->message = $message;
-
-        $this->renderer = new Renderer();
+        $this->twig = $twig;
+        $this->logger = $logger;
     }
 
-    public function __invoke($request, $response, $exceptionOrError)
+    private function makePrettyException(\Throwable $e)
     {
+        $trace = $e->getTrace();
+        $result = $e->getMessage();
+        $result .= '" @ ';
+        if ('' != $trace[0]['class']) {
+            $result .= $trace[0]['class'];
+            $result .= '->';
+        }
+        $result .= $trace[0]['function'];
+        $result .= '()';
+
+        return $result;
+    }
+
+    public function __invoke(ServerRequestInterface $request, \Throwable $exception, bool $displayErrorDetails, bool $logErrors, bool $logErrorDetails): ResponseInterface
+    {
+        $this->logger->error($this->makePrettyException($exception));
+        $response = (new Response())->withStatus(500);
+
         // Depending on the group we should render an error page or a structured response
         if (!$this->isApiRoute) {
-            $response = $response->withStatus($this->status)
-                                 ->withHeader('Content-Type', 'text/html; charset=UTF-8');
+            $response = $response->withHeader('Content-Type', 'text/html; charset=UTF-8');
 
-            return $this->view->render($response, '500.html.twig');
+            return $this->twig->render($response, '500.html.twig');
         } else {
-            $response->withStatus($this->status);
+            $renderer = new Renderer();
 
-            return $this->renderer->render($request, $response, [
-                'errors' => [ApiController::ERRORS[$this->message]],
+            return $renderer->render($request, $response, [
+                'errors' => [ApiController::ERRORS['GENERAL_ERROR']],
             ]);
         }
     }

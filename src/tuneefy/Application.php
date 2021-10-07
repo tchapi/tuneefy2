@@ -4,6 +4,8 @@ namespace tuneefy;
 
 use Chadicus\Slim\OAuth2\Middleware;
 use Chadicus\Slim\OAuth2\Routes;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use OAuth2;
 use Slim\Exception\HttpNotFoundException;
 use Slim\Factory\AppFactory;
@@ -52,7 +54,7 @@ class Application
         AppFactory::setContainer($container);
         $this->slimApp = AppFactory::create();
 
-        $twig = Twig::create(self::getPath('templates'), [
+        $this->twig = Twig::create(self::getPath('templates'), [
           'cache' => false,
           //'cache' => self::getPath('cache'),
         ]);
@@ -77,10 +79,10 @@ class Application
         }
 
         $translator = new Translator($locale);
-        $twig->getEnvironment()->addGlobal('locale', $locale);
+        $this->twig->getEnvironment()->addGlobal('locale', $locale);
 
         // If we want to add specific data to the context, it's here
-        $twig->getEnvironment()->addGlobal('context', [
+        $this->twig->getEnvironment()->addGlobal('context', [
             // ** Detect Slack
             'slack' => isset($_SERVER['HTTP_USER_AGENT']) ? (0 !== preg_match('/Slackbot/', $_SERVER['HTTP_USER_AGENT'])) : false,
         ]);
@@ -94,17 +96,9 @@ class Application
         $translator->addResource('yaml', self::getPath('langs').'/en_US.yml', 'en_US'); // English
 
         // add translator functions to Twig
-        $twig->addExtension(new TranslationExtension($translator));
+        $this->twig->addExtension(new TranslationExtension($translator));
 
-        $this->slimApp->add(TwigMiddleware::create($this->slimApp, $twig));
-
-        // $container['errorHandler'] = function ($container) {
-        //     return new CustomErrorHandler($container->get('view'), 500, 'GENERAL_ERROR');
-        // };
-
-        // $container['phpErrorHandler'] = function ($container) {
-        //     return $container['errorHandler'];
-        // };
+        $this->slimApp->add(TwigMiddleware::create($this->slimApp, $this->twig));
 
         // Application engine
         $this->engine = new PlatformEngine();
@@ -180,6 +174,18 @@ class Application
                                               // and PHP doesn't have the rights to gc the session folder
     }
 
+    private function addErrorMiddlewares(bool $isApiRoute)
+    {
+        $logger = new Logger('tuneefy');
+        $streamHandler = new StreamHandler(__DIR__.'/../../var/logs/main.log', 100);
+        $logger->pushHandler($streamHandler);
+
+        $errorMiddleware = $this->slimApp->addErrorMiddleware(true, true, true, $logger);
+        $errorMiddleware->setErrorHandler(HttpNotFoundException::class, new CustomNotFoundHandler($isApiRoute));
+        $errorMiddleware->setErrorHandler(HttpMethodNotAllowedException::class, new CustomNotFoundHandler($isApiRoute));
+        $errorMiddleware->setDefaultErrorHandler(new CustomErrorHandler($isApiRoute, $this->twig, $logger));
+    }
+
     public function setupV2ApiRoutes()
     {
         /* Documentation for the API, has to go first */
@@ -221,9 +227,7 @@ class Application
 
         $this->slimApp->add(new ContentTypeMiddleware($this->container));
 
-        $errorMiddleware = $this->slimApp->addErrorMiddleware(true, true, true);
-        $errorMiddleware->setErrorHandler(HttpNotFoundException::class, new CustomNotFoundHandler(true));
-        $errorMiddleware->setErrorHandler(HttpMethodNotAllowedException::class, new CustomNotFoundHandler(true));
+        $this->addErrorMiddlewares(true);
     }
 
     public function setupWebsiteRoutes()
@@ -260,8 +264,6 @@ class Application
             'users' => $this->params['admin_users'],
         ]));
 
-        $errorMiddleware = $this->slimApp->addErrorMiddleware(true, true, true);
-        $errorMiddleware->setErrorHandler(HttpNotFoundException::class, new CustomNotFoundHandler(false));
-        $errorMiddleware->setErrorHandler(HttpMethodNotAllowedException::class, new CustomNotFoundHandler(false));
+        $this->addErrorMiddlewares(false);
     }
 }
