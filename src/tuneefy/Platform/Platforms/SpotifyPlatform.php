@@ -87,6 +87,10 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
         $result = json_decode(curl_exec($ch), true);
         curl_close($ch);
 
+        if (!isset($result['access_token'])) {
+          return [];
+        }
+
         return ['Authorization: Bearer '.$result['access_token']];
     }
 
