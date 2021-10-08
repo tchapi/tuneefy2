@@ -74,7 +74,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         curl_close($ch);
 
         if (!isset($result['access_token'])) {
-          return [];
+            return [];
         }
 
         return ['Authorization: OAuth '.$result['access_token']];
