@@ -103,6 +103,8 @@ abstract class Platform implements GeneralPlatformInterface
       'api.soundcloud.com:443:143.204.203.38',
     ];
 
+    public const CURL_TIMEOUT = 2000;
+
     /**
      * The singleton instance of the class.
      */
@@ -290,7 +292,7 @@ abstract class Platform implements GeneralPlatformInterface
             CURLOPT_HTTPHEADER => $headers,
             CURLOPT_FOLLOWLOCATION => 1, // Some APIs redirect to content with a 3XX code
             CURLOPT_CONNECTTIMEOUT => 2000,
-            CURLOPT_TIMEOUT_MS => 2000,
+            CURLOPT_TIMEOUT_MS => static::CURL_TIMEOUT,
             CURLOPT_ENCODING => '',
             CURLOPT_RESOLVE => static::RESOLVED_IPS,
         ]);

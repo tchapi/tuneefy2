@@ -22,6 +22,8 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
     public const API_METHOD = Platform::METHOD_GET;
     public const RETURN_CONTENT_TYPE = Platform::RETURN_XML;
 
+    public const CURL_TIMEOUT = 3000;
+
     protected $endpoints = [
         Platform::LOOKUP_TRACK => self::API_ENDPOINT.'lookup.html',
         Platform::LOOKUP_ALBUM => self::API_ENDPOINT.'lookup.html',
