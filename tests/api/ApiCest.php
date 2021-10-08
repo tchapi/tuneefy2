@@ -311,18 +311,18 @@ final class ApiCest
                     'Jay',
                 ],
             ],
-            'https://www.tidal.com/album/195728118' => [
+            'https://tidal.com/browse/album/65425616' => [
                 'musical_entity' => [
                   'type' => 'album',
-                  'title' => 'Donda',
-                  'artist' => 'Kanye West',
-                  'picture' => 'https://resources.wimpmusic.com/images/5e41d98e/abbf/40bd/a225/af82ad8a6552/320x320.jpg',
+                  'title' => 'A Seat at the Table',
+                  'artist' => 'Solange',
+                  'picture' => 'https://resources.wimpmusic.com/images/5853a02c/d8e1/4672/8bdd/16d3d2551d00/320x320.jpg',
                   'links' => [
                     'tidal' => [
-                      'http://www.tidal.com/album/195728118',
+                      'http://www.tidal.com/album/65425616',
                     ],
                   ],
-                  'safe_title' => 'Donda',
+                  'safe_title' => 'A Seat at the Table',
                   'extra_info' => [
                     'is_cover' => false,
                     'is_remix' => false,
@@ -332,8 +332,8 @@ final class ApiCest
                   ],
                 ],
                 'query_words' => [
-                    'Kanye West',
-                    'Donda',
+                    'Solange',
+                    'A Seat at the Table',
                   ],
             ],
             'https://www.tidal.com/artist/3528326' => [
@@ -397,45 +397,45 @@ final class ApiCest
                   ],
             ],
         ],
-        'soundcloud' => [
-            'https://soundcloud.com/robbabicz/pink-trees-out-now-on-bedrock' => [
-                'musical_entity' => [
-                    'type' => 'track',
-                    'title' => 'Robert Babicz - Pink Trees (bedrock)',
-                    'album' => [
-                        'title' => '',
-                        'artist' => 'Robert Babicz',
-                        'picture' => 'https://i1.sndcdn.com/artworks-000003464995-x7smo2-large.jpg',
-                        'safe_title' => '',
-                        'extra_info' => [
-                            'is_cover' => false,
-                            'is_remix' => false,
-                            'acoustic' => false,
-                            'context' => [],
-                        ],
-                    ],
-                    'links' => [
-                        'soundcloud' => [
-                            'https://soundcloud.com/robbabicz/pink-trees-out-now-on-bedrock',
-                        ],
-                    ],
-                    'safe_title' => 'Robert Babicz',
-                    'extra_info' => [
-                        'is_cover' => false,
-                        'is_remix' => false,
-                        'acoustic' => false,
-                        'context' => [
-                            'Pink Trees',
-                            'bedrock',
-                        ],
-                    ],
-                ],
-                'query_words' => [
-                    'Robert Babicz',
-                    'Robert Babicz',
-                ],
-            ],
-        ],
+        // 'soundcloud' => [
+        //     'https://soundcloud.com/robbabicz/pink-trees-out-now-on-bedrock' => [
+        //         'musical_entity' => [
+        //             'type' => 'track',
+        //             'title' => 'Robert Babicz - Pink Trees (bedrock)',
+        //             'album' => [
+        //                 'title' => '',
+        //                 'artist' => 'Robert Babicz',
+        //                 'picture' => 'https://i1.sndcdn.com/artworks-000003464995-x7smo2-large.jpg',
+        //                 'safe_title' => '',
+        //                 'extra_info' => [
+        //                     'is_cover' => false,
+        //                     'is_remix' => false,
+        //                     'acoustic' => false,
+        //                     'context' => [],
+        //                 ],
+        //             ],
+        //             'links' => [
+        //                 'soundcloud' => [
+        //                     'https://soundcloud.com/robbabicz/pink-trees-out-now-on-bedrock',
+        //                 ],
+        //             ],
+        //             'safe_title' => 'Robert Babicz',
+        //             'extra_info' => [
+        //                 'is_cover' => false,
+        //                 'is_remix' => false,
+        //                 'acoustic' => false,
+        //                 'context' => [
+        //                     'Pink Trees',
+        //                     'bedrock',
+        //                 ],
+        //             ],
+        //         ],
+        //         'query_words' => [
+        //             'Robert Babicz',
+        //             'Robert Babicz',
+        //         ],
+        //     ],
+        // ],
         'mixcloud' => [
             'https://www.mixcloud.com/aphex-twin/' => [
                 'query_words' => [

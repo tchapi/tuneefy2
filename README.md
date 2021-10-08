@@ -71,7 +71,7 @@ Beforehand, do not forget to launch a development web server so that the functio
     php -S localhost:8000 -t web
     php -S localhost:8001 -t web_api
 
-There should be 36 tests containing 673 assertions.
+There should be 40 tests containing 697 assertions.
 
 > Sometimes a platform fails to respond correctly due to network latencies or such. Re-run the tests in this case, it should pass fine the second time.
 
