@@ -8,6 +8,8 @@ use tuneefy\PlatformEngine;
 
 final class ApiCest
 {
+    use \Helper\OutputAwareTrait;
+
     public const TRACK_QUERY = 'sufjan+stevens+should';
     public const TRACK_QUERY_ERROR = 'xzqwqsxws';
     public const ALBUM_QUERY = 'radiohead+computer';
@@ -734,6 +736,7 @@ final class ApiCest
         $app->configure();
         $engine = $app->getEngine();
 
+        $this->write('');
         foreach (self::PERMALINKS as $platformTag => $permalinks) {
             $platform = $engine->getPlatformByTag($platformTag);
             if (!$platform->isCapableOfLookingUp()) {
@@ -741,7 +744,7 @@ final class ApiCest
             }
 
             foreach ($permalinks as $permalink => $expectedResult) {
-                // var_dump($permalink);
+                $this->write(' → '.$platform->getName().': '.$permalink);
                 $I->sendGET('/lookup?q='.urlencode($permalink));
                 $I->seeResponseCodeIs(HttpCode::OK);
 
