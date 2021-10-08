@@ -87,7 +87,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
                 // Extract title and author
                 list($title, $artist) = $this->parseYoutubeMusicVideoTitle($entity->snippet->title);
                 if (null !== $title && null !== $artist) {
-                    $musical_entity = new TrackEntity($title, new AlbumEntity('', $artist, $entity->snippet->thumbnails->medium->url));
+                    $musical_entity = new TrackEntity(new AlbumEntity('', $artist, $entity->snippet->thumbnails->medium->url), $title);
 
                     $musical_entity->addLink(static::TAG, $this->getPermalinkFromTrackId($entity->id));
 
@@ -155,7 +155,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
                     continue;
                 }
 
-                $musical_entity = new TrackEntity($title, new AlbumEntity('', $artist, $current_item->snippet->thumbnails->medium->url));
+                $musical_entity = new TrackEntity(new AlbumEntity('', $artist, $current_item->snippet->thumbnails->medium->url), $title);
                 $musical_entity->addLink(static::TAG, $this->getPermalinkFromTrackId($current_item->id->videoId));
                 $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i), 'externalIds' => [static::TAG => $current_item->id->videoId]], $musical_entity);
             }

@@ -16,7 +16,7 @@ class Utils
      */
     public static function toUId(int $baseId): string
     {
-        return base_convert($baseId * self::$base, 10, 36);
+        return base_convert((string) ($baseId * self::$base), 10, 36);
     }
 
     public static function fromUId(string $uid): int

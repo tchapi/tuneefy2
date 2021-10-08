@@ -72,7 +72,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
 
             $entity = $response->data;
 
-            $musical_entity = new TrackEntity($entity->name, new AlbumEntity('', $entity->user->name, ''));
+            $musical_entity = new TrackEntity(new AlbumEntity('', $entity->user->name, ''), $entity->name);
             $musical_entity->addLink(static::TAG, $entity->url);
 
             $query_words = [
@@ -136,7 +136,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
 
         //   if ($type === Platform::SEARCH_TRACK) {
 
-        //     $musical_entity = new TrackEntity($current_item->name, new AlbumEntity("", $current_item->user->name, $current_item->pictures->large));
+        //     $musical_entity = new TrackEntity(new AlbumEntity("", $current_item->user->name, $current_item->pictures->large), $current_item->name);
         //     $musical_entity->addLink(static::TAG, $current_item->url);
 
         //     $musical_entities->add(new PlatformResult(Map {"score" => $current_item->play_count/$max_play_count}, $musical_entity));

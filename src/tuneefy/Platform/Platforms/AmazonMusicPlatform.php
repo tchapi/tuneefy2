@@ -87,7 +87,7 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
 
             if (property_exists($response->data, 'trackList')) { // It's a track then
                 $entity = $response->data->trackList->track;
-                $musical_entity = new TrackEntity($entity->title, new AlbumEntity($entity->album, $entity->creator, $entity->imageMedium));
+                $musical_entity = new TrackEntity(new AlbumEntity($entity->album, $entity->creator, $entity->imageMedium), $entity->title);
                 $musical_entity->addLink(static::TAG, $this->getPermalinkFromASIN($match['asin']));
 
                 $query_words = [
@@ -144,7 +144,7 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
             if (Platform::SEARCH_TRACK === $type) {
                 $current_item = $entity->track;
 
-                $musical_entity = new TrackEntity($current_item->title, new AlbumEntity($current_item->album, $current_item->creator, $current_item->imageMedium));
+                $musical_entity = new TrackEntity(new AlbumEntity($current_item->album, $current_item->creator, $current_item->imageMedium), $current_item->title);
                 $musical_entity->addLink(static::TAG, $this->getPermalinkFromASIN($current_item->ASIN));
                 $externalIds = [static::TAG => $current_item->ASIN];
             } else /*if ($type === Platform::SEARCH_ALBUM)*/ {

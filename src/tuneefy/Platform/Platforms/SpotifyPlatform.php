@@ -113,7 +113,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
             $entity = $response->data;
 
             if (Platform::LOOKUP_TRACK === $object_type) {
-                $musical_entity = new TrackEntity($entity->name, new AlbumEntity($entity->album->name, $entity->artists[0]->name, $entity->album->images[1]->url));
+                $musical_entity = new TrackEntity(new AlbumEntity($entity->album->name, $entity->artists[0]->name, $entity->album->images[1]->url), $entity->name);
                 $musical_entity->addLink(static::TAG, $entity->external_urls->spotify);
 
                 $query_words = [
@@ -181,7 +181,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
 
             if (Platform::SEARCH_TRACK === $type) {
                 $images = $current_item->album->images;
-                $musical_entity = new TrackEntity($current_item->name, new AlbumEntity($current_item->album->name, $current_item->artists[0]->name, (isset($images[1]) ? $images[1]->url : (isset($images[0]) ? $images[0]->url : null))));
+                $musical_entity = new TrackEntity(new AlbumEntity($current_item->album->name, $current_item->artists[0]->name, (isset($images[1]) ? $images[1]->url : (isset($images[0]) ? $images[0]->url : null))), $current_item->name);
                 $musical_entity->addLink(static::TAG, $current_item->external_urls->spotify);
                 $externalIds = [static::TAG => $current_item->id];
 

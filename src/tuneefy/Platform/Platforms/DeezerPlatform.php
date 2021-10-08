@@ -75,7 +75,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
             }
 
             $entity = $response->data;
-            $musical_entity = new TrackEntity($entity->title, new AlbumEntity($entity->album->title, $entity->artist->name, $entity->album->cover));
+            $musical_entity = new TrackEntity(new AlbumEntity($entity->album->title, $entity->artist->name, $entity->album->cover), $entity->title);
             $musical_entity->addLink(static::TAG, $permalink);
 
             $query_words = [
@@ -142,7 +142,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
                     $picture = $current_item->artist->picture;
                 }
 
-                $musical_entity = new TrackEntity($current_item->title, new AlbumEntity($current_item->album->title, $current_item->artist->name, $picture));
+                $musical_entity = new TrackEntity(new AlbumEntity($current_item->album->title, $current_item->artist->name, $picture), $current_item->title);
                 $musical_entity->addLink(static::TAG, $current_item->link);
             } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
                 if (property_exists($current_item, 'cover')) {

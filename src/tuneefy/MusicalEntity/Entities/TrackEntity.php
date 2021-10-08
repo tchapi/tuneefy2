@@ -17,7 +17,7 @@ class TrackEntity extends MusicalEntity
     // Introspection
     private $safe_track_title;
 
-    public function __construct(string $track_title = '', AlbumEntity $album)
+    public function __construct(AlbumEntity $album, string $track_title = '')
     {
         parent::__construct();
         $this->track_title = $track_title;
@@ -145,7 +145,7 @@ class TrackEntity extends MusicalEntity
         $album = AlbumEntity::merge($a->getAlbum(), $b->getAlbum(), true);
 
         // Create the result
-        $c = new self($title, $album);
+        $c = new self($album, $title);
 
         foreach ($b->getLinks() as $platform => $links) {
             foreach ($links as $link) {

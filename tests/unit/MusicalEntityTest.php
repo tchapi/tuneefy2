@@ -203,7 +203,7 @@ final class MusicalEntityTest extends TestCase
     public function testSetIntrospectedTrack()
     {
         $album_entity = new AlbumEntity('test album (extra album)');
-        $entity = new TrackEntity('test title (extra)', $album_entity);
+        $entity = new TrackEntity($album_entity, 'test title (extra)');
 
         $this->assertEquals(
             [
@@ -426,9 +426,9 @@ final class MusicalEntityTest extends TestCase
     public function testMergeTrack()
     {
         $a_album = new AlbumEntity('test title a album (extra)');
-        $a = new TrackEntity('test title a (extra)', $a_album);
+        $a = new TrackEntity($a_album, 'test title a (extra)');
         $b_album = new AlbumEntity('test title b album (extra)');
-        $b = new TrackEntity('test title b (extra)', $b_album);
+        $b = new TrackEntity($b_album, 'test title b (extra)');
 
         $c = TrackEntity::merge($a, $b);
 
@@ -463,9 +463,9 @@ final class MusicalEntityTest extends TestCase
     public function testMergeTrackNotForced1()
     {
         $a_album = new AlbumEntity('test title a album (extra)');
-        $a = new TrackEntity('test title a (acoustic)', $a_album);
+        $a = new TrackEntity($a_album, 'test title a (acoustic)');
         $b_album = new AlbumEntity('test title b album (extra)');
-        $b = new TrackEntity('test title b (extra)', $b_album);
+        $b = new TrackEntity($b_album, 'test title b (extra)');
 
         $this->expectException(tuneefy\MusicalEntity\MusicalEntityMergeException::class);
         $c = TrackEntity::merge($a, $b);
@@ -474,9 +474,9 @@ final class MusicalEntityTest extends TestCase
     public function testMergeTrackNotForced2()
     {
         $a_album = new AlbumEntity('test title a album (extra)');
-        $a = new TrackEntity('test title a', $a_album);
+        $a = new TrackEntity($a_album, 'test title a');
         $b_album = new AlbumEntity('test title b album (extra)');
-        $b = new TrackEntity('test title b (cover)', $b_album);
+        $b = new TrackEntity($b_album, 'test title b (cover)');
 
         $this->expectException(tuneefy\MusicalEntity\MusicalEntityMergeException::class);
         $c = TrackEntity::merge($a, $b);
@@ -485,9 +485,9 @@ final class MusicalEntityTest extends TestCase
     public function testMergeTrackNotForced3()
     {
         $a_album = new AlbumEntity('test title a album (cover)');
-        $a = new TrackEntity('test title a (acoustic)', $a_album);
+        $a = new TrackEntity($a_album, 'test title a (acoustic)');
         $b_album = new AlbumEntity('test title b album (extra)');
-        $b = new TrackEntity('test title b (extra)', $b_album);
+        $b = new TrackEntity($b_album, 'test title b (extra)');
 
         $this->expectException(tuneefy\MusicalEntity\MusicalEntityMergeException::class);
         $c = TrackEntity::merge($a, $b);
@@ -496,9 +496,9 @@ final class MusicalEntityTest extends TestCase
     public function testMergeTrackNotForced4()
     {
         $a_album = new AlbumEntity('test title a album (remix)');
-        $a = new TrackEntity('test title a (extra)', $a_album);
+        $a = new TrackEntity($a_album, 'test title a (extra)');
         $b_album = new AlbumEntity('test title b album (extra)');
-        $b = new TrackEntity('test title b (remix)', $b_album);
+        $b = new TrackEntity($b_album, 'test title b (remix)');
 
         $this->expectException(tuneefy\MusicalEntity\MusicalEntityMergeException::class);
         $c = TrackEntity::merge($a, $b);
@@ -507,9 +507,9 @@ final class MusicalEntityTest extends TestCase
     public function testMergeTrackForced()
     {
         $a_album = new AlbumEntity('test title a album (remix)');
-        $a = new TrackEntity('test title a (extra)', $a_album);
+        $a = new TrackEntity($a_album, 'test title a (extra)');
         $b_album = new AlbumEntity('test title b album (extra)');
-        $b = new TrackEntity('test title b (cover)', $b_album);
+        $b = new TrackEntity($b_album, 'test title b (cover)');
 
         $c = TrackEntity::merge($a, $b, true);
 
@@ -544,9 +544,9 @@ final class MusicalEntityTest extends TestCase
     public function testMatchingHash()
     {
         $a_album = new AlbumEntity(' The Test Album');
-        $a = new TrackEntity('My song (Explicit)', $a_album);
+        $a = new TrackEntity($a_album, 'My song (Explicit)');
         $b_album = new AlbumEntity('the test album');
-        $b = new TrackEntity('my song', $b_album);
+        $b = new TrackEntity($b_album, 'my song');
 
         $this->assertEquals(
             $a->getHash(),
@@ -557,9 +557,9 @@ final class MusicalEntityTest extends TestCase
     public function testNonMatchingHash()
     {
         $a_album = new AlbumEntity(' The Test Album');
-        $a = new TrackEntity('My song (Explicit)', $a_album);
+        $a = new TrackEntity($a_album, 'My song (Explicit)');
         $b_album = new AlbumEntity('my song');
-        $b = new TrackEntity('the test album', $b_album);
+        $b = new TrackEntity($b_album, 'the test album');
 
         $this->assertNotEquals(
             $a->getHash(),

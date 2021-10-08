@@ -23,7 +23,7 @@ final class UtilsTest extends TestCase
     public function testToUId()
     {
         Utils::setBase($this->params['urls']['base']);
-        $result = base_convert(1000 * $this->params['urls']['base'], 10, 36);
+        $result = base_convert((string) (1000 * $this->params['urls']['base']), 10, 36);
         $this->assertEquals(
             Utils::toUid(1000),
             $result

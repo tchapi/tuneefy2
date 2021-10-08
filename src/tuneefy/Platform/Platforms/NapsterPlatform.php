@@ -113,7 +113,7 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
 
             if (Platform::SEARCH_TRACK === $type) {
                 $picture = sprintf(self::PICTURE_PATH, $current_item->albumId);
-                $musical_entity = new TrackEntity($current_item->name, new AlbumEntity($current_item->albumName, $current_item->artistName, $picture));
+                $musical_entity = new TrackEntity(new AlbumEntity($current_item->albumName, $current_item->artistName, $picture), $current_item->name);
                 $musical_entity->addLink(static::TAG, sprintf(self::WEB_LINK, $current_item->shortcut));
             } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
                 $picture = sprintf(self::PICTURE_PATH, $current_item->id);
