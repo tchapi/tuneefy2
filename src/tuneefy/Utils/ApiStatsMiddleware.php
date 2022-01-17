@@ -23,7 +23,7 @@ class ApiStatsMiddleware
 
         if (null !== $clientId) { // If we're using oauth, else it's unecessary
             $db = DatabaseHandler::getInstance(null);
-            $db->addApiCallingStat($clientId, $method ?? DatabaseHandler::METHOD_OTHER);
+            $db->addApiCallingStat($method ?? DatabaseHandler::METHOD_OTHER, $clientId);
         }
 
         return $response;

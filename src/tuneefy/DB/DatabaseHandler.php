@@ -240,7 +240,7 @@ class DatabaseHandler
         }
     }
 
-    public function addApiCallingStat(?string $client_id = null, int $method)
+    public function addApiCallingStat(int $method, ?string $client_id = null)
     {
         $statement = $this->connection->prepare('INSERT INTO `stats_api` (`client_id`, `method`, `called_at`) VALUES (:client_id, :method, NOW())');
 
