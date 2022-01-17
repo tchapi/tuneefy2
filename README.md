@@ -1,10 +1,10 @@
 # tuneefy _2_
 
-A new version of [tuneefy](http://tuneefy.com) built for **PHP 7** and **Node 14**, from the ground up, using the minimal [Slim](https://www.slimframework.com/) framework and a few helper libraries.
+A new version of [tuneefy](http://tuneefy.com) built for **PHP 7 / 8** and **Node 14+**, from the ground up, using the minimal [Slim](https://www.slimframework.com/) framework and a few helper libraries.
 
 ### Installing
 
-This project uses [composer](https://getcomposer.org/). Just run :
+This project uses [composer 2](https://getcomposer.org/). Just run :
 
     composer install
 
@@ -16,12 +16,12 @@ Tuneefy needs a variety of tables to work properly; you can populate your databa
 
 ### Building assets & API doc
 
-To build the assets and the API documentation, I use **npm** and some modules.
+To build the assets and the API documentation, I use **yarn** and some modules.
 
-    npm install
+    yarn install
 
-    npm run build-assets
-    npm run api-documentation
+    yarn run build
+    yarn run api-documentation
 
 ### Composer packages used
 
