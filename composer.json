@@ -17,9 +17,9 @@
         "psr-4": { "": "src/" }
     },
     "require": {
-        "php" : "^7.4",
-        "symfony/yaml": "^5.3",
-        "slim/slim": "4.*",
+        "php" : "^7.4||^8.0",
+        "symfony/yaml": "^5.4",
+        "slim/slim": "^4.0",
         "markwilson/xml-to-json": "0.1.*",
         "akrabat/rka-content-type-renderer": "^2.0",
         "chadicus/slim-oauth2": "^3.1",
