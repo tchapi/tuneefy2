@@ -2,10 +2,10 @@
 
 namespace tuneefy\Utils;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use RKA\ContentTypeRenderer\Renderer;
-use Slim\Psr7\Response;
 use tuneefy\Controller\ApiController;
 use tuneefy\DB\DatabaseHandler;
 
@@ -17,7 +17,7 @@ class ApiActiveMiddleware
         $this->renderer = new Renderer();
     }
 
-    public function __invoke(Request $request, RequestHandler $handler): Response
+    public function __invoke(Request $request, RequestHandler $handler): ResponseInterface
     {
         $method = $this->container->has('api_method') ? $this->container->get('api_method') : null;
         $clientId = $this->container->has('token') ? $this->container->get('token')['client_id'] : null;
