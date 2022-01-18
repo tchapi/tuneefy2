@@ -17,7 +17,7 @@ class ApiBypassMiddleware
     {
         $session = new \SlimSession\Helper();
 
-        $bypass = ('xmlhttprequest' === strtolower(@$_SERVER['HTTP_X_REQUESTED_WITH']) &&
+        $bypass = ('xmlhttprequest' === strtolower($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') &&
                     $session->get('bypassSecret', null) === $this->ApiParams['bypassSecret']);
 
         if ($bypass) {

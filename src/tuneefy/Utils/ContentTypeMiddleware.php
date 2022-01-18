@@ -2,10 +2,10 @@
 
 namespace tuneefy\Utils;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use RKA\ContentTypeRenderer\Renderer;
-use Slim\Psr7\Response;
 use tuneefy\Controller\ApiController;
 
 class ContentTypeMiddleware
@@ -17,7 +17,7 @@ class ContentTypeMiddleware
         'json' => 'application/json',
     ];
 
-    public function __invoke(Request $request, RequestHandler $handler): Response
+    public function __invoke(Request $request, RequestHandler $handler): ResponseInterface
     {
         $request = $this->resolveContentType($request);
 
