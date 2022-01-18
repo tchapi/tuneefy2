@@ -6,6 +6,9 @@ use Psr\Container\ContainerInterface;
 use RKA\ContentTypeRenderer\Renderer;
 use Slim\Exception\HttpNotFoundException;
 use Slim\Views\Twig;
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport;
+use Symfony\Component\Mime\Email;
 use tuneefy\DB\DatabaseHandler;
 use tuneefy\PlatformEngine;
 use tuneefy\Utils\Utils;
@@ -122,26 +125,26 @@ class FrontendController
             $sanitized_email = filter_var($allPostVars['mail'], FILTER_SANITIZE_EMAIL);
 
             // Create the Transport
-            $transport = (new \Swift_SmtpTransport($params['mail']['smtp_server'], 25))
-              ->setUsername($params['mail']['smtp_user'])
-              ->setPassword($params['mail']['smtp_password']);
-            $mailer = new \Swift_Mailer($transport);
+            $dsn = 'smtp://'.$params['mail']['smtp_user'].':'.$params['mail']['smtp_password'].'@'.$params['mail']['smtp_server'].':25';
+            $transport = Transport::fromDsn($dsn);
+            $mailer = new Mailer($transport);
 
-            $message = (new \Swift_Message('[CONTACT] '.$sanitized_email.' (via tuneefy.com)"'))
-              ->setFrom([$params['mail']['contact_email']])
-              ->setTo([$params['mail']['team_email']])
-              ->setBody($sanitized_email." sent a message from the site : \n\n".nl2br($allPostVars['message']));
+            $message = (new Email())
+              ->subject('[CONTACT] '.$sanitized_email.' (via tuneefy.com)"')
+              ->from($params['mail']['contact_email'])
+              ->to($params['mail']['team_email'])
+              ->text($sanitized_email." sent a message from the site : \n\n".nl2br($allPostVars['message']));
 
             // Send the message
             $result = $mailer->send($message);
         } catch (\Exception $e) {
-            error_log('Mail sending from contact form: '.$e->getMessage());
+            error_log('Error sending mail from contact form: '.$e->getMessage());
             $result = 0;
         }
 
         // Return a response
         $body = $response->getBody();
-        $body->write(0 + ($result > 0));
+        $body->write($result > 0 ? '1' : '0');
 
         return $response;
     }
