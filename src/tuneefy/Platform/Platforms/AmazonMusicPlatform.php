@@ -120,11 +120,11 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
 
     public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
-        if (!property_exists($response->data->results, 'result') || 0 === $response->data->results->stats->totalCount) {
+        if (!property_exists($response->data, 'result') || 0 === $response->data->stats->totalCount) {
             return [];
         }
 
-        $entities = $response->data->results->result;
+        $entities = $response->data->result;
 
         $entitiesCount = is_array($entities) ? count($entities ?? []) : 1;
 
@@ -136,7 +136,7 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
 
         // Normalizing each track found
         for ($i = 0; $i < $length; ++$i) {
-            if (1 == $response->data->results->stats->totalCount) {
+            if (1 == $response->data->stats->totalCount) {
                 $entity = $entities;
             } else {
                 $entity = $entities[$i];
