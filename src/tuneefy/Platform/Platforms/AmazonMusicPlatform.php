@@ -81,7 +81,7 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
         if (preg_match(self::REGEX_AMAZON_ALL, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['asin']);
 
-            if (null === $response) {
+            if (null === $response || false === $response) {
                 throw new PlatformException($this);
             }
 

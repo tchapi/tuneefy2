@@ -974,14 +974,7 @@ final class ApiCest
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->seeResponseIsJson();
 
-        $I->seeResponseJsonMatchesJsonPath('$.results');
-        $result = $I->grabDataFromResponseByJsonPath('$.results.*');
-
-        $I->assertCount(1, $result);
-
-        $I->assertArrayHasKey('musical_entity', $result[0]);
-        $I->assertCount(1, $result[0]['musical_entity']['links']);
-        // Only the Napster platform returns a result
-        $I->assertArrayHasKey('napster', $result[0]['musical_entity']['links']);
+        $result = $I->grabDataFromResponseByJsonPath('.')[0];
+        $I->assertArrayHasKey('errors', $result);
     }
 }
