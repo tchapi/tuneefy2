@@ -2,7 +2,6 @@
 
 namespace tuneefy\Platform;
 
-use MarkWilson\XmlToJson\XmlToJsonConverter;
 use tuneefy\Utils\OAuth\OAuthConsumer;
 use tuneefy\Utils\OAuth\OAuthRequest;
 use tuneefy\Utils\OAuth\OAuthSignatureMethod_HMAC_SHA1;
