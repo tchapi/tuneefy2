@@ -448,7 +448,7 @@ final class ApiCest
                     'title' => "#709 - Season  Finale w/ #Niveau4 | L'Or Du Commun | Darrell Cole | New Spaven | Mura Masa | Budgie",
                     'album' => [
                         'title' => '',
-                        'artist' => 'LeFtO',
+                        'artist' => 'Lefto Early Bird',
                         'picture' => '',
                         'safe_title' => '',
                         'extra_info' => [
@@ -474,7 +474,7 @@ final class ApiCest
                     ],
                 ],
                 'query_words' => [
-                    'LeFtO',
+                    'Lefto Early Bird',
                     '#709',
                 ],
             ],
@@ -612,27 +612,27 @@ final class ApiCest
             'http://www.amazon.com/gp/product/B00GLQQ07E/whatever' => [
                 'musical_entity' => [
                     'type' => 'album',
-                    'title' => 'Frozen (Deluxe Edition)',
-                    'artist' => 'Various artists',
+                    'title' => 'Frozen Heart (From "Frozen"/Soundtrack Version)',
+                    'artist' => 'Cast - Frozen',
                     'picture' => 'https://images-na.ssl-images-amazon.com/images/I/61FFGp0yGVL._SS160_.jpg',
                     'links' => [
                         'amazon' => [
                             'https://www.amazon.com/gp/product/B00GLQQ07E',
                         ],
                     ],
-                    'safe_title' => 'Frozen',
+                    'safe_title' => 'Frozen Heart',
                     'extra_info' => [
                         'is_cover' => false,
                         'is_remix' => false,
                         'acoustic' => false,
                         'context' => [
-                            'Deluxe Edition',
+                            'From "Frozen"/Soundtrack Version',
                         ],
                     ],
                 ],
                 'query_words' => [
-                    'Various artists',
-                    'Frozen',
+                    'Cast - Frozen',
+                    'Frozen Heart',
                 ],
             ],
             'http://www.amazon.com/dp/B00GLQQ0JW/ref=dm_ws_tlw_trk1' => [
@@ -848,12 +848,7 @@ final class ApiCest
             $I->seeResponseIsJson();
 
             $result = $I->grabDataFromResponseByJsonPath('.')[0];
-            if ('napster' === $platform->getTag()) {
-                // Napster always returns something
-                $I->assertArrayHasKey('results', $result);
-            } else {
-                $I->assertArrayHasKey('errors', $result);
-            }
+            $I->assertArrayHasKey('errors', $result);
         }
     }
 
@@ -906,12 +901,7 @@ final class ApiCest
             $I->seeResponseIsJson();
 
             $result = $I->grabDataFromResponseByJsonPath('.')[0];
-            if ('napster' === $platform->getTag()) {
-                // Napster always returns something
-                $I->assertArrayHasKey('results', $result);
-            } else {
-                $I->assertArrayHasKey('errors', $result);
-            }
+            $I->assertArrayHasKey('errors', $result);
         }
     }
 

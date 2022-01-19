@@ -85,8 +85,9 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
                 throw new PlatformException($this);
             }
 
-            if (property_exists($response->data, 'trackList')) { // It's a track then
-                $entity = $response->data->trackList->track;
+            if (property_exists($response->data, 'track')) { // It's a track then
+                $entity = $response->data->track;
+
                 $musical_entity = new TrackEntity(new AlbumEntity($entity->album, $entity->creator, $entity->imageMedium), $entity->title);
                 $musical_entity->addLink(static::TAG, $this->getPermalinkFromASIN($match['asin']));
 
@@ -94,8 +95,8 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
                     $musical_entity->getAlbum()->getArtist(),
                     $musical_entity->getSafeTitle(),
                 ];
-            } elseif (property_exists($response->data, 'album')) { // It's an album
-                $entity = $response->data->album;
+            } elseif (property_exists($response->data, 'trackList')) { // It's an album
+                $entity = $response->data->trackList->track[0];
                 $musical_entity = new AlbumEntity($entity->title, $entity->creator, $entity->imageMedium);
                 $musical_entity->addLink(static::TAG, $this->getPermalinkFromASIN($match['asin']));
 

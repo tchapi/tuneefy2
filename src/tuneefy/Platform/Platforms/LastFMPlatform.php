@@ -17,6 +17,8 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
     public const TAG = 'lastfm';
     public const COLOR = 'e41c1c';
 
+    public const CURL_TIMEOUT = 4000;
+
     // https://www.last.fm/api/show/album.search
     public const API_ENDPOINT = 'https://ws.audioscrobbler.com/2.0/';
     public const API_METHOD = Platform::METHOD_GET;
