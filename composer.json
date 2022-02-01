@@ -16,12 +16,28 @@
     "autoload": {
         "psr-4": { "": "src/" }
     },
+    "repositories": [
+      {
+          "type": "vcs",
+          "url": "https://github.com/tchapi/slim-oauth2-http"
+      },
+      {
+          "type": "vcs",
+          "url": "https://github.com/tchapi/slim-oauth2-routes"
+      },
+      {
+          "type": "vcs",
+          "url": "https://github.com/tchapi/slim-oauth2-middleware"
+      }
+    ],
     "require": {
         "php" : "^7.4 || ^8.0",
         "symfony/yaml": "^5.4",
         "slim/slim": "^4.0",
         "akrabat/rka-content-type-renderer": "^2.0",
-        "chadicus/slim-oauth2": "^3.1",
+        "chadicus/slim-oauth2-http": "dev-next",
+        "chadicus/slim-oauth2-middleware": "dev-next",
+        "chadicus/slim-oauth2-routes": "dev-next",
         "symfony/translation": "^5.4",
         "tuupola/slim-basic-auth": "^3.3",
         "dflydev/fig-cookies": "^3.0",
