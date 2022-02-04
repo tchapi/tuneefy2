@@ -2,6 +2,7 @@
 
 namespace tuneefy\Utils;
 
+use Chadicus\Slim\OAuth2\Middleware\Authorization;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
@@ -19,7 +20,9 @@ class ApiStatsMiddleware
         $response = $handler->handle($request);
 
         $method = $this->container->has('api_method') ? $this->container->get('api_method') : null;
-        $clientId = $this->container->has('token') ? $this->container->get('token')['client_id'] : null;
+
+        $token = $request->getAttribute(Authorization::TOKEN_ATTRIBUTE_KEY);
+        $clientId = $token ? $token['client_id'] : null;
 
         if (null !== $clientId) { // If we're using oauth, else it's unecessary
             $db = DatabaseHandler::getInstance(null);

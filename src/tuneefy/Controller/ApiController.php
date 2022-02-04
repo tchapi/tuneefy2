@@ -2,6 +2,7 @@
 
 namespace tuneefy\Controller;
 
+use Chadicus\Slim\OAuth2\Middleware\Authorization;
 use Psr\Container\ContainerInterface;
 use RKA\ContentTypeRenderer\Renderer;
 use Slim\Routing\RouteContext;
@@ -110,7 +111,8 @@ class ApiController
     public function lookup($request, $response, $args)
     {
         $this->container->set('api_method', DatabaseHandler::METHOD_LOOKUP);
-        $this->engine->setCurrentToken($this->container->get('token'));
+        $token = $request->getAttribute(Authorization::TOKEN_ATTRIBUTE_KEY);
+        $this->engine->setCurrentToken($token);
 
         $params = $request->getQueryParams();
 
@@ -165,7 +167,8 @@ class ApiController
     public function search($request, $response, $args)
     {
         $this->container->set('api_method', DatabaseHandler::METHOD_SEARCH);
-        $this->engine->setCurrentToken($this->container->get('token'));
+        $token = $request->getAttribute(Authorization::TOKEN_ATTRIBUTE_KEY);
+        $this->engine->setCurrentToken($token);
 
         $params = $request->getQueryParams();
 
@@ -226,7 +229,8 @@ class ApiController
     public function aggregate($request, $response, $args)
     {
         $this->container->set('api_method', DatabaseHandler::METHOD_AGGREGATE);
-        $this->engine->setCurrentToken($this->container->get('token'));
+        $token = $request->getAttribute(Authorization::TOKEN_ATTRIBUTE_KEY);
+        $this->engine->setCurrentToken($token);
 
         $params = $request->getQueryParams();
 
