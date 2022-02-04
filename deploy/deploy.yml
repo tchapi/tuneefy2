@@ -47,6 +47,20 @@
         command: install
         working_dir: "{{ release_path }}"
         prefer_dist: yes
+    # Build assets locally, and then transfer to remote
+    - name: Install yarn dependencies
+      yarn:
+        path: "{{ playbook_dir }}/.."
+      delegate_to: 127.0.0.1
+    - name: Build the static dist folder
+      shell: yarn build
+      delegate_to: 127.0.0.1
+    - name: Copy dist folder to remote
+      copy:
+        src: "{{ playbook_dir }}/../web/build"
+        dest: "{{ release_path }}/web"
+        group: www-data
+    # End of: locally built assets
     - name: Remove perilous files
       file:
         path: "{{ release_path }}/{{ item }}"
