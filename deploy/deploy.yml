@@ -93,11 +93,6 @@
         src={{ release_path }}
         dest={{ current_path }}
         state=link
-    - name: Delete old dir
-      shell: rm -rf {{ current_release_path.stdout }}/
-      when: current_release_path.stdout != current_path
-      args:
-        warn: false
     - name: Restart PHP-FPM
       become: yes
       become_user: root
