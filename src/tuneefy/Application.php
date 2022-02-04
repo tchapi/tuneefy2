@@ -191,6 +191,11 @@ class Application
         /* Documentation for the API, has to go first */
         $this->slimApp->get('/', FrontendController::class.':api')->setName('api');
 
+        // Allow CORS requests (OPTIONS)
+        $this->slimApp->options('{routes:.+}', function ($request, $response, $args) {
+            return $response;
+        });
+
         /* The API group, behind an (optional) OAuth2 Server */
         $api = $this->slimApp->group('/v2', function (RouteCollectorProxy $app) {
             $app->get('/', ApiController::class.':redirect');
