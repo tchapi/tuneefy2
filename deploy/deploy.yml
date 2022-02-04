@@ -54,14 +54,14 @@
       with_items:
         - .gitignore
         - .git
-        - .php_cs
+        - .php-cs-fixer.php
         - .editorconfig
         - deploy
         - LICENSE
         - README.md
         - gulpfile.js
         - package.json
-        - package-lock.json
+        - yarn.lock
         - structure.sql
         - codeception.yml
         - codeception.yml.dist
