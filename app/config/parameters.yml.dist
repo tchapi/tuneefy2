@@ -41,8 +41,6 @@ statistics:
 facebook:
   admin_user: ""
   app_id: 0
-  app_secret: ""
-  page_id: 0
 
 admin_secure: true
 admin_users:
