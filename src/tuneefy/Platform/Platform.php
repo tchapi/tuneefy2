@@ -312,7 +312,7 @@ abstract class Platform implements GeneralPlatformInterface
 
     private function postProcessResult(string $response)
     {
-        if (false === $response) {
+        if (!$response) {
             // Error in the request, we should gracefully fail returning null
             return null;
         } else {
@@ -388,7 +388,7 @@ abstract class Platform implements GeneralPlatformInterface
 
             $response = $object['platform']->postProcessResult($response);
 
-            if (null === $response) {
+            if (null === $response || $response->data === false) {
                 $errors[] = ['FETCH_PROBLEM' => (new PlatformException($object['platform']))->getMessage()];
                 continue;
             }
