@@ -5,6 +5,7 @@ namespace tuneefy\Controller;
 use Psr\Container\ContainerInterface;
 use RKA\ContentTypeRenderer\Renderer;
 use Slim\Exception\HttpNotFoundException;
+use Slim\Routing\RouteContext;
 use Slim\Views\Twig;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
@@ -195,6 +196,9 @@ class FrontendController
     public function show($request, $response, array $args)
     {
         $view = Twig::fromRequest($request);
+        $routeContext = RouteContext::fromRequest($request);
+        $routeParser = $routeContext->getRouteParser();
+
         $params = $request->getQueryParams();
         if (null === $args['uid'] || '' === $args['uid']) {
             throw new HttpNotFoundException($request);
@@ -212,8 +216,7 @@ class FrontendController
 
         // Check the type (track || album) and redirect if necessary
         if (!isset($args['type']) || $item->getType() !== $args['type']) {
-            $route = $this->container->get('router')->pathFor('show', [
-                'params' => $this->container->get('params'),
+            $route = $routeParser->urlFor('show', [
                 'type' => $item->getType(),
                 'uid' => $args['uid'],
             ]);
@@ -249,6 +252,9 @@ class FrontendController
 
     public function listen($request, $response, array $args)
     {
+        $routeContext = RouteContext::fromRequest($request);
+        $routeParser = $routeContext->getRouteParser();
+
         $platform = strtolower($args['platform']);
 
         if (null === $args['uid'] || '' === $args['uid']) {

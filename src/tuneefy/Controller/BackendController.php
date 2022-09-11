@@ -3,6 +3,7 @@
 namespace tuneefy\Controller;
 
 use Psr\Container\ContainerInterface;
+use Slim\Routing\RouteContext;
 use Slim\Views\Twig;
 use tuneefy\DB\DatabaseHandler;
 
