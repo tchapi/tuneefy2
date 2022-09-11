@@ -29,12 +29,14 @@ class CustomErrorHandler implements ErrorHandlerInterface
         $trace = $e->getTrace();
         $result = $e->getMessage();
         $result .= '" @ ';
-        if ('' != $trace[0]['class']) {
+        if (array_key_exists('class', $trace[0]) && '' != $trace[0]['class']) {
             $result .= $trace[0]['class'];
             $result .= '->';
         }
-        $result .= $trace[0]['function'];
-        $result .= '()';
+        if (array_key_exists('function', $trace[0])) {
+          $result .= $trace[0]['function'];
+          $result .= '()';
+        }
 
         return $result;
     }
