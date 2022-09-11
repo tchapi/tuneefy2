@@ -26,7 +26,7 @@ CREATE TABLE `stats_viewing` (
   `viewed_at` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
   KEY `item_id` (`item_id`),
-  KEY `viewed_at` (`viewed_at`)
+  KEY `viewed_at` (`viewed_at`),
   CONSTRAINT `stats_viewing_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -90,7 +90,7 @@ CREATE TABLE trends_mv (
     `count` INT(11) NOT NULL
 );
 
-DROP PROCEDURE refresh_trends_mv_now;
+DROP PROCEDURE IF EXISTS refresh_trends_mv_now;
 
 DELIMITER $$
 
@@ -126,7 +126,7 @@ CREATE TABLE hot_items_mv (
     `count` INT(11)
 );
 
-DROP PROCEDURE refresh_hot_items_mv_now;
+DROP PROCEDURE IF EXISTS refresh_hot_items_mv_now;
 
 DELIMITER $$
 
@@ -157,7 +157,7 @@ CREATE TABLE stats_api_mv (
     `count` INT(11)
 );
 
-DROP PROCEDURE refresh_stats_api_mv_now;
+DROP PROCEDURE IF EXISTS refresh_stats_api_mv_now;
 
 DELIMITER $$
 
