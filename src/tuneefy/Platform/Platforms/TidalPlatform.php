@@ -145,7 +145,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
             if (Platform::SEARCH_TRACK === $type) {
                 $musical_entity = new TrackEntity(new AlbumEntity($current_item->album->title, $current_item->artist->name, $this->getCoverUrlFromCoverHash($current_item->album->cover)), $current_item->title);
                 $musical_entity->addLink(static::TAG, str_replace('http://', 'https://', $current_item->url));
-            } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
+            } else { /* if ($type === Platform::SEARCH_ALBUM) */
                 $musical_entity = new AlbumEntity($current_item->title, $current_item->artist->name, $this->getCoverUrlFromCoverHash($current_item->cover));
                 $musical_entity->addLink(static::TAG, str_replace('http://', 'https://', $current_item->url));
             }

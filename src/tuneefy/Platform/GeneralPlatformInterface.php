@@ -26,5 +26,5 @@ interface GeneralPlatformInterface
     public function isCapableOfLookingUp(): bool;
 
     // IMPLEMENTED IN CHILD CLASSES
-    //abstract public function getNormalizedResults($itemType, $result, $limit);
+    // abstract public function getNormalizedResults($itemType, $result, $limit);
 }

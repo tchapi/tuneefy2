@@ -69,7 +69,7 @@ class PlatformEngine
         return array_values($this->platforms);
     }
 
-    public function getPlatformByTag(string $tag)//: Platform
+    public function getPlatformByTag(string $tag)// : Platform
     {
         return isset($this->platforms[$tag]) ? $this->platforms[$tag] : null;
     }

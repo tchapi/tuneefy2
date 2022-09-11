@@ -194,8 +194,8 @@ final class MusicalEntityTest extends TestCase
     {
         foreach ($this->parsableMusicalStrings as $key => $value) {
             $this->assertEquals(
-              $value,
-              TrackEntity::parse($key)
+                $value,
+                TrackEntity::parse($key)
             );
         }
     }

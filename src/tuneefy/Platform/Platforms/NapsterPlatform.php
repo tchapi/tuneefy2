@@ -26,7 +26,7 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
         // Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'artists/%s',
         Platform::SEARCH_TRACK => self::API_ENDPOINT.'search/verbose',
         Platform::SEARCH_ALBUM => self::API_ENDPOINT.'search/verbose',
-        //Platform::SEARCH_ARTIST => self::API_ENDPOINT.'search/verbose',
+        // Platform::SEARCH_ARTIST => self::API_ENDPOINT.'search/verbose',
     ];
     protected $terms = [
         Platform::LOOKUP_TRACK => null,
@@ -34,7 +34,7 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => null,
         Platform::SEARCH_TRACK => 'query',
         Platform::SEARCH_ALBUM => 'query',
-        //Platform::SEARCH_ARTIST => 'q',
+        // Platform::SEARCH_ARTIST => 'q',
     ];
     protected $options = [
         Platform::LOOKUP_TRACK => [],
@@ -42,7 +42,7 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => [],
         Platform::SEARCH_TRACK => ['type' => 'track', 'limit' => Platform::LIMIT],
         Platform::SEARCH_ALBUM => ['type' => 'album', 'limit' => Platform::LIMIT],
-        //Platform::SEARCH_ARTIST => ['type' => 'artist', 'limit' => Platform::LIMIT],
+        // Platform::SEARCH_ARTIST => ['type' => 'artist', 'limit' => Platform::LIMIT],
     ];
 
     // http://fr.napster.com/artist/ed-sheeran/album/shape-of-you/track/shape-of-you
@@ -71,7 +71,7 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
         return false !== strpos($permalink, 'napster.com');
     }
 
-    public function expandPermalink(string $permalink, int $mode)//: ?PlatformResult
+    public function expandPermalink(string $permalink, int $mode)// : ?PlatformResult
     {
         $query_words = [$permalink];
 
@@ -115,7 +115,7 @@ class NapsterPlatform extends Platform implements WebStreamingPlatformInterface
                 $picture = sprintf(self::PICTURE_PATH, $current_item->albumId);
                 $musical_entity = new TrackEntity(new AlbumEntity($current_item->albumName, $current_item->artistName, $picture), $current_item->name);
                 $musical_entity->addLink(static::TAG, sprintf(self::WEB_LINK, $current_item->shortcut));
-            } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
+            } else { /* if ($type === Platform::SEARCH_ALBUM) */
                 $picture = sprintf(self::PICTURE_PATH, $current_item->id);
                 $musical_entity = new AlbumEntity($current_item->name, $current_item->artistName, $picture);
                 $musical_entity->addLink(static::TAG, sprintf(self::WEB_LINK, $current_item->shortcut));

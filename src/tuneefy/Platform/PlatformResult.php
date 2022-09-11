@@ -27,7 +27,7 @@ class PlatformResult
         return $this->metadata;
     }
 
-    public function getMusicalEntity()//: ?MusicalEntity
+    public function getMusicalEntity()// : ?MusicalEntity
     {
         return $this->musical_entity;
     }

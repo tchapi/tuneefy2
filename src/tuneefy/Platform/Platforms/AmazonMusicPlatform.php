@@ -11,7 +11,7 @@ use tuneefy\Platform\WebStoreInterface;
 use tuneefy\Utils\Utils;
 
 /**
- * @deprecated - the endpoint does not seem to work anymore.
+ * @deprecated - the endpoint does not seem to work anymore
  */
 class AmazonMusicPlatform extends Platform implements WebStoreInterface
 {
@@ -70,7 +70,7 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
 
     private function getPermalinkFromASIN(string $asin): string
     {
-        /// Returns the global amazon.com link, by default...
+        // / Returns the global amazon.com link, by default...
         return sprintf('https://www.amazon.com/gp/product/%s', $asin);
     }
 
@@ -151,7 +151,7 @@ class AmazonMusicPlatform extends Platform implements WebStoreInterface
                 $musical_entity = new TrackEntity(new AlbumEntity($current_item->album, $current_item->creator, $current_item->imageMedium), $current_item->title);
                 $musical_entity->addLink(static::TAG, $this->getPermalinkFromASIN($current_item->ASIN));
                 $externalIds = [static::TAG => $current_item->ASIN];
-            } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
+            } else { /* if ($type === Platform::SEARCH_ALBUM) */
                 $current_item = $entity->album;
 
                 $musical_entity = new AlbumEntity($current_item->title, $current_item->creator, $current_item->imageMedium);

@@ -144,7 +144,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
 
                 $musical_entity = new TrackEntity(new AlbumEntity($current_item->album->title, $current_item->artist->name, $picture), $current_item->title);
                 $musical_entity->addLink(static::TAG, $current_item->link);
-            } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
+            } else { /* if ($type === Platform::SEARCH_ALBUM) */
                 if (property_exists($current_item, 'cover')) {
                     $picture = $current_item->cover;
                 } else {

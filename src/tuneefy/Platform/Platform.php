@@ -103,7 +103,7 @@ abstract class Platform implements GeneralPlatformInterface
 
     public const CONNECT_TIMEOUT = 2000;
     public const CURL_TIMEOUT = 2000;
-    public const USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36";
+    public const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36';
 
     /**
      * The singleton instance of the class.
@@ -387,7 +387,7 @@ abstract class Platform implements GeneralPlatformInterface
 
             $response = $object['platform']->postProcessResult($response);
 
-            if (null === $response || $response->data === false) {
+            if (null === $response || false === $response->data) {
                 $errors[] = ['FETCH_PROBLEM' => (new PlatformException($object['platform']))->getMessage()];
                 continue;
             }

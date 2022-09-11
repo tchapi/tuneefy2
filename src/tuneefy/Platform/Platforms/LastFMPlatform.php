@@ -181,7 +181,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
 
                 $musical_entity = new TrackEntity(new AlbumEntity('', $current_item->artist, $picture), $current_item->name);
                 $musical_entity->addLink(static::TAG, $current_item->url);
-            } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
+            } else { /* if ($type === Platform::SEARCH_ALBUM) */
                 if (property_exists($current_item, 'image')) {
                     $picture = get_object_vars($current_item->image[2]);
                     $picture = $picture['#text'];

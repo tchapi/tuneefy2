@@ -679,12 +679,12 @@ final class ApiCest
     // Just a wrapper around sendGET with a log for debug
     private function sendGET(ApiTester $I, string $url): ApiTester
     {
-      $I->sendGET($url);
+        $I->sendGET($url);
 
-      $this->write('');
-      $this->write('🔗 Testing: '.'http://'.$I->grabHttpHeader('Host').'/v2'.$url);
+        $this->write('');
+        $this->write('🔗 Testing: '.'http://'.$I->grabHttpHeader('Host').'/v2'.$url);
 
-      return $I;
+        return $I;
     }
 
     public function testDocumentationRedirect(ApiTester $I)
@@ -811,7 +811,7 @@ final class ApiCest
 
             if (!isset($result['results'])) {
                 $I->assertArrayHasKey('errors', $result);
-            //$I->markAsRisky('No results for track search on platform '.$platform->getName());
+            // $I->markAsRisky('No results for track search on platform '.$platform->getName());
             } else {
                 $I->assertArrayHasKey('results', $result);
                 $I->assertCount(1, $result['results']);
@@ -879,7 +879,7 @@ final class ApiCest
 
             if (!isset($result['results'])) {
                 $I->assertArrayHasKey('errors', $result);
-            //$I->markAsRisky('No results for album search on platform '.$platform->getName());
+            // $I->markAsRisky('No results for album search on platform '.$platform->getName());
             } else {
                 $I->assertArrayHasKey('results', $result);
                 $I->assertCount(1, $result['results']);

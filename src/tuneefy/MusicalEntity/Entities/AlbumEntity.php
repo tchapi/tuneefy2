@@ -159,9 +159,9 @@ class AlbumEntity extends MusicalEntity
             'is_remix' => $a->isRemix() || $b->isRemix(),
             'acoustic' => $a->isAcoustic() || $b->isAcoustic(),
             'context' => array_unique(array_merge(
-                    $a->getExtraInfo()['context'],
-                    $b->getExtraInfo()['context']
-                ), SORT_REGULAR),
+                $a->getExtraInfo()['context'],
+                $b->getExtraInfo()['context']
+            ), SORT_REGULAR),
         ]);
         $c->setSafeTitle($safe_title);
 

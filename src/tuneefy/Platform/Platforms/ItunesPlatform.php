@@ -127,7 +127,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
                 $musical_entity = new TrackEntity(new AlbumEntity($current_item->collectionName, $current_item->artistName, $current_item->artworkUrl100), $current_item->trackName);
                 $musical_entity->addLink(static::TAG, $current_item->trackViewUrl);
                 $externalIds = [static::TAG => $current_item->trackId];
-            } else /*if ($type === Platform::SEARCH_ALBUM)*/ {
+            } else { /* if ($type === Platform::SEARCH_ALBUM) */
                 $musical_entity = new AlbumEntity($current_item->collectionName, $current_item->artistName, $current_item->artworkUrl100);
                 $musical_entity->addLink(static::TAG, $current_item->collectionViewUrl);
                 $externalIds = [static::TAG => $current_item->collectionId];

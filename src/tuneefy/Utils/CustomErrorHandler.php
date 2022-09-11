@@ -34,8 +34,8 @@ class CustomErrorHandler implements ErrorHandlerInterface
             $result .= '->';
         }
         if (array_key_exists('function', $trace[0])) {
-          $result .= $trace[0]['function'];
-          $result .= '()';
+            $result .= $trace[0]['function'];
+            $result .= '()';
         }
 
         return $result;
