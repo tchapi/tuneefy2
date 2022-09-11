@@ -41,7 +41,7 @@
         "symfony/translation": "^5.4",
         "tuupola/slim-basic-auth": "^3.3",
         "dflydev/fig-cookies": "^3.0",
-        "bryanjhv/slim-session": "~4.0",
+        "bryanjhv/slim-session": "^4.1.2",
         "monolog/monolog": "^2.3",
         "php-di/php-di": "^6.3",
         "slim/twig-view": "^3.2",
