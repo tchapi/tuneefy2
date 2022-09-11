@@ -676,16 +676,27 @@ final class ApiCest
         // ],
     ];
 
+    // Just a wrapper around sendGET with a log for debug
+    private function sendGET(ApiTester $I, string $url): ApiTester
+    {
+      $I->sendGET($url);
+
+      $this->write('');
+      $this->write('🔗 Testing: '.'http://'.$I->grabHttpHeader('Host').'/v2'.$url);
+
+      return $I;
+    }
+
     public function testDocumentationRedirect(ApiTester $I)
     {
         $I->stopFollowingRedirects();
-        $I->sendGET('/');
+        $this->sendGET($I, '/');
         $I->seeResponseCodeIs(301);
     }
 
     public function testListPlatforms(ApiTester $I)
     {
-        $I->sendGET('/platforms');
+        $this->sendGET($I, '/platforms');
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->seeResponseIsJson();
 
@@ -709,14 +720,14 @@ final class ApiCest
 
     public function testListPlatformsWithBadType(ApiTester $I)
     {
-        $I->sendGET('/platforms?type=coucou');
+        $this->sendGET($I, '/platforms?type=coucou');
         $I->seeResponseCodeIs(400);
         $I->seeResponseJsonMatchesJsonPath('$.errors');
     }
 
     public function testListPlatformsWithType(ApiTester $I)
     {
-        $I->sendGET('/platforms?type=streaming');
+        $this->sendGET($I, '/platforms?type=streaming');
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->seeResponseJsonMatchesJsonPath('$.platforms');
 
@@ -744,8 +755,7 @@ final class ApiCest
             }
 
             foreach ($permalinks as $permalink => $expectedResult) {
-                $this->write(' → '.$platform->getName().': '.$permalink);
-                $I->sendGET('/lookup?q='.urlencode($permalink));
+                $this->sendGET($I, '/lookup?q='.urlencode($permalink));
                 $I->seeResponseCodeIs(HttpCode::OK);
 
                 $result = $I->grabDataFromResponseByJsonPath('.')[0];
@@ -770,14 +780,14 @@ final class ApiCest
                 } else {
                     $I->assertArrayHasKey('errors', $result);
                 }
-                codecept_debug($permalink.' ✅');
+                $this->write(' →  ✅ '.$platform->getName().': '.$permalink);
             }
         }
     }
 
     public function testLookupWithNoPermalink(ApiTester $I)
     {
-        $I->sendGET('/lookup');
+        $this->sendGET($I, '/lookup');
         $I->seeResponseCodeIs(400);
         $I->seeResponseJsonMatchesJsonPath('$.errors');
     }
@@ -793,7 +803,7 @@ final class ApiCest
             if (!$platform->isCapableOfSearchingTracks()) {
                 continue;
             }
-            $I->sendGET('/search/track/'.$platform->getTag().'?q='.self::TRACK_QUERY.'&limit=1');
+            $this->sendGET($I, '/search/track/'.$platform->getTag().'?q='.self::TRACK_QUERY.'&limit=1');
             $I->seeResponseCodeIs(HttpCode::OK);
             $I->seeResponseIsJson();
 
@@ -814,7 +824,7 @@ final class ApiCest
         $engine = new PlatformEngine();
         $platform = $engine->getPlatformByTag('spotify');
 
-        $I->sendGET('/search/track/'.$platform->getTag().'?q='.self::TRACK_QUERY.'&limit=1&mode=eager');
+        $this->sendGET($I, '/search/track/'.$platform->getTag().'?q='.self::TRACK_QUERY.'&limit=1&mode=eager');
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->seeResponseIsJson();
 
@@ -830,7 +840,7 @@ final class ApiCest
         $platforms = $engine->getAllPlatforms();
 
         foreach ($platforms as $platform) {
-            $I->sendGET('/search/track/'.$platform->getTag());
+            $this->sendGET($I, '/search/track/'.$platform->getTag());
             $I->seeResponseCodeIs(400);
             $I->seeResponseIsJson();
             $I->seeResponseJsonMatchesJsonPath('$.errors');
@@ -843,7 +853,7 @@ final class ApiCest
         $platforms = $engine->getAllPlatforms();
 
         foreach ($platforms as $platform) {
-            $I->sendGET('/search/track/'.$platform->getTag().'?q='.self::TRACK_QUERY_ERROR.'&limit=2');
+            $this->sendGET($I, '/search/track/'.$platform->getTag().'?q='.self::TRACK_QUERY_ERROR.'&limit=2');
             $I->seeResponseCodeIs(HttpCode::OK);
             $I->seeResponseIsJson();
 
@@ -861,7 +871,7 @@ final class ApiCest
             if (!$platform->isCapableOfSearchingAlbums()) {
                 continue;
             }
-            $I->sendGET('/search/album/'.$platform->getTag().'?q='.self::ALBUM_QUERY.'&limit=1');
+            $this->sendGET($I, '/search/album/'.$platform->getTag().'?q='.self::ALBUM_QUERY.'&limit=1');
             $I->seeResponseCodeIs(HttpCode::OK);
             $I->seeResponseIsJson();
 
@@ -883,7 +893,7 @@ final class ApiCest
         $platforms = $engine->getAllPlatforms();
 
         foreach ($platforms as $platform) {
-            $I->sendGET('/search/album/'.$platform->getTag());
+            $this->sendGET($I, '/search/album/'.$platform->getTag());
             $I->seeResponseCodeIs(400);
             $I->seeResponseIsJson();
             $I->seeResponseJsonMatchesJsonPath('$.errors');
@@ -896,7 +906,7 @@ final class ApiCest
         $platforms = $engine->getAllPlatforms();
 
         foreach ($platforms as $platform) {
-            $I->sendGET('/search/album/'.$platform->getTag().'?q='.self::ALBUM_QUERY_ERROR.'&limit=2');
+            $this->sendGET($I, '/search/album/'.$platform->getTag().'?q='.self::ALBUM_QUERY_ERROR.'&limit=2');
             $I->seeResponseCodeIs(HttpCode::OK);
             $I->seeResponseIsJson();
 
@@ -909,7 +919,7 @@ final class ApiCest
     {
         $engine = new PlatformEngine();
 
-        $I->sendGET('/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY.'&limit=1');
+        $this->sendGET($I, '/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY.'&limit=1');
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->seeResponseIsJson();
 
@@ -927,7 +937,7 @@ final class ApiCest
     {
         $engine = new PlatformEngine();
 
-        $I->sendGET('/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY.'&limit=1&aggressive=true&include=deezer,spotify');
+        $this->sendGET($I, '/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY.'&limit=1&aggressive=true&include=deezer,spotify');
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->seeResponseIsJson();
 
@@ -949,7 +959,7 @@ final class ApiCest
     {
         $engine = new PlatformEngine();
 
-        $I->sendGET('/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY.'&limit=1&include=deezer,spotify');
+        $this->sendGET($I, '/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY.'&limit=1&include=deezer,spotify');
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->seeResponseIsJson();
 
@@ -970,7 +980,7 @@ final class ApiCest
     {
         $engine = new PlatformEngine();
 
-        $I->sendGET('/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY_ERROR.'&limit=1');
+        $this->sendGET($I, '/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY_ERROR.'&limit=1');
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->seeResponseIsJson();
 
