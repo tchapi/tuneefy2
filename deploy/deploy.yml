@@ -42,6 +42,11 @@
         src={{ shared_path }}/parameters.yml
         dest={{ release_path }}/app/config/parameters.yml
         state=link
+    - name: Link var/logs directory
+      file:
+        src={{ shared_path }}/logs
+        dest={{ release_path }}/var/logs
+        state=link
     - name: Install composer dependencies
       composer:
         command: install
