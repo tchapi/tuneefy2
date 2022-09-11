@@ -24,10 +24,10 @@
     "aglio": "^2.3.0",
     "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
+    "gulp-sass": "^5.1.0",
     "gulp-uglify": "^3.0.2",
     "pump": "^3.0",
-    "standard": "^16.0.3",
-    "gulp-sass": "^5.0.0",
-    "sass": "^1.42.1"
+    "sass": "^1.54.9",
+    "standard": "^17.0.0"
   }
 }

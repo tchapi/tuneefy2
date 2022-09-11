@@ -61,8 +61,9 @@ The source is in `src/tuneefy` and is organised as such :
 
 ### Tests
 
-The tests are under the `./tests` folder and I use **Codeception** to run them.
-Just run :
+The tests are under the `./tests` folder and I use **Codeception** to run them. You have to first create the `codeception.yml` file (or copy it from the dist file present in the repo).
+
+Afterwards, just run :
 
     vendor/bin/codecept run --steps
 
