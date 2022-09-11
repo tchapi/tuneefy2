@@ -560,7 +560,7 @@ final class ApiCest
                     'type' => 'album',
                     'title' => 'In Between Dreams (Bonus Track Version)',
                     'artist' => 'Jack Johnson',
-                    'picture' => 'https://is4-ssl.mzstatic.com/image/thumb/Music125/v4/db/d9/1a/dbd91afa-044d-637b-c557-847863c85a79/source/100x100bb.jpg',
+                    'picture' => 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/44/06/fd/4406fdc0-aab5-e300-82ba-3e5fe81a68a7/00602537868858.rgb.jpg/100x100bb.jpg',
                     'links' => [
                         'itunes' => [
                             'https://music.apple.com/fr/album/in-between-dreams-bonus-track-version/1440857781?uo=4',
@@ -586,7 +586,7 @@ final class ApiCest
                     'type' => 'album',
                     'title' => 'In Between Dreams (Bonus Track Version)',
                     'artist' => 'Jack Johnson',
-                    'picture' => 'https://is4-ssl.mzstatic.com/image/thumb/Music125/v4/db/d9/1a/dbd91afa-044d-637b-c557-847863c85a79/source/100x100bb.jpg',
+                    'picture' => 'https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/44/06/fd/4406fdc0-aab5-e300-82ba-3e5fe81a68a7/00602537868858.rgb.jpg/100x100bb.jpg',
                     'links' => [
                         'itunes' => [
                             'https://music.apple.com/fr/album/in-between-dreams-bonus-track-version/1440857781?uo=4',
@@ -608,72 +608,72 @@ final class ApiCest
                 ],
             ],
         ],
-        'amazon' => [
-            'http://www.amazon.com/gp/product/B00GLQQ07E/whatever' => [
-                'musical_entity' => [
-                    'type' => 'album',
-                    'title' => 'Frozen Heart (From "Frozen"/Soundtrack Version)',
-                    'artist' => 'Cast - Frozen',
-                    'picture' => 'https://images-na.ssl-images-amazon.com/images/I/61FFGp0yGVL._SS160_.jpg',
-                    'links' => [
-                        'amazon' => [
-                            'https://www.amazon.com/gp/product/B00GLQQ07E',
-                        ],
-                    ],
-                    'safe_title' => 'Frozen Heart',
-                    'extra_info' => [
-                        'is_cover' => false,
-                        'is_remix' => false,
-                        'acoustic' => false,
-                        'context' => [
-                            'From "Frozen"/Soundtrack Version',
-                        ],
-                    ],
-                ],
-                'query_words' => [
-                    'Cast - Frozen',
-                    'Frozen Heart',
-                ],
-            ],
-            'http://www.amazon.com/dp/B00GLQQ0JW/ref=dm_ws_tlw_trk1' => [
-                'musical_entity' => [
-                    'type' => 'track',
-                    'title' => 'Frozen Heart (From "Frozen"/Soundtrack Version)',
-                    'album' => [
-                        'title' => 'Frozen (Deluxe Edition)',
-                        'artist' => 'Cast - Frozen',
-                        'picture' => 'https://images-na.ssl-images-amazon.com/images/I/61FFGp0yGVL._SS160_.jpg',
-                        'safe_title' => 'Frozen',
-                        'extra_info' => [
-                            'is_cover' => false,
-                            'is_remix' => false,
-                            'acoustic' => false,
-                            'context' => [
-                                'Deluxe Edition',
-                            ],
-                        ],
-                    ],
-                    'links' => [
-                        'amazon' => [
-                            'https://www.amazon.com/gp/product/B00GLQQ0JW',
-                        ],
-                    ],
-                    'safe_title' => 'Frozen Heart',
-                    'extra_info' => [
-                        'is_cover' => false,
-                        'is_remix' => false,
-                        'acoustic' => false,
-                        'context' => [
-                            'From "Frozen"/Soundtrack Version',
-                        ],
-                    ],
-                ],
-                'query_words' => [
-                    'Cast - Frozen',
-                    'Frozen Heart',
-                ],
-            ],
-        ],
+        // 'amazon' => [
+        //     'http://www.amazon.com/gp/product/B00GLQQ07E/whatever' => [
+        //         'musical_entity' => [
+        //             'type' => 'album',
+        //             'title' => 'Frozen Heart (From "Frozen"/Soundtrack Version)',
+        //             'artist' => 'Cast - Frozen',
+        //             'picture' => 'https://images-na.ssl-images-amazon.com/images/I/61FFGp0yGVL._SS160_.jpg',
+        //             'links' => [
+        //                 'amazon' => [
+        //                     'https://www.amazon.com/gp/product/B00GLQQ07E',
+        //                 ],
+        //             ],
+        //             'safe_title' => 'Frozen Heart',
+        //             'extra_info' => [
+        //                 'is_cover' => false,
+        //                 'is_remix' => false,
+        //                 'acoustic' => false,
+        //                 'context' => [
+        //                     'From "Frozen"/Soundtrack Version',
+        //                 ],
+        //             ],
+        //         ],
+        //         'query_words' => [
+        //             'Cast - Frozen',
+        //             'Frozen Heart',
+        //         ],
+        //     ],
+        //     'http://www.amazon.com/dp/B00GLQQ0JW/ref=dm_ws_tlw_trk1' => [
+        //         'musical_entity' => [
+        //             'type' => 'track',
+        //             'title' => 'Frozen Heart (From "Frozen"/Soundtrack Version)',
+        //             'album' => [
+        //                 'title' => 'Frozen (Deluxe Edition)',
+        //                 'artist' => 'Cast - Frozen',
+        //                 'picture' => 'https://images-na.ssl-images-amazon.com/images/I/61FFGp0yGVL._SS160_.jpg',
+        //                 'safe_title' => 'Frozen',
+        //                 'extra_info' => [
+        //                     'is_cover' => false,
+        //                     'is_remix' => false,
+        //                     'acoustic' => false,
+        //                     'context' => [
+        //                         'Deluxe Edition',
+        //                     ],
+        //                 ],
+        //             ],
+        //             'links' => [
+        //                 'amazon' => [
+        //                     'https://www.amazon.com/gp/product/B00GLQQ0JW',
+        //                 ],
+        //             ],
+        //             'safe_title' => 'Frozen Heart',
+        //             'extra_info' => [
+        //                 'is_cover' => false,
+        //                 'is_remix' => false,
+        //                 'acoustic' => false,
+        //                 'context' => [
+        //                     'From "Frozen"/Soundtrack Version',
+        //                 ],
+        //             ],
+        //         ],
+        //         'query_words' => [
+        //             'Cast - Frozen',
+        //             'Frozen Heart',
+        //         ],
+        //     ],
+        // ],
     ];
 
     public function testDocumentationRedirect(ApiTester $I)

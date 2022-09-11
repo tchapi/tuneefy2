@@ -10,6 +10,9 @@ use tuneefy\Platform\PlatformResult;
 use tuneefy\Platform\WebStoreInterface;
 use tuneefy\Utils\Utils;
 
+/**
+ * @deprecated - the endpoint does not seem to work anymore.
+ */
 class AmazonMusicPlatform extends Platform implements WebStoreInterface
 {
     public const NAME = 'Amazon Music';
