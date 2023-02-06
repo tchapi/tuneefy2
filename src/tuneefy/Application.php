@@ -46,6 +46,7 @@ class Application
     private $params;
     private $container;
     private $db;
+    private $twig;
 
     public function __construct()
     {
