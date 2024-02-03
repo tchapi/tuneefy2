@@ -102,5 +102,5 @@
       become: yes
       become_user: root
       service:
-        name: "php8.1-fpm"
+        name: "php8.2-fpm"
         state: restarted
