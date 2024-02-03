@@ -71,23 +71,23 @@ class BackendController
     {
         if ('POST' === $request->getMethod()) {
             $db = DatabaseHandler::getInstance(null);
+            $params = $request->getParsedBody();
+
             $db->addApiClient(
-                $request->getParsedBodyParam('name'),
-                $request->getParsedBodyParam('client_id'),
-                $request->getParsedBodyParam('client_secret'),
-                $request->getParsedBodyParam('description'),
-                $request->getParsedBodyParam('email'),
-                $request->getParsedBodyParam('url'),
-                $request->getParsedBodyParam('active')
+                $params['name'],
+                $params['client_id'],
+                $params['client_secret'],
+                $params['description'],
+                $params['email'],
+                $params['url'],
+                ($params['active'] == "on")
             );
 
             $routeContext = RouteContext::fromRequest($request);
             $routeParser = $routeContext->getRouteParser();
 
             $route = $routeParser->urlFor('admin_clients');
-            $uri = $request->getUri()->withPath($route);
-
-            return $response->withRedirect($uri);
+            return $response->withStatus(301)->withHeader('Location', $route);
         }
 
         $view = Twig::fromRequest($request);
