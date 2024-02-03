@@ -1,5 +1,5 @@
 ---
-- hosts: "{{ tuneefy_hosts }}"
+- hosts: "{{ tuneefy_hosts }}"
   vars_files:
     - ./vars.yml
   tasks:
