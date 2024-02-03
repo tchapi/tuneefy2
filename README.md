@@ -37,7 +37,6 @@ To build the assets and the API documentation, I use **yarn** and some modules.
 
   - [PHP CS Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) to lint the PHP code
   - [PHPUnit](https://phpunit.de/) for unit tests
-  - [Deployer](https://deployer.org) to deploy the site
 
 ### NPM (dev) packages used
 
