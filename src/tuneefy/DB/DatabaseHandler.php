@@ -404,4 +404,17 @@ class DatabaseHandler
             throw new \Exception('Error deleting expired access tokens : '.$statement->errorInfo()[2]);
         }
     }
+
+    public function mergeDuplicates()
+    {
+        $statement = $this->connection->prepare('SELECT GROUP_CONCAT(id), `object`, COUNT(*) AS c FROM items GROUP BY `object` HAVING c > 1');
+        $res = $statement->execute();
+
+        if (false === $res) {
+            throw new \Exception('Error getting duplicates groups : '.$statement->errorInfo()[2]);
+        }
+
+        // Now, for each group, select an "original" (the oldest one), and transform all others in redirects
+        // TODO ?
+    }
 }

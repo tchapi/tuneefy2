@@ -11,6 +11,7 @@ use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Email;
 use tuneefy\DB\DatabaseHandler;
+use tuneefy\MusicalEntity\RedirectEntity;
 use tuneefy\PlatformEngine;
 use tuneefy\Utils\Utils;
 
@@ -214,6 +215,16 @@ class FrontendController
             throw new HttpNotFoundException($request);
         }
 
+        // Check if it is a redirect
+        if (RedirectEntity::TYPE === $item->getType()) {
+            $location = $routeParser->urlFor('show', [
+              'type' => $args['type'],
+              'uid' => $item->getOriginalItemUid(),
+            ]);
+
+            return $response->withStatus(301)->withHeader('Location', $location);
+        }
+
         // Check the type (track || album) and redirect if necessary
         if (!isset($args['type']) || $item->getType() !== $args['type']) {
             $route = $routeParser->urlFor('show', [
@@ -272,6 +283,18 @@ class FrontendController
         }
 
         $index = intval($args['i'] ?? 0);
+
+        // Check if it is a redirect
+        if (RedirectEntity::TYPE === $item->getType()) {
+            $location = $routeParser->urlFor('listen', [
+              'type' => $args['type'],
+              'uid' => $item->getOriginalItemUid(),
+              'platform' => $platform,
+              'i' => $index,
+          ]);
+
+            return $response->withStatus(301)->withHeader('Location', $location);
+        }
 
         // Check we have a 'platform' link
         $links = $item->getLinksForPlatform($platform);
