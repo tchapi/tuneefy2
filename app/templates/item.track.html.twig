@@ -88,10 +88,10 @@
     <div class="mainTitle">{{ "track.share"|trans }}</div>
     
     <div id="linkHolder" class="boxSinv">
-      <input type="text" readonly="readonly" value="{{ params.urls.front }}{{ url_for('show', { uid: uid, type: "track" }) }}" id="shareLink" class="boxS5"/>
+      <input type="text" readonly="readonly" value="{{ params.urls.front }}{{ url_for('show', { uid: uid, type: "track" }) }}" id="mainLink" class="boxS5"/>
     </div>
   
-    <div id="socialHolder" class="boxSinv">
+    <div id="externalPlatformsActions" class="boxSinv">
       <a id="embed" onclick="toggleEmbed(); return false;" title="{{ "track_embed"|trans }}"></a>
       <a id="facebookShare" onclick='postToFeed("{{ params.urls.front ~ url_for('show', { uid: uid, type: "track" }) }}", "{{ item.getAlbumPicture?:'/img/nothumb_track.png' }}", "{{ item.getSafeTitle ~ ' | ' ~ item.getArtist }}", "{{ "track.description"|trans({"%track%": item.getSafeTitle, "%artist%": item.getArtist}) }}", "{{ "track.facebook_action"|trans }}", "{{ params.urls.front}}"); return false;' title="{{ "track_facebook"|trans }}"></a>
       <a id="twitterShare" onclick="newTweet('{{ "track.twitter_status"|trans({"%track%": item.getSafeTitle, "%artist%": item.getArtist, "%link%": params.urls.front ~ url_for('show', { uid: uid, type: "track" })})|url_encode }}'); return false;" title="{{ "track_twitter"|trans }}"></a>

@@ -47,7 +47,7 @@ window.fbAsyncInit = function () {
 }
 
 $(document).ready(function () {
-  $('#shareLink, #embedContent').click(function (e) {
+  $('#mainLink, #embedContent').click(function (e) {
     $(e.target).focus()
     $(e.target).select()
   })

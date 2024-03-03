@@ -841,7 +841,7 @@ li.tResult:last-child{
 }
 
 
-#linkHolder, #socialHolder, #embedHolder{
+#linkHolder, #externalPlatformsActions, #embedHolder{
   background: #1F1F1F;
   float: left;
   border: 1px solid black;
@@ -858,7 +858,7 @@ li.tResult:last-child{
   margin-top: 10px;
 }
 
-#shareLink, #embedContent{
+#mainLink, #embedContent{
   border-radius: 3px;
   border: 1px solid black;
   background: #E6E6E6;
@@ -873,7 +873,7 @@ li.tResult:last-child{
   height: 46px;
 }
 
-#socialHolder{
+#externalPlatformsActions{
   padding-bottom: 5px;
   padding-top: 7px;
 }
@@ -895,7 +895,7 @@ li.tResult:last-child{
 #mailShare:hover{ background-position: -70px -33px; }
 #embed:hover, #embed.open{ background-position: -105px -33px; }
 
-#socialHolder #new{
+#externalPlatformsActions #new{
   position: absolute;
   top: -48px;
   right: 66px;
