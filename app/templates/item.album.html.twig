@@ -21,10 +21,10 @@
 {% block content %}
 
 {% if not embed %}
-<div id="shareTitle" class="bdTop color"><p>{{ "album.intro"|trans }}</p></div>
+<div id="mainTitle" class="bdTop color"><p>{{ "album.intro"|trans }}</p></div>
 {% endif %}
 
-<div id="shareBox" class="{% if embed %}bdTop{% else %}boxed boxS txtS{% endif %}">
+<div id="mainContent" class="{% if embed %}bdTop{% else %}boxed boxS txtS{% endif %}">
 
   <div id="trackInfo" class="bdBot">
     {% if embed %}
@@ -84,7 +84,7 @@
   </div>
   
   <div id="share" class="bdTop2">
-    <div class="shareTitle">{{ "album.share"|trans }}</div>
+    <div class="mainTitle">{{ "album.share"|trans }}</div>
     
     <div id="linkHolder" class="boxSinv">
       <input type="text" readonly="readonly" value="{{ params.urls.front }}{{ url_for('show', { uid: uid, type: "album" }) }}" id="shareLink" class="boxS5"/>

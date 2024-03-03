@@ -223,12 +223,12 @@
     right: 57px;
   }
 
-  #shareTitle{
+  #mainTitle{
     padding-top: 10px;
     line-height: 1.2em;
    }
 
-  #shareBox{
+  #mainContent{
     font-size: 0.75em;
     width: 100%;
     margin: 15px auto;
@@ -313,7 +313,7 @@
     padding-bottom: 5px;
   }
 
-  #platforms .listenTitle, #share .shareTitle{
+  #platforms .listenTitle, #share .mainTitle{
     text-transform: uppercase;
     font-size: 0.75em;
     color: #AAAAAA;

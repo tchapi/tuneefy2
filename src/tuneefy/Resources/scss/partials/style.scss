@@ -755,13 +755,13 @@ li.tResult:last-child{
 }
 
 /* SHARE */
-#shareTitle{
+#mainTitle{
   font-size: 1.7em;
   text-align: center;
   padding-top: 50px;
 }
 
-#shareBox{
+#mainContent{
   width: 460px;
   margin: 35px auto;
 }
@@ -828,7 +828,7 @@ li.tResult:last-child{
   padding-bottom: 5px;
 }
 
-#platforms .listenTitle, #share .shareTitle{
+#platforms .listenTitle, #share .mainTitle{
   text-transform: uppercase;
   font-size: 0.75em;
   color: #AAAAAA;
