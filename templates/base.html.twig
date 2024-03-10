@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/{{ schemaType }}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:og="http://ogp.me/ns#"
+      xmlns:fb="http://www.facebook.com/2008/fbml"
+      xml:lang="{{ app.locale }}" lang="{{ app.locale }}">
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# tuneefy: http://ogp.me/ns/fb/tuneefy#">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="content-language" content="{{ app.locale }}">
+  
+  <meta name="description" content="{{ "description"|trans }}" />
+  <meta name="keywords" content="{{ "keywords"|trans }}" />
+
+  {% block social %}
+    <title>{{ ("pages." ~ page ~ ".title")|trans }} — tuneefy</title>
+    <meta property="og:title" content="{{ ("pages." ~ page ~ ".title")|trans }} | tuneefy"/>
+    <meta property="og:url" content="{{ path('home') }}"/>
+    <meta property="og:image" content="{{ asset('/img/social.png') }}"/>
+    <meta property="og:type" content="website"/>
+    
+    <meta itemprop="name" content="{{ ("pages." ~ page ~ ".title")|trans }} | tuneefy">
+    <meta itemprop="description" content="{{ "description"|trans }}">
+    <meta itemprop="image" content="{{ asset('/img/social.png') }}">
+  {% endblock %}
+  <link rel="icon" type="image/png" href="{{ asset('/favicon.png') }}" />
+  <!--[if IE]><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" /><![endif]-->
+
+  <meta content="yes" name="apple-mobile-web-app-capable" />
+  <link href="{{ asset('/img/social.png') }}" rel="apple-touch-icon" />
+
+  <link rel="stylesheet" href="{{ asset('/build/css/styles.css') }}"/>
+  {% if embed is defined and embed == true %}<link rel="stylesheet" href="{{ asset('/build/css/embed.css') }}"/>{% endif %}
+</head>
+<body class="Bcolor">
+
+  {% if embed is not defined or not embed %}
+    <div class="hideAll"></div>
+    <div class="ribbon"><a href="https://github.com/tchapi/tuneefy2" rel="me">{{ "github"|trans }}</a></div>
+  {% endif %}
+
+  <div id="wrapper">
+  
+    <div id="header-wrapper" class="full Fcolor txtColor">
+      <div class="wrap clear" id="header">
+    
+        <div id="lang">
+          <span{% if app.locale == 'en' %} class="activeLang"{% endif %} lang="en">EN</span>
+          <span{% if app.locale == 'fr' %} class="activeLang"{% endif %} lang="fr">FR</span>
+        </div>
+
+        {% apply spaceless %}
+        <ul id="navigation">
+          <li><a{% if page == "home" %} class="current txtS3"{% endif %} title="{{ "pages.home.tip"|trans }}" href="{{ path('home') }}"><img class="homeImg" src="{{ asset('/img/home_pic.png') }}" width="12px" height="14px" />{{ "pages.home.title"|trans }}</a></li>
+          <li><a{% if page == "trends" %} class="current txtS3"{% endif %} title="{{ "pages.trends.tip"|trans }}" href="{{ path('trends') }}">{{ "pages.trends.title"|trans }}</a></li>
+          <li><a{% if page == "about" %} class="current txtS3"{% endif %} title="{{ "pages.about.tip"|trans }}" href="{{ path('about') }}">{{ "pages.about.title"|trans }}</a></li>
+        </ul>
+        {% endapply %}
+
+      </div>
+    </div>
+
+    <div id="content-wrapper" class="full">
+      <div class="wrap clear bdBot" id="content">
+        <div id="tagline" class="bdBot">
+          <a href="{{ path('home') }}"{% if embed is defined and embed == true %} target="_blank"{% endif %}><h1 class="logo color"><img src="{{ asset('/img/logo.png') }}" width="267" height="133" alt="tuneefy"/></h1> </a>
+          <p class="tagline txtS">{{ "tagline"|trans|raw }}</p>
+        </div>
+
+        {% block content %}{% endblock %}
+
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-wrapper" class="full">
+    <div id="footer" class="wrap bdTop txtS">
+      <div class="endorsement bdBot">{{ "endorsement"|trans }}</div>
+      <div class="copycon bdTop">
+        <div class="copyright"><img src="{{ asset('/img/logo_footer.png') }}" width="115" alt="{{ "copyright"|trans }}" /></div>
+        <div class="conditions">{{ "copyright"|trans }} &nbsp; <a href="{{ path('about') }}#contact">{{ "contact"|trans }}</a></div>
+      </div>
+    </div>
+  </div>
+
+{% block javascript %}
+  <script type="text/javascript">
+    const $DOMAIN = "{{ app.request.host }}";
+  </script>
+  {% if ga_tracker_id %}
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', '{{ ga_tracker_id }}']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  {% endif %}
+  <script type="text/javascript" src="{{ asset('/build/js/vendor/jquery-3.6.0.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('/build/js/main.js') }}"></script>
+{% endblock %}
+
+</body>
+</html>

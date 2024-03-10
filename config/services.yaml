@@ -1,0 +1,95 @@
+parameters:
+    uid_base: 11111
+    mail.captcha_key: "%env(CAPTCHA_KEY)%"
+    mail.captcha_secret: "%env(CAPTCHA_SECRET)%"
+    mail.contact_email: "contact@tuneefy.com"
+    mail.team_email: "tchap@tuneefy.com"
+    api.base_url: "https://data.tuneefy.com/v2"
+    api.bypassSecret: "%env(API_BYPASS_SECRET)%"
+    intents.lifetime: 600 # seconds
+    intents.secret: "%env(INTENTS_SECRET)%"
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\Security\LoginFormAuthenticator:
+        arguments:
+            $adminLogin: "%env(ADMIN_LOGIN)%"
+            $adminPassword: "%env(ADMIN_PASSWORD)%"
+
+    App\Utils\Utils:
+        arguments:
+            $base: "%uid_base%"
+
+    # Platforms
+    App\Services\Platforms\DeezerPlatform:
+        arguments:
+            $key: "%env(DEEZER_KEY)%"
+            $secret: "%env(DEEZER_SECRET)%"
+        tags: ['app.platform']
+
+    App\Services\Platforms\SpotifyPlatform:
+        arguments:
+            $key: "%env(SPOTIFY_KEY)%"
+            $secret: "%env(SPOTIFY_SECRET)%"
+        tags: ['app.platform']
+
+    App\Services\Platforms\QobuzPlatform:
+        arguments:
+            $key: "%env(QOBUZ_KEY)%"
+            $secret: "%env(QOBUZ_SECRET)%"
+        tags: ['app.platform']
+
+    App\Services\Platforms\LastFMPlatform:
+        arguments:
+            $key: "%env(LASTFM_KEY)%"
+            $secret: "%env(LASTFM_SECRET)%"
+        tags: ['app.platform']
+
+    App\Services\Platforms\SoundcloudPlatform:
+        arguments:
+            $key: "%env(SOUNDCLOUD_KEY)%"
+            $secret: "%env(SOUNDCLOUD_SECRET)%"
+        tags: ['app.platform']
+            
+    App\Services\Platforms\YoutubePlatform:
+        arguments:
+            $key: "%env(YOUTUBE_KEY)%"
+            $secret: "%env(YOUTUBE_SECRET)%"
+        tags: ['app.platform']
+  
+    App\Services\Platforms\MixcloudPlatform:
+        arguments:
+            $key: "%env(MIXCLOUD_KEY)%"
+            $secret: "%env(MIXCLOUD_SECRET)%"
+        tags: ['app.platform']
+
+    App\Services\Platforms\ItunesPlatform:
+        arguments:
+            $key: "%env(ITUNES_KEY)%"
+            $secret: "%env(ITUNES_SECRET)%"
+        tags: ['app.platform']
+
+    App\Services\Platforms\TidalPlatform:
+        arguments:
+            $key: "%env(TIDAL_KEY)%"
+            $secret: "%env(TIDAL_SECRET)%"
+        tags: ['app.platform']
+
+    App\Services\Platforms\NapsterPlatform:
+        arguments:
+            $key: "%env(NAPSTER_KEY)%"
+            $secret: "%env(NAPSTER_SECRET)%"
+        tags: ['app.platform']

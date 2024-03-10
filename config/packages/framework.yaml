@@ -1,0 +1,23 @@
+# see https://symfony.com/doc/current/reference/configuration/framework.html
+framework:
+    secret: '%env(APP_SECRET)%'
+    #csrf_protection: true
+
+    # Note that the session will be started ONLY if you read or write from it.
+    session:
+      name: tuneefy
+      cookie_domain: .tuneefy.com
+
+    #esi: true
+    #fragments: true
+
+when@dev:
+    framework:
+        session:
+          cookie_domain: ''
+
+when@test:
+    framework:
+        test: true
+        session:
+            storage_factory_id: session.storage.factory.mock_file

@@ -1,0 +1,186 @@
+{% set schemaType, page = "WebPage", "home" %}
+
+{% extends 'base.html.twig' %}
+{% import "macros/tools.twig" as tools -%}
+
+{% block content %}
+
+<div id="preSearch" class="bdBot bdTop">
+
+  <div class="boxed boxS">
+    <div id="info">
+      <h2 class="infoTitle color">{{ "pages.home.welcome"|trans }}</h2>
+      <p class="infoContent">{{ "pages.home.content"|trans|raw }}</p>
+      <a class="btn btn_more" href="{{ path('about') }}">{{ "pages.home.more_info"|trans }}</a>
+    </div>
+
+    <div id="todaysPickOverlay"></div>
+
+    <div id="pickPager">
+      {% if last_shared.track %}<div class="pickPagerItem Bcolor"></div>{% endif %}
+      {% if last_shared.album %}<div class="pickPagerItem Bcolor"></div>{% endif %}
+      {% if most_viewed.entity %}<div class="pickPagerItem Bcolor"></div>{% endif %}
+    </div>
+
+    <div id="todaysPick">
+    
+    {% if last_shared.track %}
+      <div class="pick">
+        <h2 class="pickTitle color">{{ "picks.lastSharedTrack"|trans }}</h2>
+        <div class="pickContent">
+          <div class="cover">
+            <img src="{{ last_shared.track.entity.getAlbumPicture?:'/img/nothumb_track.png' }}" width="50" height="50" />
+            <span class="coverlay"></span>
+          </div>
+          <div class="info">
+            <div class="title">{{ tools.ellipsis(last_shared.track.entity.safeTitle, 24)  }}</div>
+            <div class="artist">{{ tools.ellipsis(last_shared.track.entity.artist, 40)  }}</div>
+            <div class="album">{% if last_shared.track.entity.album.safeTitle and (last_shared.track.entity.album.safeTitle)|lower != 'null' %}{{ tools.ellipsis(last_shared.track.entity.album.safeTitle, 36) }}{% else %}{{ "results.various_albums"|trans }}{% endif %}</div>
+          </div>
+        </div>
+        <a class="btn btn_picks" href="{{ path('show', { uid: last_shared.track.uid, type: "track" }) }}">{{ "picks.discover"|trans }}</a>
+      </div>
+    {% endif %}
+
+    {% if last_shared.album %}
+      <div class="pick">
+        <h2 class="pickTitle color">{{ "picks.lastSharedAlbum"|trans }}</h2>
+        <div class="pickContent">
+          <div class="cover">
+            <img src="{{ last_shared.album.entity.getPicture?:'/img/nothumb_album.png' }}" width="50" height="50" />
+            <span class="coverlay"></span>
+          </div>
+          <div class="info">
+            <div class="title">{{ tools.ellipsis(last_shared.album.entity.safeTitle, 24)  }}</div>
+            <div class="artist">{{ tools.ellipsis(last_shared.album.entity.artist, 40) }}</div>
+          </div>
+        </div>
+        <a class="btn btn_picks" href="{{ path('show', { uid: last_shared.album.uid, type: "album" }) }}">{{ "picks.discover"|trans }}</a>
+      </div>
+    {% endif %}
+
+    {% if most_viewed.entity %}
+      {% set isTrack = (most_viewed.entity.getType() == "track") %}
+      <div class="pick">
+        <h2 class="pickTitle color">{{ "picks.mostViewed"|trans }}</h2>
+        <div class="pickContent">
+          <div class="cover">
+            <img src="{{ isTrack?(most_viewed.entity.album.getPicture?:'/img/nothumb_album.png'):(most_viewed.entity.getPicture?:'/img/nothumb_album.png') }}" width="50" height="50" />
+            <span class="coverlay"></span>
+          </div>
+          <div class="info">
+            <div class="title">{{ most_viewed.entity.title() }}</div>
+            <div class="artist">{{ most_viewed.entity.artist() }}</div>
+            {% if isTrack %}<div class="album">{{ most_viewed.entity.getAlbumTitle() }}</div>{% endif %}
+          </div>
+        </div>
+        <a class="btn btn_picks" href="{{ path('show', { uid: most_viewed.uid, type: "mixed" }) }}">{{ "picks.discover"|trans }}</a>
+      </div>
+    {% endif %}
+
+    </div>
+  </div>
+  
+</div>
+
+<div id="searchForm" class="wrap bdTop">
+ <div id="moreOptions" ><img src="/img/{{ 'search.moreOptionsImage'|trans }}" width="160" height="60" title="{{ "search.moreOptionsAlt"|trans }}"/></div>
+
+  <form id="find" action="{{ api.base_url }}/aggregate/%type%">
+
+    <div id="basic">
+      <input type="text" id="query" name="query" class="boxS5" value="{{ query?:"search.query_label"|trans }}" data-placeholder="{{ "search.query_label"|trans }}"/>
+      <div id="searchType" class="boxed boxS">
+        <div id="searchTypeInner">
+          <span id="typeAlbums" class="off">{{ "search._albums"|trans }}</span>
+          <span id="typeTracks">{{ "search._tracks"|trans }}</span>
+          <input type="checkbox" id="searchTypeCheckbox" checked='checked' />
+        </div>
+      </div>
+      <input type="submit" id="launch" class="txtSinv boxS2" value="{{ "search.search_button"|trans }}"/>
+      <div id="resetQuery" style="display: none;"></div>
+      <div id="options"></div>
+      <div id="waiting" style="display: none;"><img src="{{ asset('/img/ajax-loader.gif') }}" /></div>
+    </div>
+  
+    <div id="help" style="display:none;" class="txtS">
+      <div class="neverAgain"><span class="closeForever">{{ "help.text_close"|trans }}</span><span class="closeHelp"></span></div>
+      <div class="helpMe">
+      <span class="color helpTitle">{{ "help.text_title"|trans }}</span>
+      {{ "help.text"|trans }}
+      </div>
+      <div class="moreHelp">
+      <span>{{ "help.text_more"|trans }}</span>
+      <a class="btn btnMoreHelp" href="{{ path('about') }}#patterns">{{ "help.text_more_button"|trans }}</a>
+      </div>
+      <div class="helpTriangle"></div>
+    </div>
+
+    <div id="hideMisere" style="display:none;"></div>
+    <div id="advanced" style="display:none;" class="shd">
+      <div id="availablePlatforms" class="boxS3">
+        <span class="filter">{{ "search.available_platforms"|trans }}</span>
+        {% for platform in platforms %}
+          <a class="btns btn_{{ platform.tag }} off" rel="{{platform.tag}}" id="platform_{{ platform.tag }}" data-platform-tag="{{ platform.tag }}" title="{{ platform.name }}" ></a>
+        {% endfor %}
+      </div>
+      <div id="mergeResults" class="boxS3">
+        <span class="merge">{{ "search.merge_label"|trans }}</span>
+        <input type="checkbox" id="aggressive" checked="checked" data-yes="{{ "yes"|trans }}" data-no="{{ "no"|trans }}"/>
+      </div>
+    </div>
+    
+  </form>
+</div>
+
+<div id="alerts" class="wrap"></div>
+<div id="results" class="wrap" style="display: none;">
+  <div class="above">
+      <div class="nbResults">{{ "results.results_found"|trans|raw }}</div>
+  </div>
+  {% apply spaceless %}
+  <ul>
+      <li class="tHeader">
+          <div class="tHeader_bf">&nbsp;</div>
+          <div class="tHeader_tA tHeader_disp" rel="album">{{ "results.header.track"|trans }}</div>
+          <div class="tHeader_aA tHeader_disp" rel="album">{{ "results.header.artist"|trans }}</div>
+          <div class="tHeader_t tHeader_disp" rel="track" style="display: none">{{ "results.header.track"|trans }}</div>
+          <div class="tHeader_a tHeader_disp" rel="track" style="display: none">{{ "results.header.artist"|trans }}</div>
+          <div class="tHeader_c tHeader_disp" rel="track" style="display: none">{{ "results.header.album"|trans }}</div>
+          <div class="tHeader_p">{{ "results.header.available"|trans }}</div>
+          <div class="tHeader_af">&nbsp;</div>
+      </li>
+  </ul>
+  {% endapply %}
+
+  <div class="below">
+      <a class="btn backToTop" href="#preSearch">{{ "back_to_top"|trans }}</a>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+  {{ parent() }}
+  <script type="text/javascript">
+    var $default_platforms = "{{ default_platforms }}";
+    var $error_message = "{{ "search.error_message"|trans }}";
+    var $results_found = "{{ "results.results_found"|trans|raw }}";
+    var $listen_to = "{{ "results.listen_to"|trans|raw }}";
+    var $share = "{{ "results.share"|trans|raw }}";
+    var $share_tip = "{{ "results.share_tip"|trans|raw }}";
+    var $path = "{{ path('listen_direct', {'platform': '%key%'}) }}";
+    var $pathIntent = "{{ api.base_url }}/share/%intent%";
+  </script>
+  <script type="text/javascript" src="{{ asset('/build/js/vendor/iphone-style.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('/build/js/vendor/twig.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('/build/js/search.js') }}"></script>
+  {% if query %}
+  <script type="text/javascript">
+      $(document).ready(function(){
+        $('#query').val("{{ query }}");
+        $("#find").submit();
+      });
+  </script>
+  {% endif %}
+{% endblock %}
