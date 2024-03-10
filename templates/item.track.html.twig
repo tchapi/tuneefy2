@@ -1,0 +1,116 @@
+{% set schemaType, page = "MusicRecording", "track" %}
+
+{% extends 'base.html.twig' %}
+{% import "macros/tools.twig" as tools -%}
+
+{% block social %}
+  <title>{{ item.getSafeTitle }} | {{ item.getArtist }} — tuneefy</title>
+  <meta property="og:title" content="{{ item.getSafeTitle }} | {{ item.getArtist }}"/>
+  <meta property="og:url" content="{{ url('show', { uid: uid, type: "track" }) }}"/>
+  <meta property="og:image" content="{{ item.getAlbumPicture }}"/>
+  <meta property="tuneefy:artist" content="{{ item.getArtist }}"/>
+  <meta property="tuneefy:album" content="{{ item.getAlbumSafeTitle }}>" />
+  <meta property="og:description" content="{{ "track.description"|trans({"%artist%": item.getArtist, "%track%": item.getSafeTitle}) }}"/>
+  <meta property="og:type" content="tuneefy:track"> 
+      
+  <meta itemprop="name" content="{{ item.getSafeTitle }} | {{ item.getArtist }}">
+  <meta itemprop="description" content="{{ "track.description"|trans({"%artist%": item.getArtist, "%track%": item.getSafeTitle}) }}">
+  <meta itemprop="image" content="{{ item.getAlbumPicture }}">
+{% endblock %}
+
+{% block content %}
+
+{% if not embed %}
+<div id="mainTitle" class="bdTop color"><p>{{ "track.intro"|trans }}</p></div>
+{% endif %}
+
+<div id="mainContent" class="{% if embed %}bdTop{% else %}boxed boxS txtS{% endif %}">
+
+  <div id="trackInfo" class="bdBot">
+    {% if embed %}
+    <a href="{{ url('show', { uid: uid, type: "track" }) }}" target="_blank" title="{{ "track.seeOnTuneefy"|trans }}">
+    {% endif %}
+    <div class="cover">
+      <img src="{{ item.getAlbumPicture?:'/img/nothumb_track.png' }}" width="82" height="82" />
+      <span class="coverlay"></span>
+    </div>
+    {% if embed %}</a>{% endif %}
+
+    <div class="info">
+      <div class="infoWrapper">
+        <div class="infoContent">
+          {% if embed %}
+            <a href="{{ url('show', { uid: uid, type: "track" }) }}" target="_blank" title="{{ "track.seeOnTuneefy"|trans }}" >
+              <div class="title">{{ tools.ellipsis(item.getSafeTitle, 40) }}
+                <img class="newWindow" src="{{ params.url.frontend }}/img/new_window.png" width="14" />
+              </div>
+            </a>
+          {% else %}
+            <div class="title">{{ tools.ellipsis(item.getSafeTitle, 40) }}</div>
+          {% endif %}
+          <div class="artist">{{ tools.ellipsis(item.getArtist, 40) }}</div>
+          <div class="album">{% if item.getAlbumSafeTitle and (item.getAlbumSafeTitle)|lower != 'null' %}{{ tools.ellipsis(item.getAlbumSafeTitle, 40) }}{% else %}{{ "results.various_albums"|trans }}{% endif %}</div>
+          {% if embed %}
+          <div id="platforms">
+            {% for key, links in item.links %}
+              {% if links|length > 0 and compact|default(true) %}
+                  <a target="_blank" class="btns btn_{{ key }}" href="{{ path('listen', { 'type': 'track', 'uid': uid, 'platform': key, 'i': 0 }) }}" title="{{ "results.listen_to"|trans({'%name%': item.getSafeTitle}) }}"></a>
+              {% else %}
+                {% for i, link in links %}
+                    <a target="_blank" class="btns btn_{{ key }}" href="{{ path('listen', { 'type': 'track', 'uid': uid, 'platform': key, 'i': i }) }}" title="{{ "results.listen_to"|trans({'%name%': item.getSafeTitle}) }}"></a>
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if not embed %}
+  <div id="platforms" class="bdBot bdTop2">
+    <div class="listenTitle">{{ "track.listen_to"|trans }}</div>
+
+      {% for key, links in item.links %}
+        {% if links|length > 0 and compact|default(true) %}
+            <a target="_top" class="btns_full btn_full_{{ key }}" href="{{ path('listen', { 'type': 'track', 'uid': uid, 'platform': key, 'i': 0 }) }}" title="{{ "results.listen_to"|trans({'%name%': item.getSafeTitle}) }}"></a>
+        {% else %}
+          {% for i, link in links %}
+              <a target="_top" class="btns_full btn_full_{{ key }}" href="{{ path('listen', { 'type': 'track', 'uid': uid, 'platform': key, 'i': i }) }}" title="{{ "results.listen_to"|trans({'%name%': item.getSafeTitle}) }}"></a>
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+
+  </div>
+  
+  <div id="share" class="bdTop2">
+    <div class="mainTitle">{{ "track.share"|trans }}</div>
+    
+    <div id="linkHolder" class="boxSinv">
+      <input type="text" readonly="readonly" value="{{ url('show', { uid: uid, type: "track" }) }}" id="mainLink" class="boxS5"/>
+    </div>
+  
+    <div id="externalPlatformsActions" class="boxSinv">
+      <a id="embed" onclick="toggleEmbed(); return false;" title="{{ "track.embed"|trans }}"></a>
+      <a id="facebookShare" onclick='postToFeed("{{ url('show', { uid: uid, type: "track" }) }}", "{{ item.getAlbumPicture?:'/img/nothumb_track.png' }}", "{{ item.getSafeTitle ~ ' | ' ~ item.getArtist }}", "{{ "track.description"|trans({"%track%": item.getSafeTitle, "%artist%": item.getArtist}) }}", "{{ "track.facebook_action"|trans }}", "{{ url('home') }}"); return false;' title="{{ "track.facebook"|trans }}"></a>
+      <a id="twitterShare" onclick="newTweet('{{ "track.twitter_status"|trans({"%track%": item.getSafeTitle, "%artist%": item.getArtist, "%link%": url('show', { uid: uid, type: "track" })})|url_encode }}'); return false;" title="{{ "track.twitter"|trans }}"></a>
+      <a id="mailShare" title="{{ "track.mail.action"|trans }}" href="mailto:?subject={{ "track.mail.subject"|trans({"%track%": item.getSafeTitle, "%artist%": item.getArtist})|url_encode }}&body={{ "track.mail.body"|trans({"%link%": url('show', { uid: uid, type: "track" }) })|url_encode }}"></a>
+    </div>
+    
+    <div id="embedHolder" class="boxSinv" style="display: none;">
+      <textarea readonly="readonly" id="embedContent" class="boxS5">{{ "iframe.code"|trans({"%link%": url('show', { uid: uid, type: "track" }) }) }}</textarea>
+    </div>
+    <div style="clear: both"></div>
+  
+  </div>
+  {% endif %}
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+  {{ parent() }}
+  <script type="text/javascript" src="/build/js/show.js"></script>
+{% endblock %}

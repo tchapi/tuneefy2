@@ -1,0 +1,142 @@
+<?php
+
+namespace App\Services\Platforms;
+
+use App\Dataclass\MusicalEntity\Entities\Album;
+use App\Dataclass\MusicalEntity\Entities\Track;
+use App\Services\Platforms\Interfaces\WebStoreInterface;
+use App\Utils\Utils;
+
+class ItunesPlatform extends Platform implements WebStoreInterface
+{
+    protected $default = true;
+    protected $enables = ['api' => true, 'website' => true];
+    protected $capabilities = ['track_search' => true, 'album_search' => true, 'lookup' => true];
+
+    public const NAME = 'iTunes';
+    public const HOMEPAGE = 'https://itunes.apple.com';
+    public const TAG = 'itunes';
+    public const COLOR = '216be4';
+
+    public const API_ENDPOINT = 'https://itunes.apple.com/';
+    public const API_METHOD = Platform::METHOD_GET;
+
+    protected $endpoints = [
+        Platform::LOOKUP_TRACK => null,
+        Platform::LOOKUP_ALBUM => self::API_ENDPOINT.'lookup',
+        Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'lookup',
+        Platform::SEARCH_TRACK => self::API_ENDPOINT.'search/track',
+        Platform::SEARCH_ALBUM => self::API_ENDPOINT.'search/album',
+       // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search/artist"
+    ];
+    protected $terms = [
+        Platform::LOOKUP_TRACK => null,
+        Platform::LOOKUP_ALBUM => 'id',
+        Platform::LOOKUP_ARTIST => 'id',
+        Platform::SEARCH_TRACK => 'term',
+        Platform::SEARCH_ALBUM => 'term',
+       // Platform::SEARCH_ARTIST => "term"
+    ];
+    protected $options = [
+        Platform::LOOKUP_TRACK => [],
+        Platform::LOOKUP_ALBUM => [],
+        Platform::LOOKUP_ARTIST => [],
+        Platform::SEARCH_TRACK => ['media' => 'music', 'entity' => 'song', 'limit' => Platform::LIMIT],
+        Platform::SEARCH_ALBUM => ['media' => 'music', 'entity' => 'album', 'limit' => Platform::LIMIT],
+       // Platform::SEARCH_ARTIST => Map { "media" => "music", "entity" => "musicArtist", "limit" => Platform::LIMIT }
+    ];
+
+    // https://itunes.apple.com/us/artist/jack-johnson/id909253
+    public const REGEX_ITUNES_ARTIST = "/\/artist\/(?P<artist_name>".Platform::REGEX_FULLSTRING.")\/(id)?(?P<artist_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+
+    // https://itunes.apple.com/us/album/weezer/id1136784464
+    public const REGEX_ITUNES_ALBUM = "/\/album\/(?P<album_name>".Platform::REGEX_FULLSTRING.")\/(id)?(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+
+    public function hasPermalink(string $permalink): bool
+    {
+        return false !== strpos($permalink, 'music.apple.') || false !== strpos($permalink, 'itunes.apple.');
+    }
+
+    protected function addContextOptions(?array $data, ?string $countryCode = null): array
+    {
+        $data['country'] = strtoupper($countryCode ?: self::DEFAULT_COUNTRY_CODE);
+
+        return $data;
+    }
+
+    public function expandPermalink(string $permalink, int $mode): PlatformResult
+    {
+        $musical_entity = null;
+        $query_words = [$permalink];
+
+        $match = [];
+
+        if (preg_match(self::REGEX_ITUNES_ALBUM, $permalink, $match)) {
+            $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_id']);
+
+            if (null === $response) {
+                throw new PlatformException($this);
+            }
+
+            if (intval($response->data->resultCount) > 0) {
+                $entity = $response->data->results[0];
+                $musical_entity = new Album($entity->collectionName, $entity->artistName, $entity->artworkUrl100);
+                $musical_entity->addLink(static::TAG, $entity->collectionViewUrl);
+
+                $query_words = [
+                    $musical_entity->getArtist(),
+                    $musical_entity->getSafeTitle(),
+                ];
+            }
+        } elseif (preg_match(self::REGEX_ITUNES_ARTIST, $permalink, $match)) {
+            $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_id']);
+
+            if (null === $response) {
+                throw new PlatformException($this);
+            }
+
+            if (intval($response->data->resultCount) > 0) {
+                $query_words = [$response->data->results[0]->artistName];
+            }
+        }
+
+        // Consolidate results
+        $metadata = ['query_words' => $query_words];
+
+        if (null !== $musical_entity) {
+            $metadata['platform'] = $this->getName();
+        }
+
+        return new PlatformResult($metadata, $musical_entity);
+    }
+
+    public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
+    {
+        $entities = $response->data->results;
+
+        // We actually don't pass the limit to the fetch()
+        // request since it's not really useful, in fact
+        $length = min(intval($response->data->resultCount), $limit ? $limit : Platform::LIMIT);
+
+        $musical_entities = [];
+
+        // Normalizing each track found
+        for ($i = 0; $i < $length; ++$i) {
+            $current_item = $entities[$i];
+
+            if (Platform::SEARCH_TRACK === $type) {
+                $musical_entity = new Track(new Album($current_item->collectionName, $current_item->artistName, $current_item->artworkUrl100), $current_item->trackName);
+                $musical_entity->addLink(static::TAG, $current_item->trackViewUrl);
+                $externalIds = [static::TAG => $current_item->trackId];
+            } else { /* if ($type === Platform::SEARCH_ALBUM) */
+                $musical_entity = new Album($current_item->collectionName, $current_item->artistName, $current_item->artworkUrl100);
+                $musical_entity->addLink(static::TAG, $current_item->collectionViewUrl);
+                $externalIds = [static::TAG => $current_item->collectionId];
+            }
+
+            $musical_entities[] = new PlatformResult(['score' => Utils::indexScore($i), 'externalIds' => $externalIds], $musical_entity);
+        }
+
+        return $musical_entities;
+    }
+}

@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "gulp",
-    "api-documentation": "./node_modules/aglio/bin/aglio.js --theme-full-width --theme-template triple --theme-variables streak --theme-style default --theme-style app/templates/api/api.less --no-theme-condense -i app/templates/api/main.apib -o app/templates/api.html"
+    "api-documentation": "./node_modules/aglio/bin/aglio.js --theme-full-width --theme-template triple --theme-variables streak --theme-style default --theme-style templates/api/api.less --no-theme-condense -i templates/api/main.apib -o templates/api.html"
   },
   "repository": {
     "type": "git",
