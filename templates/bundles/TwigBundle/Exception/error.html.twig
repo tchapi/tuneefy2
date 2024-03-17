@@ -1,0 +1,11 @@
+{% set schemaType, page = "WebPage", "500" %}
+
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<div id="error-wrapper" class="bdTop txtS">
+  <h2>{{ "error.500.title"|trans }}</h2>
+  <p>{{ "error.500.description"|trans|raw }}</p>
+  <a class="btn" target="_top" href="{{ path('home') }}">{{ "error.action"|trans }}</a>
+</div>
+{% endblock %}

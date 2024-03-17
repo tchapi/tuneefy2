@@ -4,8 +4,8 @@ const sass = require('gulp-sass')(require('sass'));
 const concat = require('gulp-concat');
 const pump = require('pump');
 
-const resourcesFolder = 'src/tuneefy/Resources/';
-const buildFolder = 'web/build/'
+const resourcesFolder = 'assets/';
+const buildFolder = 'public/build/'
 
 const log = (error) => {
   if (error) {
