@@ -3,15 +3,16 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity()]
 #[ORM\Table()]
-class ApiClient
+class ApiClient implements UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $clientId;
+    private $id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: false)]
     private $name;
@@ -28,12 +29,39 @@ class ApiClient
     #[ORM\Column(type: 'date', length: 255)]
     private $createdAt;
 
+    // Link to the OAuth2 server tables (oauth2_client->identifier)
+    #[ORM\Column(type: 'string', length: 80)]
+    private $oauth2ClientIdentifier;
+
+    /**
+     * @return (Role|string)[] The user roles
+     */
+    public function getRoles(): array
+    {
+        return ['ROLE_OAUTH2_API'];
+    }
+
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials(): void
+    {
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->name;
+    }
+
     public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(string $name): this
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -45,7 +73,7 @@ class ApiClient
         return $this->email;
     }
 
-    public function setEmail(string $email): this
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
@@ -57,7 +85,7 @@ class ApiClient
         return $this->url;
     }
 
-    public function setUrl(string $url): this
+    public function setUrl(string $url): self
     {
         $this->url = $url;
 
@@ -69,7 +97,7 @@ class ApiClient
         return $this->description;
     }
 
-    public function setDescription(string $description): this
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -81,7 +109,7 @@ class ApiClient
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTime $createdAt): this
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = clone $createdAt;
 

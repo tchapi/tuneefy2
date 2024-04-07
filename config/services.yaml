@@ -4,8 +4,8 @@ parameters:
     mail.captcha_secret: "%env(CAPTCHA_SECRET)%"
     mail.contact_email: "contact@tuneefy.com"
     mail.team_email: "tchap@tuneefy.com"
+    api.use_oauth: true
     api.base_url: "https://data.tuneefy.com/v2"
-    api.bypassSecret: "%env(API_BYPASS_SECRET)%"
     intents.lifetime: 600 # seconds
     intents.secret: "%env(INTENTS_SECRET)%"
 
@@ -33,7 +33,12 @@ services:
         arguments:
             $base: "%uid_base%"
 
-    # Platforms
+    # Overriding this class to be able to properly get the client id in the token
+    # and create tokens on the fly
+    League\OAuth2\Server\Grant\ClientCredentialsGrant:
+        class: App\Services\ClientCredentialsGrant
+
+    # All platforms
     App\Services\Platforms\DeezerPlatform:
         arguments:
             $key: "%env(DEEZER_KEY)%"

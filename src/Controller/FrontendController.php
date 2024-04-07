@@ -22,9 +22,8 @@ class FrontendController extends AbstractController
         $widget = $request->query->get('widget', null);
         $searchQuery = $request->query->get('q', null);
 
-        // Let's bypass OAuth by setting a session secret
-        $session = $request->getSession();
-        $session->set('bypassSecret', $this->getParameter('api.bypassSecret'));
+        // Let's bypass OAuth dance via the session
+        $request->getSession()->set('shouldBypass', true);
 
         $allPlatforms = $engine->getAllPlatforms();
         $defaultPlatforms = implode(',', array_reduce($allPlatforms, function ($carry, $e) {

@@ -9,6 +9,7 @@ use App\Services\Platforms\Interfaces\WebStreamingPlatformInterface;
 use App\Services\Platforms\Platform;
 use App\Services\Platforms\PlatformException;
 use App\Services\Platforms\PlatformResult;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
 class PlatformEngine
@@ -47,11 +48,6 @@ class PlatformEngine
      */
     private $platforms;
 
-    /**
-     * @var ?string
-     */
-    private $token;
-
     private $flags = [
       'type/track' => Platform::SEARCH_TRACK,
       'type/album' => Platform::SEARCH_ALBUM,
@@ -62,17 +58,22 @@ class PlatformEngine
 
     public function __construct(
         private ItemRepository $itemRepository,
+        private Security $security,
         #[TaggedIterator('app.platform', defaultIndexMethod: 'getTag')]
         iterable $platforms
     ) {
         $this->platforms = iterator_to_array($platforms);
     }
 
-    public function setCurrentToken(?array $token = null): PlatformEngine
+    public function getCurrentClientIdentifier(): ?string
     {
-        $this->token = $token;
+        $token = $this->security->getToken();
 
-        return $this;
+        if (!$token) {
+            return null;
+        }
+
+        return $token->getAttribute('oauth_client_id');
     }
 
     /**
@@ -152,7 +153,7 @@ class PlatformEngine
         }
 
         // Store the intent
-        $expires = $this->itemRepository->addItem($platformResult, $this->token ? $this->token['client_id'] : null);
+        $expires = $this->itemRepository->addItem($platformResult, $this->getCurrentClientIdentifier());
         $platformResult->setExpires($expires);
 
         return ['result' => $platformResult];
@@ -175,7 +176,7 @@ class PlatformEngine
          || ($platform->isCapableOfSearchingAlbums() && Platform::SEARCH_ALBUM === $type)) {
             $results = Platform::search($platform, $type, $query, $limit, $mode, $countryCode);
             foreach ($results as $result) {
-                $expires = $this->itemRepository->addItem($result, $this->token ? $this->token['client_id'] : null);
+                $expires = $this->itemRepository->addItem($result, $this->getCurrentClientIdentifier());
                 $result->setExpires($expires);
             }
 
@@ -249,7 +250,9 @@ class PlatformEngine
         array_splice($merged_results, $limit);
 
         // Gives each element a last chance of doing something useful on its data
-        array_map(function ($e) { return $e->finalizeMerge()->store($this->token); }, $merged_results);
+        array_map(function ($e) {
+            return $this->itemRepository->addItem($e->finalizeMerge(), $this->getCurrentClientIdentifier());
+        }, $merged_results);
 
         // Discards the key (hash) that we don't need anymore
         return array_values($merged_results);

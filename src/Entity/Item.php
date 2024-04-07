@@ -7,17 +7,22 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: "App\Repository\ItemRepository")]
 #[ORM\Table(name: 'items')]
+#[ORM\Index(name: 'album', columns: ['album'])]
+#[ORM\Index(name: 'artist', fields: ['artist'])]
+#[ORM\Index(name: 'intent', fields: ['intent'])]
+#[ORM\Index(name: 'track', fields: ['track'])]
+#[ORM\Index(name: 'signature', fields: ['signature'])]
 class Item
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
     private $id;
 
     #[ORM\Column(type: 'string', length: 170, nullable: true)]
     private $intent;
 
-    #[ORM\Column(type: 'blob', nullable: false)]
+    #[ORM\Column(type: 'blob', nullable: false, length: 65532)]
     private $object;
 
     #[ORM\Column(type: 'string', length: 170, nullable: true)]

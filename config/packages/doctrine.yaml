@@ -8,6 +8,8 @@ doctrine:
 
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
+
+        schema_filter: ~^(?!stats_|_mv)$~
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true

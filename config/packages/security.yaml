@@ -6,6 +6,8 @@ security:
     providers:
         admin_user_provider:
             id: App\Security\AdminUserProvider
+        api_client_provider:
+            id: App\Security\ApiClientProvider
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -18,11 +20,18 @@ security:
             logout:
                 path: app_logout
                 target: admin_dashboard
-
-    # Easy way to control access for large sections of your site
+        api:
+            pattern: ^/api
+            security: "%api.use_oauth%"
+            stateless: false # To allow bypassing via the session
+            provider: api_client_provider
+            oauth2: true
+  
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/auth/token, roles: PUBLIC_ACCESS }
+        - { path: ^/api/v2/, roles: [ROLE_OAUTH2_API, ROLE_BYPASS_AUTH_API] }
 
 when@test:
     security:

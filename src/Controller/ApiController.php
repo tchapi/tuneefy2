@@ -71,10 +71,6 @@ class ApiController extends AbstractController
     #[Route('/v2/lookup', name: 'lookup')]
     public function lookup(Request $request, PlatformEngine $engine, ApiUtils $apiUtils): Response
     {
-        // Which client is calling us?
-        // $token = $request->getAttribute(Authorization::TOKEN_ATTRIBUTE_KEY);
-        // $engine->setCurrentToken($token);
-
         $permalink = $request->query->get('q', null);
         $mode = $request->query->get('mode', null);
 
@@ -116,10 +112,6 @@ class ApiController extends AbstractController
     #[Route('/v2/search/{type}/{platformTag}', name: 'search')]
     public function search(Request $request, PlatformEngine $engine, ApiUtils $apiUtils, string $type, string $platformTag): Response
     {
-        // Which client is calling us?
-        // $token = $request->getAttribute(Authorization::TOKEN_ATTRIBUTE_KEY);
-        // $engine->setCurrentToken($token);
-
         $countryCode = $request->query->get('countryCode', null);
         $mode = $request->query->get('mode', null);
         $query = $request->query->get('q', null);
@@ -166,10 +158,6 @@ class ApiController extends AbstractController
     #[Route('/aggregate/{type}', name: 'aggregate')]
     public function aggregate(Request $request, PlatformEngine $engine, ApiUtils $apiUtils, string $type): Response
     {
-        // Which client is calling us?
-        // $token = $request->getAttribute(Authorization::TOKEN_ATTRIBUTE_KEY);
-        // $engine->setCurrentToken($token);
-
         $countryCode = $request->query->get('countryCode', null);
         $mode = $request->query->get('mode', null);
         $query = $request->query->get('q', null);
