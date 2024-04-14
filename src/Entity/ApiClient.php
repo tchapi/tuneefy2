@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
+use App\Repository\ApiClientRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[ORM\Entity()]
+#[ORM\Entity(repositoryClass: ApiClientRepository::class)]
 #[ORM\Table()]
 class ApiClient implements UserInterface
 {
@@ -38,7 +39,8 @@ class ApiClient implements UserInterface
      */
     public function getRoles(): array
     {
-        return ['ROLE_OAUTH2_API'];
+        // Only used in stateful version, when we bypass the oauth
+        return ['ROLE_BYPASS_AUTH_API'];
     }
 
     /**
@@ -88,6 +90,18 @@ class ApiClient implements UserInterface
     public function setUrl(string $url): self
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    public function getOauth2ClientIdentifier(): string
+    {
+        return $this->oauth2ClientIdentifier;
+    }
+
+    public function setOauth2ClientIdentifier(string $oauth2ClientIdentifier): self
+    {
+        $this->oauth2ClientIdentifier = $oauth2ClientIdentifier;
 
         return $this;
     }

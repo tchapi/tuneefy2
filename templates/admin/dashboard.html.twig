@@ -38,9 +38,9 @@
     <div class="value"><img src="{{ asset("/img/dashboard/users.png") }}" class="ui circular inline image" style="max-height: 2rem; margin-right: 10px;">{{ activeClients|length }}</div>
     <div class="label">Active Clients</div>
   </div>
-  {% for key in apiStats %}
+  {% for key, stat in apiStats %}
     <div class="statistic">
-      <div class="value">{{ apiStats[key]|number_format(0, '.', ' ') }}</div>
+      <div class="value">{{ stat|number_format(0, '.', ' ') }}</div>
       <div class="label">/{{ key }}</div>
     </div>
   {% endfor %}

@@ -4,7 +4,7 @@
 {% block content %}
   {% if app.user %}
       <div class="ui">
-          Already logged in, <a href="{{ path('app_logout') }}">logout</a>
+          Already logged in, <a href="{{ path('admin_logout') }}">logout</a>
       </div>
   {% else %}
       <div class="ui middle aligned center aligned grid">
@@ -22,12 +22,12 @@
               {{ error.messageKey|trans(error.messageData, 'security') }}
             </div>
           {% endif %}
-          <form action="{{ path('app_login') }}" method="post" class="ui large form">
+          <form action="{{ path('admin_login') }}" method="post" class="ui large form">
             <div class="ui stacked segment">
               <div class="field">
                 <div class="ui left icon input">
                   <i class="user icon"></i>
-                  <input type="text" value="{{ last_username }}" name="_username" id="inputUsername"placeholder="Username">
+                  <input type="text" value="{{ last_username }}" name="_username" id="inputUsername" placeholder="Username">
                 </div>
               </div>
               <div class="field">

@@ -6,15 +6,25 @@
 
 <h3 class="ui dividing header">Create a new client</h3>
 
-<form class="ui form" method="POST">
+{% if not form.vars.valid %}
+  <div class="ui negative message">
+    <i class="close icon"></i>
+    <div class="header">
+      Error
+    </div>
+    {{ form_errors(form) }}
+  </div>
+{% endif %}
+
+{{ form_start(form, {'attr': {'class': 'ui form'}}) }}
   <div class="two fields">
     <div class="field">
       <label>Name</label>
-      <input type="text" name="name" placeholder="API User ">
+      {{ form_widget(form.name, {'attr': {'placeholder': 'API User'}}) }}
     </div>
     <div class="field">
       <div class="ui toggle checkbox" style="margin-top: 30px;">
-        <input type="checkbox" checked="" name="active" tabindex="0" class="hidden">
+        {{ form_widget(form.active) }}
         <label>Active</label>
       </div>
     </div>
@@ -22,36 +32,37 @@
   <div class="two fields">
     <div class="field">
       <label>Email</label>
-      <input type="email" name="email" placeholder="user@example.org">
+      {{ form_widget(form.email, {'attr': {'placeholder': 'user@example.org'}}) }}
     </div>
     <div class="field">
       <label>Url</label>
-      <input type="text" name="url" placeholder="http://site.com">
+      {{ form_widget(form.url, {'attr': {'placeholder': 'http://site.com'}}) }}
     </div>
   </div>
   <div class="two fields">
     <div class="field">
       <label>Client ID</label>
       <div class="ui action input">
-        <input type="text" name="client_id" placeholder="">
+        {{ form_widget(form.identifier) }}
         <button type="button" class="keygen ui primary button" data-length="32">Generate</button>
       </div>
     </div>
     <div class="field">
       <label>Client Secret</label>
       <div class="ui action input">
-      <input type="text" name="client_secret" placeholder="">
+        {{ form_widget(form.secret) }}
         <button type="button" class="keygen ui primary button" data-length="40">Generate</button>
       </div>
     </div>
   </div>
   <div class="field">
     <label>Description</label>
-    <input type="text" name="description" placeholder="">
+    {{ form_widget(form.description) }}
   </div>
   <a href="{{ path('admin_clients') }}" class="ui button" type="cancel"><i class="ui icon angle double left"></i> Back</a>
   <button class="ui button green" type="submit"><i class="ui icon check"></i> Save</button>
-</form>
+{{ form_end(form) }}
+
 
 {% endblock %}
 
@@ -77,10 +88,10 @@
       $('.ui.form')
         .form({
           fields: {
-            name          : ['minLength[6]', 'empty'],
-            client_id     : 'empty',
-            client_secret : 'empty',
-            email         : ['minLength[6]', 'empty']
+            "form[name]"          : ['minLength[6]', 'empty'],
+            "form[identifier]"     : 'empty',
+            "form[secret]" : 'empty',
+            "form[email]"         : ['minLength[6]', 'empty']
           }
         })
       /**

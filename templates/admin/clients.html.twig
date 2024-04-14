@@ -29,12 +29,14 @@
             {% if client.description %}{{ client.description|default('N/A')}}<br>{% endif %}
             {% if client.url %}<a href="{{ client.url }}" target="_blank">{{ client.url }}</a><br>{% endif %}
             <a href="mailto:{{ client.email }}">{{ client.email }}</a></td>
-        <td><span{% if not client.active %} style="text-decoration: line-through;"{% endif %}>{{ client.client_id }}</span></td>
-        <td>{{ client.items|number_format(0,'.',' ') }}</td>
+        <td><span{% if not client.active %} style="text-decoration: line-through;"{% endif %}>{{ client.identifier }}</span></td>
+        <td>{{ client.nb_items|number_format(0,'.',' ') }}</td>
         <td>
-          {% for item in stats[client.client_id] %}
-            {{ item['method'] }}&nbsp;→&nbsp;{{ item['count']|number_format(0,'.',' ') }}<br>
-          {% endfor %}
+          {% if stats[client.identifier] is defined %}
+            {% for item in stats[client.identifier] %}
+              {{ item['method'] }}&nbsp;→&nbsp;{{ item['count']|number_format(0,'.',' ') }}<br>
+            {% endfor %}
+          {% endif %}
         </td>
       </tr>
     {% endfor %}

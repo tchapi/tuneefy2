@@ -6,19 +6,24 @@ security:
     providers:
         admin_user_provider:
             id: App\Security\AdminUserProvider
+        # api_client_provider:
+        #     id: App\Security\ApiClientProvider
         api_client_provider:
-            id: App\Security\ApiClientProvider
+            entity:
+                class: App\Entity\ApiClient
+                property: oauth2ClientIdentifier
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        main:
+        backend:
+            pattern: ^/admin
             lazy: true
             custom_authenticators:
                 - App\Security\LoginFormAuthenticator
             provider: admin_user_provider
             logout:
-                path: app_logout
+                path: admin_logout
                 target: admin_dashboard
         api:
             pattern: ^/api
@@ -29,6 +34,7 @@ security:
   
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/admin/login, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/auth/token, roles: PUBLIC_ACCESS }
         - { path: ^/api/v2/, roles: [ROLE_OAUTH2_API, ROLE_BYPASS_AUTH_API] }
