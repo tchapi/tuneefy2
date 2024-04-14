@@ -6,6 +6,7 @@ parameters:
     mail.team_email: "tchap@tuneefy.com"
     api.use_oauth: true
     api.base_url: "https://data.tuneefy.com/v2"
+    api.bypass_client_identifier: "%env(API_BYPASS_CLIENT_IDENTIFIER)%"
     intents.lifetime: 600 # seconds
     intents.secret: "%env(INTENTS_SECRET)%"
 
@@ -32,6 +33,10 @@ services:
     App\Utils\Utils:
         arguments:
             $base: "%uid_base%"
+
+    App\EventSubscriber\ApiBypassSubscriber:
+      arguments:
+        $bypassClientIdentifier: "%api.bypass_client_identifier%"
 
     # Overriding this class to be able to properly get the client id in the token
     # and create tokens on the fly

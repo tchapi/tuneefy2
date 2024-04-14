@@ -6,8 +6,8 @@ use App\Services\ClientCredentialsGrant;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class ApiBypassSubscriber implements EventSubscriberInterface
@@ -17,7 +17,8 @@ class ApiBypassSubscriber implements EventSubscriberInterface
     public function __construct(
         private ClientCredentialsGrant $grant,
         private AuthorizationServer $server,
-        private AccessTokenRepositoryInterface $repository
+        private AccessTokenRepositoryInterface $repository,
+        private string $bypassClientIdentifier
     ) {
     }
 
@@ -54,14 +55,14 @@ class ApiBypassSubscriber implements EventSubscriberInterface
         // Construct the ClientCredentials grant server
         $this->server->enableGrantType($this->grant);
 
-        // Request a new token
-        $this->generatedToken = $this->grant->getAccessTokenForClient(new \DateInterval('PT2M'), '83a69b8b99fec3ef0da7db18af76c7d9');
+        // Request a new token (valid only 2 minutes)
+        $this->generatedToken = $this->grant->getAccessTokenForClient(new \DateInterval('PT2M'), $this->bypassClientIdentifier);
 
         // Add the token to the request
         $request = $request->headers->set('Authorization', 'Bearer '.$this->generatedToken->__toString());
     }
 
-    public function onFinishRequest(FinishRequestEvent $event): void
+    public function onTerminate(TerminateEvent $event): void
     {
         if (!$this->generatedToken) {
             return;
@@ -77,7 +78,7 @@ class ApiBypassSubscriber implements EventSubscriberInterface
           // Symfony\Component\HttpKernel\EventListener\SessionListener
           // which has a priority of 128
             KernelEvents::REQUEST => ['onRequest', 100],
-            KernelEvents::FINISH_REQUEST => 'onFinishRequest',
+            KernelEvents::TERMINATE => 'onTerminate',
         ];
     }
 }
