@@ -54,15 +54,15 @@
         <div class="wrapper">
           {% for key, links in item.links %}
             {% if links|length > 0 and compact|default(true) %}
-                <a target="_top" class="tLink btns btn_{{ key }}" href="{{ linkDirect|replace({'%key%': key}) }}?l={{links[0]|url_encode}}" title="{{ listenTo }}"></a>
+                <a target="_top" class="tLink btns btn_{{ key }}" href="{{ linkDirect|replace({'_KEY_': key}) }}?l={{links[0]|url_encode}}" title="{{ listenTo }}"></a>
             {% else %}
                 {% for i, link in links %}
-                    <a target="_top" class="tLink btns btn_{{ key }}" href="{{ linkDirect|replace({'%key%': key}) }}?l={{link|url_encode}}" title="{{ listenTo }}"></a>
+                    <a target="_top" class="tLink btns btn_{{ key }}" href="{{ linkDirect|replace({'_KEY_': key}) }}?l={{link|url_encode}}" title="{{ listenTo }}"></a>
                 {% endfor %}
             {% endif %}
           {% endfor %}
         </div>
     </div>
-    <a data-href="{{ linkIntent|replace({'%intent%': intent}) }}" title="{{ shareTip|escape('html_attr') }}" class="btn tShare sharePage" target="_top">{{ share }}</a>
+    <a data-href="{{ linkIntent|replace({'_INTENT_': intent}) }}" title="{{ shareTip|escape('html_attr') }}" class="btn tShare sharePage" target="_top">{{ share }}</a>
 </li>
 {% endapply %}

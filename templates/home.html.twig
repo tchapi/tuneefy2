@@ -86,7 +86,7 @@
 <div id="searchForm" class="wrap bdTop">
  <div id="moreOptions" ><img src="/img/{{ 'search.moreOptionsImage'|trans }}" width="160" height="60" title="{{ "search.moreOptionsAlt"|trans }}"/></div>
 
-  <form id="find" action="{{ api.base_url }}/aggregate/%type%">
+  <form id="find" action="{{ path('api_aggregate', {'type': '_TYPE_'}) }}">
 
     <div id="basic">
       <input type="text" id="query" name="query" class="boxS5" value="{{ query?:"search.query_label"|trans }}" data-placeholder="{{ "search.query_label"|trans }}"/>
@@ -169,8 +169,8 @@
     var $listen_to = "{{ "results.listen_to"|trans|raw }}";
     var $share = "{{ "results.share"|trans|raw }}";
     var $share_tip = "{{ "results.share_tip"|trans|raw }}";
-    var $path = "{{ path('listen_direct', {'platform': '%key%'}) }}";
-    var $pathIntent = "{{ api.base_url }}/share/%intent%";
+    var $path = "{{ path('listen_direct', {'platform': '_KEY_'}) }}";
+    var $pathIntent = "{{ path( 'api_share', {'intent': '_INTENT_'}) }}";
   </script>
   <script type="text/javascript" src="{{ asset('/build/js/vendor/iphone-style.js') }}"></script>
   <script type="text/javascript" src="{{ asset('/build/js/vendor/twig.min.js') }}"></script>

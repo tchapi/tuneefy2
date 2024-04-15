@@ -140,7 +140,7 @@ class ApiController extends AbstractController
             return $apiUtils->createGenericErrorResponse($request, 'FETCH_PROBLEM');
         }
 
-        if (!isset($result['result'])) {
+        if (!isset($result['results'])) {
             return $apiUtils->createUpstreamErrorResponse($request, $result);
         }
 
@@ -155,7 +155,7 @@ class ApiController extends AbstractController
         return $apiUtils->createFormattedResponse($request, $data, 200, StatsService::METHOD_SEARCH);
     }
 
-    #[Route('/aggregate/{type}', name: 'aggregate')]
+    #[Route('/v2/aggregate/{type}', name: 'aggregate')]
     public function aggregate(Request $request, PlatformEngine $engine, ApiUtils $apiUtils, string $type): Response
     {
         $countryCode = $request->query->get('countryCode', null);
@@ -189,7 +189,7 @@ class ApiController extends AbstractController
             return $apiUtils->createGenericErrorResponse($request, 'FETCH_PROBLEMS');
         }
 
-        if (!isset($result['result'])) {
+        if (!isset($result['results'])) {
             return $apiUtils->createUpstreamErrorResponse($request, $result);
         }
 
@@ -205,11 +205,9 @@ class ApiController extends AbstractController
         return $apiUtils->createFormattedResponse($request, $data, 200, StatsService::METHOD_AGGREGATE);
     }
 
-    #[Route('/share/{intent}', name: 'share')]
+    #[Route('/v2/share/{intent}', name: 'share')]
     public function share(Request $request, ItemRepository $itemRepository, ApiUtils $apiUtils, string $intent): Response
     {
-        $intent = $request->query->get('intent', null);
-
         if (null === $intent || '' === $intent) {
             return $apiUtils->createGenericErrorResponse($request, 'NO_INTENT');
         }

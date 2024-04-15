@@ -5,7 +5,6 @@ parameters:
     mail.contact_email: "contact@tuneefy.com"
     mail.team_email: "tchap@tuneefy.com"
     api.use_oauth: true
-    api.base_url: "https://data.tuneefy.com/v2"
     api.bypass_client_identifier: "%env(API_BYPASS_CLIENT_IDENTIFIER)%"
     intents.lifetime: 600 # seconds
     intents.secret: "%env(INTENTS_SECRET)%"

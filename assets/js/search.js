@@ -131,7 +131,7 @@ $(document).ready(function () {
       .done(function (data) {
         if (data.errors && data.errors.length > 0) {
           for (var i = 0; i < data.errors.length; i++) {
-            alertsDiv.append("<span class='alert' ><div class=\"triangle\"></div>" + Object.values(data.errors[0])[0] + "<span class='closeAlert'></span></span>")
+            alertsDiv.append("<span class='alert' ><div class=\"triangle\"></div>" + Object.values(data.errors[i])[0] + "<span class='closeAlert'></span></span>")
           }
           alertsDiv.children().last().fadeIn()
         }
@@ -213,7 +213,7 @@ $(document).ready(function () {
     alertsDiv.empty()
     $('.tHeader_disp').hide()
 
-    var url = searchForm.attr('action').replace('%type%', itemType)
+    var url = searchForm.attr('action').replace('_TYPE_', itemType)
 
     search(url, queryString, {
       itemType: itemType,
@@ -221,6 +221,8 @@ $(document).ready(function () {
       strictMode: strictMode,
       updateNumberLabel: true
     })
+
+    return false;
   })
 
   /** ***** QUERY INPUT ON FOCUS AND BLUR *******/

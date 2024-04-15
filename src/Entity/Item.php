@@ -46,7 +46,12 @@ class Item
     #[ORM\Column(type: 'string', length: 80, nullable: true)]
     private $clientId;
 
-    public function setIntent(string $intent): self
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setIntent(?string $intent): self
     {
         $this->intent = $intent;
 
@@ -92,7 +97,7 @@ class Item
         return $this;
     }
 
-    public function setTrack(string $track): self
+    public function setTrack(?string $track): self
     {
         $this->track = $track;
 
@@ -120,7 +125,7 @@ class Item
         return $this;
     }
 
-    public function setExpiresAt(\DateTime $expiresAt): self
+    public function setExpiresAt(?\DateTime $expiresAt): self
     {
         $this->expiresAt = $expiresAt;
 
