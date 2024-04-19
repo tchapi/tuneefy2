@@ -74,10 +74,6 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         if (preg_match(self::REGEX_ITUNES_ALBUM, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_id']);
 
-            if (null === $response) {
-                throw new PlatformException($this);
-            }
-
             if (intval($response->data->resultCount) > 0) {
                 $entity = $response->data->results[0];
                 $musical_entity = new Album($entity->collectionName, $entity->artistName, $entity->artworkUrl100);
@@ -90,10 +86,6 @@ class ItunesPlatform extends Platform implements WebStoreInterface
             }
         } elseif (preg_match(self::REGEX_ITUNES_ARTIST, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_id']);
-
-            if (null === $response) {
-                throw new PlatformException($this);
-            }
 
             if (intval($response->data->resultCount) > 0) {
                 $query_words = [$response->data->results[0]->artistName];

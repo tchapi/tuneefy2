@@ -82,8 +82,8 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         if (preg_match(self::REGEX_TIDAL_TRACK, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['track_id']);
 
-            if (null === $response || (property_exists($response->data, 'status') && ('error' === $response->data->status || 404 === $response->data->status))) {
-                throw new PlatformException($this);
+            if (property_exists($response->data, 'status') && ('error' === $response->data->status || 404 === $response->data->status)) {
+                throw new PlatformException($this, $response->data->userMessage);
             }
 
             $entity = $response->data;
@@ -97,8 +97,8 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         } elseif (preg_match(self::REGEX_TIDAL_ALBUM, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_id']);
 
-            if (null === $response || (property_exists($response->data, 'status') && ('error' === $response->data->status || 404 === $response->data->status))) {
-                throw new PlatformException($this);
+            if (property_exists($response->data, 'status') && ('error' === $response->data->status || 404 === $response->data->status)) {
+                throw new PlatformException($this, $response->data->userMessage);
             }
 
             $entity = $response->data;
@@ -112,8 +112,8 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         } elseif (preg_match(self::REGEX_TIDAL_ARTIST, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_id']);
 
-            if (null === $response || (property_exists($response->data, 'status') && 'error' === $response->data->status)) {
-                throw new PlatformException($this);
+            if (property_exists($response->data, 'status') && 'error' === $response->data->status) {
+                throw new PlatformException($this, $response->data->userMessage);
             }
 
             $query_words = [$response->data->name];

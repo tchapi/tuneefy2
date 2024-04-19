@@ -201,8 +201,6 @@ class PlatformEngine
             // Do nothing ?
         }
 
-        $result = [];
-
         $filtered_platforms = array_filter($platforms, function ($p) use ($type) {
             return ($p->isCapableOfSearchingTracks() && Platform::SEARCH_TRACK === $type)
              || ($p->isCapableOfSearchingAlbums() && Platform::SEARCH_ALBUM === $type);

@@ -108,7 +108,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
             $object_type = $this->lookup_type_correspondance[$match['type']];
             $response = self::fetch($this, $object_type, $match['item_id']);
 
-            if (null === $response || property_exists($response->data, 'error')) {
+            if (property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
             $entity = $response->data;

@@ -1,0 +1,10 @@
+actor: ApiTester
+suite_namespace: Tests\Api
+step_decorators:
+    - \Codeception\Step\AsJson
+modules:
+    enabled:
+        - Asserts
+        - REST:
+            url: http://127.0.0.1:9999/api/v2/
+            depends: PhpBrowser

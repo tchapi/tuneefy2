@@ -80,7 +80,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
             $this->options[Platform::LOOKUP_TRACK]['artist'] = $match['artist_slug'];
             $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['track_slug']);
 
-            if (null === $response || property_exists($response->data, 'error')) {
+            if (property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 
@@ -109,7 +109,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
             $this->options[Platform::LOOKUP_ALBUM]['artist'] = $match['artist_slug'];
             $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_slug']);
 
-            if (null === $response || property_exists($response->data, 'error')) {
+            if (property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 
@@ -132,7 +132,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         } elseif (preg_match(self::REGEX_LASTFM_ARTIST, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_slug']);
 
-            if (null === $response || property_exists($response->data, 'error')) {
+            if (property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 

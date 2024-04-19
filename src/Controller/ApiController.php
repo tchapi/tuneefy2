@@ -88,11 +88,15 @@ class ApiController extends AbstractController
         try {
             $result = $engine->lookup($permalink, $real_mode);
         } catch (PlatformException $e) {
-            return $apiUtils->createGenericErrorResponse($request, 'FETCH_PROBLEM');
+            if ('dev' == $this->getParameter('kernel.environment')) {
+                return $apiUtils->createUnhandledErrorResponse($request, $e->getMessage());
+            }
+
+            return $apiUtils->createGenericErrorResponse($request, 'FETCH_PROBLEM', 200);
         }
 
         if (!isset($result['result'])) {
-            return $apiUtils->createUpstreamErrorResponse($request, $result);
+            return $apiUtils->createUpstreamErrorResponse($request, $result, 200);
         }
 
         if ($result['result']->getMusicalEntity()) {
@@ -137,11 +141,15 @@ class ApiController extends AbstractController
         try {
             $result = $engine->search($platform, $real_type, $query, $limit, $real_mode, $countryCode);
         } catch (PlatformException $e) {
-            return $apiUtils->createGenericErrorResponse($request, 'FETCH_PROBLEM');
+            if ('dev' == $this->getParameter('kernel.environment')) {
+                return $apiUtils->createUnhandledErrorResponse($request, $e->getMessage());
+            }
+
+            return $apiUtils->createGenericErrorResponse($request, 'FETCH_PROBLEM', 200);
         }
 
         if (!isset($result['results'])) {
-            return $apiUtils->createUpstreamErrorResponse($request, $result);
+            return $apiUtils->createUpstreamErrorResponse($request, $result, 200);
         }
 
         if (count($result['results']) > 0) {
@@ -149,7 +157,7 @@ class ApiController extends AbstractController
                 'results' => array_map(function ($e) { return $e->toArray(); }, $result['results']),
             ];
         } else {
-            return $apiUtils->createGenericErrorResponse($request, 'NO_MATCH');
+            return $apiUtils->createGenericErrorResponse($request, 'NO_MATCH', 200);
         }
 
         return $apiUtils->createFormattedResponse($request, $data, 200, StatsService::METHOD_SEARCH);
@@ -186,11 +194,15 @@ class ApiController extends AbstractController
         try {
             $result = $engine->aggregate($platforms, $real_type, $query, $limit, $real_mode, $aggressive, $countryCode);
         } catch (PlatformException $e) {
-            return $apiUtils->createGenericErrorResponse($request, 'FETCH_PROBLEMS');
+            if ('dev' == $this->getParameter('kernel.environment')) {
+                return $apiUtils->createUnhandledErrorResponse($request, $e->getMessage());
+            }
+
+            return $apiUtils->createGenericErrorResponse($request, 'FETCH_PROBLEMS', 200);
         }
 
         if (!isset($result['results'])) {
-            return $apiUtils->createUpstreamErrorResponse($request, $result);
+            return $apiUtils->createUpstreamErrorResponse($request, $result, 200);
         }
 
         if (count($result['results']) > 0) {
@@ -199,7 +211,7 @@ class ApiController extends AbstractController
                 'results' => array_map(function ($e) { return $e->toArray(); }, $result['results']),
             ];
         } else {
-            return $apiUtils->createGenericErrorResponse($request, 'NO_MATCH');
+            return $apiUtils->createGenericErrorResponse($request, 'NO_MATCH', 200);
         }
 
         return $apiUtils->createFormattedResponse($request, $data, 200, StatsService::METHOD_AGGREGATE);
@@ -216,7 +228,7 @@ class ApiController extends AbstractController
         try {
             list($type, $uid) = $itemRepository->fixItemWithIntent($intent);
         } catch (\Exception $e) {
-            return $apiUtils->createUnhandledErrorResponse($request, $e->getMessage());
+            return $apiUtils->createUnhandledErrorResponse($request, $e->getMessage(), 500);
         }
 
         $link = $this->generateUrl('show', ['type' => $type, 'uid' => $uid], UrlGeneratorInterface::ABSOLUTE_URL);
@@ -229,12 +241,12 @@ class ApiController extends AbstractController
     #[Route('/rate-limiting', name: 'rate_limiting')]
     public function apiRateLimiting(Request $request, ApiUtils $apiUtils): Response
     {
-        return $apiUtils->createGenericErrorResponse($request, 'RATE_LIMITING');
+        return $apiUtils->createGenericErrorResponse($request, 'RATE_LIMITING', 406);
     }
 
     #[Route('/{path}', name: 'catch_all', priority: -9999, requirements: ['path' => '.+'])]
     public function catchAll(Request $request, ApiUtils $apiUtils): Response
     {
-        return $apiUtils->createGenericErrorResponse($request, 'NOT_FOUND');
+        return $apiUtils->createGenericErrorResponse($request, 'NOT_FOUND', 404);
     }
 }

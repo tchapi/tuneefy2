@@ -99,7 +99,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         if (preg_match(self::REGEX_QOBUZ_TRACK, $permalink, $match) || preg_match(self::NEW_REGEX_QOBUZ_TRACK, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['track_id']);
 
-            if (null === $response || (property_exists($response->data, 'status') && 'error' === $response->data->status)) {
+            if (property_exists($response->data, 'status') && 'error' === $response->data->status) {
                 throw new PlatformException($this);
             }
 
@@ -113,7 +113,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
             ];
         } elseif (preg_match(self::REGEX_QOBUZ_ALBUM, $permalink, $match) || preg_match(self::REGEX_QOBUZ_ALBUM_SITE, $permalink, $match) || preg_match(self::NEW_REGEX_QOBUZ_ALBUM, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_id']);
-            if (null === $response || (property_exists($response->data, 'status') && 'error' === $response->data->status)) {
+            if (property_exists($response->data, 'status') && 'error' === $response->data->status) {
                 throw new PlatformException($this);
             }
 
@@ -127,7 +127,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
             ];
         } elseif (preg_match(self::REGEX_QOBUZ_ARTIST, $permalink, $match) || preg_match(self::NEW_REGEX_QOBUZ_ARTIST, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_id']);
-            if (null === $response || (property_exists($response->data, 'status') && 'error' === $response->data->status)) {
+            if (property_exists($response->data, 'status') && 'error' === $response->data->status) {
                 throw new PlatformException($this);
             }
 

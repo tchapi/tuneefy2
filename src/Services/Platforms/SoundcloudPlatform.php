@@ -91,7 +91,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         if (preg_match(self::REGEX_SOUNDCLOUD_ALL, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_TRACK, $permalink);
 
-            if (null === $response || property_exists($response->data, 'errors')) {
+            if (property_exists($response->data, 'errors')) {
                 throw new PlatformException($this);
             }
 

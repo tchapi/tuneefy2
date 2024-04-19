@@ -7,9 +7,6 @@ use App\Services\Platforms\Interfaces\ScrobblingPlatformInterface;
 use App\Services\Platforms\Interfaces\WebStoreInterface;
 use App\Services\Platforms\Interfaces\WebStreamingPlatformInterface;
 use App\Utils\Utils;
-use tuneefy\Utils\OAuth\OAuthConsumer;
-use tuneefy\Utils\OAuth\OAuthRequest;
-use tuneefy\Utils\OAuth\OAuthSignatureMethod_HMAC_SHA1;
 
 enum PlatformType: string
 {
@@ -71,7 +68,6 @@ abstract class Platform implements GeneralPlatformInterface
     public const API_ENDPOINT = '';
     public const API_METHOD = self::METHOD_GET;
     public const RETURN_CONTENT_TYPE = self::RETURN_JSON;
-    public const NEEDS_OAUTH = false;
 
     protected $endpoints = [];
     protected $terms = [];
@@ -79,37 +75,15 @@ abstract class Platform implements GeneralPlatformInterface
 
     // For hosts that resolve slooooooowly, add the IP here. Quite dangerous but helpful
     // It's better to do this directly on the target server that will run the tuneefy api
-    /*
-        $hosts = [
-          'listen.tidal.com',
-          'www.amazon.com',
-          'api.deezer.com',
-          'www.googleapis.com',
-          'itunes.apple.com',
-          'ws.audioscrobbler.com',
-          'api.mixcloud.com',
-          'api.napster.com',
-          'www.qobuz.com',
-          'api.soundcloud.com',
-        ];
-
-        echo "[\n";
-        foreach ($hosts as $id => $value) {
-            $ips = gethostbynamel($value);
-            echo "  '".$value.':443'.':'.$ips[0]."',\n";
-        }
-        echo "];\n";
-    */
     public const RESOLVED_IPS = [
-        'listen.tidal.com:443:143.204.209.85',
-        'www.amazon.com:443:23.43.17.196',
-        'api.deezer.com:443:185.60.92.36',
-        'www.googleapis.com:443:142.250.185.74',
-        'itunes.apple.com:443:96.16.108.28',
+        'listen.tidal.com:443:18.165.227.109',
+        'api.deezer.com:443:23.72.248.223',
+        'itunes.apple.com:443:23.58.192.28',
         'ws.audioscrobbler.com:443:130.211.19.189',
-        'api.napster.com:443:92.123.148.44',
-        'www.qobuz.com:443:18.203.143.35',
-        'api.soundcloud.com:443:143.204.203.38',
+        'api.mixcloud.com:443:216.119.155.235',
+        'api.napster.com:443:151.101.2.233',
+        'www.qobuz.com:443:54.78.190.126',
+        'api.soundcloud.com:443:18.245.253.65',
     ];
 
     public const CONNECT_TIMEOUT = 2000;
@@ -233,16 +207,6 @@ abstract class Platform implements GeneralPlatformInterface
         $data = $this->addContextOptions($data, $countryCode);
         $headers = $this->addContextHeaders();
 
-        if (static::NEEDS_OAUTH) {
-            // We add the signature to the request data
-            $consumer = new OAuthConsumer($this->key, $this->secret, null);
-            $req = OAuthRequest::from_consumer_and_token($consumer, null, static::API_METHOD, $url, $data->toArray());
-            $hmac_method = new OAuthSignatureMethod_HMAC_SHA1();
-            $req->sign_request($hmac_method, $consumer, null);
-
-            array_merge($data, $req->get_parameters());
-        }
-
         $ch = curl_init();
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => 1,
@@ -301,16 +265,16 @@ abstract class Platform implements GeneralPlatformInterface
         $response = curl_exec($ch);
         curl_close($ch);
 
+        if (null === $response) {
+            throw new PlatformException($platform, curl_error($ch));
+        }
+
         return $platform->postProcessResult($response);
     }
 
     public static function search(Platform $platform, int $type, string $query, int $limit, int $mode, ?string $countryCode = null)
     {
         $response = self::fetch($platform, $type, $query, $countryCode);
-
-        if (null === $response) {
-            throw new PlatformException($platform);
-        }
 
         return $platform->extractSearchResults($response, $type, $query, $limit, $mode);
     }

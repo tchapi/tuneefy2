@@ -67,7 +67,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
         if (preg_match(self::REGEX_MIXCLOUD_TRACK, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['artist_slug'].'/'.$match['track_long_slug']);
 
-            if (null === $response || property_exists($response->data, 'error')) {
+            if (property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 
@@ -83,7 +83,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
         } elseif (preg_match(self::REGEX_MIXCLOUD_ARTIST, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_slug']);
 
-            if (null === $response || property_exists($response->data, 'error')) {
+            if (property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 

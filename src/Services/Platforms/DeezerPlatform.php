@@ -71,7 +71,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         if (preg_match(self::REGEX_DEEZER_TRACK, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['track_id']);
 
-            if (null === $response || property_exists($response->data, 'error')) {
+            if (property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 
@@ -86,7 +86,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         } elseif (preg_match(self::REGEX_DEEZER_ALBUM, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ALBUM, $match['album_id']);
 
-            if (null === $response || property_exists($response->data, 'error')) {
+            if (property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 
@@ -101,7 +101,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         } elseif (preg_match(self::REGEX_DEEZER_ARTIST, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_ARTIST, $match['artist_id']);
 
-            if (null === $response || property_exists($response->data, 'error')) {
+            if (property_exists($response->data, 'error')) {
                 throw new PlatformException($this);
             }
 

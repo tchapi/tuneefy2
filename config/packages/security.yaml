@@ -37,6 +37,7 @@ security:
         - { path: ^/admin/login, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/api/v2/auth/token, roles: PUBLIC_ACCESS }
+        - { path: ^/api/v2/$, roles: PUBLIC_ACCESS }
         - { path: ^/api/v2/, roles: [ROLE_OAUTH2_API, ROLE_BYPASS_AUTH_API] }
 
 when@test:

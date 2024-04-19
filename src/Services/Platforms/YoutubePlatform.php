@@ -78,8 +78,8 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         if (preg_match(self::REGEX_YOUTUBE_ALL, $permalink, $match)) {
             $response = self::fetch($this, Platform::LOOKUP_TRACK, $match['video_id']);
 
-            if (null === $response) {
-                throw new PlatformException($this);
+            if (property_exists($response->data, 'error')) {
+                throw new PlatformException($this, $response->data->error->message);
             }
 
             if (count($response->data->items) > 0) {
