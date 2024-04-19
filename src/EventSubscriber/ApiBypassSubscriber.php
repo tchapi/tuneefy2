@@ -74,9 +74,9 @@ class ApiBypassSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-          // Just after the session listener:
-          // Symfony\Component\HttpKernel\EventListener\SessionListener
-          // which has a priority of 128
+            // Just after the session listener:
+            // Symfony\Component\HttpKernel\EventListener\SessionListener
+            // which has a priority of 128
             KernelEvents::REQUEST => ['onRequest', 100],
             KernelEvents::TERMINATE => 'onTerminate',
         ];

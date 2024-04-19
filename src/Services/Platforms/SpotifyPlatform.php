@@ -27,7 +27,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'artists/%s',
         Platform::SEARCH_TRACK => self::API_ENDPOINT.'search',
         Platform::SEARCH_ALBUM => self::API_ENDPOINT.'search',
-       // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search"
+        // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search"
     ];
     protected $terms = [
         Platform::LOOKUP_TRACK => null,
@@ -35,7 +35,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => null,
         Platform::SEARCH_TRACK => 'q',
         Platform::SEARCH_ALBUM => 'q',
-       // Platform::SEARCH_ARTIST => "q"
+        // Platform::SEARCH_ARTIST => "q"
     ];
     protected $options = [
         Platform::LOOKUP_TRACK => [],
@@ -43,7 +43,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => [],
         Platform::SEARCH_TRACK => ['type' => 'track', 'limit' => Platform::LIMIT],
         Platform::SEARCH_ALBUM => ['type' => 'album', 'limit' => Platform::LIMIT],
-       // Platform::SEARCH_ARTIST => Map { "type" => "artist", "limit" => Platform::LIMIT }
+        // Platform::SEARCH_ARTIST => Map { "type" => "artist", "limit" => Platform::LIMIT }
     ];
 
     // http://open.spotify.com/track/5jhJur5n4fasblLSCOcrTp
@@ -79,10 +79,10 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
 
         $ch = curl_init();
         curl_setopt_array($ch, [
-          CURLOPT_URL => $serviceauth,
-          CURLOPT_POST => 1,
-          CURLOPT_RETURNTRANSFER => 1,
-          CURLOPT_POSTFIELDS => http_build_query($requestData),
+            CURLOPT_URL => $serviceauth,
+            CURLOPT_POST => 1,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_POSTFIELDS => http_build_query($requestData),
         ]);
 
         $result = json_decode(curl_exec($ch), true);

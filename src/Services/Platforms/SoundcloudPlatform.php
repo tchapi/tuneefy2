@@ -27,7 +27,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         Platform::LOOKUP_ARTIST => null,
         Platform::SEARCH_TRACK => self::API_ENDPOINT.'tracks',
         Platform::SEARCH_ALBUM => null,
-       // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "users"
+        // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "users"
     ];
     protected $terms = [
         Platform::LOOKUP_TRACK => 'url',
@@ -35,7 +35,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         Platform::LOOKUP_ARTIST => null,
         Platform::SEARCH_TRACK => 'q',
         Platform::SEARCH_ALBUM => null,
-       // Platform::SEARCH_ARTIST => "q" // Search for a user, in fact
+        // Platform::SEARCH_ARTIST => "q" // Search for a user, in fact
     ];
     protected $options = [
         Platform::LOOKUP_TRACK => [],
@@ -43,7 +43,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         Platform::LOOKUP_ARTIST => [],
         Platform::SEARCH_TRACK => ['limit' => Platform::LIMIT],
         Platform::SEARCH_ALBUM => ['limit' => Platform::LIMIT],
-       // Platform::SEARCH_ARTIST => Map { "limit" => Platform::LIMIT }
+        // Platform::SEARCH_ARTIST => Map { "limit" => Platform::LIMIT }
     ];
 
     // https://soundcloud.com/robbabicz/pink-trees-1
@@ -64,10 +64,10 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
 
         $ch = curl_init();
         curl_setopt_array($ch, [
-          CURLOPT_URL => $serviceauth,
-          CURLOPT_POST => 1,
-          CURLOPT_RETURNTRANSFER => 1,
-          CURLOPT_POSTFIELDS => http_build_query($requestData),
+            CURLOPT_URL => $serviceauth,
+            CURLOPT_POST => 1,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_POSTFIELDS => http_build_query($requestData),
         ]);
 
         $result = json_decode(curl_exec($ch), true);

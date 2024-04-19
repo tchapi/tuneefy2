@@ -22,7 +22,7 @@
               {{ error.messageKey|trans(error.messageData, 'security') }}
             </div>
           {% endif %}
-          <form action="{{ path('admin_login') }}" method="post" class="ui large form">
+          <form action="{{ path('admin_login') }}" method="post" class="ui large form" id="loginForm">
             <div class="ui stacked segment">
               <div class="field">
                 <div class="ui left icon input">
@@ -37,7 +37,7 @@
                 </div>
               </div>
               <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-              <button type="submit" class="ui fluid large blue submit button">Login</button>
+              <button type="submit" name="submitButton" class="ui fluid large blue submit button">Login</button>
             </div>
 
             <div class="ui error message"></div>

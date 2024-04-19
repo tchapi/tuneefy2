@@ -175,8 +175,8 @@ class FrontendController extends AbstractController
         // Check the type (track || album) and redirect if necessary
         if (null === $type || $item->getType() !== $type) {
             return $this->redirectToRoute('show', [
-              'uid' => $uid,
-              'type' => $item->getType(),
+                'uid' => $uid,
+                'type' => $item->getType(),
             ], 301);
         }
 

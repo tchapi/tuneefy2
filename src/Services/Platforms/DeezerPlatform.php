@@ -27,7 +27,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'artist/%s',
         Platform::SEARCH_TRACK => self::API_ENDPOINT.'search/track',
         Platform::SEARCH_ALBUM => self::API_ENDPOINT.'search/album',
-       // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search/artist"
+        // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search/artist"
     ];
     protected $terms = [
         Platform::LOOKUP_TRACK => null,
@@ -35,7 +35,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => null,
         Platform::SEARCH_TRACK => 'q',
         Platform::SEARCH_ALBUM => 'q',
-       // Platform::SEARCH_ARTIST => "q"
+        // Platform::SEARCH_ARTIST => "q"
     ];
     protected $options = [
         Platform::LOOKUP_TRACK => [],
@@ -43,7 +43,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => [],
         Platform::SEARCH_TRACK => ['nb_items' => Platform::LIMIT],
         Platform::SEARCH_ALBUM => ['nb_items' => Platform::LIMIT],
-       // Platform::SEARCH_ARTIST => Map { "nb_items" => Platform::LIMIT }
+        // Platform::SEARCH_ARTIST => Map { "nb_items" => Platform::LIMIT }
     ];
 
     // NOT VALID ANYMORE http://www.deezer.com/listen-10236179

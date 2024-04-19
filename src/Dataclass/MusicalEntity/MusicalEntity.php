@@ -25,7 +25,7 @@ abstract class MusicalEntity implements MusicalEntityInterface
     public function toArray(): array
     {
         return [
-          'type' => static::TYPE,
+            'type' => static::TYPE,
         ];
     }
 

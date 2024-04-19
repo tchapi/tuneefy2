@@ -27,7 +27,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'artist/get',
         Platform::SEARCH_TRACK => self::API_ENDPOINT.'track/search',
         Platform::SEARCH_ALBUM => self::API_ENDPOINT.'album/search',
-       // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "artist/search"
+        // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "artist/search"
     ];
     protected $terms = [
         Platform::LOOKUP_TRACK => 'track_id',
@@ -35,7 +35,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => 'artist_id',
         Platform::SEARCH_TRACK => 'query',
         Platform::SEARCH_ALBUM => 'query',
-       // Platform::SEARCH_ARTIST => "query"
+        // Platform::SEARCH_ARTIST => "query"
     ];
     protected $options = [
         Platform::LOOKUP_TRACK => [],
@@ -43,7 +43,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => [],
         Platform::SEARCH_TRACK => ['limit' => Platform::LIMIT],
         Platform::SEARCH_ALBUM => ['limit' => Platform::LIMIT],
-       // Platform::SEARCH_ARTIST => ['limit' => Platform::LIMIT]
+        // Platform::SEARCH_ARTIST => ['limit' => Platform::LIMIT]
     ];
 
     // http://player.qobuz.com/#!/track/23860968

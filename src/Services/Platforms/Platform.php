@@ -101,15 +101,15 @@ abstract class Platform implements GeneralPlatformInterface
         echo "];\n";
     */
     public const RESOLVED_IPS = [
-      'listen.tidal.com:443:143.204.209.85',
-      'www.amazon.com:443:23.43.17.196',
-      'api.deezer.com:443:185.60.92.36',
-      'www.googleapis.com:443:142.250.185.74',
-      'itunes.apple.com:443:96.16.108.28',
-      'ws.audioscrobbler.com:443:130.211.19.189',
-      'api.napster.com:443:92.123.148.44',
-      'www.qobuz.com:443:18.203.143.35',
-      'api.soundcloud.com:443:143.204.203.38',
+        'listen.tidal.com:443:143.204.209.85',
+        'www.amazon.com:443:23.43.17.196',
+        'api.deezer.com:443:185.60.92.36',
+        'www.googleapis.com:443:142.250.185.74',
+        'itunes.apple.com:443:96.16.108.28',
+        'ws.audioscrobbler.com:443:130.211.19.189',
+        'api.napster.com:443:92.123.148.44',
+        'www.qobuz.com:443:18.203.143.35',
+        'api.soundcloud.com:443:143.204.203.38',
     ];
 
     public const CONNECT_TIMEOUT = 2000;

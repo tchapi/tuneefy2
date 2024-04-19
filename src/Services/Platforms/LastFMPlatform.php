@@ -30,7 +30,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         Platform::LOOKUP_ARTIST => self::API_ENDPOINT,
         Platform::SEARCH_TRACK => self::API_ENDPOINT,
         Platform::SEARCH_ALBUM => self::API_ENDPOINT,
-       // Platform::SEARCH_ARTIST => self::API_ENDPOINT
+        // Platform::SEARCH_ARTIST => self::API_ENDPOINT
     ];
     protected $terms = [
         Platform::LOOKUP_TRACK => 'track',
@@ -38,7 +38,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         Platform::LOOKUP_ARTIST => 'artist',
         Platform::SEARCH_TRACK => 'track',
         Platform::SEARCH_ALBUM => 'album',
-       // Platform::SEARCH_ARTIST => "artist"
+        // Platform::SEARCH_ARTIST => "artist"
     ];
     protected $options = [
         Platform::LOOKUP_TRACK => ['format' => 'json', 'autocorrect' => 1, 'method' => 'track.getinfo', 'artist' => '%s'],
@@ -46,7 +46,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         Platform::LOOKUP_ARTIST => ['format' => 'json', 'autocorrect' => 1, 'method' => 'artist.getinfo'],
         Platform::SEARCH_TRACK => ['format' => 'json', 'autocorrect' => 1, 'method' => 'track.search', 'limit' => Platform::LIMIT],
         Platform::SEARCH_ALBUM => ['format' => 'json', 'autocorrect' => 1, 'method' => 'album.search', 'limit' => Platform::LIMIT],
-       // Platform::SEARCH_ARTIST => ["format" => "json", "autocorrect" => 1, "method" => "artist.search", "limit" => Platform::LIMIT ]
+        // Platform::SEARCH_ARTIST => ["format" => "json", "autocorrect" => 1, "method" => "artist.search", "limit" => Platform::LIMIT ]
     ];
 
     // http://www.lastfm.fr/music/The+Clash/London+Calling/London+Calling

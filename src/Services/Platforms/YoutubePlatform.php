@@ -28,7 +28,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => null,
         Platform::SEARCH_TRACK => self::API_ENDPOINT.'search',
         Platform::SEARCH_ALBUM => null,
-       // Platform::SEARCH_ARTIST => null
+        // Platform::SEARCH_ARTIST => null
     ];
     protected $terms = [
         Platform::LOOKUP_TRACK => 'id',
@@ -36,7 +36,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => null,
         Platform::SEARCH_TRACK => 'q',
         Platform::SEARCH_ALBUM => null,
-       // Platform::SEARCH_ARTIST => null
+        // Platform::SEARCH_ARTIST => null
     ];
     protected $options = [
         Platform::LOOKUP_TRACK => ['part' => 'snippet'],
@@ -44,7 +44,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => [],
         Platform::SEARCH_TRACK => ['part' => 'snippet', 'order' => 'relevance', 'topicId' => '/m/04rlf', 'type' => 'video', 'videoCategoryId' => '10', 'maxResults' => Platform::LIMIT], // Music category
         Platform::SEARCH_ALBUM => [],
-       // Platform::SEARCH_ARTIST => []
+        // Platform::SEARCH_ARTIST => []
     ];
 
     // https://www.youtube.com/watch?v=FNdC_3LR2AI

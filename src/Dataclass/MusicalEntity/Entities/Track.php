@@ -70,9 +70,9 @@ class Track extends MusicalEntity
         unset($album['type']); // Do not type the subresult
 
         $result = [
-          'type' => self::TYPE,
-          'title' => $this->track_title,
-          'album' => $album,
+            'type' => self::TYPE,
+            'title' => $this->track_title,
+            'album' => $album,
         ];
 
         if (0 !== $this->countLinkedPlatforms()) {

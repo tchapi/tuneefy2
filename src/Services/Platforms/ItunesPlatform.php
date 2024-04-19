@@ -27,7 +27,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'lookup',
         Platform::SEARCH_TRACK => self::API_ENDPOINT.'search/track',
         Platform::SEARCH_ALBUM => self::API_ENDPOINT.'search/album',
-       // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search/artist"
+        // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search/artist"
     ];
     protected $terms = [
         Platform::LOOKUP_TRACK => null,
@@ -35,7 +35,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         Platform::LOOKUP_ARTIST => 'id',
         Platform::SEARCH_TRACK => 'term',
         Platform::SEARCH_ALBUM => 'term',
-       // Platform::SEARCH_ARTIST => "term"
+        // Platform::SEARCH_ARTIST => "term"
     ];
     protected $options = [
         Platform::LOOKUP_TRACK => [],
@@ -43,7 +43,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         Platform::LOOKUP_ARTIST => [],
         Platform::SEARCH_TRACK => ['media' => 'music', 'entity' => 'song', 'limit' => Platform::LIMIT],
         Platform::SEARCH_ALBUM => ['media' => 'music', 'entity' => 'album', 'limit' => Platform::LIMIT],
-       // Platform::SEARCH_ARTIST => Map { "media" => "music", "entity" => "musicArtist", "limit" => Platform::LIMIT }
+        // Platform::SEARCH_ARTIST => Map { "media" => "music", "entity" => "musicArtist", "limit" => Platform::LIMIT }
     ];
 
     // https://itunes.apple.com/us/artist/jack-johnson/id909253

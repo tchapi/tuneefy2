@@ -15,33 +15,33 @@ use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 class PlatformEngine
 {
     public const ERRORS = [
-      'GENERAL_ERROR' => ['GENERAL_ERROR' => 'An error was encountered'],
-      'BAD_PLATFORM_TYPE' => ['BAD_PLATFORM_TYPE' => 'This type of platform does not exist'],
-      'BAD_MUSICAL_TYPE' => ['BAD_MUSICAL_TYPE' => 'This musical type is not valid'],
-      'BAD_PLATFORM' => ['BAD_PLATFORM' => 'This platform does not exist'],
-      'BAD_MODE' => ['BAD_MODE' => 'This mode is not valid'],
-      'MISSING_PERMALINK' => ['MISSING_PERMALINK' => 'Missing or empty parameter: q (permalink)'],
-      'PERMALINK_UNKNOWN' => ['PERMALINK_UNKNOWN' => 'This permalink does not belong to any known platform'],
-      'FETCH_PROBLEM' => ['FETCH_PROBLEM' => 'There was a problem while fetching data from the platform'],
-      'FETCH_PROBLEMS' => ['FETCH_PROBLEMS' => 'There was a problem while fetching data from the platforms'],
-      'NO_MATCH' => ['NO_MATCH' => 'No match was found for this search'],
-      'NO_MATCH_PERMALINK' => ['NO_MATCH_PERMALINK' => 'No match was found for this permalink'],
-      'MISSING_QUERY' => ['MISSING_QUERY' => 'Missing or empty parameter: q (query)'],
-      'BAD_MUSICAL_TYPE' => ['BAD_MUSICAL_TYPE' => 'This musical type does not exist'],
-      'NO_INTENT' => ['NO_INTENT' => 'Missing or empty parameter: intent'],
-      'NO_OR_EXPIRED_INTENT' => ['NO_OR_EXPIRED_INTENT' => 'No intent with the requested uid'],
-      'INVALID_INTENT_SIGNATURE' => ['INVALID_INTENT_SIGNATURE' => 'Data for this intent has been tampered with, the signature is not valid.'],
-      'SERIALIZATION_ERROR' => ['SERIALIZATION_ERROR' => 'Stored object is not unserializable'],
-      'NOT_CAPABLE_TRACKS' => ['NOT_CAPABLE_TRACKS' => 'This platform is not capable of searching tracks'],
-      'NOT_CAPABLE_ALBUMS' => ['NOT_CAPABLE_ALBUMS' => 'This platform is not capable of searching albums'],
+        'GENERAL_ERROR' => ['GENERAL_ERROR' => 'An error was encountered'],
+        'BAD_PLATFORM_TYPE' => ['BAD_PLATFORM_TYPE' => 'This type of platform does not exist'],
+        'BAD_MUSICAL_TYPE' => ['BAD_MUSICAL_TYPE' => 'This musical type is not valid'],
+        'BAD_PLATFORM' => ['BAD_PLATFORM' => 'This platform does not exist'],
+        'BAD_MODE' => ['BAD_MODE' => 'This mode is not valid'],
+        'MISSING_PERMALINK' => ['MISSING_PERMALINK' => 'Missing or empty parameter: q (permalink)'],
+        'PERMALINK_UNKNOWN' => ['PERMALINK_UNKNOWN' => 'This permalink does not belong to any known platform'],
+        'FETCH_PROBLEM' => ['FETCH_PROBLEM' => 'There was a problem while fetching data from the platform'],
+        'FETCH_PROBLEMS' => ['FETCH_PROBLEMS' => 'There was a problem while fetching data from the platforms'],
+        'NO_MATCH' => ['NO_MATCH' => 'No match was found for this search'],
+        'NO_MATCH_PERMALINK' => ['NO_MATCH_PERMALINK' => 'No match was found for this permalink'],
+        'MISSING_QUERY' => ['MISSING_QUERY' => 'Missing or empty parameter: q (query)'],
+        'BAD_MUSICAL_TYPE' => ['BAD_MUSICAL_TYPE' => 'This musical type does not exist'],
+        'NO_INTENT' => ['NO_INTENT' => 'Missing or empty parameter: intent'],
+        'NO_OR_EXPIRED_INTENT' => ['NO_OR_EXPIRED_INTENT' => 'No intent with the requested uid'],
+        'INVALID_INTENT_SIGNATURE' => ['INVALID_INTENT_SIGNATURE' => 'Data for this intent has been tampered with, the signature is not valid.'],
+        'SERIALIZATION_ERROR' => ['SERIALIZATION_ERROR' => 'Stored object is not unserializable'],
+        'NOT_CAPABLE_TRACKS' => ['NOT_CAPABLE_TRACKS' => 'This platform is not capable of searching tracks'],
+        'NOT_CAPABLE_ALBUMS' => ['NOT_CAPABLE_ALBUMS' => 'This platform is not capable of searching albums'],
 
-      'NOT_AUTHORIZED' => ['NOT_AUTHORIZED' => 'Not authorized, check the token'],
-      'NOT_ACTIVE' => ['NOT_ACTIVE' => 'Your client/secret pair is not active, contact us'],
+        'NOT_AUTHORIZED' => ['NOT_AUTHORIZED' => 'Not authorized, check the token'],
+        'NOT_ACTIVE' => ['NOT_ACTIVE' => 'Your client/secret pair is not active, contact us'],
 
-      'RATE_LIMITING' => ['RATE_LIMITING' => 'You are being rate limited'],
+        'RATE_LIMITING' => ['RATE_LIMITING' => 'You are being rate limited'],
 
-      'NOT_FOUND' => ['NOT_FOUND' => 'Method not found'],
-];
+        'NOT_FOUND' => ['NOT_FOUND' => 'Method not found'],
+    ];
 
     /**
      * @var Platform[]
@@ -49,11 +49,11 @@ class PlatformEngine
     private $platforms;
 
     private $flags = [
-      'type/track' => Platform::SEARCH_TRACK,
-      'type/album' => Platform::SEARCH_ALBUM,
-      'mode/lazy' => Platform::MODE_LAZY,
-      'mode/eager' => Platform::MODE_EAGER,
-      'mode/*' => Platform::MODE_LAZY, // '*' indicates default
+        'type/track' => Platform::SEARCH_TRACK,
+        'type/album' => Platform::SEARCH_ALBUM,
+        'mode/lazy' => Platform::MODE_LAZY,
+        'mode/eager' => Platform::MODE_EAGER,
+        'mode/*' => Platform::MODE_LAZY, // '*' indicates default
     ];
 
     public function __construct(

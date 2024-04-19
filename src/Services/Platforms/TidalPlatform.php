@@ -28,7 +28,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'artists/%s',
         Platform::SEARCH_TRACK => self::API_ENDPOINT.'search/tracks',
         Platform::SEARCH_ALBUM => self::API_ENDPOINT.'search/albums',
-       // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search/artists"
+        // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search/artists"
     ];
     protected $terms = [
         Platform::LOOKUP_TRACK => null,
@@ -36,7 +36,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => null,
         Platform::SEARCH_TRACK => 'query',
         Platform::SEARCH_ALBUM => 'query',
-       // Platform::SEARCH_ARTIST => "query"
+        // Platform::SEARCH_ARTIST => "query"
     ];
     protected $options = [
         Platform::LOOKUP_TRACK => null,
@@ -44,7 +44,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => null,
         Platform::SEARCH_TRACK => ['limit' => Platform::LIMIT],
         Platform::SEARCH_ALBUM => ['limit' => Platform::LIMIT],
-       // Platform::SEARCH_ARTIST => Map { "countryCode" => "FR", "limit" => Platform::LIMIT }
+        // Platform::SEARCH_ARTIST => Map { "countryCode" => "FR", "limit" => Platform::LIMIT }
     ];
 
     // http://www.tidal.com/track/40358305

@@ -13,16 +13,16 @@ class PlatformIpsFetcherCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $hosts = [
-          'listen.tidal.com',
-          // 'www.amazon.com',
-          'api.deezer.com',
-          // 'www.googleapis.com',
-          'itunes.apple.com',
-          'ws.audioscrobbler.com',
-          'api.mixcloud.com',
-          'api.napster.com',
-          'www.qobuz.com',
-          'api.soundcloud.com',
+            'listen.tidal.com',
+            // 'www.amazon.com',
+            'api.deezer.com',
+            // 'www.googleapis.com',
+            'itunes.apple.com',
+            'ws.audioscrobbler.com',
+            'api.mixcloud.com',
+            'api.napster.com',
+            'www.qobuz.com',
+            'api.soundcloud.com',
         ];
 
         echo "[\n";

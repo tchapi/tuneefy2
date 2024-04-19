@@ -30,21 +30,21 @@ final class ApiUtils
         }
 
         return new Response($this->serializer->serialize($data, $format), $httpStatus, [
-          'Content-type' => $mimeType,
+            'Content-type' => $mimeType,
         ]);
     }
 
     public function createGenericErrorResponse(Request $request, string $error_code, int $httpStatus = 400): Response
     {
         return $this->createFormattedResponse($request, [
-          'errors' => [PlatformEngine::ERRORS[$error_code]],
+            'errors' => [PlatformEngine::ERRORS[$error_code]],
         ], $httpStatus);
     }
 
     public function createUnhandledErrorResponse(Request $request, string $message, int $httpStatus = 400): Response
     {
         return $this->createFormattedResponse($request, [
-          'errors' => [['GENERAL_ERROR' => $message]],
+            'errors' => [['GENERAL_ERROR' => $message]],
         ], $httpStatus);
     }
 

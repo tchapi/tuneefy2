@@ -27,7 +27,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'%s',
         Platform::SEARCH_TRACK => self::API_ENDPOINT.'search',
         Platform::SEARCH_ALBUM => null,
-       // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search"
+        // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search"
     ];
     protected $terms = [
         Platform::LOOKUP_TRACK => null,
@@ -35,7 +35,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => null,
         Platform::SEARCH_TRACK => 'q',
         Platform::SEARCH_ALBUM => null,
-       // Platform::SEARCH_ARTIST => "q" // Search for a user, in fact
+        // Platform::SEARCH_ARTIST => "q" // Search for a user, in fact
     ];
     protected $options = [
         Platform::LOOKUP_TRACK => [],
@@ -43,7 +43,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::LOOKUP_ARTIST => [],
         Platform::SEARCH_TRACK => ['type' => 'cloudcast', 'limit' => Platform::LIMIT],
         Platform::SEARCH_ALBUM => [],
-       // Platform::SEARCH_ARTIST => Map { "type" => "user", "limit" => Platform::LIMIT }
+        // Platform::SEARCH_ARTIST => Map { "type" => "user", "limit" => Platform::LIMIT }
     ];
 
     // https://www.mixcloud.com/aphex-twin/

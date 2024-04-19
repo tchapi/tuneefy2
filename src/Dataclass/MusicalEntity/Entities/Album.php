@@ -54,10 +54,10 @@ class Album extends MusicalEntity
     public function toArray(): array
     {
         $result = [
-          'type' => self::TYPE,
-          'title' => $this->title,
-          'artist' => $this->artist,
-          'picture' => $this->picture,
+            'type' => self::TYPE,
+            'title' => $this->title,
+            'artist' => $this->artist,
+            'picture' => $this->picture,
         ];
 
         if (0 !== $this->countLinkedPlatforms()) {
