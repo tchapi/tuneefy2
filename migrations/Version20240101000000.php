@@ -17,6 +17,25 @@ final class Version20240101000000 extends AbstractMigration
     public function up(Schema $schema): void
     {
       $this->addSql('CREATE TABLE api_client (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, url VARCHAR(255) NOT NULL, description LONGTEXT NOT NULL, created_at DATE NOT NULL, oauth2_client_identifier VARCHAR(80) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+
+      $this->addSql('CREATE TABLE `items` (
+        `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+        `intent` varchar(170) DEFAULT NULL,
+        `object` blob NOT NULL,
+        `track` varchar(170) DEFAULT NULL,
+        `album` varchar(170) DEFAULT NULL,
+        `artist` varchar(170) DEFAULT NULL,
+        `created_at` datetime NOT NULL,
+        `expires_at` datetime DEFAULT NULL,
+        `signature` varchar(170) NOT NULL,
+        `client_id` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+        PRIMARY KEY (`id`),
+        KEY `track` (`track`),
+        KEY `album` (`album`),
+        KEY `artist` (`artist`),
+        KEY `intent` (`intent`),
+        KEY `signature` (`signature`)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;');
       
       /* Stats tables */
       $this->addSql('CREATE TABLE `stats_viewing` (
