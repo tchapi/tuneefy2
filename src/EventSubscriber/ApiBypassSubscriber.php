@@ -31,6 +31,12 @@ class ApiBypassSubscriber implements EventSubscriberInterface
 
         $request = $event->getRequest();
 
+        if ($request->query->has('access_token')) {
+            // We have a token in the query, pass it down in the headers
+            $request->headers->set('Authorization', 'Bearer '.$request->query->get('access_token'));
+            return;
+        }
+  
         if (!$request->hasSession()) {
             // don't do anything if no session
             return;
@@ -59,7 +65,7 @@ class ApiBypassSubscriber implements EventSubscriberInterface
         $this->generatedToken = $this->grant->getAccessTokenForClient(new \DateInterval('PT2M'), $this->bypassClientIdentifier);
 
         // Add the token to the request
-        $request = $request->headers->set('Authorization', 'Bearer '.$this->generatedToken->__toString());
+        $request->headers->set('Authorization', 'Bearer '.$this->generatedToken->__toString());
     }
 
     public function onTerminate(TerminateEvent $event): void
