@@ -56,7 +56,7 @@ OAuth 2.0 is a simple and secure authentication mechanism. It allows application
 
 Use the `/auth/token` endpoint to get a valid token. You will need your consumer key and secret.
 
-> The only accepted grant type is `client_credentials`. See further down for more info.
+> The only accepted grant type is `client_credentials`. You don't need to pass scopes to the request. See further down for more info.
 
 <br>
 ### Passing the authorization token
@@ -126,21 +126,20 @@ This API uses the `Accept` header to identify the data type it should return.
 Accept: application/json
 ```
 
-This header SHOULD be present in every request. If not, the API will use the default response format.
+This header SHOULD be present in every request. If not, the API will use the default response format, **json**.
 
-Alternatively, all API methods support an optional return format parameter `format=json`. Note that **html** is the default response format, but **xml** and **json** are also available.
+Alternatively, all API methods support an optional return format parameter `format=json`. It takes precedence over the header.
 
 | Return type |        Accept header       | format parameter |
 |-------------|----------------------------|--------------------|
 | JSON        | `Accept: application/json` | `format=json`      |
 | XML         | `Accept: application/xml`  | `format=xml`       |
 | XML (alt)   | `Accept: text/xml`         | `format=xml`       |
-| HTML        | `Accept: text/html`        | `format=html`      |
 
 
 ::: note
 ## Info
-The API does *not* support **JSONP**.
+The API does *not* support **JSONP** nor **HTML** anymore.
 :::
 
 
