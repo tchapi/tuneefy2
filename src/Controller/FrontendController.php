@@ -81,7 +81,7 @@ class FrontendController extends AbstractController
         // Check if spam
         $verification_params = http_build_query([
             'secret' => $this->getParameter('mail.captcha_secret'),
-            'response' => $request->query->get('captcha'),
+            'response' => $request->get('captcha'),
             'remoteip' => $_SERVER['REMOTE_ADDR'],
         ]);
 
@@ -89,17 +89,18 @@ class FrontendController extends AbstractController
         $json = json_decode($verification, true);
 
         if (false === $json['success']) {
+            error_log('Error validating captcha: '.$verification);
             return new Response('0');
         }
 
         try {
-            $sanitized_email = filter_var($request->query->get('mail'), FILTER_SANITIZE_EMAIL);
+            $sanitized_email = filter_var($request->get('mail'), FILTER_SANITIZE_EMAIL);
 
             $message = (new Email())
               ->subject('[CONTACT] '.$sanitized_email.' (via tuneefy.com)"')
               ->from($this->getParameter('mail.contact_email'))
               ->to($this->getParameter('mail.team_email'))
-              ->text($sanitized_email." sent a message from the site : \n\n".nl2br($request->query->get('message')));
+              ->text($sanitized_email." sent a message from the site : \n\n".nl2br($request->get('message')));
 
             // Send the message now
             $result = $mailer->send($message);
