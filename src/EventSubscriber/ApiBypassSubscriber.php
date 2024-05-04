@@ -34,9 +34,10 @@ class ApiBypassSubscriber implements EventSubscriberInterface
         if ($request->query->has('access_token')) {
             // We have a token in the query, pass it down in the headers
             $request->headers->set('Authorization', 'Bearer '.$request->query->get('access_token'));
+
             return;
         }
-  
+
         if (!$request->hasSession()) {
             // don't do anything if no session
             return;
@@ -58,11 +59,21 @@ class ApiBypassSubscriber implements EventSubscriberInterface
             return;
         }
 
+        if (!$this->bypassClientIdentifier) {
+            error_log('Bypass client identifier is not set');
+
+            return;
+        }
+
         // Construct the ClientCredentials grant server
         $this->server->enableGrantType($this->grant);
 
         // Request a new token (valid only 2 minutes)
         $this->generatedToken = $this->grant->getAccessTokenForClient(new \DateInterval('PT2M'), $this->bypassClientIdentifier);
+
+        if (null === $this->generatedToken) {
+            return;
+        }
 
         // Add the token to the request
         $request->headers->set('Authorization', 'Bearer '.$this->generatedToken->__toString());

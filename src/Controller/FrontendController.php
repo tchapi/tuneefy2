@@ -90,6 +90,7 @@ class FrontendController extends AbstractController
 
         if (false === $json['success']) {
             error_log('Error validating captcha: '.$verification);
+
             return new Response('0');
         }
 

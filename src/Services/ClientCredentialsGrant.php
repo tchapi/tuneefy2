@@ -23,8 +23,14 @@ final class ClientCredentialsGrant extends BaseClientCredentialsGrant
     public function getAccessTokenForClient(
         \DateInterval $accessTokenTTL,
         string $clientId
-    ): AccessTokenEntityInterface {
+    ): ?AccessTokenEntityInterface {
         $client = $this->clientRepository->getClientEntity($clientId);
+
+        if (!$client) {
+            error_log("No client with identifier {$clientId} was found");
+
+            return null;
+        }
 
         return $this->issueAccessToken($accessTokenTTL, $client, $client->getIdentifier(), []);
     }
