@@ -120,10 +120,15 @@ final class StatsService
         // Unserialize the object column
         $result = ['track' => null, 'album' => null];
         foreach ($rows as $row) {
+            $migratedObject = str_replace(
+                ['tuneefy\MusicalEntity\Entities\AlbumEntity', 'tuneefy\MusicalEntity\Entities\TrackEntity'],
+                ['App\Dataclass\MusicalEntity\Entities\Album', 'App\Dataclass\MusicalEntity\Entities\Track'],
+                $row['object']
+            );
+
             $result[$row['type']] = [
                 'id' => $row['id'],
-                // TODO: fix, use getMusicalEntity here
-                'entity' => unserialize($row['object'], ['allowed_classes' => [Track::class, Album::class]]),
+                'entity' => unserialize($migratedObject, ['allowed_classes' => [Track::class, Album::class]]),
             ];
         }
 
