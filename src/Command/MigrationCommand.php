@@ -46,6 +46,8 @@ class MigrationCommand extends Command
 
         $clients = $result->fetchAllAssociative();
 
+        $output->writeln('Found '.count($clients));
+        
         foreach ($clients as $client) {
             $active = $client['active'];
             $id = $client['client_id'];
@@ -73,7 +75,7 @@ class MigrationCommand extends Command
               ->setOauth2ClientIdentifier($id)
               ->setUrl($client['url']);
 
-            $output->writeln('API Client   : '.$api_client->getName().' - '.$api_client->getCreatedAt()->format('Y-m-d HH:MM'));
+            $output->writeln('API Client   : '.$api_client->getName().' - '.$api_client->getCreatedAt()->format('Y-m-d H:i:s').' / '.$client['created_at']);
             if ($input->getOption('execute')) {
                 $this->entityManager->persist($api_client);
             }
