@@ -1,6 +1,6 @@
 # tuneefy _2_
 
-A new version of [tuneefy](http://tuneefy.com) built for **PHP 7 / 8** and **Node 14+**, from the ground up, using the minimal [Slim](https://www.slimframework.com/) framework and a few helper libraries.
+A new version of [tuneefy](http://tuneefy.com) built for **PHP 8** and **Node 18+**, from the ground up, using Symfony and a few helper libraries.
 
 ### Installing
 
@@ -12,7 +12,7 @@ This project uses [composer 2](https://getcomposer.org/). Just run :
 
 Tuneefy needs a variety of tables to work properly; you can populate your database with the following :
 
-    mysql -u user -p database_name < ./structure.sql
+    bin/console doctrine:migrations:migrate
 
 ### Building assets & API doc
 
@@ -23,53 +23,17 @@ To build the assets and the API documentation, I use **yarn** and some modules.
     yarn run build
     yarn run api-documentation
 
-### Composer packages used
-
-  - [Composer](https://getcomposer.org/), providing a nice package manager *and* a practical PSR-4 autoloader
-  - [Symfony\Yaml](http://symfony.com/doc/current/components/yaml/introduction.html) to parse the configuration files
-  - [Slim 4](http://www.slimframework.com/), a lightweight RESTful framework
-  - [Twig](http://twig.sensiolabs.org/), a template engine
-  - [XmlToJsonConverter](https://github.com/markwilson/xml-to-json) to convert Amazon XML to correct JSON
-  - [RKA Content-Type renderer](https://github.com/akrabat/rka-content-type-renderer) to output JSON / XML / HTML for the API
-  - [Slim basic auth](https://github.com/tuupola/slim-basic-auth) for admin access
-
-#### Dev packages
-
-  - [PHP CS Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) to lint the PHP code
-  - [PHPUnit](https://phpunit.de/) for unit tests
-
-### NPM (dev) packages used
-
-  - [Gulp](http://gulpjs.com/) , including `gulp-sass`, `gulp-uglify` and `pump` for building assets
-  - [Aglio](https://github.com/danielgtaylor/aglio) for generating the API docs
-
-### On the frontend side of things
-
-I'm using [JQuery](http://jquery.com) to cover the DOM manipulation tasks and related stuff.
-
-### Code structure
-
-This project is a very basic composer project with a PSR-4 autoloader.
-The source is in `src/tuneefy` and is organised as such :
-
-  * **MusicalEntity** includes the model for a musical entity (_album or track_)
-  * **Controller** includes the controllers for the various routes (api and frontend)
-  * **Platform** includes all the platform-related code, especially the specific methods for each remote API call
-  * **Utils** includes various utilities such as custom Slim error handlers
-  * and two top-level classes : **Application** and **PlatformEngine** that deal with the application itself and how it interacts with the platforms
-
 ### Tests
 
-The tests are under the `./tests` folder and I use **Codeception** to run them. You have to first create the `codeception.yml` file (or copy it from the dist file present in the repo).
+The tests are under the `./tests` folder and I use **Codeception** to run them.
 
-Afterwards, just run :
+Just run :
 
     vendor/bin/codecept run --steps
 
-Beforehand, do not forget to launch a development web server so that the functional tests have an endpoint to test. For instance :
+Beforehand, do not forget to launch a development web server so that the functional tests have an endpoint to test:
 
-    php -S localhost:8000 -t web
-    php -S localhost:8001 -t web_api
+    symfony server:start --port 9999
 
 There should be 40 tests containing 697 assertions.
 
