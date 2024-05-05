@@ -862,7 +862,7 @@ li.tResult:last-child{
   border-radius: 3px;
   border: 1px solid black;
   background: #E6E6E6;
-  width: 204px;
+  width: 244px;
   padding: 7px;
   font-weight: bold;
   font-size: 0.75em;
@@ -878,7 +878,7 @@ li.tResult:last-child{
   padding-top: 7px;
 }
 
-#embed, #facebookShare, #twitterShare, #mailShare{
+#embed, #twitterShare, #mailShare{
   background: url("../../img/share.png") no-repeat scroll 0px 0px transparent;
   display: inline-block;
   height: 33px;
@@ -886,11 +886,9 @@ li.tResult:last-child{
   cursor: pointer;
 }
 
-#facebookShare{ background-position: -35px 0px; }
 #mailShare{ background-position: -70px 0px; }
 #embed{ background-position: -105px 0px; }
 
-#facebookShare:hover{ background-position: -35px -33px; }
 #twitterShare:hover{ background-position: 0px -33px; }
 #mailShare:hover{ background-position: -70px -33px; }
 #embed:hover, #embed.open{ background-position: -105px -33px; }
@@ -1506,7 +1504,7 @@ tr.platformsEnum{
   float: left;
   padding-top: 6px;
 }
-#share_plusone, #share_twitter, #share_facebook {
+#share_plusone, #share_twitter {
   float: left;
 }
 
