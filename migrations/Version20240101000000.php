@@ -47,7 +47,7 @@ final class Version20240101000000 extends AbstractMigration
         KEY `item_id` (`item_id`),
         KEY `viewed_at` (`viewed_at`),
         CONSTRAINT `stats_viewing_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`)
-      ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+      ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
       ');
 
       $this->addSql('CREATE TABLE `stats_listening` (
@@ -60,7 +60,7 @@ final class Version20240101000000 extends AbstractMigration
         KEY `item_id` (`item_id`),
         KEY `platform` (`platform`),
         CONSTRAINT `stats_listening_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `items` (`id`)
-      ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+      ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
       ');
 
       $this->addSql('CREATE TABLE `stats_api` (
@@ -72,7 +72,7 @@ final class Version20240101000000 extends AbstractMigration
         KEY `client_id` (`client_id`),
         KEY `called_at` (`called_at`),
         KEY `method` (`method`)
-      ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+      ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
       ');
 
       // Materialised views for stats / trends
@@ -84,7 +84,7 @@ final class Version20240101000000 extends AbstractMigration
         `artist` VARCHAR(170),
         `platform` VARCHAR(170),
         `count` INT(11) NOT NULL
-      );');
+      ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;');
 
       $this->addSql('DROP PROCEDURE IF EXISTS refresh_trends_mv_now;
       DELIMITER $$
