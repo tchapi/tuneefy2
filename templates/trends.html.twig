@@ -9,7 +9,7 @@
   <div id="globalStats">
     <h2 class="color">{{ "stats.global"|trans|raw }}</h2>
       <table style="display:none;" id="pieData">
-          {% for hit in stats.hits|filter(hit => hit.platform.tag is not null) %}
+          {% for hit in stats.hits|filter(hit => hit.platform.tag is defined) %}
             <tr><th scope="row">
                 <span class="id">{{ hit.platform.tag }}</span>
                 <span class="name">{{ hit.platform.name }}</span>
@@ -22,7 +22,7 @@
       <div id="pieChart"></div>
 
     <ul>
-      {% for hit in stats.hits %}
+      {% for hit in stats.hits|filter(hit => hit.platform.tag is defined) %}
         <li>{{ hit.platform.name }}<span class="figure color">{{ (hit.count / total * 100)|number_format(1) }}%</span></li>
       {% endfor %}
     </ul>
