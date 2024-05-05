@@ -35,6 +35,17 @@ class BackendController extends AbstractController
             }
         }
 
+        // Format
+        foreach ($stats as $key => $stat) {
+            if ($stat > 1000000) {
+                $stats[$key] = number_format($stat / 1000000, 2, ',', ' ').' M';
+            } elseif ($stat > 1000) {
+                $stats[$key] = number_format($stat / 1000, 0, ',', ' ').' k';
+            } else {
+                $stats[$key] = number_format($stat, 0, ',', ' ');
+            }
+        }
+
         return $this->render('admin/dashboard.html.twig', [
             'itemsStats' => $statsService->getItemsStats(),
             'apiStats' => $stats,

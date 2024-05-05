@@ -47,7 +47,7 @@ class MigrationCommand extends Command
         $clients = $result->fetchAllAssociative();
 
         $output->writeln('Found '.count($clients));
-        
+
         foreach ($clients as $client) {
             $active = $client['active'];
             $id = $client['client_id'];

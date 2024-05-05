@@ -40,7 +40,7 @@
   </div>
   {% for key, stat in apiStats %}
     <div class="statistic">
-      <div class="value">{{ stat|number_format(0, '.', ' ') }}</div>
+      <div class="value">{{ stat }}</div>
       <div class="label">/{{ key }}</div>
     </div>
   {% endfor %}
