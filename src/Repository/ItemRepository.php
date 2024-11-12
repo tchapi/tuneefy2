@@ -121,15 +121,13 @@ class ItemRepository extends ServiceEntityRepository
 
         if (count($items) > 0) {
             // In this case, we return the previous identical result and we delete the intent
-            $this->delete($intentItem);
-
+            $entityManager->remove($intentItem);
             $entityManager->flush();
 
             return [$items[0]->getMusicalEntity()->getType(), $this->utils->toUId($items[0]->getId())];
         } else {
             // Otherwise, we persist this one
             $intentItem->setIntent(null)->setExpiresAt(null);
-
             $entityManager->flush();
 
             return [$intentItem->getMusicalEntity()->getType(), $this->utils->toUId($intentItem->getId())];
