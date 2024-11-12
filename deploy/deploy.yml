@@ -37,6 +37,18 @@
         src={{ shared_path }}/.env.local
         dest={{ release_path }}/.env.local
         state=link
+    - name: Link keys files (JWT) for the Oauth2
+      file:
+        src={{ shared_path }}/jwt
+        dest={{ release_path }}/config/jwt
+        state=link
+    - name: Create the var and cache/prod folder
+      file:
+        dest={{ release_path }}/var/cache/prod
+        mode=0775
+        recurse=yes
+        state=directory
+        group=www-data
     - name: Link var/logs directory
       file:
         src={{ shared_path }}/logs
@@ -103,3 +115,11 @@
       service:
         name: "php8.2-fpm"
         state: restarted
+    - name: Give correct permissions
+      file:
+        state: directory
+        path: "{{ current_path }}/var/cache"
+        owner: debian
+        group: www-data
+        recurse: true
+        mode: '0775'

@@ -1,27 +1,35 @@
 tuneefy.com, www.tuneefy.com {
-    @redirwww {
-        host www.tuneefy.com
-    }
-    redir @redirwww https://tuneefy.com{uri} permanent
-    # cf. https://caddy.community/t/caddy2-symfony/6978
-    root * /path/to/project/current/web
-    php_fastcgi 127.0.0.1:8000 # change to accomodate your php-fpm settings
-    file_server
+        @redirwww {
+                host www.tuneefy.com
+        }
+        redir @redirwww https://tuneefy.com{uri} permanent
+
+        # Redirect API endpoints
+        @redirapi path_regexp api_redir /api(/v2.*)$
+        redir @redirapi https://data.tuneefy.com{re.api_redir.1} permanent
+
+        root * /path/to/project/public
+        php_fastcgi 127.0.0.1:8000
+        file_server {
+                import hidden
+        }
+        import security
 }
 
 data.tuneefy.com {
-  root * /path/to/project/current/web_api
-  php_fastcgi 127.0.0.1:8000
-  header {
-    Access-Control-Allow-Origin https://tuneefy.com
-    Access-Control-Allow-Credentials true
-    Vary Origin
-  }
-  @options {
-    method OPTIONS
-  }
-  header @options {
-    Access-Control-Allow-Methods "GET, POST, OPTIONS, HEAD"
-    Access-Control-Allow-Headers X-Requested-With
-  }
+        root * /path/to/project/public
+        php_fastcgi 127.0.0.1:8000
+        header {
+                Access-Control-Allow-Origin https://tuneefy.com
+                Access-Control-Allow-Credentials true
+                Vary Origin
+        }
+        @options {
+                method OPTIONS
+        }
+        header @options {
+                Access-Control-Allow-Methods "GET, POST, OPTIONS, HEAD"
+                Access-Control-Allow-Headers X-Requested-With
+        }
+        import security
 }
