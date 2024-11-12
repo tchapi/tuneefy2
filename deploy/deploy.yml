@@ -11,7 +11,7 @@
     - name: Retrieve current release folder
       command: readlink -f current
       register: current_release_path
-      ignore_errors: yes
+      ignore_errors: true
       args:
         chdir: "{{ project_path }}"
     - name: Ensure shared folder is present
@@ -32,40 +32,21 @@
       git:
         repo: "git@github.com:tchapi/tuneefy2.git"
         dest: "{{ release_path }}"
-    - name: Link platforms.yml file
+    - name: Link .env.local file
       file:
-        src={{ shared_path }}/platforms.yml
-        dest={{ release_path }}/app/config/platforms.yml
-        state=link
-    - name: Link parameters.yml file
-      file:
-        src={{ shared_path }}/parameters.yml
-        dest={{ release_path }}/app/config/parameters.yml
+        src={{ shared_path }}/.env.local
+        dest={{ release_path }}/.env.local
         state=link
     - name: Link var/logs directory
       file:
         src={{ shared_path }}/logs
-        dest={{ release_path }}/var/logs
+        dest={{ release_path }}/var/log
         state=link
     - name: Install composer dependencies
       composer:
         command: install
         working_dir: "{{ release_path }}"
         prefer_dist: yes
-    # Build assets locally, and then transfer to remote
-    - name: Install yarn dependencies
-      yarn:
-        path: "{{ playbook_dir }}/.."
-      delegate_to: 127.0.0.1
-    - name: Build the static dist folder
-      shell: yarn build
-      delegate_to: 127.0.0.1
-    - name: Copy dist folder to remote
-      copy:
-        src: "{{ playbook_dir }}/../web/build"
-        dest: "{{ release_path }}/web"
-        group: www-data
-    # End of: locally built assets
     - name: Remove perilous files
       file:
         path: "{{ release_path }}/{{ item }}"
@@ -79,27 +60,45 @@
         - LICENSE
         - README.md
         - gulpfile.js
+        - examples
         - package.json
         - yarn.lock
-        - structure.sql
         - codeception.yml
         - codeception.yml.dist
     - name: Creates a cron file under /etc/cron.d for updating stats and cleaning intents
-      become: yes
+      become: true
       become_user: root
       cron:
-        name: "Tuneefy: Update stats and clean expired intents"
+        name: "Tuneefy: Update stats"
         minute: "14"
         user: "{{ansible_user}}"
-        job: "/usr/bin/php {{current_path}}/src/tuneefy/cron_runner.php >> {{shared_path}}/logs/cron-job.log"
+        job: "/usr/bin/php {{current_path}}/bin/console tuneefy:update-stats >> {{shared_path}}/logs/cron-job.log"
+        cron_file: tuneefy_update-stats
+    - name: Creates a cron file under /etc/cron.d for cleaning intents
+      become: true
+      become_user: root
+      cron:
+        name: "Tuneefy: Clean expired intents"
+        minute: "18"
+        user: "{{ansible_user}}"
+        job: "/usr/bin/php {{current_path}}/bin/console tuneefy:clean-expired-intents >> {{shared_path}}/logs/cron-job.log"
         cron_file: tuneefy_clean-expired-intents
+    - name: Creates a cron file under /etc/cron.d for cleaning expired tokens
+      become: true
+      become_user: root
+      cron:
+        name: "Tuneefy: Clear expired tokens"
+        minute: "35"
+        user: "{{ansible_user}}"
+        job: "/usr/bin/php {{current_path}}/bin/console league:oauth2-server:clear-expired-tokens >> {{shared_path}}/logs/cron-job.log"
+        cron_file: tuneefy_clean-expired-tokens
     - name: Update symlink
       file:
         src={{ release_path }}
         dest={{ current_path }}
         state=link
     - name: Restart PHP-FPM
-      become: yes
+      become: true
       become_user: root
       service:
         name: "php8.2-fpm"
