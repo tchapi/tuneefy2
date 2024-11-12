@@ -22,7 +22,7 @@
               {{ error.messageKey|trans(error.messageData, 'security') }}
             </div>
           {% endif %}
-          <form action="{{ path('admin_login') }}" method="post" class="ui large form" id="loginForm">
+          <form action="{{ path('admin_login') }}" method="post" class="ui large form" id="loginForm" enctype="application/x-www-form-urlencoded">
             <div class="ui stacked segment">
               <div class="field">
                 <div class="ui left icon input">
