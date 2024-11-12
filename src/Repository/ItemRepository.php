@@ -141,11 +141,13 @@ class ItemRepository extends ServiceEntityRepository
         $expiredIntents = $this->createQueryBuilder('i')
           ->andWhere('i.intent IS NOT NULL')
           ->andWhere('i.expiresAt IS NOT NULL')
-          ->andWhere('i.expiresAt < NOW()')
+          ->andWhere('i.expiresAt < CURRENT_TIMESTAMP()')
           ->getQuery()
           ->getResult();
 
-        $this->delete($expiredIntents);
+        foreach ($expiredIntents as $intent) {
+            $entityManager->remove($intent);
+        }
 
         $entityManager = $this->getEntityManager();
         $entityManager->flush();
