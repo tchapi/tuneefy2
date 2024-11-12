@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/admin', name: 'admin_')]
+#[Route('/admin', name: 'admin_', host: '%website.host%')]
 class BackendController extends AbstractController
 {
     #[Route('/dashboard', name: 'dashboard')]

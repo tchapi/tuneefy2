@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-#[Route('/api', name: 'api_')]
+#[Route('/', name: 'api_', host: '%api.host%')]
 class ApiController extends AbstractController
 {
     #[Route('/', name: 'documentation')]

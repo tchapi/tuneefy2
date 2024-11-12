@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+#[Route('/', host: '%website.host%')]
 class SecurityController extends AbstractController
 {
     #[Route('/admin/login', name: 'admin_login')]

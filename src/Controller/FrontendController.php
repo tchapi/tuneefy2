@@ -14,6 +14,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/', host: '%website.host%')]
 class FrontendController extends AbstractController
 {
     #[Route('/', name: 'home')]

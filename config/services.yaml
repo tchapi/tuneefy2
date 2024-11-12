@@ -1,4 +1,8 @@
 parameters:
+    # Used for routing the API pages correctly
+    website.host: "%env(WEBSITE_HOST)%"
+    api.host: "%env(API_HOST)%"
+
     uid_base: 11111
     mail.captcha_key: "%env(CAPTCHA_KEY)%"
     mail.captcha_secret: "%env(CAPTCHA_SECRET)%"
