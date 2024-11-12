@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="content-language" content="en">
+  <title>Administration</title>
+
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+  <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.19/css/dataTables.semanticui.min.css">
+</head>
+<body>
+  
+  <div class="ui container">
+    <div class="ui secondary pointing menu">
+      <a class="item{% if menu == "dashboard" %} active{% endif %}" href="{{ path('admin_dashboard') }}">
+        Dashboard
+      </a>
+      <a class="item{% if menu == "clients" %} active{% endif %}" href="{{ path('admin_clients') }}">
+        API Clients
+      </a>
+      <div class="right menu">
+        <a class="ui item" href="/">
+          Return to tuneefy
+        </a>
+      </div>
+    </div>
+
+    <div class="ui segment">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>
+
+{% block javascript %}
+  <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+  <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+  <script src="//cdn.datatables.net/1.10.19/js/dataTables.semanticui.min.js"></script>
+{% endblock %}
+</body>
+</html>

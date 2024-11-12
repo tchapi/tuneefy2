@@ -1,0 +1,106 @@
+{% extends 'admin/_base.html.twig' %}
+{% set menu = "clients" %}
+
+{% block content %}
+<h1>API Clients</h1>
+
+<h3 class="ui dividing header">Create a new client</h3>
+
+{% if not form.vars.valid %}
+  <div class="ui negative message">
+    <i class="close icon"></i>
+    <div class="header">
+      Error
+    </div>
+    {{ form_errors(form) }}
+  </div>
+{% endif %}
+
+{{ form_start(form, {'attr': {'class': 'ui form'}}) }}
+  <div class="two fields">
+    <div class="field">
+      <label>Name</label>
+      {{ form_widget(form.name, {'attr': {'placeholder': 'API User'}}) }}
+    </div>
+    <div class="field">
+      <div class="ui toggle checkbox" style="margin-top: 30px;">
+        {{ form_widget(form.active) }}
+        <label>Active</label>
+      </div>
+    </div>
+  </div>
+  <div class="two fields">
+    <div class="field">
+      <label>Email</label>
+      {{ form_widget(form.email, {'attr': {'placeholder': 'user@example.org'}}) }}
+    </div>
+    <div class="field">
+      <label>Url</label>
+      {{ form_widget(form.url, {'attr': {'placeholder': 'http://site.com'}}) }}
+    </div>
+  </div>
+  <div class="two fields">
+    <div class="field">
+      <label>Client ID</label>
+      <div class="ui action input">
+        {{ form_widget(form.identifier) }}
+        <button type="button" class="keygen ui primary button" data-length="32">Generate</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Client Secret</label>
+      <div class="ui action input">
+        {{ form_widget(form.secret) }}
+        <button type="button" class="keygen ui primary button" data-length="40">Generate</button>
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label>Description</label>
+    {{ form_widget(form.description) }}
+  </div>
+  <a href="{{ path('admin_clients') }}" class="ui button" type="cancel"><i class="ui icon angle double left"></i> Back</a>
+  <button class="ui button green" type="submit"><i class="ui icon check"></i> Save</button>
+{{ form_end(form) }}
+
+
+{% endblock %}
+
+{% block javascript %}
+  {{ parent() }}
+  <script type="text/javascript">
+    function generateKey(length) {
+        var d = new Date().getTime()
+        if (window.performance && typeof window.performance.now === "function") {
+          d += performance.now()
+        }
+
+        var uuid = "x".repeat(length).replace(/[xy]/g, function(c) {
+          var r = (d + Math.random()*16)%16 | 0
+          return (r).toString(16)
+        });
+
+      return uuid
+    }
+
+    $(document).ready(function(){
+      $('.ui.checkbox').checkbox()
+      $('.ui.form')
+        .form({
+          fields: {
+            "form[name]"          : ['minLength[6]', 'empty'],
+            "form[identifier]"     : 'empty',
+            "form[secret]" : 'empty',
+            "form[email]"         : ['minLength[6]', 'empty']
+          }
+        })
+      /**
+       * Generate new key and insert into input value
+       */
+      $('.keygen').on('click', function () {
+        $(this).siblings('input').val(generateKey($(this).data('length')))
+      })
+      $('.keygen').trigger('click')
+    })
+  </script>
+{% endblock %}

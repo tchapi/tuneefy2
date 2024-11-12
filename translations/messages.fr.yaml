@@ -1,0 +1,191 @@
+# PAGES
+pages:
+  home:
+    title: "Accueil"
+    tip: "C'est là que ça se passe !"
+    welcome: "De la Musique pour tous, tous pour la Musique !"
+    content: >
+        Imaginons. Vous utilisez <span class="color">Spotify</span> et vos amis d'autres services, comme <span class="color">Deezer</span>, <span class="color">Soundcloud</span> ou <span class="color">Grooveshark</span> par exemple. Quand vous voulez leur partager de la musique ... c'est la guerre!<br/><span class="color">tuneefy</span> est le chaînon manquant — recherchez une chanson, un artiste ou album, ou collez un lien issu d'un service de streaming, 'Partagez' la chanson cherchée et <span class="color">voila</span> ! Tout le monde vous aime ! <span class="color">Trop facile</span>.
+    more_info: "Plus d'infos !"
+  about:
+    title: "À Propos"
+    title_long: "la Vie, tuneefy, l'Univers et le Reste"
+    tip: "C'est quoi, ce truc ?"
+    team: "L'équipe"
+  trends:
+    title: "Tendances"
+    title_long: "Des stats, des stats .."
+    tip: "Statistiques"
+
+widget:
+  see_more: "Plus de résultats"
+
+# GENERAL
+yes: "Oui"
+no: "Non"
+github: "Je suis sur GitHub"
+back_to_top: "Retour en haut"
+follow_twitter: "Nous suivre sur Twitter"
+tagline: "Partager de la <span class='color'>musique</span>. <span class='color'>Facilement</span>."
+description: "tuneefy est un nouveau service permettant de partager de la musique avec vos amis indépendamment de leur plateforme d'écoute!"
+keywords: "écouter, partager, musique, online, unifier, plateforme, streaming, ami, tuneefy, chansons, partage"
+contact : "Contact"
+copyright: "tuneefy © 2011 - 2024"
+endorsement: "Ce service utilise les API de Spotify (resp. Deezer, Last.fm, Soundcloud, Tidal, Groove Music, Amazon Music, Youtube, Mixcloud, iTunes, Qobuz, Napster) mais n'est pas approuvé ni certifié de quelque manière que ce soit par Spotify  (resp. Deezer, Last.fm, Soundcloud, Tidal, Groove Music, Amazon Music, Youtube, Mixcloud, iTunes, Qobuz, Napster). Les noms, marques et logos cités ou utilisés sur ce site sont la propriété de leurs déposants respectifs."
+
+# PICKS
+picks:
+  mostViewed: "La plus vue cette semaine"
+  lastSharedTrack: "Dernière chanson partagée"
+  lastSharedAlbum: "Dernier album partagé"
+  discover: "Je découvre"
+
+# SEARCH
+search:
+  query_label: "Cherchez une chanson, un album, .. ou collez un lien"
+  available_platforms: "Rechercher sur ces services"
+  results_found: "Nous avons trouvé #nb# #type# pour &laquo; #iq# &raquo;"
+  result_found_widget: "Ça devrait être ce que vous cherchez .."
+  merge_label: "Grouper les titres identiques venant d'albums divers"
+  search_button: "Chercher"
+  error_message: "L'API n'a pas répondu. Elle est peut-être inaccessible pour le moment, veuillez réessayer dans quelques instants."
+  _tracks: "chansons"
+  _albums: "albums"
+  newImage: "nouveau.png"
+  newAlt: "nouveau!"
+  moreOptionsImage: "plus_options.png"
+  moreOptionsAlt: "Plus d'options!"
+
+# HELP
+help:
+  text_close: "Ne plus afficher ce message"
+  text_title: "Salut ! Quelques idées de recherche :"
+  text_more: "et il y a plein d'autres liens supportés ! "
+  text_more_button: "je veux voir"
+  text: >
+    <div class=\"example\"><span class=\"searchForIt\">http://www.deezer.com/listen-10236179</span><span class=\"searchForWhat\">Une chanson sur Deezer</span></div>
+    <div class=\"example\"><span class=\"searchForIt\">http://www.lastfm.fr/music/Caribou/_/Odessa</span><span class=\"searchForWhat\">Une sur Last.fm</span></div>
+    <div class=\"example\"><span class=\"searchForIt\">spotify:track:5jhJur5n4fasblLSCOcrTp</span><span class=\"searchForWhat\">Et une sur Spotify</span></div>
+
+# RESULTS
+results:
+  results_found: "Nous avons trouvé <span class='color' id='results_number'>%number%</span> résultats pour votre recherche &laquo; <span class='color' id='results_query'>%query%</span> &raquo;"
+  result_found_widget: "Is that the track you're looking for ?"
+  search_title: "Votre recherche pour %query%"
+  various_albums: "(Plusieurs albums)"
+  share: "Partager"
+  share_tip: "Obtenez tous les liens pour partager '%name%'!"
+  listen_to: "Écoutez '%name%' sur cette platforme"
+  featuring: "feat. "
+  album_cover: "Pochette"
+  header:
+    track: "Chanson"
+    artist: "Artiste"
+    album: "Album"
+    available: "Disponible sur"
+
+# TRACK AND ALBUM
+track:
+  description: "Tous les liens pour écouter '%track%'' par '%artist%'' grâce à tuneefy, un service de partage de musique indépendant de la plateforme d'écoute !"
+  intro: "Allez on monte le son, en avant la musique !"
+  listen_to: "Cette chanson est disponible sur ces sites : "
+  share: "Partager cette chanson : "
+  embed: "Publiez cette chanson sur votre site"
+  twitter: "Partager sur Twitter"
+  mail: 
+    action: "Envoyer le lien par mail"
+    subject: "Un ami veut partager la chanson '%track%' (de '%artist%') avec toi"
+    body: "Clique ici pour la découvrir : %link%"
+  twitter_status: "Écoutez '%track%', par '%artist%'  %link% %%23tuneefy"
+  seeOnTuneefy: "Voir la page tuneefy de cette chanson"
+  title: "Écoutez '%track%', par '%artist%'"
+
+album:
+  description: "Tous les liens pour écouter l'album '%album%'' par '%artist% 'grâce à tuneefy, un service de partage de musique indépendant de la plateforme d'écoute !"
+  intro: "Allez on monte le son, en avant la musique !"
+  listen_to: "Cet album est disponible sur ces sites : "
+  share: "Partager cet album : "
+  embed: "Publiez cet album sur votre site"
+  twitter: "Partager cet album sur Twitter"
+  mail:
+    action: "Envoyer le lien par mail"
+    subject: "Un ami veut partager l'album '%album%' (de '%artist%') avec toi"
+    body: "Clique ici pour le découvrir : %link%"
+  twitter_status: "Écoutez l'album '%album%', par '%artist%'  %link% %%23tuneefy"
+  seeOnTuneefy: "Voir la page tuneefy de cet album"
+  title: "Écoutez l'album' %album%', par '%artist%'"
+
+iframe.code: "<iframe src='%link%?embed' allowtransparency='yes' border='no' frameBorder='0' scrolling='0' width='350' height='150'></iframe>"
+
+# ERRORS
+error:
+  action: "Retour à l'accueil"
+  action.api: "Revenir à la documentation de l'API"
+  404:
+    title: "Page introuvable"
+    description: "404. Et pourtant on a cherché partout. Mais alors partout. Rien à faire. On sait pas où on l'a mise. La boulette, quoi.<br/>En même temps si vous tapiez pas n'importe quoi dans la barre d'adresse aussi ..."
+  500:
+    title: "Wooooooooops"
+    description: "500. Oui alors bon, on a peut-être fait une erreur de code qui a provoqué un bug. Ou alors le serveur vit ses dernières heures.<br />Pas d'inquiétudes. On vous tient au courant."
+  503:
+    title: "On se calme"
+    description: "Vous dépassez la limite de requêtes par minute pour l'API.<br />Veuillez attendre un instant, puis recommmencez.<br />À noter: votre IP peut être bloquée si vous faites une utilisation abusive de l'API, dans ce cas, n'hésitez pas à nous contacter pour trouver une solution."
+
+# ABOUT PAGE
+contact_us: 
+  title: "Nous Contacter"
+  email: "Votre email"
+  message: "Votre message"
+  send: "Envoyer"
+
+facts:
+  info: >
+      <h3>Partager de la musique.<br />Mais en plus simple.</h3>
+      <p>Tuneefy regroupe les différentes plateformes de streaming musical en vous donnant un lien unique proposant tous les liens issus de ces plateformes.
+      </p>
+  friends: >
+      <h3>Chouchoutez vos amis</h3>
+      <p>Tuneefy, c'est de l'altruisme à l'état pur; vos amis obtiennent directement le lien musical sur leur plateforme de prédilection. Du coup, ils vous aiment encore plus. <span class="color">Et ça, c'est cool</span>.
+      </p>
+  pertinence: >
+      <h3>Recherche pertinente</h3>
+      <p>Les résultats sont triés intelligemment. Vous voulez toujours partager au plus grand nombre : les premiers résultats sont ceux qui sont présents sur le plus grand nombre de plateformes.
+      </p>
+  free: >
+      <h3>C'est moins cher<br />qu'un forfait à 2€</h3>
+      <p>Tuneefy est gratuit et sans pollution publicitaire. Parce que ce qui nous intéresse, c'est la musique. Point.
+      </p>
+  supported: >
+      <a name="patterns"></a><h3>Types de liens supportés</h3>
+      <p>Bien sûr vous pouvez rechercher n'importe quel mot-clé, mais encore mieux, vous pouvez copier-coller les liens de quasiment toutes vos plateformes favorites ! Jetez un oeil à droite ..
+      </p>
+  team_idea: >
+      <p class="realName">tchap</p>
+      <p class="achievement">Idée, pintes de café, jPoésie</p>
+  team_design: >
+      <p class="realName">_W___</p>
+      <p class="achievement">Design, gribouillages, GIFs animés</p>
+  minify: >
+      <h3>Il y a un bookmarklet pour ça</h3>
+      <p>Glissez le bookmarklet ci-dessous dans votre barre de favoris et un monde de partage s'ouvrira à vous (on rigole pas) : <a href="%minified%" class="widgetBookmark"><img src="/img/widget_button.png" alt="tuneefy it!" width="93" height="33"/></a>
+      </p>
+
+stats:
+  global: "Les sites de musique que vous utilisez"
+  most_viewed_tracks: "Les %limit% Chansons les plus vues"
+  most_viewed_albums: "Les %limit% Albums les plus vus"
+  most_viewed_artists: "Les %limit% Artistes les plus vus"
+  views: "<span class='color'>%val%</span> vues"
+
+mail:
+  sending: "Envoi du mail ..."
+  success: "Merci pour votre message !<br />On vous répond dès qu'on se réveille."
+  error: "Il y a eu un petit problème lors de l'envoi du mail.<br />Réessayez s'il vous plaît."
+
+os:
+  title_long: "« https://tuneefy.com/s/track/oxtcm »"
+  paragraph_1_important: "Tuneefy est un projet open-source. C'est (<em>et ça restera</em>) gratuit, sans publicité, et pas besoin de login ou d'infos personnelles. Juste, ça marche (<em>la plupart du temps ...</em>)."
+  paragraph_1: >
+    Mais tuneefy a un cout (certes minime) malgré tout, que nous payons avez plaisir pour offrir ce service. En gros, un serveur, un nom de domaine, ce qui fait à peu près 6€ par mois. Ce n'est pas énorme, mais c'est un coût.<br><br>
+    Si vous trouvez le service utile, et si vous voulez supporter son fonctionnement, nous sommes heureux d'accepter vos petits dons pour le paiement du serveur et du nom de domaine : soit <a href='http://paypal.me/tchap'>paypal.me/tchap</a> ou <a href='mailto:team@tuneefy.com'>team@tuneefy.com</a> si vous voulez nous contacter.
+  paragraph_2_thanks: "Merci beaucoup ! 💙"

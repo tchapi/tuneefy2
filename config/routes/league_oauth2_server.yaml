@@ -1,0 +1,5 @@
+oauth2_server:
+    prefix: /v2/auth
+    host: '%api.host%'
+    resource: '@LeagueOAuth2ServerBundle/Resources/config/routes.php'
+    type: php

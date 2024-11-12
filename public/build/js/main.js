@@ -1,0 +1,1 @@
+$(document).ready(function(){$("#lang span").click(function(o){o="tuneefyLocale="+$(o.target).attr("lang")+"; ";o+="expires=Sat, 01 Feb 2042 01:20:42 GMT; path=/; domain= "+$DOMAIN+";",document.cookie=o,location.reload()}),$(document).on("click",".backToTop",function(o){o.preventDefault(),$("html,body").animate({scrollTop:0},1500)})});

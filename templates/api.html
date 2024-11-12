@@ -1,0 +1,1117 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>The tuneefy API</title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"><style>@import url('https://fonts.googleapis.com/css?family=Roboto:400,700|Inconsolata|Raleway:200');@import url('https://fonts.googleapis.com/css?family=Roboto:100,400,700|Source+Code+Pro');.hljs-comment,.hljs-title{color:#8e908c}.hljs-variable,.hljs-attribute,.hljs-tag,.hljs-regexp,.ruby .hljs-constant,.xml .hljs-tag .hljs-title,.xml .hljs-pi,.xml .hljs-doctype,.html .hljs-doctype,.css .hljs-id,.css .hljs-class,.css .hljs-pseudo{color:#c82829}.hljs-number,.hljs-preprocessor,.hljs-pragma,.hljs-built_in,.hljs-literal,.hljs-params,.hljs-constant{color:#f5871f}.ruby .hljs-class .hljs-title,.css .hljs-rules .hljs-attribute{color:#eab700}.hljs-string,.hljs-value,.hljs-inheritance,.hljs-header,.ruby .hljs-symbol,.xml .hljs-cdata{color:#718c00}.css .hljs-hexcolor{color:#3e999f}.hljs-function,.python .hljs-decorator,.python .hljs-title,.ruby .hljs-function .hljs-title,.ruby .hljs-title .hljs-keyword,.perl .hljs-sub,.javascript .hljs-title,.coffeescript .hljs-title{color:#4271ae}.hljs-keyword,.javascript .hljs-function{color:#8959a8}.hljs{display:block;background:white;color:#4d4d4c;padding:.5em}.coffeescript .javascript,.javascript .xml,.tex .hljs-formula,.xml .javascript,.xml .vbscript,.xml .css,.xml .hljs-cdata{opacity:.5}.right .hljs-comment{color:#969896}.right .css .hljs-class,.right .css .hljs-id,.right .css .hljs-pseudo,.right .hljs-attribute,.right .hljs-regexp,.right .hljs-tag,.right .hljs-variable,.right .html .hljs-doctype,.right .ruby .hljs-constant,.right .xml .hljs-doctype,.right .xml .hljs-pi,.right .xml .hljs-tag .hljs-title{color:#c66}.right .hljs-built_in,.right .hljs-constant,.right .hljs-literal,.right .hljs-number,.right .hljs-params,.right .hljs-pragma,.right .hljs-preprocessor{color:#de935f}.right .css .hljs-rule .hljs-attribute,.right .ruby .hljs-class .hljs-title{color:#f0c674}.right .hljs-header,.right .hljs-inheritance,.right .hljs-name,.right .hljs-string,.right .hljs-value,.right .ruby .hljs-symbol,.right .xml .hljs-cdata{color:#b5bd68}.right .css .hljs-hexcolor,.right .hljs-title{color:#8abeb7}.right .coffeescript .hljs-title,.right .hljs-function,.right .javascript .hljs-title,.right .perl .hljs-sub,.right .python .hljs-decorator,.right .python .hljs-title,.right .ruby .hljs-function .hljs-title,.right .ruby .hljs-title .hljs-keyword{color:#81a2be}.right .hljs-keyword,.right .javascript .hljs-function{color:#b294bb}.right .hljs{display:block;overflow-x:auto;background:#1d1f21;color:#c5c8c6;padding:.5em;-webkit-text-size-adjust:none}.right .coffeescript .javascript,.right .javascript .xml,.right .tex .hljs-formula,.right .xml .css,.right .xml .hljs-cdata,.right .xml .javascript,.right .xml .vbscript{opacity:.5}.hljs-comment{color:#969896}.css .hljs-class,.css .hljs-id,.css .hljs-pseudo,.hljs-attribute,.hljs-regexp,.hljs-tag,.hljs-variable,.html .hljs-doctype,.ruby .hljs-constant,.xml .hljs-doctype,.xml .hljs-pi,.xml .hljs-tag .hljs-title{color:#77A619}.hljs-literal{color:#A69819}.hljs-built_in,.hljs-constant,.hljs-number,.hljs-params,.hljs-pragma,.hljs-preprocessor{color:#1B88B3}.css .hljs-rule .hljs-attribute,.ruby .hljs-class .hljs-title{color:#A37518}.hljs-header,.hljs-inheritance,.hljs-name,.hljs-string,.hljs-value,.ruby .hljs-symbol,.xml .hljs-cdata{color:inherit}.coffeescript .hljs-title,.css .hljs-hexcolor,.hljs-function,.hljs-title,.javascript .hljs-title,.perl .hljs-sub,.python .hljs-decorator,.python .hljs-title,.ruby .hljs-function .hljs-title,.ruby .hljs-title .hljs-keyword{color:#A63A4A}.hljs-keyword,.javascript .hljs-function{color:#A69819}.hljs{display:block;overflow-x:auto;background:#1d1f21;color:#c5c8c6;padding:.5em;-webkit-text-size-adjust:none}.coffeescript .javascript,.javascript .xml,.tex .hljs-formula,.xml .css,.xml .hljs-cdata,.xml .javascript,.xml .vbscript{opacity:.5}.right .hljs-comment{color:#969896}.right .css .hljs-class,.right .css .hljs-id,.right .css .hljs-pseudo,.right .hljs-attribute,.right .hljs-regexp,.right .hljs-tag,.right .hljs-variable,.right .html .hljs-doctype,.right .ruby .hljs-constant,.right .xml .hljs-doctype,.right .xml .hljs-pi,.right .xml .hljs-tag .hljs-title{color:#C1EF65}.right .hljs-literal{color:#EBDE68}.right .hljs-built_in,.right .hljs-constant,.right .hljs-number,.right .hljs-params,.right .hljs-pragma,.right .hljs-preprocessor{color:#77BCD7}.right .css .hljs-rule .hljs-attribute,.right .ruby .hljs-class .hljs-title{color:#f0c674}.right .hljs-header,.right .hljs-inheritance,.right .hljs-name,.right .hljs-string,.right .hljs-value,.right .ruby .hljs-symbol,.right .xml .hljs-cdata{color:inherit}.right .coffeescript .hljs-title,.right .css .hljs-hexcolor,.right .hljs-function,.right .hljs-title,.right .javascript .hljs-title,.right .perl .hljs-sub,.right .python .hljs-decorator,.right .python .hljs-title,.right .ruby .hljs-function .hljs-title,.right .ruby .hljs-title .hljs-keyword{color:#f099a6}.right .hljs-keyword,.right .javascript .hljs-function{color:#EBDE68}.right .hljs{display:block;overflow-x:auto;background:#1d1f21;color:#c5c8c6;padding:.5em;-webkit-text-size-adjust:none}.right .coffeescript .javascript,.right .javascript .xml,.right .tex .hljs-formula,.right .xml .css,.right .xml .hljs-cdata,.right .xml .javascript,.right .xml .vbscript{opacity:.5}body{color:#4c555a;background:white;font:400 14px / 1.42 'Roboto',Helvetica,sans-serif}header{border-bottom:1px solid transparent;margin-bottom:12px}h1,h2,h3,h4,h5{color:#292e31;margin:12px 0}h1 .permalink,h2 .permalink,h3 .permalink,h4 .permalink,h5 .permalink{margin-left:0;opacity:0;transition:opacity .25s ease}h1:hover .permalink,h2:hover .permalink,h3:hover .permalink,h4:hover .permalink,h5:hover .permalink{opacity:1}.triple h1 .permalink,.triple h2 .permalink,.triple h3 .permalink,.triple h4 .permalink,.triple h5 .permalink{opacity:.15}.triple h1:hover .permalink,.triple h2:hover .permalink,.triple h3:hover .permalink,.triple h4:hover .permalink,.triple h5:hover .permalink{opacity:.15}h1{font:100 36px 'Roboto',Helvetica,sans-serif;font-size:36px}h2{font:100 36px 'Roboto',Helvetica,sans-serif;font-size:30px}h3{font-size:100%;text-transform:uppercase}h5{font-size:100%;font-weight:normal}p{margin:0 0 10px}p.choices{line-height:1.6}a{color:#0099e5;text-decoration:none}li p{margin:0}hr.split{border:0;height:1px;width:100%;padding-left:6px;margin:12px auto;background-image:linear-gradient(to right, rgba(76,85,90,0) 20%, rgba(76,85,90,0.2) 48%, rgba(221,228,232,0.2) 48%, rgba(221,228,232,0) 80%)}dl dt{float:left;width:130px;clear:left;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700}dl dd{margin-left:150px}blockquote{color:rgba(76,85,90,0.5);font-size:15.5px;padding:10px 20px;margin:12px 0;border-left:5px solid #e8e8e8}blockquote p:last-child{margin-bottom:0}pre{background-color:#f5f5f5;padding:12px;border:1px solid #cfcfcf;border-radius:3px;overflow:auto}pre code{color:#4c555a;background-color:transparent;padding:0;border:none}code{color:#b93d6a;background-color:#f5f5f5;font:13px / 19.5px 'Source Code Pro',Menlo,monospace;padding:1px 4px;border:1px solid #cfcfcf;border-radius:3px}ul,ol{padding-left:2em}table{border-collapse:collapse;border-spacing:0;margin-bottom:12px}table tr:nth-child(2n){background-color:#fafafa}table th,table td{padding:6px 12px;border:1px solid #e6e6e6}.text-muted{opacity:.5}.note,.warning{padding:.3em 1em;margin:1em 0;border-radius:2px;font-size:90%}.note h1,.warning h1,.note h2,.warning h2,.note h3,.warning h3,.note h4,.warning h4,.note h5,.warning h5,.note h6,.warning h6{font-family:100 36px 'Roboto',Helvetica,sans-serif;font-size:135%;font-weight:500}.note p,.warning p{margin:.5em 0}.note{color:#4c555a;background-color:#ebf7fd;border-left:4px solid #0099e5}.note h1,.note h2,.note h3,.note h4,.note h5,.note h6{color:#0099e5}.warning{color:#4c555a;background-color:#faf0f4;border-left:4px solid #B82E5F}.warning h1,.warning h2,.warning h3,.warning h4,.warning h5,.warning h6{color:#B82E5F}header{margin-top:24px}nav{position:fixed;top:24px;bottom:0;overflow-y:auto}nav .resource-group{padding:0}nav .resource-group .heading{position:relative}nav .resource-group .heading .chevron{position:absolute;top:12px;right:12px;opacity:.5}nav .resource-group .heading a{display:block;color:#4c555a;opacity:.7;border-left:2px solid transparent;margin:0}nav .resource-group .heading a:hover{text-decoration:underline;background-color:transparent;border-left:2px solid transparent}nav ul{list-style-type:none;padding-left:0}nav ul a{display:block;font-size:13px;color:rgba(76,85,90,0.7);padding:8px 12px;border-top:1px solid transparent;border-left:2px solid transparent;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}nav ul a:hover{text-decoration:underline;background-color:transparent;border-left:2px solid transparent}nav ul>li{margin:0}nav ul>li:first-child{margin-top:-12px}nav ul>li:last-child{margin-bottom:-12px}nav ul ul a{padding-left:24px}nav ul ul li{margin:0}nav ul ul li:first-child{margin-top:0}nav ul ul li:last-child{margin-bottom:0}nav>div>div>ul>li:first-child>a{border-top:none}.preload *{transition:none !important}.pull-left{float:left}.pull-right{float:right}.badge{display:inline-block;float:right;min-width:10px;min-height:14px;padding:3px 7px;font-size:12px;color:black;background-color:transparent;border-radius:10px;margin:-2px -8px -2px 0}.badge.get{color:#fff;background-color:#ddf1fc}.badge.head{color:#fff;background-color:#ddf1fc}.badge.options{color:#fff;background-color:#ddf1fc}.badge.put{color:#fff;background-color:#f7f2c3}.badge.patch{color:#fff;background-color:#f7f2c3}.badge.post{color:#fff;background-color:#e4f2c8}.badge.delete{color:#fff;background-color:#f2d8e1}.collapse-button{float:right}.collapse-button .close{display:none;color:#0099e5;cursor:pointer}.collapse-button .open{color:#0099e5;cursor:pointer}.collapse-button.show .close{display:inline}.collapse-button.show .open{display:none}.collapse-content{max-height:0;overflow:hidden;transition:max-height .3s ease-in-out}nav{width:220px}.container{max-width:940px;margin-left:auto;margin-right:auto}.container .row .content{margin-left:244px;width:696px}.container .row:after{content:'';display:block;clear:both}.container-fluid nav{width:22%}.container-fluid .row .content{margin-left:24%}.container-fluid.triple nav{width:15%;padding-right:1px}.container-fluid.triple .row .content{position:relative;margin-left:15%;padding-left:24px}.middle:before,.middle:after{content:'';display:table}.middle:after{clear:both}.middle{box-sizing:border-box;width:48%;padding-right:12px}.right{box-sizing:border-box;float:right;width:52%;padding-left:12px}.right a{color:#0099e5}.right h1,.right h2,.right h3,.right h4,.right h5,.right p,.right div{color:#dde4e8}.right pre{background-color:#272B2D;border:1px solid #272B2D}.right pre code{color:#D0D0D0}.right .description{margin-top:12px}.triple .resource-heading{font-size:125%}.definition{margin-top:12px;margin-bottom:12px}.definition .method{font-weight:bold}.definition .method.get{color:#2e8ab8}.definition .method.head{color:#2e8ab8}.definition .method.options{color:#2e8ab8}.definition .method.post{color:#8ab82e}.definition .method.put{color:#b8aa2e}.definition .method.patch{color:#b8aa2e}.definition .method.delete{color:#b82e5f}.definition .uri{word-break:break-all;word-wrap:break-word}.definition .hostname{opacity:.5}.example-names{background-color:#eee;padding:12px;border-radius:3px}.example-names .tab-button{cursor:pointer;color:#4c555a;border:1px solid #ddd;padding:6px;margin-left:12px}.example-names .tab-button.active{background-color:#d5d5d5}.right .example-names{background-color:#424648}.right .example-names .tab-button{color:#dde4e8;border:1px solid #6C6F71;border-radius:3px}.right .example-names .tab-button.active{background-color:#5a6063}#nav-background{position:fixed;left:0;top:0;bottom:0;width:15%;padding-right:14.4px;background-color:#fafcfc;border-right:1px solid #f0f4f7;z-index:-1}#right-panel-background{position:absolute;right:-12px;top:-12px;bottom:-12px;width:52%;background-color:#2d3134;z-index:-1}@media (max-width:1200px){nav{width:198px}.container{max-width:840px}.container .row .content{margin-left:224px;width:606px}}@media (max-width:992px){nav{width:169.4px}.container{max-width:720px}.container .row .content{margin-left:194px;width:526px}}@media (max-width:768px){nav{display:none}.container{width:95%;max-width:none}.container .row .content,.container-fluid .row .content,.container-fluid.triple .row .content{margin-left:auto;margin-right:auto;width:95%}#nav-background{display:none}#right-panel-background{width:52%}}.back-to-top{position:fixed;z-index:1;bottom:0;right:24px;padding:4px 8px;color:rgba(76,85,90,0.5);background-color:transparent;text-decoration:none !important;border-top:1px solid transparent;border-left:1px solid transparent;border-right:1px solid transparent;border-top-left-radius:3px;border-top-right-radius:3px}.resource-group{padding:12px 12px 12px 0;margin-bottom:12px;background-color:transparent;border:1px solid transparent;border-radius:3px}.resource-group h2.group-heading,.resource-group .heading a{padding:12px 12px 12px 0;margin:0 0 12px 0;background-color:transparent;border-bottom:1px solid transparent;border-top-left-radius:3px;border-top-right-radius:3px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}.triple .content .resource-group{padding:0;border:none}.triple .content .resource-group h2.group-heading,.triple .content .resource-group .heading a{margin:0 0 12px 0;border:1px solid transparent}nav .resource-group .heading a{padding:12px;margin-bottom:0}nav .resource-group .collapse-content{padding:0}.action{margin-bottom:12px;padding:12px 12px 0 12px;overflow:hidden;border:1px solid transparent;border-radius:3px}.action h4.action-heading{padding:6px 12px;margin:-12px -12px 12px -12px;border-bottom:1px solid transparent;border-top-left-radius:3px;border-top-right-radius:3px;overflow:hidden}.action h4.action-heading .name{float:right;font-weight:normal;padding:6px 0}.action h4.action-heading .method{padding:6px 12px;margin-right:12px;border-radius:2px;display:inline-block}.action h4.action-heading .method.get{color:#fff;background-color:#0099e5}.action h4.action-heading .method.head{color:#fff;background-color:#0099e5}.action h4.action-heading .method.options{color:#fff;background-color:#0099e5}.action h4.action-heading .method.put{color:#fff;background-color:#b1a74e}.action h4.action-heading .method.patch{color:#fff;background-color:#b1a74e}.action h4.action-heading .method.post{color:#fff;background-color:#85a546}.action h4.action-heading .method.delete{color:#fff;background-color:#c14a74}.action h4.action-heading code{color:#444;background-color:#f5f5f5;border-color:#cfcfcf;font-weight:normal;word-break:break-all;display:inline-block;margin-top:2px}.action dl.inner{padding-bottom:2px}.action .title{border-bottom:1px solid transparent;margin:0 -12px -1px -12px;padding:12px}.action.get{border-color:#ddf1fc}.action.get h4.action-heading{color:#0099e5;background:#ddf1fc;border-bottom-color:#ddf1fc}.action.head{border-color:#ddf1fc}.action.head h4.action-heading{color:#0099e5;background:#ddf1fc;border-bottom-color:#ddf1fc}.action.options{border-color:#ddf1fc}.action.options h4.action-heading{color:#0099e5;background:#ddf1fc;border-bottom-color:#ddf1fc}.action.post{border-color:#e4f2c8}.action.post h4.action-heading{color:#85a546;background:#e4f2c8;border-bottom-color:#e4f2c8}.action.put{border-color:#f7f2c3}.action.put h4.action-heading{color:#b1a74e;background:#f7f2c3;border-bottom-color:#f7f2c3}.action.patch{border-color:#f7f2c3}.action.patch h4.action-heading{color:#b1a74e;background:#f7f2c3;border-bottom-color:#f7f2c3}.action.delete{border-color:#f2d8e1}.action.delete h4.action-heading{color:#c14a74;background:#f2d8e1;border-bottom-color:#f2d8e1}.action dl.inner{margin-top:1px}</style></head><body class="preload"><div id="nav-background"></div><div class="container-fluid triple"><div class="row"><nav><div class="resource-group"><div class="heading"><div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#top">Overview</a></div><div class="collapse-content"><ul><li><a href="#header-version">Version</a></li><li><a href="#header-notational-conventions">Notational Conventions</a></li><li><a href="#header-representation-of-date-and-time">Representation of Date and Time</a></li><li><a href="#header-rate-limiting">Rate limiting</a></li><li><a href="#header-authentication">Authentication</a></li><li><a href="#header-oauth">OAuth</a></li><li><a href="#header-getting-an-authorization-token">Getting an authorization token</a></li><li><a href="#header-passing-the-authorization-token">Passing the authorization token</a></li><li><a href="#header-in-short">In short</a></li><li><a href="#header-pagination">Pagination</a></li><li><a href="#header-market-search">Market search</a></li><li><a href="#header-response-format">Response format</a></li><li><a href="#header-info">Info</a></li><li><a href="#header-status-codes-and-errors">Status Codes and Errors</a></li><li><a href="#header-status-codes">Status codes</a></li><li><a href="#header-error-codes-and-responses">Error codes and responses</a></li><li><a href="#header-intents">Intents</a></li></ul></div></div><div class="resource-group"><div class="heading"><div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#authentication-1">Authentication</a></div><div class="collapse-content"><ul><li><a href="#authentication-oauth-access-token-post"><span class="badge post"><i class="fa fa-plus"></i></span>Get an access token</a></li></ul></div></div><div class="resource-group"><div class="heading"><div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#platforms">Platforms</a></div><div class="collapse-content"><ul><li><a href="#platforms-platforms-list-get"><span class="badge get"><i class="fa fa-arrow-down"></i></span>Retrieve all Platforms</a></li><li><a href="#platforms-platform-detail-get"><span class="badge get"><i class="fa fa-arrow-down"></i></span>Retrieve a Platform</a></li></ul></div></div><div class="resource-group"><div class="heading"><div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#search">Search</a></div><div class="collapse-content"><ul><li><a href="#search-search-get"><span class="badge get"><i class="fa fa-arrow-down"></i></span>Search a specific platform</a></li><li><a href="#search-lookup-get"><span class="badge get"><i class="fa fa-arrow-down"></i></span>Lookup a permalink</a></li><li><a href="#search-aggregate-get"><span class="badge get"><i class="fa fa-arrow-down"></i></span>Search on multiple platforms at once</a></li></ul></div></div><div class="resource-group"><div class="heading"><div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#share">Share</a></div><div class="collapse-content"><ul><li><a href="#share-share-get"><span class="badge get"><i class="fa fa-arrow-down"></i></span>Share an intent</a></li></ul></div></div><div class="resource-group"><div class="heading"><div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#postman-configuration">Postman configuration</a></div><div class="collapse-content"><ul></ul></div></div><div class="resource-group"><div class="heading"><div class="chevron"><i class="open fa fa-angle-down"></i></div><a href="#api-client-examples">API client examples</a></div><div class="collapse-content"><ul><li><a href="#header-php">PHP</a></li><li><a href="#header-shell">Shell</a></li><li><a href="#header-javascript-(node)">Javascript (node)</a></li><li><a href="#header-python">Python</a></li></ul></div></div><p style="text-align: center; word-wrap: break-word;"><a href="https://data.tuneefy.com/v2">https://data.tuneefy.com/v2</a></p></nav><div class="content"><div id="right-panel-background"></div><div class="middle"><header><h1 id="top">The tuneefy API</h1></header></div><div class="right"><h5>API Endpoint</h5><a href="https://data.tuneefy.com/v2">https://data.tuneefy.com/v2</a></div><div class="middle"><p>Welcome to the <strong>tuneefy</strong> API. This API provides access to the <strong><a href="http://tuneefy.com">tuneefy.com</a></strong> service and exposes endpoints to search, aggregate and share music links.</p>
+<br>
+<h2 id="header-version">Version <a class="permalink" href="#header-version" aria-hidden="true">¶</a></h2>
+<p>The current version is <code>v2</code>, which this documentation is for. The legacy API was previously available at <a href="https://api.tuneefy.com">https://api.tuneefy.com</a> but has been deprecated. Next versions of the API will reside in the same host, and will be prefixed with, say <code>v3</code>, <code>v4</code>, … for instance.</p>
+<br>
+<h2 id="header-notational-conventions">Notational Conventions <a class="permalink" href="#header-notational-conventions" aria-hidden="true">¶</a></h2>
+<p>The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL NOT”, “SHOULD”, “SHOULD NOT”, “RECOMMENDED”, “MAY”, and “OPTIONAL” in this document are to be interpreted as described in <a href="https://www.ietf.org/rfc/rfc2119">RFC2119</a>.</p>
+<br>
+<h2 id="header-representation-of-date-and-time">Representation of Date and Time <a class="permalink" href="#header-representation-of-date-and-time" aria-hidden="true">¶</a></h2>
+<p>All exchange of date and time-related data, if applicable, MUST be done according to <strong>ISO 8601</strong> standard and stored in UTC.</p>
+<p>When returning date and time-related data, the <code>YYYY-MM-DDThh:mm:ss+P</code> format MUST be used.</p>
+<br>
+<h2 id="header-rate-limiting">Rate limiting <a class="permalink" href="#header-rate-limiting" aria-hidden="true">¶</a></h2>
+<p>You SHOULD NOT hit the API more than 10 times per second. For the <strong>agreggate</strong> method, the limit is ~10 requests per minute. If you make too many requests, your IP might be blocked without warning. Contact us if this occurs, to find a solution.</p>
+<blockquote>
+<p>This is currently a limitation of the server on which the tuneefy API resides. Remember that this project is provided as-is, and that the costs (server, bandwidth, maintenance) are only covered by donations (that, as of 2018 and from the start, account for a mere €12).</p>
+</blockquote>
+<br>
+<h2 id="header-authentication">Authentication <a class="permalink" href="#header-authentication" aria-hidden="true">¶</a></h2>
+<p>The API endpoints require an OAuth access token. The token is necessary to authenticate <strong>all</strong> requests to the API.</p>
+<br>
+<h3 id="header-oauth">OAuth <a class="permalink" href="#header-oauth" aria-hidden="true">¶</a></h3>
+<p>The tuneefy API currently supports the <a href="https://oauth.net/2/">OAuth 2 draft</a> specification. All OAuth2 requests MUST use the SSL endpoint available at <a href="https://data.tuneefy.com/v2/">https://data.tuneefy.com/v2/</a>.</p>
+<p>OAuth 2.0 is a simple and secure authentication mechanism. It allows applications to acquire an access token for tuneefy via a POST request to a token endpoint. Authentication with OAuth can be accomplished in the following steps:</p>
+<ol>
+<li>
+<p>Register for an API key by sending a mail to <a href="mailto:api@tuneefy.com">api@tuneefy.com</a></p>
+</li>
+<li>
+<p>Exchange your customer id and secret for an access token</p>
+</li>
+<li>
+<p>Make requests by passing the token in the Authorization header</p>
+</li>
+<li>
+<p>When your token expires, you can get a new one</p>
+</li>
+</ol>
+<br>
+<h3 id="header-getting-an-authorization-token">Getting an authorization token <a class="permalink" href="#header-getting-an-authorization-token" aria-hidden="true">¶</a></h3>
+<p>Use the <code>/auth/token</code> endpoint to get a valid token. You will need your consumer key and secret.</p>
+<blockquote>
+<p>The only accepted grant type is <code>client_credentials</code>. You don’t need to pass scopes to the request. See further down for more info.</p>
+</blockquote>
+<br>
+<h3 id="header-passing-the-authorization-token">Passing the authorization token <a class="permalink" href="#header-passing-the-authorization-token" aria-hidden="true">¶</a></h3>
+<p>You can either use the <strong>Authorization</strong> header, as such :</p>
+<pre><code class="language-http"><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">bearer 5262d64b892e8d4341000001</span></code></pre>
+<p>Or you can pass the <code>access_token</code> parameter with all your requests.</p>
+<pre><code class="language-http">GET platforms?access_token=5262d64b892e8d4341000001</code></pre>
+<p>The header method is RECOMMENDED.</p>
+<div class="note">
+<h2 id="header-in-short">In short <a class="permalink" href="#header-in-short" aria-hidden="true">¶</a></h2>
+<ul>
+<li>
+<p>This API uses OAuth2 for authentication</p>
+</li>
+<li>
+<p>A token MUST be retrieved from the authentication endpoint before issuing any request</p>
+</li>
+<li>
+<p>Token MUST be provided in a <code>Authorization</code> header, or via the <code>access_token</code> parameter</p>
+</li>
+<li>
+<p>Token MUST be provided for each request</p>
+</li>
+</ul>
+</div>
+<br>
+<h2 id="header-pagination">Pagination <a class="permalink" href="#header-pagination" aria-hidden="true">¶</a></h2>
+<p>The API can limit the number of results returned (for <code>search</code> and <code>aggregate</code> methods) via the <code>limit</code> parameter.</p>
+<pre><code class="language-http">GET search/track/qobuz?q=chopin&amp;limit=2</code></pre>
+<p>This is not <em>strictly speaking</em> pagination since there is no way to pass an offset to the API to retrieve the subsequent results, are they are fetched from different platforms that do not all support pagination.</p>
+<p>The default limit is <code>10</code> results.</p>
+<br>
+<h2 id="header-market-search">Market search <a class="permalink" href="#header-market-search" aria-hidden="true">¶</a></h2>
+<p>The API can limit the search to specific geographic markets (for <code>search</code> and <code>aggregate</code> methods) via the <code>countryCode</code> parameter. The code must be an <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO 3166-1 alpha-2</a> country code.</p>
+<pre><code class="language-http">GET search/track/qobuz?q=chopin&amp;countryCode=IT</code></pre>
+<blockquote>
+<p>Note that this code is only used for <strong>Spotify</strong>, <strong>Tidal</strong>, <strong>Napster</strong>, <strong>iTunes</strong>, and <strong>Youtube</strong>.<br> <strong>Deezer</strong>, <strong>Qobuz</strong>, <strong>LastFM</strong>, <strong>Mixcloud</strong>, <strong>Soundcloud</strong> and <strong>Amazon Music</strong> do not have this concept.</p>
+</blockquote>
+<p>Bear in mind these specificities :</p>
+<ul>
+<li>Youtube: the country code relates to the rights to view a video in a specific country;</li>
+</ul>
+<p>The default countryCode is <code>FR</code> (if you don’t specify it in your query); As a majority of platforms need a market / country code identifier, you cannot use <code>null</code> or a non-valid value here.</p>
+<br>
+<h2 id="header-response-format">Response format <a class="permalink" href="#header-response-format" aria-hidden="true">¶</a></h2>
+<p>This API uses the <code>Accept</code> header to identify the data type it should return.</p>
+<pre><code class="language-http"><span class="hljs-attribute">Accept</span>: <span class="hljs-string">application/json</span></code></pre>
+<p>This header SHOULD be present in every request. If not, the API will use the default response format, <strong>json</strong>.</p>
+<p>Alternatively, all API methods support an optional return format parameter <code>format=json</code>. It takes precedence over the header.</p>
+<table>
+<thead>
+<tr>
+<th>Return type</th>
+<th>Accept header</th>
+<th>format parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JSON</td>
+<td><code>Accept: application/json</code></td>
+<td><code>format=json</code></td>
+</tr>
+<tr>
+<td>XML</td>
+<td><code>Accept: application/xml</code></td>
+<td><code>format=xml</code></td>
+</tr>
+<tr>
+<td>XML (alt)</td>
+<td><code>Accept: text/xml</code></td>
+<td><code>format=xml</code></td>
+</tr>
+</tbody>
+</table>
+<div class="note">
+<h2 id="header-info">Info <a class="permalink" href="#header-info" aria-hidden="true">¶</a></h2>
+<p>The API does <em>not</em> support <strong>JSONP</strong> nor <strong>HTML</strong> anymore.</p>
+</div>
+<br>
+<h2 id="header-status-codes-and-errors">Status Codes and Errors <a class="permalink" href="#header-status-codes-and-errors" aria-hidden="true">¶</a></h2>
+<h3 id="header-status-codes">Status codes <a class="permalink" href="#header-status-codes" aria-hidden="true">¶</a></h3>
+<p>This API uses HTTP status codes to communicate with the API consumer.</p>
+<ul>
+<li>
+<p><code>200 OK</code> - Response to a successful GET or POST.</p>
+</li>
+<li>
+<p><code>400 Bad Request</code> - Malformed request; form validation errors.</p>
+</li>
+<li>
+<p><code>401 Unauthorized</code> - When no or invalid authentication details are provided.</p>
+</li>
+<li>
+<p><code>404 Not Found</code> - When a non-existent resource is requested.</p>
+</li>
+<li>
+<p><code>405 Method Not Allowed</code> - Method not allowed.</p>
+</li>
+<li>
+<p><code>406 Not Acceptable</code> - Could not satisfy the request Accept header.</p>
+</li>
+</ul>
+<br>
+<h3 id="header-error-codes-and-responses">Error codes and responses <a class="permalink" href="#header-error-codes-and-responses" aria-hidden="true">¶</a></h3>
+<p>This API returns both machine-readable error codes and human-readable error messages in response body when an error is encountered. An error can be encountered even if the response HTTP status code is 200.</p>
+<ul>
+<li>
+<p><code>GENERAL_ERROR</code> - An error was encountered</p>
+</li>
+<li>
+<p><code>BAD_PLATFORM_TYPE</code> - This type of platform does not exist</p>
+</li>
+<li>
+<p><code>BAD_PLATFORM</code> - This platform does not exist</p>
+</li>
+<li>
+<p><code>MISSING_PERMALINK</code> - Missing or empty parameter : q (permalink)</p>
+</li>
+<li>
+<p><code>PERMALINK_UNKNOWN</code> - This permalink does not belong to any known platform</p>
+</li>
+<li>
+<p><code>FETCH_PROBLEM</code> - There was a problem while fetching data from the platform</p>
+</li>
+<li>
+<p><code>FETCH_PROBLEMS</code> - There was a problem while fetching data from the platforms</p>
+</li>
+<li>
+<p><code>NO_MATCH</code> - No match was found for this search</p>
+</li>
+<li>
+<p><code>NO_MATCH_PERMALINK</code> - No match was found for this permalink</p>
+</li>
+<li>
+<p><code>MISSING_QUERY</code> - Missing or empty parameter : q (query)</p>
+</li>
+<li>
+<p><code>BAD_MUSICAL_TYPE</code> - This musical type does not exist</p>
+</li>
+<li>
+<p><code>NO_INTENT</code> - Missing or empty parameter : intent</p>
+</li>
+<li>
+<p><code>NOT_CAPABLE_TRACKS</code> - This platform is not capable of searching tracks</p>
+</li>
+<li>
+<p><code>NOT_CAPABLE_ALBUMS</code> - This platform is not capable of searching albums</p>
+</li>
+<li>
+<p><code>NOT_AUTHORIZED</code> - Not authorized, check the token</p>
+</li>
+</ul>
+<br>
+<h2 id="header-intents">Intents <a class="permalink" href="#header-intents" aria-hidden="true">¶</a></h2>
+<p>When searching on the tuneefy API, results are returned with an intent code, in the share object :</p>
+<pre><code>{
+    ...
+    <span class="hljs-tag">share</span>: {
+        <span class="hljs-attribute">intent</span>: <span class="hljs-string">'5911b14860e96'</span>,
+        <span class="hljs-attribute">expires</span>: <span class="hljs-string">'2016-05-05T12:30:00'</span>
+    }
+}</code></pre>
+<p>This means that each result can be shared easily until the intent expires.</p>
+<p>On our side, this allows for a practical way to create tuneefy link without cluttering the database and creating many links for each search result. As well, you don’t necessarily need a tuneefy link when using the tuneefy API, hence the design choice.</p>
+<p>To get the tuneefy link from the intent, just call the <code>/share</code> endpoint with this intent. It will consume the intent and return the tuneefy link corresponding to the search result.</p>
+<blockquote>
+<p>Once an intent is consumed, it is no longer available and calling the <code>/share</code> with a consumed or expired intent will result in a <strong>400</strong>.</p>
+</blockquote>
+</div><div class="middle"><section id="authentication-1" class="resource-group"><h2 class="group-heading">Authentication <a href="#authentication-1" class="permalink">&para;</a></h2></section></div><div class="middle"><div id="authentication-oauth-access-token" class="resource"><h3 class="resource-heading">OAuth Access token <a href="#authentication-oauth-access-token" class="permalink">&para;</a></h3><p>A valid token MUST be provided for each request that requires authentication.</p>
+</div></div><div class="right"><div class="definition"><span class="method post">POST</span>&nbsp;<span class="uri"><span class="hostname">https://data.tuneefy.com/v2</span>/auth/token</span></div><div class="tabs"><div class="example-names"><span>Requests</span><span class="tab-button">Get a token</span><span class="tab-button">Missing info</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/x-www-form-urlencoded;charset=UTF-8</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>client_id=Your application customer key
+&amp;client_secret=Your application customer secret
+&amp;grant_type=client_credentials</code></pre><div style="height: 1px;"></div></div></div><div class="tabs"><div class="example-names"><span>Responses</span><span class="tab-button">200</span><span class="tab-button">400</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">access_token</span>": <span class="hljs-value"><span class="hljs-string">"5262d64b892e8d4341000001"</span></span>,
+  "<span class="hljs-attribute">scope</span>": <span class="hljs-value"><span class="hljs-string">"all"</span></span>,
+  "<span class="hljs-attribute">expires_in</span>": <span class="hljs-value"><span class="hljs-number">3600</span></span>,
+  "<span class="hljs-attribute">token_type</span>": <span class="hljs-value"><span class="hljs-string">"Bearer"</span>
+</span>}</code></pre><div style="height: 1px;"></div><h5>Schema</h5><pre><code>{
+  "<span class="hljs-attribute">$schema</span>": <span class="hljs-value"><span class="hljs-string">"http://json-schema.org/draft-04/schema#"</span></span>,
+  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"object"</span></span>,
+  "<span class="hljs-attribute">properties</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">access_token</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span></span>,
+      "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"valid Token"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">scope</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span></span>,
+      "<span class="hljs-attribute">description</span>": <span class="hljs-value"><span class="hljs-string">"scopes of current token"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">expires_in</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"number"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">token_type</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span>
+    </span>}
+  </span>}
+</span>}</code></pre><div style="height: 1px;"></div></div></div></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">error</span>": <span class="hljs-value"><span class="hljs-string">"invalid_client"</span></span>,
+  "<span class="hljs-attribute">error_description</span>": <span class="hljs-value"><span class="hljs-string">"The client credentials are invalid"</span>
+</span>}</code></pre><div style="height: 1px;"></div></div></div></div></div></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/x-www-form-urlencoded;charset=UTF-8</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>client_id=Your application customer key
+&amp;client_secret=Your application customer secret</code></pre><div style="height: 1px;"></div></div></div><div class="tabs"><div class="example-names"><span>Responses</span><span class="tab-button">400</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">error</span>": <span class="hljs-value"><span class="hljs-string">"invalid_request"</span></span>,
+  "<span class="hljs-attribute">error_description</span>": <span class="hljs-value"><span class="hljs-string">"The grant type was not specified in the request"</span>
+</span>}</code></pre><div style="height: 1px;"></div></div></div></div></div></div></div></div><div class="middle"><div id="authentication-oauth-access-token-post" class="action post"><h4 class="action-heading"><div class="name">Get an access token</div><a href="#authentication-oauth-access-token-post" class="method post">POST</a><code class="uri">/auth/token</code></h4><p>Allows to retrieve a valid OAuth token for your application, using the application consumer key and secret.</p>
+<blockquote>
+<p>This endpoint is not protected</p>
+</blockquote>
+</div></div><hr class="split"><div class="middle"><section id="platforms" class="resource-group"><h2 class="group-heading">Platforms <a href="#platforms" class="permalink">&para;</a></h2></section></div><div class="middle"><div id="platforms-platforms-list" class="resource"><h3 class="resource-heading">Platforms list <a href="#platforms-platforms-list" class="permalink">&para;</a></h3></div></div><div class="right"><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">https://data.tuneefy.com/v2</span>/platforms?<span class="hljs-attribute">type=</span><span class="hljs-literal">streaming</span></span></div><div class="tabs"><div class="example-names"><span>Requests</span><span class="tab-button">Valid Authentication</span><span class="tab-button">Invalid token</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Accept</span>: <span class="hljs-string">"application/json"</span><br><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">"Bearer 5262d64b892e8d4341000001"</span></code></pre><div style="height: 1px;"></div></div></div><div class="tabs"><div class="example-names"><span>Responses</span><span class="tab-button">200</span><span class="tab-button">404</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">platforms</span>": <span class="hljs-value">[
+    {
+      "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Deezer"</span></span>,
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"streaming"</span></span>,
+      "<span class="hljs-attribute">homepage</span>": <span class="hljs-value"><span class="hljs-string">"https://www.deezer.com/"</span></span>,
+      "<span class="hljs-attribute">tag</span>": <span class="hljs-value"><span class="hljs-string">"deezer"</span></span>,
+      "<span class="hljs-attribute">mainAccentColor</span>": <span class="hljs-value"><span class="hljs-string">"181818"</span></span>,
+      "<span class="hljs-attribute">enabled</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">api</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+        "<span class="hljs-attribute">website</span>": <span class="hljs-value"><span class="hljs-literal">true</span>
+      </span>}</span>,
+      "<span class="hljs-attribute">capabilities</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">track_search</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+        "<span class="hljs-attribute">album_search</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+        "<span class="hljs-attribute">lookup</span>": <span class="hljs-value"><span class="hljs-literal">true</span>
+      </span>}
+    </span>}
+  ]
+</span>}</code></pre><div style="height: 1px;"></div><h5>Schema</h5><pre><code>{
+  "<span class="hljs-attribute">$schema</span>": <span class="hljs-value"><span class="hljs-string">"http://json-schema.org/draft-04/schema#"</span></span>,
+  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"object"</span></span>,
+  "<span class="hljs-attribute">properties</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">platforms</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"array"</span>
+    </span>}
+  </span>}
+</span>}</code></pre><div style="height: 1px;"></div></div></div></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">errors</span>": <span class="hljs-value">[
+    {
+      "<span class="hljs-attribute">BAD_PLATFORM</span>": <span class="hljs-value"><span class="hljs-string">"This platform type does not exist"</span>
+    </span>}
+  ]
+</span>}</code></pre><div style="height: 1px;"></div></div></div></div></div></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Accept</span>: <span class="hljs-string">"application/json"</span><br><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">"Bearer invalid_token"</span></code></pre><div style="height: 1px;"></div></div></div><div class="tabs"><div class="example-names"><span>Responses</span><span class="tab-button">401</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">errors</span>": <span class="hljs-value">[
+    {
+      "<span class="hljs-attribute">NOT_AUTHORIZED</span>": <span class="hljs-value"><span class="hljs-string">"Not authorized"</span>
+    </span>}
+  ]
+</span>}</code></pre><div style="height: 1px;"></div></div></div></div></div></div></div></div><div class="middle"><div id="platforms-platforms-list-get" class="action get"><h4 class="action-heading"><div class="name">Retrieve all Platforms</div><a href="#platforms-platforms-list-get" class="method get">GET</a><code class="uri">/platforms{?type}</code></h4><p>Retrieves the list of available <strong>Platforms</strong></p>
+<p><strong>List of available types</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Underlying interface</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>streaming</code></td>
+<td><a href="https://github.com/tchapi/tuneefy2/blob/master/src/tuneefy/Platform/WebStreamingPlatformInterface.php">Platform\WebStreamingPlatformInterface</a></td>
+</tr>
+<tr>
+<td><code>store</code></td>
+<td><a href="https://github.com/tchapi/tuneefy2/blob/master/src/tuneefy/Platform/WebStoreInterface.php">Platform\WebStoreInterface</a></td>
+</tr>
+<tr>
+<td><code>scrobbling</code></td>
+<td><a href="https://github.com/tchapi/tuneefy2/blob/master/src/tuneefy/Platform/ScrobblingPlatformInterface.php">Platform\ScrobblingPlatformInterface</a></td>
+</tr>
+</tbody>
+</table>
+<div class="title"><strong>URI Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>type</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>streaming</span></span></dd></dl></div></div></div><hr class="split"><div class="middle"><div id="platforms-platform-detail" class="resource"><h3 class="resource-heading">Platform detail <a href="#platforms-platform-detail" class="permalink">&para;</a></h3></div></div><div class="right"><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">https://data.tuneefy.com/v2</span>/platform/<span class="hljs-attribute" title="tag">deezer</span></span></div><div class="tabs"><div class="example-names"><span>Requests</span><span class="tab-button">Example</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Accept</span>: <span class="hljs-string">"application/json"</span><br><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">"Bearer 5262d64b892e8d4341000001"</span></code></pre><div style="height: 1px;"></div></div></div><div class="tabs"><div class="example-names"><span>Responses</span><span class="tab-button">200</span><span class="tab-button">404</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">name</span>": <span class="hljs-value"><span class="hljs-string">"Deezer"</span></span>,
+  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"streaming"</span></span>,
+  "<span class="hljs-attribute">homepage</span>": <span class="hljs-value"><span class="hljs-string">"https://www.deezer.com/"</span></span>,
+  "<span class="hljs-attribute">tag</span>": <span class="hljs-value"><span class="hljs-string">"deezer"</span></span>,
+  "<span class="hljs-attribute">mainAccentColor</span>": <span class="hljs-value"><span class="hljs-string">"181818"</span></span>,
+  "<span class="hljs-attribute">enabled</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">api</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+    "<span class="hljs-attribute">website</span>": <span class="hljs-value"><span class="hljs-literal">true</span>
+  </span>}</span>,
+  "<span class="hljs-attribute">capabilities</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">track_search</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+    "<span class="hljs-attribute">album_search</span>": <span class="hljs-value"><span class="hljs-literal">true</span></span>,
+    "<span class="hljs-attribute">lookup</span>": <span class="hljs-value"><span class="hljs-literal">true</span>
+  </span>}
+</span>}</code></pre><div style="height: 1px;"></div><h5>Schema</h5><pre><code>{
+  "<span class="hljs-attribute">$schema</span>": <span class="hljs-value"><span class="hljs-string">"http://json-schema.org/draft-04/schema#"</span></span>,
+  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"object"</span></span>,
+  "<span class="hljs-attribute">properties</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">name</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">type</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">homepage</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">tag</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">mainAccentColor</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">enabled</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"object"</span></span>,
+      "<span class="hljs-attribute">properties</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">api</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"boolean"</span>
+        </span>}</span>,
+        "<span class="hljs-attribute">website</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"boolean"</span>
+        </span>}
+      </span>}
+    </span>}</span>,
+    "<span class="hljs-attribute">capabilities</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"object"</span></span>,
+      "<span class="hljs-attribute">properties</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">track_search</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"boolean"</span>
+        </span>}</span>,
+        "<span class="hljs-attribute">album_search</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"boolean"</span>
+        </span>}</span>,
+        "<span class="hljs-attribute">lookup</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"boolean"</span>
+        </span>}
+      </span>}
+    </span>}
+  </span>}
+</span>}</code></pre><div style="height: 1px;"></div></div></div></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">errors</span>": <span class="hljs-value">[
+    {
+      "<span class="hljs-attribute">BAD_PLATFORM</span>": <span class="hljs-value"><span class="hljs-string">"This platform does not exist"</span>
+    </span>}
+  ]
+</span>}</code></pre><div style="height: 1px;"></div></div></div></div></div></div></div></div><div class="middle"><div id="platforms-platform-detail-get" class="action get"><h4 class="action-heading"><div class="name">Retrieve a Platform</div><a href="#platforms-platform-detail-get" class="method get">GET</a><code class="uri">/platform/{tag}</code></h4><p>Retrieves a specific <strong>Platform</strong> and its details</p>
+<blockquote>
+<p>See <code>/platforms</code> to get a list of all available platforms</p>
+</blockquote>
+<div class="title"><strong>URI Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>tag</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>deezer</span></span></dd></dl></div></div></div><hr class="split"><div class="middle"><section id="search" class="resource-group"><h2 class="group-heading">Search <a href="#search" class="permalink">&para;</a></h2></section></div><div class="middle"><div id="search-search" class="resource"><h3 class="resource-heading">Search <a href="#search-search" class="permalink">&para;</a></h3></div></div><div class="right"><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">https://data.tuneefy.com/v2</span>/search/<span class="hljs-attribute" title="type">track</span>/<span class="hljs-attribute" title="tag">deezer</span>?<span class="hljs-attribute">q=</span><span class="hljs-literal">ok+computer</span>&<span class="hljs-attribute">mode=</span><span class="hljs-literal">lazy</span></span></div><div class="tabs"><div class="example-names"><span>Requests</span><span class="tab-button">Track</span><span class="tab-button">Album</span><span class="tab-button">Without `q` parameter</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Accept</span>: <span class="hljs-string">"application/json"</span><br><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">"Bearer 5262d64b892e8d4341000001"</span></code></pre><div style="height: 1px;"></div></div></div><div class="tabs"><div class="example-names"><span>Responses</span><span class="tab-button">200</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">results</span>": <span class="hljs-value">[
+    {
+      "<span class="hljs-attribute">musical_entity</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"track"</span></span>,
+        "<span class="hljs-attribute">title</span>": <span class="hljs-value"><span class="hljs-string">"Karma Police"</span></span>,
+        "<span class="hljs-attribute">album</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">title</span>": <span class="hljs-value"><span class="hljs-string">"OK Computer"</span></span>,
+          "<span class="hljs-attribute">artist</span>": <span class="hljs-value"><span class="hljs-string">"Radiohead"</span></span>,
+          "<span class="hljs-attribute">picture</span>": <span class="hljs-value"><span class="hljs-string">"https://api.deezer.com/album/14879699/image"</span></span>,
+          "<span class="hljs-attribute">safe_title</span>": <span class="hljs-value"><span class="hljs-string">"OK Computer"</span></span>,
+          "<span class="hljs-attribute">extra_info</span>": <span class="hljs-value">{}</span>,
+          "<span class="hljs-attribute">is_cover</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">is_remix</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">acoustic</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">context</span>": <span class="hljs-value">[
+            <span class="hljs-string">"Deluxe Edition"</span>
+          ]
+        </span>}</span>,
+        "<span class="hljs-attribute">links</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">deezer</span>": <span class="hljs-value">[
+            <span class="hljs-string">"http://www.deezer.com/track/138539981"</span>
+          ]
+        </span>}</span>,
+        "<span class="hljs-attribute">safe_title</span>": <span class="hljs-value"><span class="hljs-string">"Karma Police"</span></span>,
+        "<span class="hljs-attribute">extra_info</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">is_cover</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">is_remix</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">acoustic</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">context</span>": <span class="hljs-value">[]
+        </span>}
+      </span>}</span>,
+      "<span class="hljs-attribute">metadata</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">score</span>": <span class="hljs-value"><span class="hljs-number">0.97</span>
+      </span>}</span>,
+      "<span class="hljs-attribute">share</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">intent</span>": <span class="hljs-value"><span class="hljs-string">"590c6c8320b1b"</span>
+      </span>}
+    </span>}
+  ]
+</span>}</code></pre><div style="height: 1px;"></div><h5>Schema</h5><pre><code>{
+  "<span class="hljs-attribute">$schema</span>": <span class="hljs-value"><span class="hljs-string">"http://json-schema.org/draft-04/schema#"</span></span>,
+  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"object"</span></span>,
+  "<span class="hljs-attribute">properties</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">results</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"array"</span>
+    </span>}
+  </span>}
+</span>}</code></pre><div style="height: 1px;"></div></div></div></div></div></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Accept</span>: <span class="hljs-string">"application/json"</span><br><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">"Bearer 5262d64b892e8d4341000001"</span></code></pre><div style="height: 1px;"></div></div></div><div class="tabs"><div class="example-names"><span>Responses</span><span class="tab-button">200</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">results</span>": <span class="hljs-value">[
+    {
+      "<span class="hljs-attribute">musical_entity</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"album"</span></span>,
+        "<span class="hljs-attribute">title</span>": <span class="hljs-value"><span class="hljs-string">"Ok Computer"</span></span>,
+        "<span class="hljs-attribute">artist</span>": <span class="hljs-value"><span class="hljs-string">"Radiohead"</span></span>,
+        "<span class="hljs-attribute">picture</span>": <span class="hljs-value"><span class="hljs-string">"https://api.deezer.com/album/14879699/image"</span></span>,
+        "<span class="hljs-attribute">links</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">deezer</span>": <span class="hljs-value">[
+            <span class="hljs-string">"https://www.deezer.com/album/14879699"</span>
+          ]
+        </span>}</span>,
+        "<span class="hljs-attribute">safe_title</span>": <span class="hljs-value"><span class="hljs-string">"Ok Computer"</span></span>,
+        "<span class="hljs-attribute">extra_info</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">is_cover</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">is_remix</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">acoustic</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">context</span>": <span class="hljs-value">[]
+        </span>}
+      </span>}</span>,
+      "<span class="hljs-attribute">metadata</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">score</span>": <span class="hljs-value"><span class="hljs-number">1</span>
+      </span>}</span>,
+      "<span class="hljs-attribute">share</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">intent</span>": <span class="hljs-value"><span class="hljs-string">"590c6c8320b1b"</span></span>,
+        "<span class="hljs-attribute">expires</span>": <span class="hljs-value"><span class="hljs-string">"2016-05-05T12:30:00"</span>
+      </span>}
+    </span>}
+  ]
+</span>}</code></pre><div style="height: 1px;"></div><h5>Schema</h5><pre><code>{
+  "<span class="hljs-attribute">$schema</span>": <span class="hljs-value"><span class="hljs-string">"http://json-schema.org/draft-04/schema#"</span></span>,
+  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"object"</span></span>,
+  "<span class="hljs-attribute">properties</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">results</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"array"</span>
+    </span>}
+  </span>}
+</span>}</code></pre><div style="height: 1px;"></div></div></div></div></div></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Accept</span>: <span class="hljs-string">"application/json"</span><br><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">"Bearer 5262d64b892e8d4341000001"</span></code></pre><div style="height: 1px;"></div></div></div><div class="tabs"><div class="example-names"><span>Responses</span><span class="tab-button">200</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">errors</span>": <span class="hljs-value">[
+    {
+      "<span class="hljs-attribute">MISSING_QUERY</span>": <span class="hljs-value"><span class="hljs-string">"Missing or empty parameter : q (query)"</span>
+    </span>}
+  ]
+</span>}</code></pre><div style="height: 1px;"></div></div></div></div></div></div></div></div><div class="middle"><div id="search-search-get" class="action get"><h4 class="action-heading"><div class="name">Search a specific platform</div><a href="#search-search-get" class="method get">GET</a><code class="uri">/search/{type}/{tag}{?q,mode}</code></h4><p>Search for tracks or albums on a specific platform</p>
+<p><strong>Capabilities</strong></p>
+<p>To be able to search on a platform, the platform must have the <strong>track_search</strong> or <strong>album_search</strong> capability.</p>
+<p><strong>Mode</strong></p>
+<p>The <strong>mode</strong> indicates whether we’re going to eagerly fetch data when it’s missing from the platform response. <strong>It is not used as for now</strong> but was handy when Spotify didn’t return the artist when fetching an album. In <code>eager</code> mode, we made a supplementary call to get the artist info.</p>
+<blockquote>
+<p>Don’t forget to url-encode the query (<code>q</code>) if necessary</p>
+</blockquote>
+<div class="title"><strong>URI Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>type</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>track</span></span></dd><dt>tag</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>deezer</span></span></dd><dt>q</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>ok+computer</span></span></dd><dt>mode</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>lazy</span></span></dd></dl></div></div></div><hr class="split"><div class="middle"><div id="search-lookup" class="resource"><h3 class="resource-heading">Lookup <a href="#search-lookup" class="permalink">&para;</a></h3></div></div><div class="right"><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">https://data.tuneefy.com/v2</span>/lookup?<span class="hljs-attribute">q=</span><span class="hljs-literal">https:/open.spotify.com/track/6IWxHgVbdKyUMydhVGXRaT</span>&<span class="hljs-attribute">mode=</span><span class="hljs-literal">lazy</span></span></div><div class="tabs"><div class="example-names"><span>Requests</span><span class="tab-button">Example</span><span class="tab-button">Unknown permalink</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Accept</span>: <span class="hljs-string">"application/json"</span><br><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">"Bearer 5262d64b892e8d4341000001"</span></code></pre><div style="height: 1px;"></div></div></div><div class="tabs"><div class="example-names"><span>Responses</span><span class="tab-button">200</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">result</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">musical_entity</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"track"</span></span>,
+      "<span class="hljs-attribute">title</span>": <span class="hljs-value"><span class="hljs-string">"On The Road Again"</span></span>,
+      "<span class="hljs-attribute">album</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">title</span>": <span class="hljs-value"><span class="hljs-string">"The Best Of Canned Heat"</span></span>,
+        "<span class="hljs-attribute">artist</span>": <span class="hljs-value"><span class="hljs-string">"Canned Heat"</span></span>,
+        "<span class="hljs-attribute">picture</span>": <span class="hljs-value"><span class="hljs-string">"https://i.scdn.co/image/b83f79c17a44a9aa24a49748d489c52d80c36fb5"</span></span>,
+        "<span class="hljs-attribute">safe_title</span>": <span class="hljs-value"><span class="hljs-string">"The Best Of Canned Heat"</span></span>,
+        "<span class="hljs-attribute">extra_info</span>": <span class="hljs-value">{}</span>,
+        "<span class="hljs-attribute">is_cover</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+        "<span class="hljs-attribute">is_remix</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+        "<span class="hljs-attribute">acoustic</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+        "<span class="hljs-attribute">context</span>": <span class="hljs-value">[]
+      </span>}</span>,
+      "<span class="hljs-attribute">links</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">spotify</span>": <span class="hljs-value">[
+          <span class="hljs-string">"https://open.spotify.com/track/6IWxHgVbdKyUMydhVGXRaT"</span>
+        ]
+      </span>}</span>,
+      "<span class="hljs-attribute">safe_title</span>": <span class="hljs-value"><span class="hljs-string">"On The Road Again"</span></span>,
+      "<span class="hljs-attribute">extra_info</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">is_cover</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+        "<span class="hljs-attribute">is_remix</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+        "<span class="hljs-attribute">acoustic</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+        "<span class="hljs-attribute">context</span>": <span class="hljs-value">[]
+      </span>}
+    </span>}</span>,
+    "<span class="hljs-attribute">metadata</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">query_words</span>": <span class="hljs-value">[
+        <span class="hljs-string">"Canned Heat"</span>,
+        <span class="hljs-string">"On The Road Again"</span>
+      ]</span>,
+      "<span class="hljs-attribute">platform</span>": <span class="hljs-value"><span class="hljs-string">"Spotify"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">share</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">intent</span>": <span class="hljs-value"><span class="hljs-string">"590c6c8320b1b"</span></span>,
+      "<span class="hljs-attribute">expires</span>": <span class="hljs-value"><span class="hljs-string">"2016-05-05T12:30:00"</span>
+    </span>}
+  </span>}
+</span>}</code></pre><div style="height: 1px;"></div><h5>Schema</h5><pre><code>{
+  "<span class="hljs-attribute">$schema</span>": <span class="hljs-value"><span class="hljs-string">"http://json-schema.org/draft-04/schema#"</span></span>,
+  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"object"</span></span>,
+  "<span class="hljs-attribute">properties</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">result</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"object"</span></span>,
+      "<span class="hljs-attribute">properties</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">musical_entity</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"object"</span></span>,
+          "<span class="hljs-attribute">properties</span>": <span class="hljs-value">{
+            "<span class="hljs-attribute">type</span>": <span class="hljs-value">{
+              "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span>
+            </span>}</span>,
+            "<span class="hljs-attribute">title</span>": <span class="hljs-value">{
+              "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span>
+            </span>}</span>,
+            "<span class="hljs-attribute">album</span>": <span class="hljs-value">{
+              "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"object"</span></span>,
+              "<span class="hljs-attribute">properties</span>": <span class="hljs-value">{
+                "<span class="hljs-attribute">title</span>": <span class="hljs-value">{
+                  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span>
+                </span>}</span>,
+                "<span class="hljs-attribute">artist</span>": <span class="hljs-value">{
+                  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span>
+                </span>}</span>,
+                "<span class="hljs-attribute">picture</span>": <span class="hljs-value">{
+                  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span>
+                </span>}</span>,
+                "<span class="hljs-attribute">safe_title</span>": <span class="hljs-value">{
+                  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span>
+                </span>}</span>,
+                "<span class="hljs-attribute">extra_info</span>": <span class="hljs-value">{
+                  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"object"</span></span>,
+                  "<span class="hljs-attribute">properties</span>": <span class="hljs-value">{}
+                </span>}</span>,
+                "<span class="hljs-attribute">is_cover</span>": <span class="hljs-value">{
+                  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"boolean"</span>
+                </span>}</span>,
+                "<span class="hljs-attribute">is_remix</span>": <span class="hljs-value">{
+                  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"boolean"</span>
+                </span>}</span>,
+                "<span class="hljs-attribute">acoustic</span>": <span class="hljs-value">{
+                  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"boolean"</span>
+                </span>}</span>,
+                "<span class="hljs-attribute">context</span>": <span class="hljs-value">{
+                  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"array"</span>
+                </span>}
+              </span>}
+            </span>}</span>,
+            "<span class="hljs-attribute">links</span>": <span class="hljs-value">{
+              "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"object"</span></span>,
+              "<span class="hljs-attribute">properties</span>": <span class="hljs-value">{
+                "<span class="hljs-attribute">spotify</span>": <span class="hljs-value">{
+                  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"array"</span>
+                </span>}
+              </span>}
+            </span>}</span>,
+            "<span class="hljs-attribute">safe_title</span>": <span class="hljs-value">{
+              "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span>
+            </span>}</span>,
+            "<span class="hljs-attribute">extra_info</span>": <span class="hljs-value">{
+              "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"object"</span></span>,
+              "<span class="hljs-attribute">properties</span>": <span class="hljs-value">{
+                "<span class="hljs-attribute">is_cover</span>": <span class="hljs-value">{
+                  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"boolean"</span>
+                </span>}</span>,
+                "<span class="hljs-attribute">is_remix</span>": <span class="hljs-value">{
+                  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"boolean"</span>
+                </span>}</span>,
+                "<span class="hljs-attribute">acoustic</span>": <span class="hljs-value">{
+                  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"boolean"</span>
+                </span>}</span>,
+                "<span class="hljs-attribute">context</span>": <span class="hljs-value">{
+                  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"array"</span>
+                </span>}
+              </span>}
+            </span>}
+          </span>}
+        </span>}</span>,
+        "<span class="hljs-attribute">metadata</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"object"</span></span>,
+          "<span class="hljs-attribute">properties</span>": <span class="hljs-value">{
+            "<span class="hljs-attribute">query_words</span>": <span class="hljs-value">{
+              "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"array"</span>
+            </span>}</span>,
+            "<span class="hljs-attribute">platform</span>": <span class="hljs-value">{
+              "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span>
+            </span>}
+          </span>}
+        </span>}</span>,
+        "<span class="hljs-attribute">share</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"object"</span></span>,
+          "<span class="hljs-attribute">properties</span>": <span class="hljs-value">{
+            "<span class="hljs-attribute">intent</span>": <span class="hljs-value">{
+              "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span>
+            </span>}</span>,
+            "<span class="hljs-attribute">expires</span>": <span class="hljs-value">{
+              "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"string"</span>
+            </span>}
+          </span>}
+        </span>}
+      </span>}
+    </span>}
+  </span>}
+</span>}</code></pre><div style="height: 1px;"></div></div></div></div></div></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Accept</span>: <span class="hljs-string">"application/json"</span><br><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">"Bearer 5262d64b892e8d4341000001"</span></code></pre><div style="height: 1px;"></div></div></div><div class="tabs"><div class="example-names"><span>Responses</span><span class="tab-button">200</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">errors</span>": <span class="hljs-value">[
+    {
+      "<span class="hljs-attribute">PERMALINK_UNKNOWN</span>": <span class="hljs-value"><span class="hljs-string">"This permalink does not belong to any known platform"</span>
+    </span>}
+  ]
+</span>}</code></pre><div style="height: 1px;"></div></div></div></div></div></div></div></div><div class="middle"><div id="search-lookup-get" class="action get"><h4 class="action-heading"><div class="name">Lookup a permalink</div><a href="#search-lookup-get" class="method get">GET</a><code class="uri">/lookup{?q,mode}</code></h4><p>Lookup a permalink to retrieve the info about the track or album</p>
+<p><strong>Capabilities</strong></p>
+<p>To be able to lookup on a platform, the platform must have the <strong>lookup</strong> capability.</p>
+<p><strong>Mode</strong></p>
+<p><em>See search</em></p>
+<div class="title"><strong>URI Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>q</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>https://open.spotify.com/track/6IWxHgVbdKyUMydhVGXRaT</span></span></dd><dt>mode</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>lazy</span></span></dd></dl></div></div></div><hr class="split"><div class="middle"><div id="search-aggregate" class="resource"><h3 class="resource-heading">Aggregate <a href="#search-aggregate" class="permalink">&para;</a></h3></div></div><div class="right"><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">https://data.tuneefy.com/v2</span>/aggregate/<span class="hljs-attribute" title="type">track</span>?<span class="hljs-attribute">q=</span><span class="hljs-literal">karma+police</span>&<span class="hljs-attribute">mode=</span><span class="hljs-literal">lazy</span>&<span class="hljs-attribute">aggressive=</span><span class="hljs-literal">false</span>&<span class="hljs-attribute">include=</span><span class="hljs-literal">deezer,spotify,qobuz</span></span></div><div class="tabs"><div class="example-names"><span>Requests</span><span class="tab-button">Example</span><span class="tab-button">With errors</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Accept</span>: <span class="hljs-string">"application/json"</span><br><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">"Bearer 5262d64b892e8d4341000001"</span></code></pre><div style="height: 1px;"></div></div></div><div class="tabs"><div class="example-names"><span>Responses</span><span class="tab-button">200</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">results</span>": <span class="hljs-value">[
+    {
+      "<span class="hljs-attribute">musical_entity</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"track"</span></span>,
+        "<span class="hljs-attribute">title</span>": <span class="hljs-value"><span class="hljs-string">"Karma Police"</span></span>,
+        "<span class="hljs-attribute">album</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">title</span>": <span class="hljs-value"><span class="hljs-string">"OK Computer"</span></span>,
+          "<span class="hljs-attribute">artist</span>": <span class="hljs-value"><span class="hljs-string">"Radiohead"</span></span>,
+          "<span class="hljs-attribute">picture</span>": <span class="hljs-value"><span class="hljs-string">"https://api.deezer.com/album/14879699/image"</span></span>,
+          "<span class="hljs-attribute">safe_title</span>": <span class="hljs-value"><span class="hljs-string">"OK Computer"</span></span>,
+          "<span class="hljs-attribute">extra_info</span>": <span class="hljs-value">{}</span>,
+          "<span class="hljs-attribute">is_cover</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">is_remix</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">acoustic</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">context</span>": <span class="hljs-value">[
+            <span class="hljs-string">"Deluxe Edition"</span>
+          ]
+        </span>}</span>,
+        "<span class="hljs-attribute">links</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">deezer</span>": <span class="hljs-value">[
+            <span class="hljs-string">"http://www.deezer.com/track/138539981"</span>
+          ]
+        </span>}</span>,
+        "<span class="hljs-attribute">safe_title</span>": <span class="hljs-value"><span class="hljs-string">"Karma Police"</span></span>,
+        "<span class="hljs-attribute">extra_info</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">is_cover</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">is_remix</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">acoustic</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">context</span>": <span class="hljs-value">[]
+        </span>}
+      </span>}</span>,
+      "<span class="hljs-attribute">metadata</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">score</span>": <span class="hljs-value"><span class="hljs-number">0.97</span></span>,
+        "<span class="hljs-attribute">merges</span>": <span class="hljs-value"><span class="hljs-number">1</span>
+      </span>}</span>,
+      "<span class="hljs-attribute">share</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">intent</span>": <span class="hljs-value"><span class="hljs-string">"590c6c8320b1b"</span>
+      </span>}
+    </span>}
+  ]
+</span>}</code></pre><div style="height: 1px;"></div><h5>Schema</h5><pre><code>{
+  "<span class="hljs-attribute">$schema</span>": <span class="hljs-value"><span class="hljs-string">"http://json-schema.org/draft-04/schema#"</span></span>,
+  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"object"</span></span>,
+  "<span class="hljs-attribute">properties</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">results</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"array"</span>
+    </span>}
+  </span>}
+</span>}</code></pre><div style="height: 1px;"></div></div></div></div></div></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Accept</span>: <span class="hljs-string">"application/json"</span><br><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">"Bearer 5262d64b892e8d4341000001"</span></code></pre><div style="height: 1px;"></div></div></div><div class="tabs"><div class="example-names"><span>Responses</span><span class="tab-button">200</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">errors</span>": <span class="hljs-value">[
+    {
+      "<span class="hljs-attribute">FETCH_PROBLEM</span>": <span class="hljs-value"><span class="hljs-string">"There was a problem while fetching data from the platform"</span>
+    </span>}
+  ]</span>,
+  "<span class="hljs-attribute">results</span>": <span class="hljs-value">[
+    {
+      "<span class="hljs-attribute">musical_entity</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"track"</span></span>,
+        "<span class="hljs-attribute">title</span>": <span class="hljs-value"><span class="hljs-string">"Karma Police"</span></span>,
+        "<span class="hljs-attribute">album</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">title</span>": <span class="hljs-value"><span class="hljs-string">"OK Computer"</span></span>,
+          "<span class="hljs-attribute">artist</span>": <span class="hljs-value"><span class="hljs-string">"Radiohead"</span></span>,
+          "<span class="hljs-attribute">picture</span>": <span class="hljs-value"><span class="hljs-string">"https://api.deezer.com/album/14879699/image"</span></span>,
+          "<span class="hljs-attribute">safe_title</span>": <span class="hljs-value"><span class="hljs-string">"OK Computer"</span></span>,
+          "<span class="hljs-attribute">extra_info</span>": <span class="hljs-value">{}</span>,
+          "<span class="hljs-attribute">is_cover</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">is_remix</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">acoustic</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">context</span>": <span class="hljs-value">[
+            <span class="hljs-string">"Deluxe Edition"</span>
+          ]
+        </span>}</span>,
+        "<span class="hljs-attribute">links</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">deezer</span>": <span class="hljs-value">[
+            <span class="hljs-string">"http://www.deezer.com/track/138539981"</span>
+          ]
+        </span>}</span>,
+        "<span class="hljs-attribute">safe_title</span>": <span class="hljs-value"><span class="hljs-string">"Karma Police"</span></span>,
+        "<span class="hljs-attribute">extra_info</span>": <span class="hljs-value">{
+          "<span class="hljs-attribute">is_cover</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">is_remix</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">acoustic</span>": <span class="hljs-value"><span class="hljs-literal">false</span></span>,
+          "<span class="hljs-attribute">context</span>": <span class="hljs-value">[]
+        </span>}
+      </span>}</span>,
+      "<span class="hljs-attribute">metadata</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">score</span>": <span class="hljs-value"><span class="hljs-number">0.97</span></span>,
+        "<span class="hljs-attribute">merges</span>": <span class="hljs-value"><span class="hljs-number">1</span>
+      </span>}</span>,
+      "<span class="hljs-attribute">share</span>": <span class="hljs-value">{
+        "<span class="hljs-attribute">intent</span>": <span class="hljs-value"><span class="hljs-string">"590c6c8320b1b"</span>
+      </span>}
+    </span>}
+  ]
+</span>}</code></pre><div style="height: 1px;"></div><h5>Schema</h5><pre><code>{
+  "<span class="hljs-attribute">$schema</span>": <span class="hljs-value"><span class="hljs-string">"http://json-schema.org/draft-04/schema#"</span></span>,
+  "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"object"</span></span>,
+  "<span class="hljs-attribute">properties</span>": <span class="hljs-value">{
+    "<span class="hljs-attribute">errors</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"array"</span>
+    </span>}</span>,
+    "<span class="hljs-attribute">results</span>": <span class="hljs-value">{
+      "<span class="hljs-attribute">type</span>": <span class="hljs-value"><span class="hljs-string">"array"</span>
+    </span>}
+  </span>}
+</span>}</code></pre><div style="height: 1px;"></div></div></div></div></div></div></div></div><div class="middle"><div id="search-aggregate-get" class="action get"><h4 class="action-heading"><div class="name">Search on multiple platforms at once</div><a href="#search-aggregate-get" class="method get">GET</a><code class="uri">/aggregate/{type}{?q,mode,aggressive,include}</code></h4><p>Search for tracks or albums on multiple platforms</p>
+<p><strong>Mode</strong></p>
+<p><em>See search</em></p>
+<p><strong>Include</strong></p>
+<p>For aggregation, you can choose which platforms to aggregate to improve the response time of the endpoint. The parameter accepts a string which is a concatenation of the platforms tags separated by a comma.</p>
+<pre><code class="language-http">GET aggregate/track?q=test&amp;include=deezer,spotify,qobuz</code></pre>
+<p>If an unknown platform tag is passed, it is ignored. If the <code>include</code> parameter is empty or not given, the API will agreggate the results of all available platforms that are capable of searching this musical entity type.</p>
+<p><strong>Merging aggressively</strong></p>
+<p>The <code>aggressive</code> parameter allows to merge tracks without taking the album name into account, or to merge albums without taking the artist name into account. This works for a majority of scenarios since it’s quite rare that an artist released two tracks with exactly the same name for instance, but it can sometimes confuse <strong>live</strong> or <strong>edit</strong> versions, for instance.</p>
+<p>Acoustic versions, covers or remix should be correctly differentiated even if you merge aggressively.</p>
+<div class="title"><strong>URI Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>type</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>track</span></span></dd><dt>q</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>karma+police</span></span></dd><dt>mode</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>lazy</span></span></dd><dt>aggressive</dt><dd><code>boolean</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>false</span></span></dd><dt>include</dt><dd><code>string</code>&nbsp;<span>(optional)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>deezer,spotify,qobuz</span></span></dd></dl></div></div></div><hr class="split"><div class="middle"><section id="share" class="resource-group"><h2 class="group-heading">Share <a href="#share" class="permalink">&para;</a></h2></section></div><div class="middle"><div id="share-share" class="resource"><h3 class="resource-heading">Share <a href="#share-share" class="permalink">&para;</a></h3></div></div><div class="right"><div class="definition"><span class="method get">GET</span>&nbsp;<span class="uri"><span class="hostname">https://data.tuneefy.com/v2</span>/share/<span class="hljs-attribute" title="intent">5911b14861018</span></span></div><div class="tabs"><div class="example-names"><span>Requests</span><span class="tab-button">Example</span><span class="tab-button">Expired or bad intent</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Accept</span>: <span class="hljs-string">"application/json"</span><br><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">"Bearer 5262d64b892e8d4341000001"</span></code></pre><div style="height: 1px;"></div></div></div><div class="tabs"><div class="example-names"><span>Responses</span><span class="tab-button">200</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">uid</span>": <span class="hljs-value"><span class="hljs-string">"k0bun0"</span></span>,
+  "<span class="hljs-attribute">link</span>": <span class="hljs-value"><span class="hljs-string">"http://tuneefy.com/s/track/k0bun0"</span>
+</span>}</code></pre><div style="height: 1px;"></div></div></div></div></div></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Accept</span>: <span class="hljs-string">"application/json"</span><br><span class="hljs-attribute">Authorization</span>: <span class="hljs-string">"Bearer 5262d64b892e8d4341000001"</span></code></pre><div style="height: 1px;"></div></div></div><div class="tabs"><div class="example-names"><span>Responses</span><span class="tab-button">200</span></div><div class="tab"><div><div class="inner"><h5>Headers</h5><pre><code><span class="hljs-attribute">Content-Type</span>: <span class="hljs-string">application/json</span></code></pre><div style="height: 1px;"></div><h5>Body</h5><pre><code>{
+  "<span class="hljs-attribute">errors</span>": <span class="hljs-value">[
+    {
+      "<span class="hljs-attribute">NO_OR_EXPIRED_INTENT</span>": <span class="hljs-value"><span class="hljs-string">"No intent with the requested uid"</span>
+    </span>}
+  ]
+</span>}</code></pre><div style="height: 1px;"></div></div></div></div></div></div></div></div><div class="middle"><div id="share-share-get" class="action get"><h4 class="action-heading"><div class="name">Share an intent</div><a href="#share-share-get" class="method get">GET</a><code class="uri">/share/{intent}</code></h4><p>Share a previous result as a tuneefy url, using the provided intent.</p>
+<div class="title"><strong>URI Parameters</strong><div class="collapse-button show"><span class="close">Hide</span><span class="open">Show</span></div></div><div class="collapse-content"><dl class="inner"><dt>intent</dt><dd><code>string</code>&nbsp;<span class="required">(required)</span>&nbsp;<span class="text-muted example"><strong>Example:&nbsp;</strong><span>5911b14861018</span></span></dd></dl></div></div></div><hr class="split"><div class="middle"><section id="postman-configuration" class="resource-group"><h2 class="group-heading">Postman configuration <a href="#postman-configuration" class="permalink">&para;</a></h2><p>Below is a <a href="https://www.getpostman.com/">Postman</a> configuration if you want to test the API and fiddle with the parameters:</p>
+<p>The Collection (V2) : <a href="https://github.com/tchapi/tuneefy2/tree/master/examples/postman/tuneefy_API.postman_collection.json">tuneefy_API.postman_collection.json</a></p>
+<p>The Environment : <a href="https://github.com/tchapi/tuneefy2/tree/master/examples/postman/tuneefy.postman_environment.json">tuneefy.postman_environment.json</a></p>
+<blockquote>
+<p>NB : In the collection, you must replace the key and secret with the ones provided for you, and the example intent must be replaced with a real intent from one of your calls to work properly.</p>
+</blockquote>
+</section></div><div class="middle"><section id="api-client-examples" class="resource-group"><h2 class="group-heading">API client examples <a href="#api-client-examples" class="permalink">&para;</a></h2><p>Here are very simple (and not optimized) examples to get you started. You can find these examples on github in the <a href="https://github.com/tchapi/tuneefy2/tree/master/examples">examples</a> folder.</p>
+<h3 id="header-php">PHP <a class="permalink" href="#header-php" aria-hidden="true">¶</a></h3>
+<p>We use <strong>curl</strong> to retrieve the token and then perform a basic search.</p>
+<pre><code class="language-php"><span class="hljs-preprocessor">&lt;?php</span>
+
+<span class="hljs-variable">$key</span> = <span class="hljs-string">'administrator'</span>;
+<span class="hljs-variable">$secret</span> = <span class="hljs-string">'password'</span>;
+
+<span class="hljs-variable">$host</span> = <span class="hljs-string">'https://data.tuneefy.com/v2'</span>;
+<span class="hljs-variable">$tokenEndpoint</span> = <span class="hljs-variable">$host</span>.<span class="hljs-string">'/auth/token'</span>;
+<span class="hljs-variable">$searchEndpoint</span> = <span class="hljs-variable">$host</span>.<span class="hljs-string">'/search/track/spotify?q=amon+tobin&amp;limit=1'</span>;
+
+<span class="hljs-comment">// 1. Request token</span>
+<span class="hljs-variable">$tk</span> = curl_init(<span class="hljs-variable">$tokenEndpoint</span>);
+curl_setopt(<span class="hljs-variable">$tk</span>, CURLOPT_HTTPHEADER, [
+    <span class="hljs-string">'Content-Type: application/x-www-form-urlencoded;'</span>.
+    <span class="hljs-string">'charset=UTF-8'</span>
+]);
+curl_setopt(<span class="hljs-variable">$tk</span>, CURLOPT_POSTFIELDS, 
+    <span class="hljs-string">'grant_type=client_credentials'</span>.
+    <span class="hljs-string">'&amp;client_id='</span>.<span class="hljs-variable">$key</span>.
+    <span class="hljs-string">'&amp;client_secret='</span>.<span class="hljs-variable">$secret</span>
+);
+curl_setopt(<span class="hljs-variable">$tk</span>, CURLOPT_RETURNTRANSFER, <span class="hljs-keyword">true</span>);
+<span class="hljs-variable">$token</span> = json_decode(curl_exec(<span class="hljs-variable">$tk</span>));
+curl_close(<span class="hljs-variable">$tk</span>);
+
+<span class="hljs-comment">// 2. Use token for search on Spotify</span>
+<span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$token</span>-&gt;token_type) &amp;&amp; <span class="hljs-variable">$token</span>-&gt;token_type === <span class="hljs-string">'Bearer'</span>) {
+    <span class="hljs-variable">$br</span> = curl_init(<span class="hljs-variable">$searchEndpoint</span>);
+    curl_setopt(<span class="hljs-variable">$br</span>, CURLOPT_HTTPHEADER, [
+        <span class="hljs-string">'Authorization: Bearer '</span>.<span class="hljs-variable">$token</span>-&gt;access_token,
+        <span class="hljs-string">'Accept: application/json'</span>,
+    ]);
+    curl_setopt(<span class="hljs-variable">$br</span>, CURLOPT_RETURNTRANSFER, <span class="hljs-keyword">true</span>);
+    <span class="hljs-variable">$data</span> = curl_exec(<span class="hljs-variable">$br</span>);
+    curl_close(<span class="hljs-variable">$br</span>);
+  
+    <span class="hljs-comment">// 3. Tada ! </span>
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">"🎉\n"</span>;
+    var_dump(<span class="hljs-variable">$data</span>);
+} <span class="hljs-keyword">else</span> {
+    <span class="hljs-keyword">echo</span> <span class="hljs-string">"Wrong key/secret pair"</span>;
+}</code></pre>
+<h3 id="header-shell">Shell <a class="permalink" href="#header-shell" aria-hidden="true">¶</a></h3>
+<p>We use <strong>curl</strong> and <strong>jq</strong> too in a very simple fashion.</p>
+<pre><code class="language-bash"><span class="hljs-shebang">#!/bin/bash
+</span>
+response=$(curl -X POST --silent <span class="hljs-operator">-d</span> client_id=administrator <span class="hljs-operator">-d</span> client_secret=password <span class="hljs-operator">-d</span> grant_<span class="hljs-built_in">type</span>=client_credentials https://data.tuneefy.com/v2/<span class="hljs-string">'auth/token)
+
+token=$(echo $response | jq --raw-output '</span>.access_token<span class="hljs-string">')
+
+echo 🎉
+curl --header "Authorization: Bearer $token" "https://data.tuneefy.com/v2/'</span>search/track/spotify?q=amon+tobin&amp;<span class="hljs-built_in">limit</span>=<span class="hljs-number">1</span><span class="hljs-string">"
+
+</span></code></pre>
+<h3 id="header-javascript-(node)">Javascript (node) <a class="permalink" href="#header-javascript-(node)" aria-hidden="true">¶</a></h3>
+<p>We use the <strong>request</strong> and <strong>json</strong> modules.</p>
+<pre><code class="language-js">var request = require('request');
+ 
+var key = 'administrator';
+var secret = 'password';
+
+var tokenEndpoint = 'https://data.tuneefy.com/v2/'auth/token';
+var searchEndpoint = 'https://data.tuneefy.com/v2/'search/track/spotify?q=amon+tobin&amp;limit=1';
+
+// 1. Request token
+request.post({
+  url: tokenEndpoint,
+  form: {
+    'grant_type': 'client_credentials',
+    'client_id': key,
+    'client_secret': secret
+  }
+}, function(err, httpResponse, body) {
+  var json = JSON.parse(body);
+
+  if (json.token_type &amp;&amp; json.token_type === 'Bearer') {
+      // 2. Use token for search on Spotify 
+      request({
+        url: searchEndpoint,
+        'auth': {
+          'bearer': json.access_token
+        },
+        method: 'GET'
+      }, function(err, httpResponse, body) {
+        var json = JSON.parse(body);
+
+        // 3. Tada ! 
+        console.log("🎉");
+        console.log(JSON.stringify(json, null, 4));
+      });
+  }
+
+});</code></pre>
+<h3 id="header-python">Python <a class="permalink" href="#header-python" aria-hidden="true">¶</a></h3>
+<p>We use the <strong>requests</strong> module (standard).</p>
+<pre><code class="language-python"># coding=utf8
+import requests, json
+
+key = 'administrator'
+secret = 'password'
+
+tokenEndpoint = 'https://data.tuneefy.com/v2/'auth/token'
+searchEndpoint = 'https://data.tuneefy.com/v2/'search/track/spotify?q=amon+tobin&amp;limit=1'
+
+# 1. Request token
+payload = {'grant_type': 'client_credentials', 'client_id': key, 'client_secret': secret}
+req = requests.post(tokenEndpoint,data=payload)
+
+token = req.json()
+
+# 2. Use token for search on Spotify
+if token['token_type'] and token['token_type'] == 'Bearer':
+    headers = {'Authorization': 'Bearer '+token['access_token'], 'Accept': 'application/json'}
+    req = requests.get(searchEndpoint, headers=headers)
+
+    # 3. Tada ! 
+    print "🎉"
+    print json.dumps(req.json(), indent=4, separators=(',', ': '))
+else:
+    print "Wrong key/secret pair"</code></pre>
+</section></div><div class="middle"><p style="text-align: center;" class="text-muted">Generated by&nbsp;<a href="https://github.com/danielgtaylor/aglio" class="aglio">aglio</a>&nbsp;on 21 Apr 2024</p></div></div></div></div><script>/* eslint-env browser */
+/* eslint quotes: [2, "single"] */
+'use strict';
+
+/*
+  Determine if a string ends with another string.
+*/
+function endsWith(str, suffix) {
+    return str.indexOf(suffix, str.length - suffix.length) !== -1;
+}
+
+/*
+  Get a list of direct child elements by class name.
+*/
+function childrenByClass(element, name) {
+  var filtered = [];
+
+  for (var i = 0; i < element.children.length; i++) {
+    var child = element.children[i];
+    var classNames = child.className.split(' ');
+    if (classNames.indexOf(name) !== -1) {
+      filtered.push(child);
+    }
+  }
+
+  return filtered;
+}
+
+/*
+  Get an array [width, height] of the window.
+*/
+function getWindowDimensions() {
+  var w = window,
+      d = document,
+      e = d.documentElement,
+      g = d.body,
+      x = w.innerWidth || e.clientWidth || g.clientWidth,
+      y = w.innerHeight || e.clientHeight || g.clientHeight;
+
+  return [x, y];
+}
+
+/*
+  Collapse or show a request/response example.
+*/
+function toggleCollapseButton(event) {
+    var button = event.target.parentNode;
+    var content = button.parentNode.nextSibling;
+    var inner = content.children[0];
+
+    if (button.className.indexOf('collapse-button') === -1) {
+      // Clicked without hitting the right element?
+      return;
+    }
+
+    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+        // Currently showing, so let's hide it
+        button.className = 'collapse-button';
+        content.style.maxHeight = '0px';
+    } else {
+        // Currently hidden, so let's show it
+        button.className = 'collapse-button show';
+        content.style.maxHeight = inner.offsetHeight + 12 + 'px';
+    }
+}
+
+function toggleTabButton(event) {
+    var i, index;
+    var button = event.target;
+
+    // Get index of the current button.
+    var buttons = childrenByClass(button.parentNode, 'tab-button');
+    for (i = 0; i < buttons.length; i++) {
+        if (buttons[i] === button) {
+            index = i;
+            button.className = 'tab-button active';
+        } else {
+            buttons[i].className = 'tab-button';
+        }
+    }
+
+    // Hide other tabs and show this one.
+    var tabs = childrenByClass(button.parentNode.parentNode, 'tab');
+    for (i = 0; i < tabs.length; i++) {
+        if (i === index) {
+            tabs[i].style.display = 'block';
+        } else {
+            tabs[i].style.display = 'none';
+        }
+    }
+}
+
+/*
+  Collapse or show a navigation menu. It will not be hidden unless it
+  is currently selected or `force` has been passed.
+*/
+function toggleCollapseNav(event, force) {
+    var heading = event.target.parentNode;
+    var content = heading.nextSibling;
+    var inner = content.children[0];
+
+    if (heading.className.indexOf('heading') === -1) {
+      // Clicked without hitting the right element?
+      return;
+    }
+
+    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+      // Currently showing, so let's hide it, but only if this nav item
+      // is already selected. This prevents newly selected items from
+      // collapsing in an annoying fashion.
+      if (force || window.location.hash && endsWith(event.target.href, window.location.hash)) {
+        content.style.maxHeight = '0px';
+      }
+    } else {
+      // Currently hidden, so let's show it
+      content.style.maxHeight = inner.offsetHeight + 12 + 'px';
+    }
+}
+
+/*
+  Refresh the page after a live update from the server. This only
+  works in live preview mode (using the `--server` parameter).
+*/
+function refresh(body) {
+    document.querySelector('body').className = 'preload';
+    document.body.innerHTML = body;
+
+    // Re-initialize the page
+    init();
+    autoCollapse();
+
+    document.querySelector('body').className = '';
+}
+
+/*
+  Determine which navigation items should be auto-collapsed to show as many
+  as possible on the screen, based on the current window height. This also
+  collapses them.
+*/
+function autoCollapse() {
+  var windowHeight = getWindowDimensions()[1];
+  var itemsHeight = 64; /* Account for some padding */
+  var itemsArray = Array.prototype.slice.call(
+    document.querySelectorAll('nav .resource-group .heading'));
+
+  // Get the total height of the navigation items
+  itemsArray.forEach(function (item) {
+    itemsHeight += item.parentNode.offsetHeight;
+  });
+
+  // Should we auto-collapse any nav items? Try to find the smallest item
+  // that can be collapsed to show all items on the screen. If not possible,
+  // then collapse the largest item and do it again. First, sort the items
+  // by height from smallest to largest.
+  var sortedItems = itemsArray.sort(function (a, b) {
+    return a.parentNode.offsetHeight - b.parentNode.offsetHeight;
+  });
+
+  while (sortedItems.length && itemsHeight > windowHeight) {
+    for (var i = 0; i < sortedItems.length; i++) {
+      // Will collapsing this item help?
+      var itemHeight = sortedItems[i].nextSibling.offsetHeight;
+      if ((itemsHeight - itemHeight <= windowHeight) || i === sortedItems.length - 1) {
+        // It will, so let's collapse it, remove its content height from
+        // our total and then remove it from our list of candidates
+        // that can be collapsed.
+        itemsHeight -= itemHeight;
+        toggleCollapseNav({target: sortedItems[i].children[0]}, true);
+        sortedItems.splice(i, 1);
+        break;
+      }
+    }
+  }
+}
+
+/*
+  Initialize the interactive functionality of the page.
+*/
+function init() {
+    var i, j;
+
+    // Make collapse buttons clickable
+    var buttons = document.querySelectorAll('.collapse-button');
+    for (i = 0; i < buttons.length; i++) {
+        buttons[i].onclick = toggleCollapseButton;
+
+        // Show by default? Then toggle now.
+        if (buttons[i].className.indexOf('show') !== -1) {
+            toggleCollapseButton({target: buttons[i].children[0]});
+        }
+    }
+
+    var responseCodes = document.querySelectorAll('.example-names');
+    for (i = 0; i < responseCodes.length; i++) {
+        var tabButtons = childrenByClass(responseCodes[i], 'tab-button');
+        for (j = 0; j < tabButtons.length; j++) {
+            tabButtons[j].onclick = toggleTabButton;
+
+            // Show by default?
+            if (j === 0) {
+                toggleTabButton({target: tabButtons[j]});
+            }
+        }
+    }
+
+    // Make nav items clickable to collapse/expand their content.
+    var navItems = document.querySelectorAll('nav .resource-group .heading');
+    for (i = 0; i < navItems.length; i++) {
+        navItems[i].onclick = toggleCollapseNav;
+
+        // Show all by default
+        toggleCollapseNav({target: navItems[i].children[0]});
+    }
+}
+
+// Initial call to set up buttons
+init();
+
+window.onload = function () {
+    autoCollapse();
+    // Remove the `preload` class to enable animations
+    document.querySelector('body').className = '';
+};
+</script></body></html>

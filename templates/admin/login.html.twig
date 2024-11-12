@@ -1,0 +1,49 @@
+{% extends 'admin/_base.html.twig' %}
+{% set menu = null %}
+
+{% block content %}
+  {% if app.user %}
+      <div class="ui">
+          Already logged in, <a href="{{ path('admin_logout') }}">logout</a>
+      </div>
+  {% else %}
+      <div class="ui middle aligned center aligned grid">
+        <div class="column">
+          <h2 class="ui blue image header">
+            <div class="content">
+              Log-in
+            </div>
+          </h2>
+          {% if error %}
+            <div class="ui error message">
+              <div class="header">
+                Error
+              </div>
+              {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+          {% endif %}
+          <form action="{{ path('admin_login') }}" method="post" class="ui large form" id="loginForm">
+            <div class="ui stacked segment">
+              <div class="field">
+                <div class="ui left icon input">
+                  <i class="user icon"></i>
+                  <input type="text" value="{{ last_username }}" name="_username" id="inputUsername" placeholder="Username">
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui left icon input">
+                  <i class="lock icon"></i>
+                  <input type="password" name="_password" id="inputPassword" placeholder="Password">
+                </div>
+              </div>
+              <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+              <button type="submit" name="submitButton" class="ui fluid large blue submit button">Login</button>
+            </div>
+
+            <div class="ui error message"></div>
+
+          </form>
+        </div>
+      </div>
+  {% endif %}
+{% endblock %}

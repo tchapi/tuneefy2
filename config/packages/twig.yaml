@@ -1,0 +1,11 @@
+twig:
+    file_name_pattern: '*.twig'
+    globals:
+        ga_tracker_id: "%env(GA_TRACKER_ID)%"
+        mail:
+          captcha_key: "%mail.captcha_key%"
+
+when@test:
+    twig:
+        strict_variables: true
+
