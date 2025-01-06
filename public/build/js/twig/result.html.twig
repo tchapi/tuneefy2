@@ -1,26 +1,25 @@
-{% apply spaceless %}
 <li class="tResult">
     <div class="tImage">
-        {% if type == "track" %}
+        {%- if type == "track" -%}
             <img src="{{ item.album.picture ?: ("/img/nothumb_track.png") }}" height="74" width="74">
-        {% else %}
+        {%- else -%}
             <img src="{{ item.picture ?: ("/img/nothumb_album.png") }}" height="74" width="74">
-        {% endif %}
+        {%- endif -%}
         <div class="coverlay"></div>
     </div>
-    {% if type == "track" %}
+    {%- if type == "track" -%}
         <div class="tTitle">
             <div class="wrapper">{{ item.safe_title }}
                 <div class="tFeat txtS">
-                {% if item.extra_info.is_cover or item.album.extra_info.is_cover %}
+                {%- if item.extra_info.is_cover or item.album.extra_info.is_cover -%}
                     <i class="extra extra-cover"></i> [Cover]&nbsp;
-                {% endif %}
-                {% if item.extra_info.is_remix %}
+                {%- endif -%}
+                {%- if item.extra_info.is_remix -%}
                     <i class="extra extra-remix"></i> [Remix]&nbsp;
-                {% endif %}
-                {% if item.extra_info.acoustic %}
+                {%- endif -%}
+                {%- if item.extra_info.acoustic -%}
                     <i class="extra extra-acoustic"></i> [Acoustic]&nbsp;
-                {% endif %}
+                {%- endif -%}
                 </div>
             </div>
         </div>
@@ -30,39 +29,38 @@
         <div class="tAlbum txtS">
             <div class="wrapper">{{ item.album.safe_title }}</div>
         </div>
-    {% else %}
+    {%- else -%}
         <div class="tAlbumA">
             <div class="wrapper">{{ item.safe_title }}
                 <div class="tFeat txtS">
-                {% if item.extra_info.is_cover %}
+                {%- if item.extra_info.is_cover -%}
                     <i class="extra extra-cover"></i> [Cover]&nbsp;
-                {% endif %}
-                {% if item.extra_info.is_remix %}
+                {%- endif -%}
+                {%- if item.extra_info.is_remix -%}
                     <i class="extra extra-remix"></i> [Remix]&nbsp;
-                {% endif %}
-                {% if item.extra_info.acoustic %}
+                {%- endif -%}
+                {%- if item.extra_info.acoustic -%}
                     <i class="extra extra-acoustic"></i> [Acoustic]&nbsp;
-                {% endif %}
+                {%- endif -%}
                 </div>
             </div>
         </div>
         <div class="tArtistA txtS">
             <div class="wrapper">{{ item.artist }}</div>
         </div>
-    {% endif %}
+    {%- endif -%}
     <div class="tLinks">
         <div class="wrapper">
-          {% for key, links in item.links %}
-            {% if links|length > 0 and compact|default(true) %}
+          {%- for key, links in item.links -%}
+            {%- if links|length > 0 and compact|default(true) -%}
                 <a target="_top" class="tLink btns btn_{{ key }}" href="{{ linkDirect|replace({'_KEY_': key}) }}?l={{links[0]|url_encode}}" title="{{ listenTo }}"></a>
-            {% else %}
-                {% for i, link in links %}
+            {%- else -%}
+                {%- for i, link in links -%}
                     <a target="_top" class="tLink btns btn_{{ key }}" href="{{ linkDirect|replace({'_KEY_': key}) }}?l={{link|url_encode}}" title="{{ listenTo }}"></a>
-                {% endfor %}
-            {% endif %}
-          {% endfor %}
+                {%- endfor -%}
+            {%- endif -%}
+          {%- endfor -%}
         </div>
     </div>
     <a data-href="{{ linkIntent|replace({'_INTENT_': intent}) }}" title="{{ shareTip|escape('html_attr') }}" class="btn tShare sharePage" target="_top">{{ share }}</a>
 </li>
-{% endapply %}

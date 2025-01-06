@@ -138,21 +138,9 @@
   <div class="above">
       <div class="nbResults">{{ "results.results_found"|trans|raw }}</div>
   </div>
-  {% apply spaceless %}
   <ul>
-      <li class="tHeader">
-          <div class="tHeader_bf">&nbsp;</div>
-          <div class="tHeader_tA tHeader_disp" rel="album">{{ "results.header.track"|trans }}</div>
-          <div class="tHeader_aA tHeader_disp" rel="album">{{ "results.header.artist"|trans }}</div>
-          <div class="tHeader_t tHeader_disp" rel="track" style="display: none">{{ "results.header.track"|trans }}</div>
-          <div class="tHeader_a tHeader_disp" rel="track" style="display: none">{{ "results.header.artist"|trans }}</div>
-          <div class="tHeader_c tHeader_disp" rel="track" style="display: none">{{ "results.header.album"|trans }}</div>
-          <div class="tHeader_p">{{ "results.header.available"|trans }}</div>
-          <div class="tHeader_af">&nbsp;</div>
-      </li>
+      <li class="tHeader"><div class="tHeader_bf">&nbsp;</div><div class="tHeader_tA tHeader_disp" rel="album">{{ "results.header.track"|trans }}</div><div class="tHeader_aA tHeader_disp" rel="album">{{ "results.header.artist"|trans }}</div><div class="tHeader_t tHeader_disp" rel="track" style="display: none">{{ "results.header.track"|trans }}</div><div class="tHeader_a tHeader_disp" rel="track" style="display: none">{{ "results.header.artist"|trans }}</div><div class="tHeader_c tHeader_disp" rel="track" style="display: none">{{ "results.header.album"|trans }}</div><div class="tHeader_p">{{ "results.header.available"|trans }}</div><div class="tHeader_af">&nbsp;</div></li>
   </ul>
-  {% endapply %}
-
   <div class="below">
       <a class="btn backToTop" href="#preSearch">{{ "back_to_top"|trans }}</a>
   </div>

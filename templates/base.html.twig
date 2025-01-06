@@ -50,13 +50,7 @@
           <span{% if app.locale == 'fr' %} class="activeLang"{% endif %} lang="fr">FR</span>
         </div>
 
-        {% apply spaceless %}
-        <ul id="navigation">
-          <li><a{% if page == "home" %} class="current txtS3"{% endif %} title="{{ "pages.home.tip"|trans }}" href="{{ path('home') }}"><img class="homeImg" src="{{ asset('/img/home_pic.png') }}" width="12px" height="14px" />{{ "pages.home.title"|trans }}</a></li>
-          <li><a{% if page == "trends" %} class="current txtS3"{% endif %} title="{{ "pages.trends.tip"|trans }}" href="{{ path('trends') }}">{{ "pages.trends.title"|trans }}</a></li>
-          <li><a{% if page == "about" %} class="current txtS3"{% endif %} title="{{ "pages.about.tip"|trans }}" href="{{ path('about') }}">{{ "pages.about.title"|trans }}</a></li>
-        </ul>
-        {% endapply %}
+        <ul id="navigation"><li><a{% if page == "home" %} class="current txtS3"{% endif %} title="{{ "pages.home.tip"|trans }}" href="{{ path('home') }}"><img class="homeImg" src="{{ asset('/img/home_pic.png') }}" width="12px" height="14px" />{{ "pages.home.title"|trans }}</a></li><li><a{% if page == "trends" %} class="current txtS3"{% endif %} title="{{ "pages.trends.tip"|trans }}" href="{{ path('trends') }}">{{ "pages.trends.title"|trans }}</a></li><li><a{% if page == "about" %} class="current txtS3"{% endif %} title="{{ "pages.about.tip"|trans }}" href="{{ path('about') }}">{{ "pages.about.title"|trans }}</a></li></ul>
 
       </div>
     </div>

@@ -67,8 +67,12 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         return $data;
     }
 
-    private function getCoverUrlFromCoverHash(?string $cover_hash = ''): string
+    private function getCoverUrlFromCoverHash(?string $cover_hash): ?string
     {
+        if (!$cover_hash) {
+            return null;
+        }
+
         return sprintf('https://resources.wimpmusic.com/images/%s/320x320.jpg', str_replace('-', '/', $cover_hash));
     }
 
