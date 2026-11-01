@@ -18,11 +18,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.4'
-          extensions: ctype, iconv, intl, mbstring, curl
-          coverage: none
+      # composer.lock requires PHP >= 8.4, newer than the runner image's PHP.
+      # Installed from the usual Ubuntu PHP PPA rather than a third-party action.
+      - name: Install PHP 8.4
+        run: |
+          sudo add-apt-repository -y ppa:ondrej/php
+          sudo apt-get update -q
+          sudo apt-get install -y -q php8.4-cli php8.4-curl php8.4-mbstring php8.4-xml php8.4-intl php8.4-mysql
+          sudo update-alternatives --set php /usr/bin/php8.4
+          php -v && composer --version
 
       - name: Install dependencies
         run: composer install --no-interaction --no-progress --prefer-dist --no-scripts
@@ -49,9 +53,12 @@ jobs:
         run: vendor/bin/codecept run Api --env production --steps
 
       - name: Keep the scheduled workflow alive
-        # GitHub disables scheduled workflows after 60 days without commits
+        # GitHub disables scheduled workflows after 60 days without commits;
+        # re-enabling the workflow through the API resets that counter
         if: github.event_name == 'schedule'
-        uses: gautamkrishnar/keepalive-workflow@v2
+        run: gh workflow enable api-tests.yml
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       - uses: actions/upload-artifact@v4
         if: failure()
