@@ -799,7 +799,7 @@ final class ApiCest
                 $this->sendGET($I, '/lookup?q='.urlencode($permalink));
                 $I->seeResponseCodeIs(HttpCode::OK);
 
-                $result = $I->grabDataFromResponseByJsonPath('.')[0];
+                $result = $I->grabDataFromResponseByJsonPath('$')[0];
 
                 $I->assertArrayHasKey('result', $result);
                 $I->assertArrayHasKey('metadata', $result['result']);
@@ -845,7 +845,7 @@ final class ApiCest
             $I->seeResponseCodeIs(HttpCode::OK);
             $I->seeResponseIsJson();
 
-            $result = $I->grabDataFromResponseByJsonPath('.')[0];
+            $result = $I->grabDataFromResponseByJsonPath('$')[0];
 
             if (!isset($result['results'])) {
                 $I->assertArrayHasKey('errors', $result);
@@ -867,7 +867,7 @@ final class ApiCest
 
         $I->seeResponseJsonMatchesJsonPath('$.results');
 
-        $result = $I->grabDataFromResponseByJsonPath('.results');
+        $result = $I->grabDataFromResponseByJsonPath('$.results');
         $I->assertCount(1, $result);
     }
 
@@ -892,7 +892,7 @@ final class ApiCest
             $I->seeResponseCodeIs(HttpCode::OK);
             $I->seeResponseIsJson();
 
-            $result = $I->grabDataFromResponseByJsonPath('.')[0];
+            $result = $I->grabDataFromResponseByJsonPath('$')[0];
             $I->assertArrayHasKey('errors', $result);
         }
     }
@@ -909,7 +909,7 @@ final class ApiCest
             $I->seeResponseCodeIs(HttpCode::OK);
             $I->seeResponseIsJson();
 
-            $result = $I->grabDataFromResponseByJsonPath('.')[0];
+            $result = $I->grabDataFromResponseByJsonPath('$')[0];
 
             if (!isset($result['results'])) {
                 $I->assertArrayHasKey('errors', $result);
@@ -942,7 +942,7 @@ final class ApiCest
             $I->seeResponseCodeIs(HttpCode::OK);
             $I->seeResponseIsJson();
 
-            $result = $I->grabDataFromResponseByJsonPath('.')[0];
+            $result = $I->grabDataFromResponseByJsonPath('$')[0];
             $I->assertArrayHasKey('errors', $result);
         }
     }
@@ -1008,7 +1008,7 @@ final class ApiCest
         $I->seeResponseCodeIs(HttpCode::OK);
         $I->seeResponseIsJson();
 
-        $result = $I->grabDataFromResponseByJsonPath('.')[0];
+        $result = $I->grabDataFromResponseByJsonPath('$')[0];
         $I->assertArrayHasKey('errors', $result);
     }
 }

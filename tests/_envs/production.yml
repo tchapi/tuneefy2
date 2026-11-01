@@ -1,0 +1,7 @@
+# Run the Api suite against the production API:
+#   vendor/bin/codecept run Api --env production
+# The client credentials come from .env.test.local (TEST_API_CLIENT_ID / TEST_API_CLIENT_SECRET).
+modules:
+    config:
+        REST:
+            url: https://data.tuneefy.com/v2/
