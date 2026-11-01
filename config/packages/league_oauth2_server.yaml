@@ -14,8 +14,3 @@ league_oauth2_server:
         default: ['api']
     persistence:
         doctrine: null
-
-when@test:
-    league_oauth2_server:
-        persistence:
-            in_memory: null

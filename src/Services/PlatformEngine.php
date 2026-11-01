@@ -10,7 +10,7 @@ use App\Services\Platforms\Platform;
 use App\Services\Platforms\PlatformException;
 use App\Services\Platforms\PlatformResult;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 class PlatformEngine
 {
@@ -59,7 +59,7 @@ class PlatformEngine
     public function __construct(
         private ItemRepository $itemRepository,
         private Security $security,
-        #[TaggedIterator('app.platform', defaultIndexMethod: 'getTag')]
+        #[AutowireIterator('app.platform', defaultIndexMethod: 'getTag')]
         iterable $platforms
     ) {
         $this->platforms = iterator_to_array($platforms);
