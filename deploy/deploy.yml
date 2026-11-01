@@ -8,12 +8,6 @@
         release_path: "{{ project_path }}/releases/{{ lookup('pipe','date +%Y%m%d%H%M%S') }}"
         current_path: "{{ project_path }}/current"
         shared_path: "{{ project_path }}/shared"
-    - name: Retrieve current release folder
-      command: readlink -f current
-      register: current_release_path
-      ignore_errors: true
-      args:
-        chdir: "{{ project_path }}"
     - name: Ensure shared folder is present
       file:
         path: "{{ shared_path }}"
@@ -32,6 +26,8 @@
       git:
         repo: "git@github.com:tchapi/tuneefy2.git"
         dest: "{{ release_path }}"
+        version: main
+        depth: 1
     - name: Link .env.local file
       file:
         src={{ shared_path }}/.env.local
@@ -59,6 +55,10 @@
         command: install
         working_dir: "{{ release_path }}"
         prefer_dist: yes
+    - name: Run database migrations
+      command: php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+      args:
+        chdir: "{{ release_path }}"
     - name: Remove perilous files
       file:
         path: "{{ release_path }}/{{ item }}"
@@ -76,7 +76,11 @@
         - package.json
         - yarn.lock
         - codeception.yml
-        - codeception.yml.dist
+        - tests
+        - .github
+        - .env.test
+        - phpunit.xml.dist
+        - .yarnrc
     - name: Creates a cron file under /etc/cron.d for updating stats and cleaning intents
       become: true
       become_user: root
@@ -113,13 +117,15 @@
       become: true
       become_user: root
       service:
-        name: "php8.2-fpm"
+        name: "php8.4-fpm"
         state: restarted
     - name: Give correct permissions
       file:
         state: directory
         path: "{{ current_path }}/var/cache"
-        owner: debian
+        owner: "{{ ansible_user }}"
         group: www-data
         recurse: true
         mode: '0775'
+    - name: Keep the last 3 releases only
+      shell: ls -1dt {{ project_path }}/releases/*/ | tail -n +4 | xargs -r rm -rf
