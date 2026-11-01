@@ -143,11 +143,12 @@ class ItemRepository extends ServiceEntityRepository
           ->getQuery()
           ->getResult();
 
+        $entityManager = $this->getEntityManager();
+
         foreach ($expiredIntents as $intent) {
             $entityManager->remove($intent);
         }
 
-        $entityManager = $this->getEntityManager();
         $entityManager->flush();
     }
 }
