@@ -64,16 +64,16 @@ class PlatformResult
             return [
                 'metadata' => $this->metadata,
             ];
-        } else {
-            return [
-                'musical_entity' => $this->musical_entity->toArray(),
-                'metadata' => $this->metadata,
-                'share' => [
-                    'intent' => $this->intent,
-                    'expires' => $this->expires ? $this->expires->format(\DateTime::ATOM) : null,
-                ],
-            ];
         }
+
+        return [
+            'musical_entity' => $this->musical_entity->toArray(),
+            'metadata' => $this->metadata,
+            'share' => [
+                'intent' => $this->intent,
+                'expires' => $this->expires ? $this->expires->format(\DateTime::ATOM) : null,
+            ],
+        ];
     }
 
     public function mergeWith(PlatformResult $that): PlatformResult

@@ -26,6 +26,10 @@ final class ApiCest
     public const TRACK_AGGREGATE_QUERY = 'radiohead+thinking+about+you';
     public const TRACK_AGGREGATE_QUERY_ERROR = 'ZERTHJYUKIKHUazzfdegrh';
 
+    // Platforms whose search is fuzzy enough to return (unrelated) results for a
+    // nonsense query instead of nothing: no NO_MATCH error can be expected from them
+    public const FUZZY_SEARCH_PLATFORMS = [SpotifyPlatform::TAG];
+
     public const PERMALINKS = [
         'deezer' => [
             'http://www.deezer.com/track/10444623' => [
@@ -62,12 +66,13 @@ final class ApiCest
                     'Wupp Dek',
                 ],
             ],
+            // Deezer now redirects this album to 680001331, a "Bonus Track Version"
             'http://www.deezer.com/fr/album/955330' => [
                 'musical_entity' => [
                     'type' => 'album',
-                    'title' => 'Thora Vukk',
+                    'title' => 'Thora Vukk (Bonus Track Version)',
                     'artist' => 'Robag Wruhme',
-                    'picture' => 'https://api.deezer.com/album/955330/image',
+                    'picture' => 'https://api.deezer.com/album/680001331/image',
                     'links' => [
                         'deezer' => [
                             'http://www.deezer.com/fr/album/955330',
@@ -78,7 +83,7 @@ final class ApiCest
                         'is_cover' => false,
                         'is_remix' => false,
                         'acoustic' => false,
-                        'context' => [],
+                        'context' => ['Bonus Track Version'],
                     ],
                 ],
                 'query_words' => [
@@ -893,7 +898,11 @@ final class ApiCest
             $I->seeResponseIsJson();
 
             $result = $I->grabDataFromResponseByJsonPath('$')[0];
-            $I->assertArrayHasKey('errors', $result);
+            if (in_array($platform->getTag(), self::FUZZY_SEARCH_PLATFORMS, true)) {
+                $I->assertTrue(isset($result['errors']) || isset($result['results']), 'Expected a NO_MATCH error or (fuzzy) results from '.$platform->getTag());
+            } else {
+                $I->assertArrayHasKey('errors', $result);
+            }
         }
     }
 
@@ -943,7 +952,11 @@ final class ApiCest
             $I->seeResponseIsJson();
 
             $result = $I->grabDataFromResponseByJsonPath('$')[0];
-            $I->assertArrayHasKey('errors', $result);
+            if (in_array($platform->getTag(), self::FUZZY_SEARCH_PLATFORMS, true)) {
+                $I->assertTrue(isset($result['errors']) || isset($result['results']), 'Expected a NO_MATCH error or (fuzzy) results from '.$platform->getTag());
+            } else {
+                $I->assertArrayHasKey('errors', $result);
+            }
         }
     }
 

@@ -124,9 +124,9 @@ abstract class Platform implements GeneralPlatformInterface
             return PlatformType::WebStore;
         } elseif ($this instanceof ScrobblingPlatformInterface) {
             return PlatformType::ScrobblingPlatform;
-        } else {
-            return PlatformType::GeneralPlatform;
         }
+
+        return PlatformType::GeneralPlatform;
     }
 
     public function isDefault(): bool
@@ -235,37 +235,36 @@ abstract class Platform implements GeneralPlatformInterface
         if (!$response) {
             // Error in the request, we should gracefully fail returning null
             return null;
-        } else {
-            if (self::RETURN_XML === static::RETURN_CONTENT_TYPE) {
-                $response = Utils::flattenMetaXMLNodes($response);
-                try {
-                    $xml = simplexml_load_string($response);
-                    $response = json_encode($xml);
-                } catch (\Exception $e) {
-                    return null; // XML can't be parsed
-                }
-            }
-
-            // For some platforms
-            $response = Utils::removeBOM($response);
-
-            // If there is a problem with the data, we want to return null to gracefully fail as well :
-            // "NULL is returned if the json cannot be decoded or if the encoded data is deeper than the recursion limit."
-            //
-            // Why the "data" key ? It's to cope with the result of json_decode. If the first level of $response
-            // is pure array, json_decode will return a array object instead of an expected stdClass object.
-            // To bypass that, we force the inclusion of the response in a data key, making it de facto an object.
-            return json_decode('{"data":'.$response.'}', false);
         }
+        if (self::RETURN_XML === static::RETURN_CONTENT_TYPE) {
+            $response = Utils::flattenMetaXMLNodes($response);
+            try {
+                $xml = simplexml_load_string($response);
+                $response = json_encode($xml);
+            } catch (\Exception $e) {
+                return null; // XML can't be parsed
+            }
+        }
+
+        // For some platforms
+        $response = Utils::removeBOM($response);
+
+        // If there is a problem with the data, we want to return null to gracefully fail as well :
+        // "NULL is returned if the json cannot be decoded or if the encoded data is deeper than the recursion limit."
+        //
+        // Why the "data" key ? It's to cope with the result of json_decode. If the first level of $response
+        // is pure array, json_decode will return a array object instead of an expected stdClass object.
+        // To bypass that, we force the inclusion of the response in a data key, making it de facto an object.
+        return json_decode('{"data":'.$response.'}', false);
     }
 
     protected static function fetch(Platform $platform, int $type, string $query, ?string $countryCode = null)
     {
         $ch = $platform->prepareCall($type, $query, $countryCode);
         $response = curl_exec($ch);
-        curl_close($ch);
 
-        if (null === $response) {
+        // curl_exec() returns false on failure (not null)
+        if (false === $response || null === $response) {
             throw new PlatformException($platform, curl_error($ch));
         }
 
@@ -276,7 +275,20 @@ abstract class Platform implements GeneralPlatformInterface
     {
         $response = self::fetch($platform, $type, $query, $countryCode);
 
-        return $platform->extractSearchResults($response, $type, $query, $limit, $mode);
+        if (null === $response || false === $response->data) {
+            // HTTP error or undecodable payload
+            throw new PlatformException($platform);
+        }
+
+        try {
+            return $platform->extractSearchResults($response, $type, $query, $limit, $mode);
+        } catch (PlatformException $e) {
+            throw $e;
+        } catch (\Throwable $e) {
+            // The platform answered something we do not understand (API change, error payload, ...):
+            // this must surface as a FETCH_PROBLEM for this platform, not as a 500 for the whole API
+            throw new PlatformException($platform, $e->getMessage());
+        }
     }
 
     public static function aggregate(array $platforms, int $type, string $query, int $limit, int $mode, ?string $countryCode = null): array
@@ -313,7 +325,13 @@ abstract class Platform implements GeneralPlatformInterface
                 continue;
             }
 
-            $result = $object['platform']->extractSearchResults($response, $type, $query, $limit, $mode);
+            try {
+                $result = $object['platform']->extractSearchResults($response, $type, $query, $limit, $mode);
+            } catch (\Throwable $e) {
+                // Same as above: one misbehaving platform must not break the whole aggregation
+                $errors[] = ['FETCH_PROBLEM' => (new PlatformException($object['platform']))->getMessage()];
+                continue;
+            }
 
             $results = array_merge($results, $result);
         }

@@ -153,13 +153,20 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
     {
         $entities = $response->data;
 
+        // e.g. {"error": 10, "message": "Invalid API key"} or {"error": 29, "message": "Rate limit exceeded"}
+        if (property_exists($entities, 'error')) {
+            throw new PlatformException($this, $entities->message ?? 'Last.fm error '.$entities->error);
+        }
+
         switch ($type) {
             case Platform::SEARCH_TRACK:
-                $results = $entities->results->trackmatches->track;
+                $results = $entities->results->trackmatches->track ?? [];
                 break;
             case Platform::SEARCH_ALBUM:
-                $results = $entities->results->albummatches->album;
+                $results = $entities->results->albummatches->album ?? [];
                 break;
+            default:
+                $results = [];
         }
 
         // We actually don't pass the limit to the fetch()

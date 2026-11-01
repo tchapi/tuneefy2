@@ -47,10 +47,10 @@ final class Utils
         if (false === strpos($text, ' ')) {
             // If it's a single word, just return with the suffix
             return $out.$append;
-        } else {
-            // Else, we replace the last word with the suffix
-            return substr($out, 0, strrpos($out, ' ') + 1).$append;
         }
+
+        // Else, we replace the last word with the suffix
+        return substr($out, 0, strrpos($out, ' ') + 1).$append;
     }
 
     /*
