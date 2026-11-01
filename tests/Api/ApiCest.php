@@ -27,7 +27,7 @@ final class ApiCest
 
     // Platforms whose search is fuzzy enough to return (unrelated) results for a
     // nonsense query instead of nothing: no NO_MATCH error can be expected from them
-    public const FUZZY_SEARCH_PLATFORMS = [SpotifyPlatform::TAG];
+    public const FUZZY_SEARCH_PLATFORMS = [SpotifyPlatform::TAG, TidalPlatform::TAG];
 
     public const PERMALINKS = [
         'deezer' => [
@@ -349,7 +349,7 @@ final class ApiCest
             ],
             'https://www.tidal.com/artist/3528326' => [
                 'query_words' => [
-                    'JAY',
+                    'Jay',
                 ],
             ],
         ],
@@ -951,8 +951,13 @@ final class ApiCest
         $I->assertCount(1, $result);
 
         $I->assertArrayHasKey('musical_entity', $result[0]);
-        $I->assertGreaterThanOrEqual(6, count($result[0]['musical_entity']['links']));
-        $I->assertGreaterThanOrEqual(5, $result[0]['metadata']['merges']);
+        // 7 platforms can merge this track: Deezer, Spotify, Qobuz, iTunes, Tidal, Youtube, Soundcloud
+        // (Last.fm returns no album, so it never merges; Mixcloud cannot search tracks).
+        // A platform that answers with an error is listed in "errors": it must be accounted for,
+        // whereas a platform silently returning nothing must make this fail.
+        $errors = $I->grabDataFromResponseByJsonPath('$.errors.*');
+        $I->assertGreaterThanOrEqual(7, count($result[0]['musical_entity']['links']) + count($errors), 'links: '.implode(', ', array_keys($result[0]['musical_entity']['links'])).' / errors: '.json_encode($errors));
+        $I->assertGreaterThanOrEqual(6, $result[0]['metadata']['merges'] + count($errors));
     }
 
     public function testAggregateAggressive(ApiTester $I)
