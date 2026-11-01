@@ -1,0 +1,61 @@
+name: API tests
+
+# Runs the Codeception Api suite against the production API every day, to be
+# alerted when a music platform changes its API (plus the Unit suite).
+on:
+  schedule:
+    - cron: '0 7 * * *' # every day at 07:00 UTC
+  workflow_dispatch:
+
+jobs:
+  api:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: write # needed by the keepalive step to re-enable the schedule
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: ctype, iconv, intl, mbstring, curl
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist --no-scripts
+
+      - name: Write the test credentials
+        run: |
+          cat > .env.test.local <<EOT
+          LOG_ENABLED=0
+          TEST_API_CLIENT_ID=${{ secrets.TEST_API_CLIENT_ID }}
+          TEST_API_CLIENT_SECRET=${{ secrets.TEST_API_CLIENT_SECRET }}
+          EOT
+
+      - name: Unit tests
+        run: vendor/bin/codecept run Unit
+
+      - name: API tests (production)
+        id: api
+        continue-on-error: true
+        run: vendor/bin/codecept run Api --env production --steps
+
+      # The music platforms are sometimes slow to answer: retry once before failing
+      - name: API tests (production, retry)
+        if: steps.api.outcome == 'failure'
+        run: vendor/bin/codecept run Api --env production --steps
+
+      - name: Keep the scheduled workflow alive
+        # GitHub disables scheduled workflows after 60 days without commits
+        if: github.event_name == 'schedule'
+        uses: gautamkrishnar/keepalive-workflow@v2
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: codeception-output
+          path: tests/_output
+          if-no-files-found: ignore
