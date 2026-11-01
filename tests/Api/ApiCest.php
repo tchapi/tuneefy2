@@ -6,7 +6,6 @@ use App\Services\Platforms\DeezerPlatform;
 use App\Services\Platforms\ItunesPlatform;
 use App\Services\Platforms\LastFMPlatform;
 use App\Services\Platforms\MixcloudPlatform;
-use App\Services\Platforms\NapsterPlatform;
 use App\Services\Platforms\QobuzPlatform;
 use App\Services\Platforms\SoundcloudPlatform;
 use App\Services\Platforms\SpotifyPlatform;
@@ -391,25 +390,6 @@ final class ApiCest
         //         ],
         //     ],
         // ],
-        'napster' => [
-            'http://fr.napster.com/artist/ed-sheeran/album/shape-of-you/track/shape-of-you' => [
-                'query_words' => [
-                    'shape of you',
-                    'ed sheeran',
-                ],
-            ],
-            'http://fr.napster.com/artist/ed-sheeran/album/shape-of-you' => [
-                'query_words' => [
-                    'ed sheeran',
-                    'shape of you',
-                ],
-            ],
-            'http://fr.napster.com/artist/ed-sheeran' => [
-                'query_words' => [
-                    'ed sheeran',
-                ],
-            ],
-        ],
         // 'soundcloud' => [
         //     'https://soundcloud.com/robbabicz/pink-trees-out-now-on-bedrock' => [
         //         'musical_entity' => [
@@ -712,7 +692,6 @@ final class ApiCest
             MixcloudPlatform::TAG => new MixcloudPlatform('test', 'secret'),
             ItunesPlatform::TAG => new ItunesPlatform('test', 'secret'),
             TidalPlatform::TAG => new TidalPlatform('test', 'secret'),
-            NapsterPlatform::TAG => new NapsterPlatform('test', 'secret'),
         ];
 
         return $platforms;
@@ -753,7 +732,7 @@ final class ApiCest
 
         $platforms = $I->grabDataFromResponseByJsonPath('$.platforms.*');
 
-        $I->assertCount(10, $platforms);
+        $I->assertCount(9, $platforms);
 
         foreach ($platforms as $key => $platform) {
             $I->assertCount(7, $platform);
@@ -782,7 +761,7 @@ final class ApiCest
 
         $platforms = $I->grabDataFromResponseByJsonPath('$.platforms.*');
 
-        $I->assertCount(8, $platforms);
+        $I->assertCount(7, $platforms);
 
         foreach ($platforms as $key => $platform) {
             $I->assertCount(7, $platform);
@@ -972,8 +951,8 @@ final class ApiCest
         $I->assertCount(1, $result);
 
         $I->assertArrayHasKey('musical_entity', $result[0]);
-        $I->assertGreaterThan(7, $result[0]['musical_entity']['links']);
-        $I->assertGreaterThan(7, $result[0]['metadata']['merges']);
+        $I->assertGreaterThan(6, $result[0]['musical_entity']['links']);
+        $I->assertGreaterThan(6, $result[0]['metadata']['merges']);
     }
 
     public function testAggregateAggressive(ApiTester $I)

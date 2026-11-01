@@ -81,7 +81,6 @@ abstract class Platform implements GeneralPlatformInterface
         'itunes.apple.com:443:23.58.192.28',
         'ws.audioscrobbler.com:443:130.211.19.189',
         'api.mixcloud.com:443:216.119.155.235',
-        'api.napster.com:443:151.101.2.233',
         'www.qobuz.com:443:54.78.190.126',
         'api.soundcloud.com:443:18.245.253.65',
     ];

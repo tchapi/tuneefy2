@@ -100,9 +100,3 @@ services:
             $key: "%env(TIDAL_KEY)%"
             $secret: "%env(TIDAL_SECRET)%"
         tags: ['app.platform']
-
-    App\Services\Platforms\NapsterPlatform:
-        arguments:
-            $key: "%env(NAPSTER_KEY)%"
-            $secret: "%env(NAPSTER_SECRET)%"
-        tags: ['app.platform']

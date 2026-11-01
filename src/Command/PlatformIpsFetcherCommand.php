@@ -20,7 +20,6 @@ class PlatformIpsFetcherCommand extends Command
             'itunes.apple.com',
             'ws.audioscrobbler.com',
             'api.mixcloud.com',
-            'api.napster.com',
             'www.qobuz.com',
             'api.soundcloud.com',
         ];
