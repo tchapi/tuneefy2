@@ -9,7 +9,8 @@ doctrine:
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
 
-        schema_filter: ~^(?!stats_|_mv)$~
+        # Ignore the stats_* tables and the *_mv materialized views (raw SQL in the migrations, no entity)
+        schema_filter: ~^(?!stats_).*(?<!_mv)$~
     orm:
         enable_native_lazy_objects: true
         validate_xml_mapping: true

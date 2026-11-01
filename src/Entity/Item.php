@@ -12,6 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'intent', fields: ['intent'])]
 #[ORM\Index(name: 'track', fields: ['track'])]
 #[ORM\Index(name: 'signature', fields: ['signature'])]
+#[ORM\Index(name: 'client_id', columns: ['client_id'])]
+#[ORM\Index(name: 'created_at', columns: ['created_at'])]
+#[ORM\Index(name: 'expires_at', columns: ['expires_at'])]
 class Item
 {
     #[ORM\Id]
