@@ -295,7 +295,7 @@ final class ApiCest
                     'album' => [
                         'title' => 'Like a Prayer',
                         'artist' => 'Madonna',
-                        'picture' => 'https://resources.wimpmusic.com/images/4c8f70ce/ab37/4cee/8839/cb59fd953b8b/320x320.jpg',
+                        'picture' => 'https://resources.wimpmusic.com/images/9671fc45/a7de/4767/a31d/2f63e429a3e5/320x320.jpg',
                         'safe_title' => 'Like a Prayer',
                         'extra_info' => [
                             'is_cover' => false,
