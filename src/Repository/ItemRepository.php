@@ -40,7 +40,7 @@ class ItemRepository extends ServiceEntityRepository
             ->andWhere('i.expiresAt IS NULL')
             ->andWhere('i.intent IS NULL')
             ->getQuery()
-            ->getSingleResult();
+            ->getOneOrNullResult();
 
         if (null === $item) {
             return null;

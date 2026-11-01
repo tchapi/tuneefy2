@@ -66,7 +66,7 @@ final class StatsService
     {
         $statement = $this->connection->prepare('INSERT INTO `stats_viewing` (`item_id`, `referer`, `viewed_at`) VALUES (:item_id, :referer, NOW())');
 
-        $referer = isset($_SERVER['HTTP_REFERER']) ?: null;
+        $referer = $_SERVER['HTTP_REFERER'] ?? null;
 
         $statement->bindValue('item_id', $item_id);
         $statement->bindValue('referer', $referer);
