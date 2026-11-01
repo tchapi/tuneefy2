@@ -73,18 +73,6 @@ abstract class Platform implements GeneralPlatformInterface
     protected $terms = [];
     protected $options = [];
 
-    // For hosts that resolve slooooooowly, add the IP here. Quite dangerous but helpful
-    // It's better to do this directly on the target server that will run the tuneefy api
-    public const RESOLVED_IPS = [
-        'listen.tidal.com:443:18.165.227.109',
-        'api.deezer.com:443:23.72.248.223',
-        'itunes.apple.com:443:23.58.192.28',
-        'ws.audioscrobbler.com:443:130.211.19.189',
-        'api.mixcloud.com:443:216.119.155.235',
-        'www.qobuz.com:443:54.78.190.126',
-        'api.soundcloud.com:443:18.245.253.65',
-    ];
-
     public const CONNECT_TIMEOUT = 2000;
     public const CURL_TIMEOUT = 2000;
     public const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36';
@@ -214,7 +202,6 @@ abstract class Platform implements GeneralPlatformInterface
             CURLOPT_CONNECTTIMEOUT => static::CONNECT_TIMEOUT,
             CURLOPT_TIMEOUT_MS => static::CURL_TIMEOUT,
             CURLOPT_ENCODING => '',
-            CURLOPT_RESOLVE => static::RESOLVED_IPS,
             CURLOPT_USERAGENT => static::USER_AGENT,
         ]);
 

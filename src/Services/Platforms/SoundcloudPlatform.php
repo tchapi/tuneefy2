@@ -120,9 +120,9 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
     {
         $entities = $response->data;
 
-        if (null === $entities || !is_array($entities) || (is_object($entities) && property_exists($entities, 'code') && 401 === $entities->code)) {
-            // 401 = unauthorized, probably a rate limit
-            return [];
+        if (null === $entities || !is_array($entities)) {
+            // e.g. {"code": 401, "message": "..."}: unauthorized, rate limited or expired credentials
+            throw new PlatformException($this, is_object($entities) && property_exists($entities, 'message') ? $entities->message : null);
         }
 
         // We actually don't pass the limit to the fetch()

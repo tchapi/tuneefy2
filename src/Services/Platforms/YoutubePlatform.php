@@ -132,12 +132,12 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
 
     public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
-        // Catch errors
+        // Catch errors (invalid key, quota exceeded, ...)
         if (property_exists($response->data, 'error')) {
-            return [];
+            throw new PlatformException($this, $response->data->error->message ?? null);
         }
 
-        $entities = $response->data->items;
+        $entities = $response->data->items ?? [];
 
         // We actually don't pass the limit to the fetch()
         // request since it's not really useful, in fact

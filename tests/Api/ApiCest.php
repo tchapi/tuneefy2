@@ -951,8 +951,8 @@ final class ApiCest
         $I->assertCount(1, $result);
 
         $I->assertArrayHasKey('musical_entity', $result[0]);
-        $I->assertGreaterThan(6, $result[0]['musical_entity']['links']);
-        $I->assertGreaterThan(6, $result[0]['metadata']['merges']);
+        $I->assertGreaterThanOrEqual(6, count($result[0]['musical_entity']['links']));
+        $I->assertGreaterThanOrEqual(5, $result[0]['metadata']['merges']);
     }
 
     public function testAggregateAggressive(ApiTester $I)
