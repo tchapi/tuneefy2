@@ -37,7 +37,7 @@ gulp.task('twig', function (done) {
 gulp.task('sass', function (done) {
   pump([
     gulp.src(resourcesFolder + 'scss/styles.scss'),
-    sass({ outputStyle: 'compressed' }).on('error', sass.logError),
+    sass({ style: 'compressed' }).on('error', sass.logError),
     gulp.dest(buildFolder + 'css')
   ],
     log,
@@ -48,7 +48,7 @@ gulp.task('sass', function (done) {
 gulp.task('embed', function (done) {
   pump([
     gulp.src(resourcesFolder + 'scss/partials/embed.scss'),
-    sass({ outputStyle: 'compressed' }).on('error', sass.logError),
+    sass({ style: 'compressed' }).on('error', sass.logError),
     gulp.dest(buildFolder + 'css')
   ],
     log,
@@ -60,14 +60,14 @@ gulp.task('widget', function (done) {
   pump([
     gulp.src([resourcesFolder + 'scss/partials/reset.scss', resourcesFolder + 'widget/widget.scss']),
     concat('widget.scss'),
-    sass({ outputStyle: 'compressed' }).on('error', sass.logError),
+    sass({ style: 'compressed' }).on('error', sass.logError),
     gulp.dest(buildFolder + 'css')
   ],
     log
   );
   pump([
     gulp.src(resourcesFolder + 'widget/widget-overlay.scss'),
-    sass({ outputStyle: 'compressed' }).on('error', sass.logError),
+    sass({ style: 'compressed' }).on('error', sass.logError),
     gulp.dest(buildFolder + 'css')
   ],
     log

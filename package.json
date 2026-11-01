@@ -22,12 +22,12 @@
   "homepage": "https://github.com/tchapi/tuneefy2#readme",
   "devDependencies": {
     "aglio": "^2.3.0",
-    "gulp": "^4.0.2",
+    "gulp": "^5.0.1",
     "gulp-concat": "^2.6.1",
-    "gulp-sass": "^5.1.0",
+    "gulp-sass": "^6.0.1",
     "gulp-uglify": "^3.0.2",
-    "pump": "^3.0",
-    "sass": "^1.54.9",
-    "standard": "^17.0.0"
+    "pump": "^3.0.4",
+    "sass": "^1.107.1",
+    "standard": "^17.1.2"
   }
 }
