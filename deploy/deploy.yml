@@ -129,4 +129,7 @@
         recurse: true
         mode: '0775'
     - name: Keep the last 3 releases only
+      # root: the cache of old releases contains files written by www-data
+      become: true
+      become_user: root
       shell: ls -1dt {{ project_path }}/releases/*/ | tail -n +4 | xargs -r rm -rf
