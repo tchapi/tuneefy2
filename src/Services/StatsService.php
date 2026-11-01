@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Dataclass\MusicalEntity\Entities\Album;
 use App\Dataclass\MusicalEntity\Entities\Track;
+use App\Utils\LegacyEncoding;
 use Doctrine\Persistence\ManagerRegistry;
 
 final class StatsService
@@ -126,9 +127,14 @@ final class StatsService
                 $row['object']
             );
 
+            $entity = unserialize($migratedObject, ['allowed_classes' => [Track::class, Album::class]]);
+            if (\is_object($entity)) {
+                LegacyEncoding::repair($entity);
+            }
+
             $result[$row['type']] = [
                 'id' => $row['id'],
-                'entity' => unserialize($migratedObject, ['allowed_classes' => [Track::class, Album::class]]),
+                'entity' => $entity,
             ];
         }
 

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Dataclass\MusicalEntity\MusicalEntity;
+use App\Utils\LegacyEncoding;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: "App\Repository\ItemRepository")]
@@ -72,6 +73,10 @@ class Item
         );
 
         $objectAsMusicalEntity = unserialize($migratedObject);
+
+        if ($objectAsMusicalEntity instanceof MusicalEntity) {
+            LegacyEncoding::repair($objectAsMusicalEntity);
+        }
 
         return $objectAsMusicalEntity;
     }
