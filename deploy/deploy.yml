@@ -51,10 +51,11 @@
         dest={{ release_path }}/var/log
         state=link
     - name: Install composer dependencies
-      composer:
-        command: install
-        working_dir: "{{ release_path }}"
-        prefer_dist: yes
+      command: composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction --no-progress
+      args:
+        chdir: "{{ release_path }}"
+      environment:
+        APP_ENV: prod
     - name: Run database migrations
       command: php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
       args:
