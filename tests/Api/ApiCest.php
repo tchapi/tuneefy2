@@ -480,10 +480,10 @@ final class ApiCest
                     'type' => 'track',
                     'title' => 'London Calling',
                     'album' => [
-                        'title' => 'The Singles',
+                        'title' => 'London Calling',
                         'artist' => 'The Clash',
-                        'picture' => 'https://lastfm.freetls.fastly.net/i/u/174s/680af088e127e474fc536a5cfad36f3e.png',
-                        'safe_title' => 'The Singles',
+                        'picture' => 'https://lastfm-img.freetls.fastly.net/i/u/174s/680af088e127e474fc536a5cfad36f3e.png',
+                        'safe_title' => 'London Calling',
                         'extra_info' => [
                             'is_cover' => false,
                             'is_remix' => false,
@@ -514,8 +514,7 @@ final class ApiCest
                     'type' => 'album',
                     'title' => 'London Calling',
                     'artist' => 'The Clash',
-                    'picture' => 'https://lastfm.freetls.fastly.net/i/u/174s/680af088e127e474fc536a5cfad36f3e.jpg',
-                    'safe_title' => 'The Singles',
+                    'picture' => 'https://lastfm-img.freetls.fastly.net/i/u/174s/680af088e127e474fc536a5cfad36f3e.jpg',
                     'extra_info' => [
                         'is_cover' => false,
                         'is_remix' => false,
