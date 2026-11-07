@@ -11,6 +11,8 @@ use App\Services\Platforms\SoundcloudPlatform;
 use App\Services\Platforms\SpotifyPlatform;
 use App\Services\Platforms\TidalPlatform;
 use App\Services\Platforms\YoutubePlatform;
+use Codeception\Attribute\Group;
+use Codeception\Scenario;
 use Codeception\Util\HttpCode;
 use Tests\Support\ApiTester;
 
@@ -714,6 +716,53 @@ final class ApiCest
         $this->token = $response['access_token'];
     }
 
+    // Needs no music platform credentials: also run on every push by the CI
+    #[Group('offline')]
+    public function testApiRequiresAuthentication(ApiTester $I)
+    {
+        $I->deleteHeader('Authorization');
+        $I->sendGet('/platforms');
+        $I->seeResponseCodeIs(HttpCode::UNAUTHORIZED);
+
+        $I->amBearerAuthenticated('not-a-valid-token');
+        $I->sendGet('/platforms');
+        $I->seeResponseCodeIs(HttpCode::UNAUTHORIZED);
+    }
+
+    // The website calls the API with its session (XHR + cookie) instead of a token:
+    // ApiBypassSubscriber then issues a short-lived token for the bypass client.
+    // Needs no music platform credentials: also run on every push by the CI
+    #[Group('offline')]
+    public function testWebsiteSessionBypassesAuthentication(ApiTester $I, Scenario $scenario)
+    {
+        $websiteUrl = in_array('production', explode(',', (string) $scenario->current('env')), true)
+            ? 'https://tuneefy.com/'
+            : ($_ENV['TEST_WEBSITE_URL'] ?? 'http://127.0.0.1:9999/');
+
+        // Visiting the home page starts a session flagged for bypass
+        $I->deleteHeader('Authorization');
+        $I->sendGet($websiteUrl);
+        $I->seeResponseCodeIs(HttpCode::OK);
+        $setCookie = (string) $I->grabHttpHeader('Set-Cookie');
+        // "tuneefy" in production, "MOCKSESSID" with the test environment's mock session storage
+        $I->assertMatchesRegularExpression('/^[A-Za-z_]+=[^;]+/', $setCookie, 'The home page should start a session');
+        preg_match('/^[A-Za-z_]+=[^;]+/', $setCookie, $sessionCookie);
+
+        // Same session, XHR: no token needed
+        $I->haveHttpHeader('Cookie', $sessionCookie[0]);
+        $I->haveHttpHeader('X-Requested-With', 'XMLHttpRequest');
+        $I->sendGet('/platforms');
+        $I->seeResponseCodeIs(HttpCode::OK);
+        $I->seeResponseJsonMatchesJsonPath('$.platforms');
+
+        // Same session but not an XHR: the bypass must not apply
+        $I->deleteHeader('X-Requested-With');
+        $I->sendGet('/platforms');
+        $I->seeResponseCodeIs(HttpCode::UNAUTHORIZED);
+    }
+
+    // Needs no music platform credentials: also run on every push by the CI
+    #[Group('offline')]
     public function testDocumentationRedirect(ApiTester $I)
     {
         $I->stopFollowingRedirects();
@@ -721,6 +770,8 @@ final class ApiCest
         $I->seeResponseCodeIs(HttpCode::MOVED_PERMANENTLY);
     }
 
+    // Needs no music platform credentials: also run on every push by the CI
+    #[Group('offline')]
     public function testListPlatforms(ApiTester $I)
     {
         $this->sendGET($I, '/platforms');
@@ -745,6 +796,8 @@ final class ApiCest
         }
     }
 
+    // Needs no music platform credentials: also run on every push by the CI
+    #[Group('offline')]
     public function testListPlatformsWithBadType(ApiTester $I)
     {
         $this->sendGET($I, '/platforms?type=coucou');
@@ -752,6 +805,8 @@ final class ApiCest
         $I->seeResponseJsonMatchesJsonPath('$.errors');
     }
 
+    // Needs no music platform credentials: also run on every push by the CI
+    #[Group('offline')]
     public function testListPlatformsWithType(ApiTester $I)
     {
         $this->sendGET($I, '/platforms?type=streaming');
@@ -809,6 +864,8 @@ final class ApiCest
         }
     }
 
+    // Needs no music platform credentials: also run on every push by the CI
+    #[Group('offline')]
     public function testLookupWithNoPermalink(ApiTester $I)
     {
         $this->sendGET($I, '/lookup');
@@ -854,6 +911,8 @@ final class ApiCest
         $I->assertCount(1, $result);
     }
 
+    // Needs no music platform credentials: also run on every push by the CI
+    #[Group('offline')]
     public function testSearchTrackWithNoQuery(ApiTester $I)
     {
         $platforms = $this->getAllPlatforms();
@@ -908,6 +967,8 @@ final class ApiCest
         }
     }
 
+    // Needs no music platform credentials: also run on every push by the CI
+    #[Group('offline')]
     public function testSearchAlbumWithNoQuery(ApiTester $I)
     {
         $platforms = $this->getAllPlatforms();
@@ -1009,6 +1070,8 @@ final class ApiCest
         $I->assertArrayHasKey('spotify', $result[0]['musical_entity']['links']);
     }
 
+    // Needs no music platform credentials: also run on every push by the CI
+    #[Group('offline')]
     public function testAggregateTrackBadQuery(ApiTester $I)
     {
         $this->sendGET($I, '/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY_ERROR.'&limit=1');

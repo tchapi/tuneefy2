@@ -59,15 +59,15 @@ class FrontendController extends AbstractController
                 'query' => $searchQuery,
                 'default_platforms' => $defaultPlatforms,
             ]);
-        } else {
-            return $this->render('home.html.twig', [
-                'query' => $searchQuery,
-                'platforms' => $allPlatforms,
-                'default_platforms' => $defaultPlatforms,
-                'last_shared' => $hot,
-                'most_viewed' => $mostViewed,
-            ]);
         }
+
+        return $this->render('home.html.twig', [
+            'query' => $searchQuery,
+            'platforms' => $allPlatforms,
+            'default_platforms' => $defaultPlatforms,
+            'last_shared' => $hot,
+            'most_viewed' => $mostViewed,
+        ]);
     }
 
     #[Route('/about', name: 'about')]
@@ -194,16 +194,15 @@ class FrontendController extends AbstractController
             // Override, just to get the page in JSON
             if ('json' === $format) {
                 return new JsonResponse($item->toArray());
-            } else {
-                return $this->render('item.'.$type.'.html.twig', [
-                    'uid' => $uid,
-                    'item' => $item,
-                    'embed' => null !== $embed,
-                ]);
             }
-        } else {
-            throw $this->createNotFoundException('Could not get item from database');
+
+            return $this->render('item.'.$type.'.html.twig', [
+                'uid' => $uid,
+                'item' => $item,
+                'embed' => null !== $embed,
+            ]);
         }
+        throw $this->createNotFoundException('Could not get item from database');
     }
 
     #[Route('/s/{type}/{uid}/listen/{platform}/{i<[0-9]>}', name: 'listen')]

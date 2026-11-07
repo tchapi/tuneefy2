@@ -118,9 +118,9 @@ class Track extends MusicalEntity
     {
         if (true === $aggressive) {
             return Utils::flatten([$this->getExtraInfoHash(), $this->album->getArtist(), $this->safe_track_title]);
-        } else {
-            return Utils::flatten([$this->getExtraInfoHash(), $this->album->getArtist(), $this->album->getSafeTitle(), $this->safe_track_title]);
         }
+
+        return Utils::flatten([$this->getExtraInfoHash(), $this->album->getArtist(), $this->album->getSafeTitle(), $this->safe_track_title]);
     }
 
     public static function merge(Track $a, Track $b, bool $force = false): Track

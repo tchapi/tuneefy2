@@ -101,9 +101,9 @@ class Album extends MusicalEntity
     {
         if (true === $aggressive) {
             return Utils::flatten([$this->getExtraInfoHash(), $this->safe_title]);
-        } else {
-            return Utils::flatten([$this->getExtraInfoHash(), $this->artist, $this->safe_title]);
         }
+
+        return Utils::flatten([$this->getExtraInfoHash(), $this->artist, $this->safe_title]);
     }
 
     public static function merge(Album $a, Album $b, bool $force = false): Album

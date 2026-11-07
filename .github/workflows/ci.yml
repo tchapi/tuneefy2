@@ -1,8 +1,10 @@
 name: CI
 
-# Runs on every push: builds the database from the migrations, runs the
-# commands that cron runs on the server, then the Unit suite. No secret needed.
-# The Api suite (which needs the music platforms) is in api-tests.yml.
+# Runs on every push, without any secret: lints, code style, the database built
+# from the migrations, the commands that cron runs on the server, the Unit and
+# Acceptance suites, and the Api tests that need no music platform credentials
+# (group "offline"). The full Api suite is run daily against production by
+# api-tests.yml.
 on:
   push:
     branches: [main]
@@ -57,8 +59,20 @@ jobs:
           DATABASE_URL="mysql://root:root@127.0.0.1:3306/tuneefy?serverVersion=10.11.2-MariaDB&charset=utf8mb4"
           EOT
 
+      - name: Lint the container, templates and config
+        run: |
+          php bin/console lint:container --env=test
+          php bin/console lint:twig templates
+          php bin/console lint:yaml config
+
+      - name: Code style
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff --config=.php-cs-fixer.php
+
       - name: Run the migrations on an empty database
         run: php bin/console doctrine:migrations:migrate --env=test --no-interaction
+
+      - name: Check the entity mapping against the migrated schema
+        run: php bin/console doctrine:schema:validate --env=test
 
       - name: Run the cron commands
         run: |
@@ -68,3 +82,29 @@ jobs:
 
       - name: Unit tests
         run: vendor/bin/codecept run Unit
+
+      # Same setup as the README's "Acceptance and Api tests, locally" section
+      - name: Start the test server
+        run: |
+          php bin/console league:oauth2-server:generate-keypair --env=test
+          php bin/console league:oauth2-server:create-client --env=test "Test client" test_id test_secret --grant-type client_credentials --scope api
+          APP_ENV=test php -d variables_order=EGPCS -S 127.0.0.1:9999 -t public > /tmp/server.log 2>&1 &
+          for i in $(seq 1 20); do curl -sf -o /dev/null http://localhost:9999/ && break; sleep 0.5; done
+          curl -sf -o /dev/null http://localhost:9999/
+
+      - name: Acceptance tests
+        run: vendor/bin/codecept run Acceptance
+
+      - name: Api tests needing no platform credentials
+        run: vendor/bin/codecept run Api -g offline
+
+      - name: Server log
+        if: failure()
+        run: cat /tmp/server.log
+
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name: codeception-output
+          path: tests/_output
+          if-no-files-found: ignore

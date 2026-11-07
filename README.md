@@ -54,6 +54,9 @@ and run the suites:
 
     vendor/bin/codecept run --steps
 
+The Api tests that need no platform credentials are in the `offline` group
+(`vendor/bin/codecept run Api -g offline`): the CI runs them on every push.
+
 > Sometimes a platform fails to respond correctly due to network latencies or such. Re-run the tests in this case, it should pass fine the second time.
 
 #### Api tests against production
