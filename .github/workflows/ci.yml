@@ -1,10 +1,11 @@
 name: CI
 
-# Runs on every push, without any secret: lints, code style, the database built
-# from the migrations, the commands that cron runs on the server, the Unit and
-# Acceptance suites, and the Api tests that need no music platform credentials
-# (group "offline"). The full Api suite is run daily against production by
-# api-tests.yml.
+# Runs on every push, without any secret, as two parallel jobs:
+#  - static: lints, code style and the Unit suite
+#  - app:    the database built from the migrations, the commands that cron runs
+#            on the server, the Acceptance suite and the Api tests that need no
+#            music platform credentials (group "offline")
+# The full Api suite is run daily against production by api-tests.yml.
 on:
   push:
     branches: [main]
@@ -12,7 +13,45 @@ on:
   workflow_dispatch:
 
 jobs:
-  ci:
+  static:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v7
+
+      # composer.lock requires PHP >= 8.4. Newer runner images ship it; older ones
+      # get it from the Ubuntu PHP PPA (no third-party action involved).
+      - name: Ensure PHP >= 8.4
+        run: |
+          if php -r 'exit(version_compare(PHP_VERSION, "8.4.0", ">=") ? 0 : 1);'; then
+            echo "Using the runner's PHP $(php -r 'echo PHP_VERSION;')"
+          else
+            sudo add-apt-repository -y ppa:ondrej/php
+            sudo apt-get update -q
+            sudo apt-get install -y -q php8.4-cli php8.4-curl php8.4-mbstring php8.4-xml php8.4-intl php8.4-mysql
+            sudo update-alternatives --set php /usr/bin/php8.4
+          fi
+          php -v && composer --version
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist --no-scripts
+
+      - name: Lint the container, templates and config
+        run: |
+          php bin/console lint:container --env=test
+          php bin/console lint:twig templates
+          php bin/console lint:yaml config
+
+      - name: Code style
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff --config=.php-cs-fixer.php
+
+      - name: Unit tests
+        run: vendor/bin/codecept run Unit
+
+  app:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -36,8 +75,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # composer.lock requires PHP >= 8.4. Newer runner images ship it; older ones
-      # get it from the Ubuntu PHP PPA (no third-party action involved).
       - name: Ensure PHP >= 8.4
         run: |
           if php -r 'exit(version_compare(PHP_VERSION, "8.4.0", ">=") ? 0 : 1);'; then
@@ -59,15 +96,6 @@ jobs:
           DATABASE_URL="mysql://root:root@127.0.0.1:3306/tuneefy?serverVersion=10.11.2-MariaDB&charset=utf8mb4"
           EOT
 
-      - name: Lint the container, templates and config
-        run: |
-          php bin/console lint:container --env=test
-          php bin/console lint:twig templates
-          php bin/console lint:yaml config
-
-      - name: Code style
-        run: vendor/bin/php-cs-fixer fix --dry-run --diff --config=.php-cs-fixer.php
-
       - name: Run the migrations on an empty database
         run: php bin/console doctrine:migrations:migrate --env=test --no-interaction
 
@@ -79,9 +107,6 @@ jobs:
           php bin/console tuneefy:update-stats --env=test
           php bin/console tuneefy:clean-expired-intents --env=test
           php bin/console league:oauth2-server:clear-expired-tokens --env=test
-
-      - name: Unit tests
-        run: vendor/bin/codecept run Unit
 
       # Same setup as the README's "Acceptance and Api tests, locally" section
       - name: Start the test server
