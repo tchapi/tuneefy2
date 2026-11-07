@@ -7,6 +7,10 @@ use App\Services\Platforms\Interfaces\ScrobblingPlatformInterface;
 use App\Services\Platforms\Interfaces\WebStoreInterface;
 use App\Services\Platforms\Interfaces\WebStreamingPlatformInterface;
 use App\Utils\Utils;
+use Psr\Cache\CacheItemPoolInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Contracts\Service\Attribute\Required;
 
 enum PlatformType: string
 {
@@ -75,6 +79,30 @@ abstract class Platform implements GeneralPlatformInterface
 
     public const CONNECT_TIMEOUT = 2000;
     public const CURL_TIMEOUT = 2000;
+
+    // Platform responses are cached: searches for a while, lookups (stable data) longer
+    public const SEARCH_CACHE_TTL = 3600;
+    public const LOOKUP_CACHE_TTL = 21600;
+
+    protected ?CacheItemPoolInterface $cache = null;
+    protected ?LoggerInterface $logger = null;
+
+    #[Required]
+    public function setCache(CacheItemPoolInterface $cache): void
+    {
+        $this->cache = $cache;
+    }
+
+    #[Required]
+    public function setLogger(#[Autowire(service: 'monolog.logger.platforms')] LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
+    }
+
+    public function logFailure(string $what, ?string $details = null): void
+    {
+        $this->logger?->warning(sprintf('%s: %s failed%s', static::NAME, $what, $details ? ' ('.$details.')' : ''));
+    }
     public const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36';
 
     /**
@@ -177,7 +205,10 @@ abstract class Platform implements GeneralPlatformInterface
         return $result;
     }
 
-    private function prepareCall(int $type, string $query, ?string $countryCode = null)
+    /**
+     * @return array{url: string, headers: string[], post: ?string, cacheKey: string}
+     */
+    private function buildRequest(int $type, string $query, ?string $countryCode = null): array
     {
         $url = $this->endpoints[$type];
 
@@ -194,26 +225,64 @@ abstract class Platform implements GeneralPlatformInterface
         $data = $this->addContextOptions($data, $countryCode);
         $headers = $this->addContextHeaders();
 
+        if (self::METHOD_POST === static::API_METHOD) {
+            $post = http_build_query($data);
+        } else {
+            $post = null;
+            $url .= $data ? '?'.http_build_query($data) : '';
+        }
+
+        return [
+            'url' => $url,
+            'headers' => $headers,
+            'post' => $post,
+            'cacheKey' => 'platform_response_'.md5(static::TAG.'|'.$type.'|'.$url.'|'.$post),
+        ];
+    }
+
+    private function prepareCall(array $request): \CurlHandle
+    {
         $ch = curl_init();
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_HTTPHEADER => $headers,
+            CURLOPT_HTTPHEADER => $request['headers'],
             CURLOPT_FOLLOWLOCATION => 1, // Some APIs redirect to content with a 3XX code
             CURLOPT_CONNECTTIMEOUT => static::CONNECT_TIMEOUT,
             CURLOPT_TIMEOUT_MS => static::CURL_TIMEOUT,
             CURLOPT_ENCODING => '',
             CURLOPT_USERAGENT => static::USER_AGENT,
+            CURLOPT_URL => $request['url'],
         ]);
 
-        if (self::METHOD_GET === static::API_METHOD) {
-            curl_setopt($ch, CURLOPT_URL, $url.($data ? '?'.http_build_query($data) : ''));
-        } elseif (self::METHOD_POST === static::API_METHOD) {
-            curl_setopt($ch, CURLOPT_URL, $url);
+        if (null !== $request['post']) {
             curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $request['post']);
         }
 
         return $ch;
+    }
+
+    private function getCachedResponse(array $request): ?string
+    {
+        if (null === $this->cache) {
+            return null;
+        }
+
+        $item = $this->cache->getItem($request['cacheKey']);
+
+        return $item->isHit() ? $item->get() : null;
+    }
+
+    // Only successful answers are kept: errors, rate limits and timeouts must be retried
+    private function cacheResponse(array $request, \CurlHandle $ch, string $response, int $type): void
+    {
+        if (null === $this->cache || '' === $response || 200 !== curl_getinfo($ch, CURLINFO_RESPONSE_CODE)) {
+            return;
+        }
+
+        $isSearch = \in_array($type, [self::SEARCH_TRACK, self::SEARCH_ALBUM], true);
+        $item = $this->cache->getItem($request['cacheKey'])->set($response)->expiresAfter($isSearch ? static::SEARCH_CACHE_TTL : static::LOOKUP_CACHE_TTL);
+        $this->cache->save($item);
     }
 
     private function postProcessResult(string $response)
@@ -246,13 +315,23 @@ abstract class Platform implements GeneralPlatformInterface
 
     protected static function fetch(Platform $platform, int $type, string $query, ?string $countryCode = null)
     {
-        $ch = $platform->prepareCall($type, $query, $countryCode);
+        $request = $platform->buildRequest($type, $query, $countryCode);
+
+        if (null !== ($cached = $platform->getCachedResponse($request))) {
+            return $platform->postProcessResult($cached);
+        }
+
+        $ch = $platform->prepareCall($request);
         $response = curl_exec($ch);
 
         // curl_exec() returns false on failure (not null)
         if (false === $response || null === $response) {
+            $platform->logFailure('request', curl_error($ch));
+
             throw new PlatformException($platform, curl_error($ch));
         }
+
+        $platform->cacheResponse($request, $ch, $response, $type);
 
         return $platform->postProcessResult($response);
     }
@@ -263,16 +342,22 @@ abstract class Platform implements GeneralPlatformInterface
 
         if (null === $response || false === $response->data) {
             // HTTP error or undecodable payload
+            $platform->logFailure('search', 'empty or undecodable response');
+
             throw new PlatformException($platform);
         }
 
         try {
             return $platform->extractSearchResults($response, $type, $query, $limit, $mode);
         } catch (PlatformException $e) {
+            $platform->logFailure('search', $e->getMessage());
+
             throw $e;
         } catch (\Throwable $e) {
             // The platform answered something we do not understand (API change, error payload, ...):
             // this must surface as a FETCH_PROBLEM for this platform, not as a 500 for the whole API
+            $platform->logFailure('search', $e->getMessage());
+
             throw new PlatformException($platform, $e->getMessage());
         }
     }
@@ -284,38 +369,66 @@ abstract class Platform implements GeneralPlatformInterface
         $handles = [];
 
         foreach ($platforms as $platform) {
-            $ch = $platform->prepareCall($type, $query, $countryCode);
-            curl_multi_add_handle($mh, $ch);
+            $request = $platform->buildRequest($type, $query, $countryCode);
+            $cached = $platform->getCachedResponse($request);
+            $ch = null;
+
+            if (null === $cached) {
+                $ch = $platform->prepareCall($request);
+                curl_multi_add_handle($mh, $ch);
+            }
+
             $handles[] = [
                 'handle' => $ch,
                 'platform' => $platform,
+                'request' => $request,
+                'cached' => $cached,
             ];
         }
 
+        // Wait for the transfers without spinning the CPU
         $running = null;
         do {
-            curl_multi_exec($mh, $running);
-        } while ($running > 0);
+            $status = curl_multi_exec($mh, $running);
+            if ($running > 0) {
+                curl_multi_select($mh, 1.0);
+            }
+        } while ($running > 0 && CURLM_OK === $status);
 
         // Get the actual content
         $results = [];
         $errors = [];
         foreach ($handles as $object) {
-            $response = curl_multi_getcontent($object['handle']); // get the content
-            curl_multi_remove_handle($mh, $object['handle']); // remove the handle
+            $platform = $object['platform'];
 
-            $response = $object['platform']->postProcessResult($response);
+            if (null !== $object['cached']) {
+                $response = $object['cached'];
+            } else {
+                $response = curl_multi_getcontent($object['handle']); // get the content
+                curl_multi_remove_handle($mh, $object['handle']); // remove the handle
+
+                if (\is_string($response)) {
+                    $platform->cacheResponse($object['request'], $object['handle'], $response, $type);
+                } else {
+                    $platform->logFailure('aggregate request', curl_error($object['handle']));
+                    $response = '';
+                }
+            }
+
+            $response = $platform->postProcessResult($response);
 
             if (null === $response || false === $response->data) {
-                $errors[] = ['FETCH_PROBLEM' => (new PlatformException($object['platform']))->getMessage()];
+                $platform->logFailure('aggregate', 'empty or undecodable response');
+                $errors[] = ['FETCH_PROBLEM' => (new PlatformException($platform))->getMessage()];
                 continue;
             }
 
             try {
-                $result = $object['platform']->extractSearchResults($response, $type, $query, $limit, $mode);
+                $result = $platform->extractSearchResults($response, $type, $query, $limit, $mode);
             } catch (\Throwable $e) {
                 // Same as above: one misbehaving platform must not break the whole aggregation
-                $errors[] = ['FETCH_PROBLEM' => (new PlatformException($object['platform']))->getMessage()];
+                $platform->logFailure('aggregate', $e->getMessage());
+                $errors[] = ['FETCH_PROBLEM' => (new PlatformException($platform))->getMessage()];
                 continue;
             }
 

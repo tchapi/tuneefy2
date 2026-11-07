@@ -27,17 +27,42 @@ To build the assets and the API documentation, I use **yarn** and some modules.
 
 The tests are under the `./tests` folder and I use **Codeception** to run them.
 
-Just run :
+#### Unit tests
+
+    vendor/bin/codecept run Unit
+
+#### Acceptance and Api tests, locally
+
+The Acceptance suite drives the website and the Api suite the API, both served by a local
+test server in the `test` environment (database `tuneefy_test`, OAuth client `test_id`).
+
+One-time setup, with a MariaDB reachable through the `DATABASE_URL` of `.env`:
+
+    php bin/console doctrine:database:create --env=test --if-not-exists
+    php bin/console doctrine:migrations:migrate --env=test -n
+    php bin/console league:oauth2-server:generate-keypair --env=test
+    php bin/console league:oauth2-server:create-client --env=test "Test client" test_id test_secret --grant-type client_credentials --scope api
+
+The Api suite queries the real music platforms: put the platform credentials (from the
+server's `.env.local`) in `.env.test.local`, which is git-ignored, to test in real conditions.
+
+Then start the test server (the website is routed on `localhost`, the API on `127.0.0.1`):
+
+    APP_ENV=test php -d variables_order=EGPCS -S 127.0.0.1:9999 -t public
+
+and run the suites:
 
     vendor/bin/codecept run --steps
 
-Beforehand, do not forget to launch a development web server so that the functional tests have an endpoint to test:
-
-    symfony server:start --port 9999
-
-There should be 40 tests containing 697 assertions.
-
 > Sometimes a platform fails to respond correctly due to network latencies or such. Re-run the tests in this case, it should pass fine the second time.
+
+#### Api tests against production
+
+The GitHub Actions workflow runs the Api suite against the production API every day. To do the
+same by hand, put the production test client credentials in `.env.test.local`
+(`TEST_API_CLIENT_ID`, `TEST_API_CLIENT_SECRET`) and run:
+
+    vendor/bin/codecept run Api --env production
 
 ### API
 

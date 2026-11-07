@@ -950,13 +950,24 @@ final class ApiCest
         $I->assertCount(1, $result);
 
         $I->assertArrayHasKey('musical_entity', $result[0]);
-        // 7 platforms can merge this track: Deezer, Spotify, Qobuz, iTunes, Tidal, Youtube, Soundcloud
-        // (Last.fm returns no album, so it never merges; Mixcloud cannot search tracks).
-        // A platform that answers with an error is listed in "errors": it must be accounted for,
-        // whereas a platform silently returning nothing must make this fail.
+        // Default merging is on artist, album and title: only the platforms returning an album
+        // can merge into this track (Deezer, iTunes, Qobuz, Spotify, Tidal). A platform that
+        // answers with an error is listed in "errors" and accounted for, whereas a platform
+        // silently returning nothing must make this fail.
         $errors = $I->grabDataFromResponseByJsonPath('$.errors.*');
-        $I->assertGreaterThanOrEqual(7, count($result[0]['musical_entity']['links']) + count($errors), 'links: '.implode(', ', array_keys($result[0]['musical_entity']['links'])).' / errors: '.json_encode($errors));
-        $I->assertGreaterThanOrEqual(6, $result[0]['metadata']['merges'] + count($errors));
+        $mergeable = ['Deezer', 'iTunes', 'Qobuz', 'Spotify', 'Tidal'];
+        $mergeableErrors = count(array_filter($errors, fn ($e) => preg_match('/The ('.implode('|', $mergeable).') platform/', implode(' ', $e))));
+        $I->assertGreaterThanOrEqual(5, count($result[0]['musical_entity']['links']) + $mergeableErrors, 'links: '.implode(', ', array_keys($result[0]['musical_entity']['links'])).' / errors: '.json_encode($errors));
+        $I->assertGreaterThanOrEqual(4, $result[0]['metadata']['merges'] + $mergeableErrors);
+
+        // Aggressive merging ignores the album: every platform able to search tracks can merge
+        // (the five above plus Last.fm, Youtube and Soundcloud)
+        $this->sendGET($I, '/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY.'&limit=1&aggressive=true');
+        $I->seeResponseCodeIs(HttpCode::OK);
+        $result = $I->grabDataFromResponseByJsonPath('$.results.*');
+        $errors = $I->grabDataFromResponseByJsonPath('$.errors.*');
+        $I->assertCount(1, $result);
+        $I->assertGreaterThanOrEqual(8, count($result[0]['musical_entity']['links']) + count($errors), 'links: '.implode(', ', array_keys($result[0]['musical_entity']['links'])).' / errors: '.json_encode($errors));
     }
 
     public function testAggregateAggressive(ApiTester $I)

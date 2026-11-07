@@ -60,7 +60,7 @@ class PlatformEngine
         private ItemRepository $itemRepository,
         private Security $security,
         #[AutowireIterator('app.platform', defaultIndexMethod: 'getTag')]
-        iterable $platforms
+        iterable $platforms,
     ) {
         $this->platforms = iterator_to_array($platforms);
     }
@@ -145,7 +145,13 @@ class PlatformEngine
         }
 
         // Initiate a lookup on this platform
-        $platformResult = $platform->expandPermalink($permalink, $mode);
+        try {
+            $platformResult = $platform->expandPermalink($permalink, $mode);
+        } catch (PlatformException $e) {
+            $platform->logFailure('lookup', $e->getMessage());
+
+            throw $e;
+        }
 
         if (!$platformResult || null === $platformResult->getMusicalEntity()) {
             // Don't store anything in this case
