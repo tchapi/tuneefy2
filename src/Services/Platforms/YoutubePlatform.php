@@ -115,19 +115,34 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
     // We want title like "ARTIST - TITLE [Official Video]" only
     public function parseYoutubeMusicVideoTitle(string $string): array
     {
-        $parts = explode(' - ', $string);
+        // "ARTIST - TITLE", possibly followed by qualifiers: "(Official Video)", "[Official Audio]",
+        // "(Clip officiel)", "(Lyrics)", "Official Video", ...
+        $parts = preg_split('/\s+[-\x{2013}\x{2014}]\s+/u', $string, 2);
 
-        // Check if parts[2] is something like "official video"
-        if (count($parts) > 1) {
-            // Inspired by https://github.com/tomahawk-player/tomahawk-resolvers/blob/master/youtube/content/contents/code/youtube.js#L578
-            if (preg_match("/(?P<title>[^\(^\[]*)(?:[\(\[].*?(?:offici(?:a|e)l|clip).*?(?:[\)\]])|(?:(?:offici(?:a|e)l|video)).*?(?:video|clip))/iu", $parts[1], $matches)) {
-                $title = trim($matches['title']);
-
-                return [$title, trim($parts[0])];
-            }
+        if (count($parts) < 2) {
+            return [null, null];
         }
 
-        return [null, null];
+        $artist = trim($parts[0]);
+        $title = trim($parts[1]);
+
+        // Bracketed qualifiers at the end of the title, as many as there are. Other bracketed
+        // parts ("(Live at ...)", "(Remix)") are kept: the Track itself interprets them.
+        $qualifier = '(?:offici|clip|video|audio|lyric|visuali[sz]er|hd|4k)';
+        while (preg_match('/^(?P<title>.*\S)\s*[\(\[][^\)\]]*'.$qualifier.'[^\)\]]*[\)\]]\s*$/iu', $title, $matches)) {
+            $title = $matches['title'];
+        }
+
+        // Unbracketed "official video" style suffixes ("Video Games" alone is a title, not a suffix)
+        $title = preg_replace('/\s+(?:(?:offici(?:a|e)l|official)\s+(?:music\s+)?(?:video|audio|clip|lyric\s+video)|(?:clip|vid[ée]o)\s+offici(?:a|e)l(?:le)?)\s*$/iu', '', $title);
+
+        $title = trim($title);
+
+        if ('' === $title || '' === $artist) {
+            return [null, null];
+        }
+
+        return [$title, $artist];
     }
 
     public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
@@ -138,20 +153,20 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         }
 
         $entities = $response->data->items ?? [];
-
-        // We actually don't pass the limit to the fetch()
-        // request since it's not really useful, in fact
-        $length = min($entities ? count($entities) : 0, $limit ? $limit : Platform::LIMIT);
+        $limit = $limit ? $limit : Platform::LIMIT;
 
         $musical_entities = [];
 
-        // Normalizing each track found
-        for ($i = 0; $i < $length; ++$i) {
-            $current_item = $entities[$i];
+        // Normalizing each track found. Videos whose title cannot be parsed are skipped,
+        // so every fetched item is considered until $limit tracks have been found.
+        foreach ($entities as $i => $current_item) {
+            if (count($musical_entities) >= $limit) {
+                break;
+            }
 
             if (Platform::SEARCH_TRACK === $type) {
                 // Extract title and author
-                list($title, $artist) = $this->parseYoutubeMusicVideoTitle($current_item->snippet->title);
+                list($title, $artist) = $this->parseYoutubeMusicVideoTitle($current_item->snippet->title ?? '');
                 if (null === $title || null === $artist) {
                     continue;
                 }

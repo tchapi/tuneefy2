@@ -38,6 +38,42 @@ final class YoutubeVideoTitleParsingTest extends \Codeception\Test\Unit
             'source' => 'ARTIST - TITLE (vidéo officielle)',
             'result' => 'TITLE',
         ],
+        [
+            'source' => 'ARTIST - TITLE',
+            'result' => 'TITLE',
+        ],
+        [
+            'source' => 'ARTIST - TITLE (Official Audio)',
+            'result' => 'TITLE',
+        ],
+        [
+            'source' => 'ARTIST - TITLE (Lyrics)',
+            'result' => 'TITLE',
+        ],
+        [
+            'source' => 'ARTIST - TITLE Official Video',
+            'result' => 'TITLE',
+        ],
+        [
+            'source' => 'ARTIST - TITLE [Official Audio] (HD)',
+            'result' => 'TITLE',
+        ],
+        [
+            'source' => 'Lana Del Rey - Video Games',
+            'result' => 'Video Games',
+        ],
+        [
+            'source' => "ARTIST \u{2013} TITLE (Official Video)",
+            'result' => 'TITLE',
+        ],
+        [
+            'source' => 'ARTIST - TITLE (Live at Glastonbury)',
+            'result' => 'TITLE (Live at Glastonbury)',
+        ],
+        [
+            'source' => 'JUST A TITLE WITHOUT ARTIST',
+            'result' => null,
+        ],
     ];
 
     public function testTitleParsing()

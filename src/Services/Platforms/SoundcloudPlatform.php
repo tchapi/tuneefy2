@@ -5,9 +5,14 @@ namespace App\Services\Platforms;
 use App\Dataclass\MusicalEntity\Entities\Album;
 use App\Dataclass\MusicalEntity\Entities\Track;
 use App\Services\Platforms\Interfaces\WebStreamingPlatformInterface;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterface
 {
+    private ?CacheInterface $cache = null;
+
     protected $default = false;
     protected $enables = ['api' => true, 'website' => true];
     protected $capabilities = ['track_search' => true, 'album_search' => false, 'lookup' => true];
@@ -54,31 +59,62 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         return false !== strpos($permalink, 'soundcloud.');
     }
 
+    #[Required]
+    public function setCache(CacheInterface $cache): void
+    {
+        $this->cache = $cache;
+    }
+
     protected function addContextHeaders(): array
     {
-        // From https://developers.soundcloud.com/blog/security-updates-api
-        $serviceauth = 'https://api.soundcloud.com/oauth2/token';
-        $grantType = 'client_credentials';
+        // https://developers.soundcloud.com/docs/api/guide#authentication
+        // Access tokens last about an hour and an application may only request 50 of them per
+        // 12 hours: the token is cached rather than requested on every single API call.
+        if (null === $this->cache) {
+            $token = $this->requestAccessToken()['access_token'] ?? null;
+        } else {
+            $token = $this->cache->get('soundcloud_access_token_'.md5((string) $this->key), function (ItemInterface $item): ?string {
+                $result = $this->requestAccessToken();
+                $token = $result['access_token'] ?? null;
 
-        $requestData = ['client_id' => $this->key, 'client_secret' => $this->secret, 'grant_type' => $grantType];
+                // A failed request is remembered for a minute only, so as not to burn the quota
+                $item->expiresAfter(null === $token ? 60 : max(60, (int) ($result['expires_in'] ?? 3600) - 300));
 
-        $ch = curl_init();
-        curl_setopt_array($ch, [
-            CURLOPT_URL => $serviceauth,
-            CURLOPT_POST => 1,
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_POSTFIELDS => http_build_query($requestData),
-        ]);
+                return $token;
+            });
+        }
 
-        $result = json_decode(curl_exec($ch), true);
-
-        curl_close($ch);
-
-        if (!isset($result['access_token'])) {
+        if (null === $token) {
             return [];
         }
 
-        return ['Authorization: OAuth '.$result['access_token']];
+        return ['Authorization: OAuth '.$token];
+    }
+
+    /**
+     * client_credentials flow: HTTP Basic authentication only, credentials in the body are not supported.
+     */
+    private function requestAccessToken(): array
+    {
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL => 'https://secure.soundcloud.com/oauth/token',
+            CURLOPT_POST => 1,
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_CONNECTTIMEOUT => static::CONNECT_TIMEOUT,
+            CURLOPT_TIMEOUT_MS => static::CURL_TIMEOUT,
+            CURLOPT_USERPWD => $this->key.':'.$this->secret,
+            CURLOPT_HTTPHEADER => ['accept: application/json; charset=utf-8', 'Content-Type: application/x-www-form-urlencoded'],
+            CURLOPT_POSTFIELDS => http_build_query(['grant_type' => 'client_credentials']),
+        ]);
+
+        $response = curl_exec($ch);
+
+        if (!\is_string($response)) {
+            return [];
+        }
+
+        return json_decode($response, true) ?: [];
     }
 
     public function expandPermalink(string $permalink, int $mode): PlatformResult
