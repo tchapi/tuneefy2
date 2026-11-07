@@ -29,6 +29,9 @@ The tests are under the `./tests` folder and I use **Codeception** to run them.
 
 #### Unit tests
 
+Codeception reads its parameters from `.env.test.local`, so create it first (even empty):
+
+    touch .env.test.local
     vendor/bin/codecept run Unit
 
 #### Acceptance and Api tests, locally

@@ -39,6 +39,10 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --no-progress --prefer-dist --no-scripts
 
+      # codeception.yml loads this file as a params source: it must exist, even empty
+      - name: Create an empty .env.test.local
+        run: touch .env.test.local
+
       - name: Lint the container, templates and config
         run: |
           php bin/console lint:container --env=test
