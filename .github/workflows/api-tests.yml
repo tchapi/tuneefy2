@@ -18,14 +18,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # composer.lock requires PHP >= 8.4, newer than the runner image's PHP.
-      # Installed from the usual Ubuntu PHP PPA rather than a third-party action.
-      - name: Install PHP 8.4
+      # composer.lock requires PHP >= 8.4. Newer runner images ship it; older ones
+      # get it from the Ubuntu PHP PPA (no third-party action involved).
+      - name: Ensure PHP >= 8.4
         run: |
-          sudo add-apt-repository -y ppa:ondrej/php
-          sudo apt-get update -q
-          sudo apt-get install -y -q php8.4-cli php8.4-curl php8.4-mbstring php8.4-xml php8.4-intl php8.4-mysql
-          sudo update-alternatives --set php /usr/bin/php8.4
+          if php -r 'exit(version_compare(PHP_VERSION, "8.4.0", ">=") ? 0 : 1);'; then
+            echo "Using the runner's PHP $(php -r 'echo PHP_VERSION;')"
+          else
+            sudo add-apt-repository -y ppa:ondrej/php
+            sudo apt-get update -q
+            sudo apt-get install -y -q php8.4-cli php8.4-curl php8.4-mbstring php8.4-xml php8.4-intl php8.4-mysql
+            sudo update-alternatives --set php /usr/bin/php8.4
+          fi
           php -v && composer --version
 
       - name: Install dependencies
