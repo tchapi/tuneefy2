@@ -32,7 +32,7 @@ jobs:
           --health-retries 10
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # composer.lock requires PHP >= 8.4. Newer runner images ship it; older ones
       # get it from the Ubuntu PHP PPA (no third-party action involved).
