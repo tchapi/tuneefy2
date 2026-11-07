@@ -86,9 +86,8 @@ final class Version20240101000000 extends AbstractMigration
         `count` INT(11) NOT NULL
       ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;');
 
-      $this->addSql('DROP PROCEDURE IF EXISTS refresh_trends_mv_now;
-      DELIMITER $$
-      CREATE PROCEDURE refresh_trends_mv_now (OUT rc INT) BEGIN
+      $this->addSql('DROP PROCEDURE IF EXISTS refresh_trends_mv_now');
+      $this->addSql('CREATE PROCEDURE refresh_trends_mv_now (OUT rc INT) BEGIN
       TRUNCATE TABLE trends_mv;
       INSERT INTO `trends_mv` (`type`, `platform`, `id`, `track`, `album`, `artist`, `count`)
         (SELECT "platform" as `type`, `platform`, NULL as `id`,  NULL as `track`, NULL as `album`, NULL as `artist`,  COUNT(`id`) AS `count` FROM `stats_listening` GROUP BY `platform` ORDER BY `count` DESC)
@@ -99,10 +98,7 @@ final class Version20240101000000 extends AbstractMigration
         UNION
         (SELECT "artist" as `type`, NULL as `platform`, NULL as `id`,  NULL as `track`, NULL as `album`,`items`.`artist`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` LEFT JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id`  GROUP BY `items`.`artist` ORDER BY `count` DESC LIMIT 5);
       SET rc = 0;
-      END;
-      $$
-      DELIMITER ;
-      ');
+      END');
 
       // Materialized views for hot items (home page)
       $this->addSql('CREATE TABLE hot_items_mv (
@@ -112,19 +108,15 @@ final class Version20240101000000 extends AbstractMigration
           `count` INT(11)
       );');
       
-      $this->addSql('DROP PROCEDURE IF EXISTS refresh_hot_items_mv_now;
-      DELIMITER $$
-      CREATE PROCEDURE refresh_hot_items_mv_now (OUT rc INT) BEGIN
+      $this->addSql('DROP PROCEDURE IF EXISTS refresh_hot_items_mv_now');
+      $this->addSql('CREATE PROCEDURE refresh_hot_items_mv_now (OUT rc INT) BEGIN
         TRUNCATE TABLE hot_items_mv;
         INSERT INTO `hot_items_mv` (`type`, `id`, `object`, `count`)
           (SELECT "track" as `type`, `items`.`id`, `items`.`object`, NULL as `count` FROM `items` WHERE `track` IS NOT NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` DESC LIMIT 1) UNION (SELECT  "album" as `type`, `items`.`id`, `object`, NULL as `count` FROM `items` WHERE `track` IS NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` DESC LIMIT 1)
           UNION
           (SELECT "most" as `type`, `items`.`id`, `items`.`object`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` LEFT JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` WHERE `stats_viewing`.`viewed_at` > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY `items`. `id` ORDER BY `count` DESC LIMIT 1);
         SET rc = 0;
-      END;
-      $$
-      DELIMITER ;
-      ');
+      END');
       
       // Materialized views for api items
       $this->addSql('CREATE TABLE stats_api_mv (
@@ -133,17 +125,13 @@ final class Version20240101000000 extends AbstractMigration
           `count` INT(11)
       );');
       
-      $this->addSql('DROP PROCEDURE IF EXISTS refresh_stats_api_mv_now;
-      DELIMITER $$
-      CREATE PROCEDURE refresh_stats_api_mv_now (OUT rc INT) BEGIN
+      $this->addSql('DROP PROCEDURE IF EXISTS refresh_stats_api_mv_now');
+      $this->addSql('CREATE PROCEDURE refresh_stats_api_mv_now (OUT rc INT) BEGIN
         TRUNCATE TABLE stats_api_mv;
         INSERT INTO `stats_api_mv` (`client_id`, `method`, `count`)
           (SELECT client_id, method, count(id) AS count from stats_api group by client_id, method);
         SET rc = 0;
-      END;
-      $$
-      DELIMITER ;
-      ');
+      END');
     
     }
 
@@ -156,7 +144,7 @@ final class Version20240101000000 extends AbstractMigration
       $this->addSql('DROP PROCEDURE IF EXISTS refresh_hot_items_mv_now;');
       $this->addSql('DROP TABLE hot_items_mv');
       $this->addSql('DROP PROCEDURE IF EXISTS refresh_trends_mv_now;');
-      $this->addSql('DROP TABLE trends_nv');
+      $this->addSql('DROP TABLE trends_mv');
 
       $this->addSql('DROP TABLE stats_viewing');
       $this->addSql('DROP TABLE stats_listening');

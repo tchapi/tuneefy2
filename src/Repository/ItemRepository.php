@@ -25,7 +25,7 @@ class ItemRepository extends ServiceEntityRepository
     public function __construct(
         ManagerRegistry $registry,
         ParameterBagInterface $params,
-        private Utils $utils
+        private Utils $utils,
     ) {
         $this->intentSecret = $params->get('intents.secret');
         $this->intentLifetime = $params->get('intents.lifetime');
@@ -125,30 +125,22 @@ class ItemRepository extends ServiceEntityRepository
             $entityManager->flush();
 
             return [$items[0]->getMusicalEntity()->getType(), $this->utils->toUId($items[0]->getId())];
-        } else {
-            // Otherwise, we persist this one
-            $intentItem->setIntent(null)->setExpiresAt(null);
-            $entityManager->flush();
-
-            return [$intentItem->getMusicalEntity()->getType(), $this->utils->toUId($intentItem->getId())];
         }
+        // Otherwise, we persist this one
+        $intentItem->setIntent(null)->setExpiresAt(null);
+        $entityManager->flush();
+
+        return [$intentItem->getMusicalEntity()->getType(), $this->utils->toUId($intentItem->getId())];
     }
 
-    public function cleanExpiredIntents()
+    public function cleanExpiredIntents(): int
     {
-        $expiredIntents = $this->createQueryBuilder('i')
+        return $this->createQueryBuilder('i')
+          ->delete()
           ->andWhere('i.intent IS NOT NULL')
           ->andWhere('i.expiresAt IS NOT NULL')
           ->andWhere('i.expiresAt < CURRENT_TIMESTAMP()')
           ->getQuery()
-          ->getResult();
-
-        $entityManager = $this->getEntityManager();
-
-        foreach ($expiredIntents as $intent) {
-            $entityManager->remove($intent);
-        }
-
-        $entityManager->flush();
+          ->execute();
     }
 }

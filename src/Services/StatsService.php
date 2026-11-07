@@ -154,14 +154,10 @@ final class StatsService
         return $res->fetchAllAssociative();
     }
 
-    public function updateMaterializedViews()
+    public function updateMaterializedViews(): void
     {
-        $statement = $this->connection->prepare('CALL refresh_trends_mv_now(@rc); CALL refresh_hot_items_mv_now(@rc); CALL refresh_stats_api_mv_now(@rc);');
-
-        $res = $statement->executeStatement();
-
-        if (false === $res) {
-            throw new \Exception('Error refreshing views: '.$statement->errorInfo()[2]);
+        foreach (['refresh_trends_mv_now', 'refresh_hot_items_mv_now', 'refresh_stats_api_mv_now'] as $procedure) {
+            $this->connection->executeStatement(sprintf('CALL %s(@rc)', $procedure));
         }
     }
 
