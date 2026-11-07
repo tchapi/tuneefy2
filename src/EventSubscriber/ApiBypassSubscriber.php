@@ -18,7 +18,7 @@ class ApiBypassSubscriber implements EventSubscriberInterface
         private ClientCredentialsGrant $grant,
         private AuthorizationServer $server,
         private AccessTokenRepositoryInterface $repository,
-        private string $bypassClientIdentifier
+        private string $bypassClientIdentifier,
     ) {
     }
 
@@ -30,6 +30,13 @@ class ApiBypassSubscriber implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
+
+        // The OAuth2 bundle only recognizes "Bearer <token>" (case-sensitive), whereas the
+        // scheme is case-insensitive (RFC 6750) and some clients send "bearer <token>"
+        $authorization = $request->headers->get('Authorization', '');
+        if (preg_match('/^\s*bearer\s+(\S+)/i', $authorization, $m) && !str_starts_with($authorization, 'Bearer ')) {
+            $request->headers->set('Authorization', 'Bearer '.$m[1]);
+        }
 
         if ($request->query->has('access_token')) {
             // We have a token in the query, pass it down in the headers
@@ -76,7 +83,7 @@ class ApiBypassSubscriber implements EventSubscriberInterface
         }
 
         // Add the token to the request
-        $request->headers->set('Authorization', 'Bearer '.$this->generatedToken->__toString());
+        $request->headers->set('Authorization', 'Bearer '.$this->generatedToken->toString());
     }
 
     public function onTerminate(TerminateEvent $event): void
@@ -86,6 +93,7 @@ class ApiBypassSubscriber implements EventSubscriberInterface
         }
 
         $this->repository->revokeAccessToken($this->generatedToken->getIdentifier());
+        $this->generatedToken = null;
     }
 
     public static function getSubscribedEvents(): array

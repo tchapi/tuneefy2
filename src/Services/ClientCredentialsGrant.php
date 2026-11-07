@@ -22,7 +22,7 @@ final class ClientCredentialsGrant extends BaseClientCredentialsGrant
 {
     public function getAccessTokenForClient(
         \DateInterval $accessTokenTTL,
-        string $clientId
+        string $clientId,
     ): ?AccessTokenEntityInterface {
         $client = $this->clientRepository->getClientEntity($clientId);
 
@@ -38,7 +38,7 @@ final class ClientCredentialsGrant extends BaseClientCredentialsGrant
     public function respondToAccessTokenRequest(
         ServerRequestInterface $request,
         ResponseTypeInterface $responseType,
-        \DateInterval $accessTokenTTL
+        \DateInterval $accessTokenTTL,
     ): ResponseTypeInterface {
         list($clientId) = $this->getClientCredentials($request);
 
