@@ -50,7 +50,7 @@ class ApiBypassSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!str_starts_with($request->getRequestUri(), '/api/v2/')) {
+        if (!str_starts_with($request->getRequestUri(), '/v2/')) {
             // Only api requests
             return;
         }

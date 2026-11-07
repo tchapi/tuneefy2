@@ -26,9 +26,12 @@ security:
                 path: admin_logout
                 target: admin_dashboard
         api:
-            pattern: ^/api
+            pattern: ^/v2
             security: "%api.use_oauth%"
-            stateless: false # To allow bypassing via the session
+            # Stateless: the authentication is never stored in the session (the OAuth bundle's
+            # client-credentials user cannot be restored from it). The website bypass still reads
+            # the session flag by itself, see ApiBypassSubscriber.
+            stateless: true
             provider: api_client_provider
             oauth2: true
   
@@ -36,9 +39,9 @@ security:
     access_control:
         - { path: ^/admin/login, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/api/v2/auth/token, roles: PUBLIC_ACCESS }
-        - { path: ^/api/v2/$, roles: PUBLIC_ACCESS }
-        - { path: ^/api/v2/, roles: [ROLE_OAUTH2_API, ROLE_BYPASS_AUTH_API] }
+        - { path: ^/v2/auth/token, roles: PUBLIC_ACCESS }
+        - { path: ^/v2/?$, roles: PUBLIC_ACCESS }
+        - { path: ^/v2/, roles: [ROLE_OAUTH2_API, ROLE_BYPASS_AUTH_API] }
 
 when@test:
     security:
