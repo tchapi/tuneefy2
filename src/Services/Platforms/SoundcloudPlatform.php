@@ -5,13 +5,10 @@ namespace App\Services\Platforms;
 use App\Dataclass\MusicalEntity\Entities\Album;
 use App\Dataclass\MusicalEntity\Entities\Track;
 use App\Services\Platforms\Interfaces\WebStreamingPlatformInterface;
-use Symfony\Contracts\Cache\CacheInterface;
-use Symfony\Contracts\Cache\ItemInterface;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterface
 {
-    private ?CacheInterface $cache = null;
+    use CachedAccessTokenTrait;
 
     protected $default = false;
     protected $enables = ['api' => true, 'website' => true];
@@ -59,42 +56,19 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         return false !== strpos($permalink, 'soundcloud.');
     }
 
-    #[Required]
-    public function setCache(CacheInterface $cache): void
-    {
-        $this->cache = $cache;
-    }
-
     protected function addContextHeaders(): array
     {
         // https://developers.soundcloud.com/docs/api/guide#authentication
-        // Access tokens last about an hour and an application may only request 50 of them per
-        // 12 hours: the token is cached rather than requested on every single API call.
-        if (null === $this->cache) {
-            $token = $this->requestAccessToken()['access_token'] ?? null;
-        } else {
-            $token = $this->cache->get('soundcloud_access_token_'.md5((string) $this->key), function (ItemInterface $item): ?string {
-                $result = $this->requestAccessToken();
-                $token = $result['access_token'] ?? null;
+        // (50 tokens per 12 hours per application: see CachedAccessTokenTrait)
+        $token = $this->getAccessToken();
 
-                // A failed request is remembered for a minute only, so as not to burn the quota
-                $item->expiresAfter(null === $token ? 60 : max(60, (int) ($result['expires_in'] ?? 3600) - 300));
-
-                return $token;
-            });
-        }
-
-        if (null === $token) {
-            return [];
-        }
-
-        return ['Authorization: OAuth '.$token];
+        return null === $token ? [] : ['Authorization: OAuth '.$token];
     }
 
     /**
      * client_credentials flow: HTTP Basic authentication only, credentials in the body are not supported.
      */
-    private function requestAccessToken(): array
+    protected function requestAccessToken(): array
     {
         $ch = curl_init();
         curl_setopt_array($ch, [

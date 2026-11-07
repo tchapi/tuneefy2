@@ -9,6 +9,8 @@ use App\Utils\Utils;
 
 class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
 {
+    use CachedAccessTokenTrait;
+
     protected $default = true;
     protected $enables = ['api' => true, 'website' => true];
     protected $capabilities = ['track_search' => true, 'album_search' => true, 'lookup' => true];
@@ -71,28 +73,31 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
 
     protected function addContextHeaders(): array
     {
-        // From https://developer.spotify.com/web-api/authorization-guide/
-        $serviceauth = 'https://accounts.spotify.com/api/token';
-        $grantType = 'client_credentials';
+        // https://developer.spotify.com/documentation/web-api/tutorials/client-credentials-flow
+        $token = $this->getAccessToken();
 
-        $requestData = ['client_id' => $this->key, 'client_secret' => $this->secret, 'grant_type' => $grantType];
+        return null === $token ? [] : ['Authorization: Bearer '.$token];
+    }
 
+    protected function requestAccessToken(): array
+    {
         $ch = curl_init();
         curl_setopt_array($ch, [
-            CURLOPT_URL => $serviceauth,
+            CURLOPT_URL => 'https://accounts.spotify.com/api/token',
             CURLOPT_POST => 1,
             CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_POSTFIELDS => http_build_query($requestData),
+            CURLOPT_CONNECTTIMEOUT => static::CONNECT_TIMEOUT,
+            CURLOPT_TIMEOUT_MS => static::CURL_TIMEOUT,
+            CURLOPT_POSTFIELDS => http_build_query(['client_id' => $this->key, 'client_secret' => $this->secret, 'grant_type' => 'client_credentials']),
         ]);
 
-        $result = json_decode(curl_exec($ch), true);
-        curl_close($ch);
+        $response = curl_exec($ch);
 
-        if (!isset($result['access_token'])) {
+        if (!\is_string($response)) {
             return [];
         }
 
-        return ['Authorization: Bearer '.$result['access_token']];
+        return json_decode($response, true) ?: [];
     }
 
     public function expandPermalink(string $permalink, int $mode): PlatformResult
@@ -150,6 +155,11 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
     public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
         $entities = $response->data;
+
+        // e.g. {"error": {"status": 401, "message": "Missing/invalid/expired access token"}}
+        if (isset($entities->error)) {
+            throw new PlatformException($this, $entities->error->message ?? null);
+        }
 
         if (!isset($entities->tracks) && !isset($entities->albums)) {
             return [];
