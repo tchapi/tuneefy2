@@ -713,6 +713,9 @@ final class ApiCest
             'client_secret' => $_ENV['TEST_API_CLIENT_SECRET'],
         ]);
 
+        // Fail once, clearly, rather than erroring in every test
+        $I->assertArrayHasKey('access_token', $response, sprintf('Could not get a token for client "%s": %s', $_ENV['TEST_API_CLIENT_ID'], json_encode($response)));
+
         $this->token = $response['access_token'];
     }
 

@@ -18,7 +18,8 @@ extensions:
         - Codeception\Extension\RunFailed
         - Codeception\Extension\Logger
 params:
-    # Both files are loaded into $_ENV for the tests (the first one wins):
-    # .env.test.local holds the platform credentials, .env.test the rest
-    - .env.test.local
+    # Both files are loaded into $_ENV for the tests, the last one wins (as with
+    # Symfony): .env.test.local overrides .env.test with the platform credentials
+    # and, against production, the real client id and secret
     - .env.test
+    - .env.test.local
