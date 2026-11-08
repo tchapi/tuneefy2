@@ -1021,14 +1021,17 @@ final class ApiCest
         $I->assertGreaterThanOrEqual(5, count($result[0]['musical_entity']['links']) + $mergeableErrors, 'links: '.implode(', ', array_keys($result[0]['musical_entity']['links'])).' / errors: '.json_encode($errors));
         $I->assertGreaterThanOrEqual(4, $result[0]['metadata']['merges'] + $mergeableErrors);
 
-        // Aggressive merging ignores the album: every platform able to search tracks can merge
-        // (the five above plus Last.fm, Youtube and Soundcloud)
+        // Aggressive merging ignores the album: Last.fm and Youtube can merge too. Soundcloud
+        // is left out, its tracks are attributed to the uploader and legitimately may not merge.
         $this->sendGET($I, '/aggregate/track?q='.self::TRACK_AGGREGATE_QUERY.'&limit=1&aggressive=true');
         $I->seeResponseCodeIs(HttpCode::OK);
         $result = $I->grabDataFromResponseByJsonPath('$.results.*');
         $errors = $I->grabDataFromResponseByJsonPath('$.errors.*');
+        $mergeable = ['Deezer', 'iTunes', 'Qobuz', 'Spotify', 'Tidal', 'Last.fm', 'Youtube'];
+        $mergeableErrors = count(array_filter($errors, fn ($e) => preg_match('/The ('.implode('|', array_map('preg_quote', $mergeable)).') platform/', implode(' ', $e))));
+        $links = array_diff(array_keys($result[0]['musical_entity']['links']), ['soundcloud']);
         $I->assertCount(1, $result);
-        $I->assertGreaterThanOrEqual(8, count($result[0]['musical_entity']['links']) + count($errors), 'links: '.implode(', ', array_keys($result[0]['musical_entity']['links'])).' / errors: '.json_encode($errors));
+        $I->assertGreaterThanOrEqual(7, count($links) + $mergeableErrors, 'links: '.implode(', ', $links).' / errors: '.json_encode($errors));
     }
 
     public function testAggregateAggressive(ApiTester $I)
