@@ -124,7 +124,7 @@ final class StatsService
             $migratedObject = str_replace(
                 ['tuneefy\MusicalEntity\Entities\AlbumEntity', 'tuneefy\MusicalEntity\Entities\TrackEntity'],
                 ['App\Dataclass\MusicalEntity\Entities\Album', 'App\Dataclass\MusicalEntity\Entities\Track'],
-                $row['object']
+                (string) $row['object']
             );
 
             $entity = unserialize($migratedObject, ['allowed_classes' => [Track::class, Album::class]]);

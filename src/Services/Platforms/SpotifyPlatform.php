@@ -86,6 +86,10 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
     protected function requestAccessToken(): array
     {
         $ch = curl_init();
+        if (false === $ch) {
+            return [];
+        }
+
         curl_setopt_array($ch, [
             CURLOPT_URL => 'https://accounts.spotify.com/api/token',
             CURLOPT_POST => 1,

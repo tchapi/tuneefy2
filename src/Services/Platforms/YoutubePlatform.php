@@ -122,7 +122,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         // "(Clip officiel)", "(Lyrics)", "Official Video", ...
         $parts = preg_split('/\s+[-\x{2013}\x{2014}]\s+/u', $string, 2);
 
-        if (count($parts) < 2) {
+        if (false === $parts || count($parts) < 2) {
             return [null, null];
         }
 
@@ -137,7 +137,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         }
 
         // Unbracketed "official video" style suffixes ("Video Games" alone is a title, not a suffix)
-        $title = preg_replace('/\s+(?:(?:offici(?:a|e)l|official)\s+(?:music\s+)?(?:video|audio|clip|lyric\s+video)|(?:clip|vid[ée]o)\s+offici(?:a|e)l(?:le)?)\s*$/iu', '', $title);
+        $title = preg_replace('/\s+(?:(?:offici(?:a|e)l|official)\s+(?:music\s+)?(?:video|audio|clip|lyric\s+video)|(?:clip|vid[ée]o)\s+offici(?:a|e)l(?:le)?)\s*$/iu', '', $title) ?? $title;
 
         $title = trim($title);
 

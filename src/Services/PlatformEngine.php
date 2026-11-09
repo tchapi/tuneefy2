@@ -117,9 +117,6 @@ class PlatformEngine
 
     public function lookup(string $permalink, int $mode): array
     {
-        /**
-         * @var WebStreamingPlatformInterface|WebStoreInterface|ScrobblingPlatformInterface|null
-         **/
         $platform = null;
 
         foreach ($this->platforms as $p) {

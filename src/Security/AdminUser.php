@@ -7,11 +7,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class AdminUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    private $username;
-    private $password;
+    /** @var non-empty-string */
+    private string $username;
+    private string $password;
 
     public function __construct(string $username, string $password)
     {
+        if ('' === $username) {
+            throw new \InvalidArgumentException('The username cannot be empty');
+        }
+
         $this->username = $username;
         $this->password = $password;
     }

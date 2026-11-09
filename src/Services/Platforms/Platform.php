@@ -312,6 +312,10 @@ abstract class Platform implements GeneralPlatformInterface
             } catch (\Exception $e) {
                 return null; // XML can't be parsed
             }
+
+            if (false === $response) {
+                return null; // XML can't be re-encoded
+            }
         }
 
         // For some platforms
@@ -414,16 +418,19 @@ abstract class Platform implements GeneralPlatformInterface
         foreach ($handles as $object) {
             $platform = $object['platform'];
 
-            if (null !== $object['cached']) {
-                $response = $object['cached'];
+            $handle = $object['handle'];
+
+            if (null === $handle) {
+                // No handle was created: the response came from the cache
+                $response = $object['cached'] ?? '';
             } else {
-                $response = curl_multi_getcontent($object['handle']); // get the content
-                curl_multi_remove_handle($mh, $object['handle']); // remove the handle
+                $response = curl_multi_getcontent($handle); // get the content
+                curl_multi_remove_handle($mh, $handle); // remove the handle
 
                 if (\is_string($response)) {
-                    $platform->cacheResponse($object['request'], $object['handle'], $response, $type);
+                    $platform->cacheResponse($object['request'], $handle, $response, $type);
                 } else {
-                    $platform->logFailure('aggregate request', curl_error($object['handle']));
+                    $platform->logFailure('aggregate request', curl_error($handle));
                     $response = '';
                 }
             }
