@@ -253,7 +253,7 @@ class FrontendController extends AbstractController
 
         $link = $request->query->get('l', null);
 
-        if (!$link) {
+        if (null === $link || '' === $link) {
             throw $this->createNotFoundException('No link to go to');
         }
 

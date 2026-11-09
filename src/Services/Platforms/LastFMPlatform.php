@@ -9,22 +9,22 @@ use App\Utils\Utils;
 
 class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
 {
-    protected $default = true;
-    protected $enables = ['api' => true, 'website' => true];
-    protected $capabilities = ['track_search' => true, 'album_search' => true, 'lookup' => true];
+    protected bool $default = true;
+    protected array $enables = ['api' => true, 'website' => true];
+    protected array $capabilities = ['track_search' => true, 'album_search' => true, 'lookup' => true];
 
-    public const NAME = 'Last.fm';
-    public const HOMEPAGE = 'https://www.last.fm/';
-    public const TAG = 'lastfm';
-    public const COLOR = 'e41c1c';
+    public const string NAME = 'Last.fm';
+    public const string HOMEPAGE = 'https://www.last.fm/';
+    public const string TAG = 'lastfm';
+    public const string COLOR = 'e41c1c';
 
-    public const CURL_TIMEOUT = 4000;
+    public const int CURL_TIMEOUT = 4000;
 
     // https://www.last.fm/api/show/album.search
-    public const API_ENDPOINT = 'https://ws.audioscrobbler.com/2.0/';
-    public const API_METHOD = Platform::METHOD_GET;
+    public const string API_ENDPOINT = 'https://ws.audioscrobbler.com/2.0/';
+    public const string API_METHOD = Platform::METHOD_GET;
 
-    protected $endpoints = [
+    protected array $endpoints = [
         Platform::LOOKUP_TRACK => self::API_ENDPOINT,
         Platform::LOOKUP_ALBUM => self::API_ENDPOINT,
         Platform::LOOKUP_ARTIST => self::API_ENDPOINT,
@@ -32,7 +32,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         Platform::SEARCH_ALBUM => self::API_ENDPOINT,
         // Platform::SEARCH_ARTIST => self::API_ENDPOINT
     ];
-    protected $terms = [
+    protected array $terms = [
         Platform::LOOKUP_TRACK => 'track',
         Platform::LOOKUP_ALBUM => 'album',
         Platform::LOOKUP_ARTIST => 'artist',
@@ -40,7 +40,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         Platform::SEARCH_ALBUM => 'album',
         // Platform::SEARCH_ARTIST => "artist"
     ];
-    protected $options = [
+    protected array $options = [
         Platform::LOOKUP_TRACK => ['format' => 'json', 'autocorrect' => 1, 'method' => 'track.getinfo', 'artist' => '%s'],
         Platform::LOOKUP_ALBUM => ['format' => 'json', 'autocorrect' => 1, 'method' => 'album.getinfo', 'artist' => '%s'],
         Platform::LOOKUP_ARTIST => ['format' => 'json', 'autocorrect' => 1, 'method' => 'artist.getinfo'],
@@ -50,11 +50,11 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
     ];
 
     // http://www.lastfm.fr/music/The+Clash/London+Calling/London+Calling
-    public const REGEX_LASTFM_TRACK = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")\/(?P<track_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    public const string REGEX_LASTFM_TRACK = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")\/(?P<track_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
     // http://www.lastfm.fr/music/The+Clash/London+Calling
-    public const REGEX_LASTFM_ALBUM = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    public const string REGEX_LASTFM_ALBUM = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/(?P<album_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
     // http://www.lastfm.fr/music/Sex+Pistols
-    public const REGEX_LASTFM_ARTIST = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    public const string REGEX_LASTFM_ARTIST = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
     #[\Override]
     public function hasPermalink(string $permalink): bool

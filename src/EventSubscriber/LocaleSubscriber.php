@@ -32,7 +32,7 @@ class LocaleSubscriber implements EventSubscriberInterface
         }
 
         $locale = $event->getRequest()->cookies->get('tuneefyLocale');
-        if ($locale) {
+        if (null !== $locale && '' !== $locale) {
             $this->localeSwitcher->setLocale($locale);
         }
     }

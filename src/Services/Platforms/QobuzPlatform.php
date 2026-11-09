@@ -9,19 +9,19 @@ use App\Utils\Utils;
 
 class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
 {
-    protected $default = true;
-    protected $enables = ['api' => true, 'website' => true];
-    protected $capabilities = ['track_search' => true, 'album_search' => true, 'lookup' => true];
+    protected bool $default = true;
+    protected array $enables = ['api' => true, 'website' => true];
+    protected array $capabilities = ['track_search' => true, 'album_search' => true, 'lookup' => true];
 
-    public const NAME = 'Qobuz';
-    public const HOMEPAGE = 'https://www.qobuz.com/';
-    public const TAG = 'qobuz';
-    public const COLOR = '2C8FAE';
+    public const string NAME = 'Qobuz';
+    public const string HOMEPAGE = 'https://www.qobuz.com/';
+    public const string TAG = 'qobuz';
+    public const string COLOR = '2C8FAE';
 
-    public const API_ENDPOINT = 'https://qobuz.com/api.json/0.2/';
-    public const API_METHOD = Platform::METHOD_GET;
+    public const string API_ENDPOINT = 'https://qobuz.com/api.json/0.2/';
+    public const string API_METHOD = Platform::METHOD_GET;
 
-    protected $endpoints = [
+    protected array $endpoints = [
         Platform::LOOKUP_TRACK => self::API_ENDPOINT.'track/get',
         Platform::LOOKUP_ALBUM => self::API_ENDPOINT.'album/get',
         Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'artist/get',
@@ -29,7 +29,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::SEARCH_ALBUM => self::API_ENDPOINT.'album/search',
         // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "artist/search"
     ];
-    protected $terms = [
+    protected array $terms = [
         Platform::LOOKUP_TRACK => 'track_id',
         Platform::LOOKUP_ALBUM => 'album_id',
         Platform::LOOKUP_ARTIST => 'artist_id',
@@ -37,7 +37,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::SEARCH_ALBUM => 'query',
         // Platform::SEARCH_ARTIST => "query"
     ];
-    protected $options = [
+    protected array $options = [
         Platform::LOOKUP_TRACK => [],
         Platform::LOOKUP_ALBUM => [],
         Platform::LOOKUP_ARTIST => [],
@@ -47,25 +47,25 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
     ];
 
     // http://player.qobuz.com/#!/track/23860968
-    public const REGEX_QOBUZ_TRACK = "/\/track\/(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const string REGEX_QOBUZ_TRACK = "/\/track\/(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
     // http://player.qobuz.com/#!/album/0060254728859
-    public const REGEX_QOBUZ_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const string REGEX_QOBUZ_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
     // http://player.qobuz.com/#!/artist/2131688
-    public const REGEX_QOBUZ_ARTIST = "/\/artist\/(?P<artist_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const string REGEX_QOBUZ_ARTIST = "/\/artist\/(?P<artist_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
     // http://www.qobuz.com/fr-fr/album/mon-premier-ep-salut-cest-cool/0060254728859
-    public const REGEX_QOBUZ_ALBUM_SITE = "/\/album\/".Platform::REGEX_FULLSTRING."\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const string REGEX_QOBUZ_ALBUM_SITE = "/\/album\/".Platform::REGEX_FULLSTRING."\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
     // http://play.qobuz.com/album/0724384260958?track=1065478
-    public const NEW_REGEX_QOBUZ_TRACK = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")\?track\=(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const string NEW_REGEX_QOBUZ_TRACK = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")\?track\=(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
     // http://play.qobuz.com/album/0724384260958
-    public const NEW_REGEX_QOBUZ_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const string NEW_REGEX_QOBUZ_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
     // http://play.qobuz.com/artist/36819
-    public const NEW_REGEX_QOBUZ_ARTIST = "/\/artist\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const string NEW_REGEX_QOBUZ_ARTIST = "/\/artist\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
     #[\Override]
     public function hasPermalink(string $permalink): bool

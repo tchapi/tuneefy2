@@ -11,19 +11,19 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
 {
     use CachedAccessTokenTrait;
 
-    protected $default = true;
-    protected $enables = ['api' => true, 'website' => true];
-    protected $capabilities = ['track_search' => true, 'album_search' => true, 'lookup' => true];
+    protected bool $default = true;
+    protected array $enables = ['api' => true, 'website' => true];
+    protected array $capabilities = ['track_search' => true, 'album_search' => true, 'lookup' => true];
 
-    public const NAME = 'Spotify';
-    public const HOMEPAGE = 'https://www.spotify.com/';
-    public const TAG = 'spotify';
-    public const COLOR = '4DA400';
+    public const string NAME = 'Spotify';
+    public const string HOMEPAGE = 'https://www.spotify.com/';
+    public const string TAG = 'spotify';
+    public const string COLOR = '4DA400';
 
-    public const API_ENDPOINT = 'https://api.spotify.com/v1/';
-    public const API_METHOD = Platform::METHOD_GET;
+    public const string API_ENDPOINT = 'https://api.spotify.com/v1/';
+    public const string API_METHOD = Platform::METHOD_GET;
 
-    protected $endpoints = [
+    protected array $endpoints = [
         Platform::LOOKUP_TRACK => self::API_ENDPOINT.'tracks/%s',
         Platform::LOOKUP_ALBUM => self::API_ENDPOINT.'albums/%s',
         Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'artists/%s',
@@ -31,7 +31,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::SEARCH_ALBUM => self::API_ENDPOINT.'search',
         // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search"
     ];
-    protected $terms = [
+    protected array $terms = [
         Platform::LOOKUP_TRACK => null,
         Platform::LOOKUP_ALBUM => null,
         Platform::LOOKUP_ARTIST => null,
@@ -39,7 +39,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::SEARCH_ALBUM => 'q',
         // Platform::SEARCH_ARTIST => "q"
     ];
-    protected $options = [
+    protected array $options = [
         Platform::LOOKUP_TRACK => [],
         Platform::LOOKUP_ALBUM => [],
         Platform::LOOKUP_ARTIST => [],
@@ -49,15 +49,15 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
     ];
 
     // http://open.spotify.com/track/5jhJur5n4fasblLSCOcrTp
-    public const REGEX_SPOTIFY_ALL = "/(?P<type>artist|album|track)(:|\/)(?P<item_id>[a-zA-Z0-9]*)[\/]?$/";
-    private $lookup_type_correspondance = [
+    public const string REGEX_SPOTIFY_ALL = "/(?P<type>artist|album|track)(:|\/)(?P<item_id>[a-zA-Z0-9]*)[\/]?$/";
+    private array $lookup_type_correspondance = [
         'track' => Platform::LOOKUP_TRACK,
         'album' => Platform::LOOKUP_ALBUM,
         'artist' => Platform::LOOKUP_ARTIST,
     ];
 
     // LOCAL files : http://open.spotify.com/local/hang+the+bastard/raw+sorcery/doomed+fucking+doomed/206
-    public const REGEX_SPOTIFY_LOCAL = "/local\/(?P<artist_name>".Platform::REGEX_FULLSTRING.")\/(?P<album_name>".Platform::REGEX_FULLSTRING.")\/(?P<track_name>".Platform::REGEX_FULLSTRING.")\/[0-9]+$/";
+    public const string REGEX_SPOTIFY_LOCAL = "/local\/(?P<artist_name>".Platform::REGEX_FULLSTRING.")\/(?P<album_name>".Platform::REGEX_FULLSTRING.")\/(?P<track_name>".Platform::REGEX_FULLSTRING.")\/[0-9]+$/";
 
     #[\Override]
     public function hasPermalink(string $permalink): bool
@@ -68,7 +68,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
     #[\Override]
     protected function addContextOptions(?array $data, ?string $countryCode = null): array
     {
-        $data['market'] = strtoupper($countryCode ?: self::DEFAULT_COUNTRY_CODE);
+        $data['market'] = strtoupper(self::countryCodeOrDefault($countryCode));
 
         return $data;
     }

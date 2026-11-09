@@ -32,7 +32,8 @@ trait CachedAccessTokenTrait
         $token = $result['access_token'] ?? null;
 
         if (null === $token) {
-            $this->logFailure('access token request', json_encode($result) ?: null);
+            $encoded = json_encode($result);
+            $this->logFailure('access token request', false === $encoded ? null : $encoded);
         }
 
         // A failed request is remembered for a minute only, so as not to burn any quota

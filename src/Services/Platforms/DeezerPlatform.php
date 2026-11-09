@@ -9,19 +9,19 @@ use App\Utils\Utils;
 
 class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
 {
-    protected $default = true;
-    protected $enables = ['api' => true, 'website' => true];
-    protected $capabilities = ['track_search' => true, 'album_search' => true, 'lookup' => true];
+    protected bool $default = true;
+    protected array $enables = ['api' => true, 'website' => true];
+    protected array $capabilities = ['track_search' => true, 'album_search' => true, 'lookup' => true];
 
-    public const NAME = 'Deezer';
-    public const HOMEPAGE = 'https://www.deezer.com/';
-    public const TAG = 'deezer';
-    public const COLOR = '181818';
+    public const string NAME = 'Deezer';
+    public const string HOMEPAGE = 'https://www.deezer.com/';
+    public const string TAG = 'deezer';
+    public const string COLOR = '181818';
 
-    public const API_ENDPOINT = 'https://api.deezer.com/';
-    public const API_METHOD = Platform::METHOD_GET;
+    public const string API_ENDPOINT = 'https://api.deezer.com/';
+    public const string API_METHOD = Platform::METHOD_GET;
 
-    protected $endpoints = [
+    protected array $endpoints = [
         Platform::LOOKUP_TRACK => self::API_ENDPOINT.'track/%s',
         Platform::LOOKUP_ALBUM => self::API_ENDPOINT.'album/%s',
         Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'artist/%s',
@@ -29,7 +29,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::SEARCH_ALBUM => self::API_ENDPOINT.'search/album',
         // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search/artist"
     ];
-    protected $terms = [
+    protected array $terms = [
         Platform::LOOKUP_TRACK => null,
         Platform::LOOKUP_ALBUM => null,
         Platform::LOOKUP_ARTIST => null,
@@ -37,7 +37,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::SEARCH_ALBUM => 'q',
         // Platform::SEARCH_ARTIST => "q"
     ];
-    protected $options = [
+    protected array $options = [
         Platform::LOOKUP_TRACK => [],
         Platform::LOOKUP_ALBUM => [],
         Platform::LOOKUP_ARTIST => [],
@@ -49,12 +49,12 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
     // NOT VALID ANYMORE http://www.deezer.com/listen-10236179
     // NOT VALID ANYMORE http://www.deezer.com/music/track/10240179
     // http://www.deezer.com/track/10444623
-    public const REGEX_DEEZER_TRACK = "/(?:listen-|music\/track\/|\/track\/)(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const string REGEX_DEEZER_TRACK = "/(?:listen-|music\/track\/|\/track\/)(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
     // NOT VALID ANYMORE http://www.deezer.com/fr/music/rjd2/deadringer-144183
     // http://www.deezer.com/fr/album/955330
-    public const REGEX_DEEZER_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const string REGEX_DEEZER_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
     // http://www.deezer.com/fr/artist/16948
-    public const REGEX_DEEZER_ARTIST = "/\/artist\/(?P<artist_id>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    public const string REGEX_DEEZER_ARTIST = "/\/artist\/(?P<artist_id>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
     #[\Override]
     public function hasPermalink(string $permalink): bool

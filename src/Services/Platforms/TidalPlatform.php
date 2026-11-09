@@ -9,20 +9,20 @@ use App\Utils\Utils;
 
 class TidalPlatform extends Platform implements WebStreamingPlatformInterface
 {
-    protected $default = false;
-    protected $enables = ['api' => true, 'website' => true];
-    protected $capabilities = ['track_search' => true, 'album_search' => true, 'lookup' => true];
+    protected bool $default = false;
+    protected array $enables = ['api' => true, 'website' => true];
+    protected array $capabilities = ['track_search' => true, 'album_search' => true, 'lookup' => true];
 
-    public const NAME = 'Tidal';
-    public const HOMEPAGE = 'https://tidal.com/';
-    public const TAG = 'tidal';
-    public const COLOR = '00FFFF';
+    public const string NAME = 'Tidal';
+    public const string HOMEPAGE = 'https://tidal.com/';
+    public const string TAG = 'tidal';
+    public const string COLOR = '00FFFF';
 
     // https://github.com/spencercharest/tidal-api/blob/master/src/index.js
-    public const API_ENDPOINT = 'https://api.tidal.com/v1/';
-    public const API_METHOD = Platform::METHOD_GET;
+    public const string API_ENDPOINT = 'https://api.tidal.com/v1/';
+    public const string API_METHOD = Platform::METHOD_GET;
 
-    protected $endpoints = [
+    protected array $endpoints = [
         Platform::LOOKUP_TRACK => self::API_ENDPOINT.'tracks/%s',
         Platform::LOOKUP_ALBUM => self::API_ENDPOINT.'albums/%s',
         Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'artists/%s',
@@ -30,7 +30,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::SEARCH_ALBUM => self::API_ENDPOINT.'search/albums',
         // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search/artists"
     ];
-    protected $terms = [
+    protected array $terms = [
         Platform::LOOKUP_TRACK => null,
         Platform::LOOKUP_ALBUM => null,
         Platform::LOOKUP_ARTIST => null,
@@ -38,7 +38,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::SEARCH_ALBUM => 'query',
         // Platform::SEARCH_ARTIST => "query"
     ];
-    protected $options = [
+    protected array $options = [
         Platform::LOOKUP_TRACK => null,
         Platform::LOOKUP_ALBUM => null,
         Platform::LOOKUP_ARTIST => null,
@@ -48,11 +48,11 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
     ];
 
     // http://www.tidal.com/track/40358305
-    public const REGEX_TIDAL_TRACK = "/track\/(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const string REGEX_TIDAL_TRACK = "/track\/(?P<track_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
     // http://www.tidal.com/album/571179
-    public const REGEX_TIDAL_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const string REGEX_TIDAL_ALBUM = "/\/album\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
     // http://www.tidal.com/artist/3528326
-    public const REGEX_TIDAL_ARTIST = "/artist\/(?P<artist_id>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    public const string REGEX_TIDAL_ARTIST = "/artist\/(?P<artist_id>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
     #[\Override]
     public function hasPermalink(string $permalink): bool
@@ -64,14 +64,14 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
     protected function addContextOptions(?array $data, ?string $countryCode = null): array
     {
         $data['token'] = $this->key;
-        $data['countryCode'] = $countryCode ?: self::DEFAULT_COUNTRY_CODE;
+        $data['countryCode'] = self::countryCodeOrDefault($countryCode);
 
         return $data;
     }
 
     private function getCoverUrlFromCoverHash(?string $cover_hash): ?string
     {
-        if (!$cover_hash) {
+        if (null === $cover_hash || '' === $cover_hash) {
             return null;
         }
 

@@ -9,20 +9,20 @@ use App\Utils\Utils;
 
 class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
 {
-    protected $default = false;
-    protected $enables = ['api' => true, 'website' => true];
-    protected $capabilities = ['track_search' => true, 'album_search' => false, 'lookup' => true];
+    protected bool $default = false;
+    protected array $enables = ['api' => true, 'website' => true];
+    protected array $capabilities = ['track_search' => true, 'album_search' => false, 'lookup' => true];
 
-    public const NAME = 'Youtube';
-    public const HOMEPAGE = 'https://youtube.com/';
-    public const TAG = 'youtube';
-    public const COLOR = 'c8120b';
+    public const string NAME = 'Youtube';
+    public const string HOMEPAGE = 'https://youtube.com/';
+    public const string TAG = 'youtube';
+    public const string COLOR = 'c8120b';
 
     // https://developers.google.com/youtube/v3/docs/search
-    public const API_ENDPOINT = 'https://www.googleapis.com/youtube/v3/';
-    public const API_METHOD = Platform::METHOD_GET;
+    public const string API_ENDPOINT = 'https://www.googleapis.com/youtube/v3/';
+    public const string API_METHOD = Platform::METHOD_GET;
 
-    protected $endpoints = [
+    protected array $endpoints = [
         Platform::LOOKUP_TRACK => self::API_ENDPOINT.'videos',
         Platform::LOOKUP_ALBUM => null,
         Platform::LOOKUP_ARTIST => null,
@@ -30,7 +30,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         Platform::SEARCH_ALBUM => null,
         // Platform::SEARCH_ARTIST => null
     ];
-    protected $terms = [
+    protected array $terms = [
         Platform::LOOKUP_TRACK => 'id',
         Platform::LOOKUP_ALBUM => null,
         Platform::LOOKUP_ARTIST => null,
@@ -38,7 +38,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         Platform::SEARCH_ALBUM => null,
         // Platform::SEARCH_ARTIST => null
     ];
-    protected $options = [
+    protected array $options = [
         Platform::LOOKUP_TRACK => ['part' => 'snippet'],
         Platform::LOOKUP_ALBUM => [],
         Platform::LOOKUP_ARTIST => [],
@@ -48,7 +48,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
     ];
 
     // https://www.youtube.com/watch?v=FNdC_3LR2AI
-    public const REGEX_YOUTUBE_ALL = "/\/watch\?v\=(?P<video_id>[a-zA-Z0-9\-\_]*)(|\&(.*))$/";
+    public const string REGEX_YOUTUBE_ALL = "/\/watch\?v\=(?P<video_id>[a-zA-Z0-9\-\_]*)(|\&(.*))$/";
 
     #[\Override]
     public function hasPermalink(string $permalink): bool
@@ -60,7 +60,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
     protected function addContextOptions(?array $data, ?string $countryCode = null): array
     {
         $data['key'] = $this->key;
-        $data['regionCode'] = strtolower($countryCode ?: self::DEFAULT_COUNTRY_CODE);
+        $data['regionCode'] = strtolower(self::countryCodeOrDefault($countryCode));
 
         return $data;
     }

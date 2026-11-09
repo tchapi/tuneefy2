@@ -8,20 +8,20 @@ use App\Services\Platforms\Interfaces\WebStreamingPlatformInterface;
 
 class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
 {
-    protected $default = false;
-    protected $enables = ['api' => true, 'website' => true];
-    protected $capabilities = ['track_search' => false, 'album_search' => false, 'lookup' => true];
+    protected bool $default = false;
+    protected array $enables = ['api' => true, 'website' => true];
+    protected array $capabilities = ['track_search' => false, 'album_search' => false, 'lookup' => true];
 
-    public const NAME = 'Mixcloud';
-    public const HOMEPAGE = 'https://www.mixcloud.com/';
-    public const TAG = 'mixcloud';
-    public const COLOR = 'afd8db';
+    public const string NAME = 'Mixcloud';
+    public const string HOMEPAGE = 'https://www.mixcloud.com/';
+    public const string TAG = 'mixcloud';
+    public const string COLOR = 'afd8db';
 
     // https://www.mixcloud.com/developers/#search
-    public const API_ENDPOINT = 'https://api.mixcloud.com/';
-    public const API_METHOD = Platform::METHOD_GET;
+    public const string API_ENDPOINT = 'https://api.mixcloud.com/';
+    public const string API_METHOD = Platform::METHOD_GET;
 
-    protected $endpoints = [
+    protected array $endpoints = [
         Platform::LOOKUP_TRACK => self::API_ENDPOINT.'%s',
         Platform::LOOKUP_ALBUM => null,
         Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'%s',
@@ -29,7 +29,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::SEARCH_ALBUM => null,
         // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search"
     ];
-    protected $terms = [
+    protected array $terms = [
         Platform::LOOKUP_TRACK => null,
         Platform::LOOKUP_ALBUM => null,
         Platform::LOOKUP_ARTIST => null,
@@ -37,7 +37,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
         Platform::SEARCH_ALBUM => null,
         // Platform::SEARCH_ARTIST => "q" // Search for a user, in fact
     ];
-    protected $options = [
+    protected array $options = [
         Platform::LOOKUP_TRACK => [],
         Platform::LOOKUP_ALBUM => [],
         Platform::LOOKUP_ARTIST => [],
@@ -47,10 +47,10 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
     ];
 
     // https://www.mixcloud.com/aphex-twin/
-    public const REGEX_MIXCLOUD_ARTIST = "/mixcloud\.com\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    public const string REGEX_MIXCLOUD_ARTIST = "/mixcloud\.com\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
     // https://www.mixcloud.com/LeFtOoO/678-new-section-boyz-onra-romare-drake-roman-rauch-clap-clap/
-    public const REGEX_MIXCLOUD_TRACK = "/mixcloud\.com\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/(?P<track_long_slug>".Platform::REGEX_FULLSTRING."\/".Platform::REGEX_FULLSTRING.")[\/]?$/";
+    public const string REGEX_MIXCLOUD_TRACK = "/mixcloud\.com\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/(?P<track_long_slug>".Platform::REGEX_FULLSTRING."\/".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
     #[\Override]
     public function hasPermalink(string $permalink): bool

@@ -22,67 +22,72 @@ enum PlatformType: string
 
 abstract class Platform implements GeneralPlatformInterface
 {
-    public const NAME = '';
-    public const TAG = '';
-    public const HOMEPAGE = '';
-    public const COLOR = 'FFFFFF';
+    public const string NAME = '';
+    public const string TAG = '';
+    public const string HOMEPAGE = '';
+    public const string COLOR = 'FFFFFF';
 
     // Helper Regexes
-    public const REGEX_FULLSTRING = "[a-zA-Z0-9%\+\-\s\_\.]*";
-    public const REGEX_NUMERIC_ID = '[0-9]*';
+    public const string REGEX_FULLSTRING = "[a-zA-Z0-9%\+\-\s\_\.]*";
+    public const string REGEX_NUMERIC_ID = '[0-9]*';
 
     // Helper constants for API calls
-    public const LOOKUP_TRACK = 0;
-    public const LOOKUP_ALBUM = 1;
-    public const LOOKUP_ARTIST = 2;
+    public const int LOOKUP_TRACK = 0;
+    public const int LOOKUP_ALBUM = 1;
+    public const int LOOKUP_ARTIST = 2;
 
-    public const SEARCH_TRACK = 3;
-    public const SEARCH_ALBUM = 4;
-    public const SEARCH_ARTIST = 5;
+    public const int SEARCH_TRACK = 3;
+    public const int SEARCH_ALBUM = 4;
+    public const int SEARCH_ARTIST = 5;
 
-    public const DEFAULT_COUNTRY_CODE = 'FR';
+    public const string DEFAULT_COUNTRY_CODE = 'FR';
+
+    protected static function countryCodeOrDefault(?string $countryCode): string
+    {
+        return null === $countryCode || '' === $countryCode ? static::DEFAULT_COUNTRY_CODE : $countryCode;
+    }
 
     // The 'mode' indicates whether
     // we're going to eagerly fetch data
     // when it's missing from the platform
     // response
-    public const MODE_LAZY = 0;
-    public const MODE_EAGER = 1;
+    public const int MODE_LAZY = 0;
+    public const int MODE_EAGER = 1;
 
     // Different HTTP Methods used
-    public const METHOD_GET = 'GET';
-    public const METHOD_POST = 'POST';
+    public const string METHOD_GET = 'GET';
+    public const string METHOD_POST = 'POST';
 
     // Different Return content-type
-    public const RETURN_JSON = 1;
-    public const RETURN_XML = 2;
+    public const int RETURN_JSON = 1;
+    public const int RETURN_XML = 2;
 
     // Default limit for requests
-    public const LIMIT = 10; // 1 < LIMIT < 25
-    public const AGGREGATE_LIMIT = 50; // The more the merrier
+    public const int LIMIT = 10; // 1 < LIMIT < 25
+    public const int AGGREGATE_LIMIT = 50; // The more the merrier
 
-    protected $default;
-    protected $enables;
-    protected $capabilities;
+    protected bool $default = false;
+    protected array $enables = [];
+    protected array $capabilities = [];
 
-    protected $key = '';
-    protected $secret = '';
+    protected string $key = '';
+    protected string $secret = '';
 
     // Redeclared in child classes
-    public const API_ENDPOINT = '';
-    public const API_METHOD = self::METHOD_GET;
-    public const RETURN_CONTENT_TYPE = self::RETURN_JSON;
+    public const string API_ENDPOINT = '';
+    public const string API_METHOD = self::METHOD_GET;
+    public const int RETURN_CONTENT_TYPE = self::RETURN_JSON;
 
-    protected $endpoints = [];
-    protected $terms = [];
-    protected $options = [];
+    protected array $endpoints = [];
+    protected array $terms = [];
+    protected array $options = [];
 
-    public const CONNECT_TIMEOUT = 2000;
-    public const CURL_TIMEOUT = 2000;
+    public const int CONNECT_TIMEOUT = 2000;
+    public const int CURL_TIMEOUT = 2000;
 
     // Platform responses are cached: searches for a while, lookups (stable data) longer
-    public const SEARCH_CACHE_TTL = 3600;
-    public const LOOKUP_CACHE_TTL = 21600;
+    public const int SEARCH_CACHE_TTL = 3600;
+    public const int LOOKUP_CACHE_TTL = 21600;
 
     protected ?CacheItemPoolInterface $cache = null;
     protected ?LoggerInterface $logger = null;
@@ -101,14 +106,14 @@ abstract class Platform implements GeneralPlatformInterface
 
     public function logFailure(string $what, ?string $details = null): void
     {
-        $this->logger?->warning(sprintf('%s: %s failed%s', static::NAME, $what, $details ? ' ('.$details.')' : ''));
+        $this->logger?->warning(sprintf('%s: %s failed%s', static::NAME, $what, null !== $details && '' !== $details ? ' ('.$details.')' : ''));
     }
-    public const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36';
+    public const string USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36';
 
     /**
      * The singleton instance of the class.
      */
-    protected static $instances = [];
+    protected static array $instances = [];
 
     final public function __construct(string $key, string $secret)
     {

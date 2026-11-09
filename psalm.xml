@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <psalm
-    errorLevel="3"
+    errorLevel="2"
     phpVersion="8.4"
     resolveFromConfigFile="true"
     strictBinaryOperands="false"
@@ -17,6 +17,17 @@
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
+
+    <issueHandlers>
+        <!-- Doctrine entities are proxied and the platform classes are meant to be extended -->
+        <ClassMustBeFinal errorLevel="suppress" />
+        <!-- Doctrine hydrates entities by reflection, without a constructor -->
+        <MissingConstructor>
+            <errorLevel type="suppress">
+                <directory name="src/Entity" />
+            </errorLevel>
+        </MissingConstructor>
+    </issueHandlers>
 
     <plugins>
         <!-- The first container file that exists is used. The test one is

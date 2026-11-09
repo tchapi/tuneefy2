@@ -9,14 +9,14 @@ use App\Utils\Utils;
 
 class Album extends MusicalEntity
 {
-    public const TYPE = 'album';
+    public const string TYPE = 'album';
 
-    private $title;
-    private $artist;
-    private $picture;
+    private string $title = '';
+    private string $artist = '';
+    private ?string $picture = null;
 
     // Introspection
-    private $safe_title;
+    private string $safe_title = '';
 
     public function __construct(string $title = '', string $artist = '', ?string $picture = '')
     {

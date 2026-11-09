@@ -7,13 +7,13 @@ use App\Dataclass\MusicalEntity\Entities\Track;
 
 abstract class MusicalEntity implements MusicalEntityInterface
 {
-    public const TYPE = 'musical_entity';
+    public const string TYPE = 'musical_entity';
 
-    protected $links;
+    protected array $links = [];
 
     // Introspection
-    protected $introspected;
-    protected $extra_info;
+    protected bool $introspected = false;
+    protected array $extra_info = [];
 
     public function __construct()
     {
@@ -87,7 +87,7 @@ abstract class MusicalEntity implements MusicalEntityInterface
     public function setExtraInfo(?array $extra_info = null): MusicalEntity
     {
         $this->introspected = true;
-        $this->extra_info = $extra_info;
+        $this->extra_info = $extra_info ?? [];
 
         return $this;
     }

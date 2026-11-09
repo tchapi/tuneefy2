@@ -10,20 +10,20 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
 {
     use CachedAccessTokenTrait;
 
-    protected $default = false;
-    protected $enables = ['api' => true, 'website' => true];
-    protected $capabilities = ['track_search' => true, 'album_search' => false, 'lookup' => true];
+    protected bool $default = false;
+    protected array $enables = ['api' => true, 'website' => true];
+    protected array $capabilities = ['track_search' => true, 'album_search' => false, 'lookup' => true];
 
-    public const NAME = 'Soundcloud';
-    public const HOMEPAGE = 'https://soundcloud.com/';
-    public const TAG = 'soundcloud';
-    public const COLOR = 'ff6600';
+    public const string NAME = 'Soundcloud';
+    public const string HOMEPAGE = 'https://soundcloud.com/';
+    public const string TAG = 'soundcloud';
+    public const string COLOR = 'ff6600';
 
     // https://developers.soundcloud.com/docs/api/reference#tracks
-    public const API_ENDPOINT = 'https://api.soundcloud.com/';
-    public const API_METHOD = Platform::METHOD_GET;
+    public const string API_ENDPOINT = 'https://api.soundcloud.com/';
+    public const string API_METHOD = Platform::METHOD_GET;
 
-    protected $endpoints = [
+    protected array $endpoints = [
         Platform::LOOKUP_TRACK => self::API_ENDPOINT.'resolve.json',
         Platform::LOOKUP_ALBUM => null,
         Platform::LOOKUP_ARTIST => null,
@@ -31,7 +31,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         Platform::SEARCH_ALBUM => null,
         // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "users"
     ];
-    protected $terms = [
+    protected array $terms = [
         Platform::LOOKUP_TRACK => 'url',
         Platform::LOOKUP_ALBUM => null,
         Platform::LOOKUP_ARTIST => null,
@@ -39,7 +39,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         Platform::SEARCH_ALBUM => null,
         // Platform::SEARCH_ARTIST => "q" // Search for a user, in fact
     ];
-    protected $options = [
+    protected array $options = [
         Platform::LOOKUP_TRACK => [],
         Platform::LOOKUP_ALBUM => [],
         Platform::LOOKUP_ARTIST => [],
@@ -49,7 +49,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
     ];
 
     // https://soundcloud.com/robbabicz/pink-trees-1
-    public const REGEX_SOUNDCLOUD_ALL = "/\/".Platform::REGEX_FULLSTRING."\/".Platform::REGEX_FULLSTRING."[\/]?$/";
+    public const string REGEX_SOUNDCLOUD_ALL = "/\/".Platform::REGEX_FULLSTRING."\/".Platform::REGEX_FULLSTRING."[\/]?$/";
 
     #[\Override]
     public function hasPermalink(string $permalink): bool

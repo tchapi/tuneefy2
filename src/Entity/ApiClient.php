@@ -13,26 +13,26 @@ class ApiClient implements UserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $name;
+    private string $name = '';
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $email;
+    private string $email = '';
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $url;
+    private ?string $url = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $description;
+    private ?string $description = null;
 
     #[ORM\Column(type: 'date', length: 255)]
-    private $createdAt;
+    private \DateTime $createdAt;
 
     // Link to the OAuth2 server tables (oauth2_client->identifier)
     #[ORM\Column(type: 'string', length: 80)]
-    private $oauth2ClientIdentifier;
+    private string $oauth2ClientIdentifier = '';
 
     /**
      * @return string[] The user roles
@@ -58,6 +58,10 @@ class ApiClient implements UserInterface
     #[\Override]
     public function getUserIdentifier(): string
     {
+        if ('' === $this->name) {
+            throw new \LogicException('An API client needs a name to act as a user');
+        }
+
         return $this->name;
     }
 

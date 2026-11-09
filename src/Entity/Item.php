@@ -22,34 +22,35 @@ class Item
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer', options: ['unsigned' => true])]
-    private $id;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 170, nullable: true)]
-    private $intent;
+    private ?string $intent = null;
 
+    /** @var resource|string Doctrine hydrates a blob as a stream */
     #[ORM\Column(type: 'blob', nullable: false, length: 65532)]
     private $object;
 
     #[ORM\Column(type: 'string', length: 170, nullable: true)]
-    private $track;
+    private ?string $track = null;
 
     #[ORM\Column(type: 'string', length: 170, nullable: true)]
-    private $album;
+    private ?string $album = null;
 
     #[ORM\Column(type: 'string', length: 170, nullable: true)]
-    private $artist;
+    private ?string $artist = null;
 
     #[ORM\Column(type: 'datetime', nullable: false)]
-    private $createdAt;
+    private \DateTime $createdAt;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private $expiresAt;
+    private ?\DateTime $expiresAt = null;
 
     #[ORM\Column(type: 'string', length: 170, nullable: false)]
-    private $signature;
+    private string $signature;
 
     #[ORM\Column(type: 'string', length: 80, nullable: true)]
-    private $clientId;
+    private ?string $clientId = null;
 
     public function getId(): int
     {

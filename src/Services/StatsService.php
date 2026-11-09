@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Dataclass\MusicalEntity\Entities\Album;
 use App\Dataclass\MusicalEntity\Entities\Track;
 use App\Utils\LegacyEncoding;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\DBAL\Connection;
 
 final class StatsService
 {
@@ -25,14 +25,8 @@ final class StatsService
         self::METHOD_SHARE => 'share',
     ];
 
-    /**
-     * Database connection.
-     */
-    private $connection;
-
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $doctrine->getConnection();
     }
 
     public function addListeningStat(int $item_id, string $platformTag, int $index): void
@@ -44,10 +38,6 @@ final class StatsService
         $statement->bindValue('index', $index);
 
         $res = $statement->executeStatement();
-
-        if (false === $res) {
-            throw new \Exception('Error adding listening stat: '.$statement->errorInfo()[2]);
-        }
     }
 
     public function addListeningStatDirect(string $platformTag): void
@@ -57,10 +47,6 @@ final class StatsService
         $statement->bindValue('platform', $platformTag);
 
         $res = $statement->executeStatement();
-
-        if (false === $res) {
-            throw new \Exception('Error adding listening stat: '.$statement->errorInfo()[2]);
-        }
     }
 
     public function addViewingStat(int $item_id): void
@@ -73,10 +59,6 @@ final class StatsService
         $statement->bindValue('referer', $referer);
 
         $res = $statement->executeStatement();
-
-        if (false === $res) {
-            throw new \Exception('Error adding viewing stat: '.$statement->errorInfo()[2]);
-        }
     }
 
     public function addApiCallingStat(int $method, ?string $client_id = null): void
@@ -87,10 +69,6 @@ final class StatsService
         $statement->bindValue('method', $method);
 
         $res = $statement->executeStatement();
-
-        if (false === $res) {
-            throw new \Exception('Error adding api calling stat: '.$statement->errorInfo()[2]);
-        }
     }
 
     public function getAllTrends(): array
@@ -98,10 +76,6 @@ final class StatsService
         $statement = $this->connection->prepare('SELECT * FROM `trends_mv` ORDER BY type, count DESC');
 
         $res = $statement->executeQuery();
-
-        if (false === $res) {
-            throw new \Exception('Error getting trends: '.$statement->errorInfo()[2]);
-        }
 
         return $res->fetchAllAssociative();
     }
@@ -111,10 +85,6 @@ final class StatsService
         $statement = $this->connection->prepare('SELECT * FROM `hot_items_mv`');
 
         $res = $statement->executeQuery();
-
-        if (false === $res) {
-            throw new \Exception('Error getting stats for hot items: '.$statement->errorInfo()[2]);
-        }
 
         $rows = $res->fetchAllAssociative();
 
@@ -147,10 +117,6 @@ final class StatsService
 
         $res = $statement->executeQuery();
 
-        if (false === $res) {
-            throw new \Exception('Error getting api stats: '.$statement->errorInfo()[2]);
-        }
-
         return $res->fetchAllAssociative();
     }
 
@@ -171,11 +137,10 @@ final class StatsService
 
         $res = $statement->executeQuery();
 
-        if (false === $res) {
-            throw new \Exception('Error getting items stats: '.$statement->errorInfo()[2]);
-        }
-
         $row = $res->fetchAssociative();
+        if (false === $row) {
+            throw new \RuntimeException('Could not read the items stats');
+        }
 
         return ['total' => $row['total'], 'tracks' => $row['tracks'], 'intents' => $row['intents']];
     }

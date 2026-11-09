@@ -9,19 +9,19 @@ use App\Utils\Utils;
 
 class ItunesPlatform extends Platform implements WebStoreInterface
 {
-    protected $default = true;
-    protected $enables = ['api' => true, 'website' => true];
-    protected $capabilities = ['track_search' => true, 'album_search' => true, 'lookup' => true];
+    protected bool $default = true;
+    protected array $enables = ['api' => true, 'website' => true];
+    protected array $capabilities = ['track_search' => true, 'album_search' => true, 'lookup' => true];
 
-    public const NAME = 'iTunes';
-    public const HOMEPAGE = 'https://itunes.apple.com';
-    public const TAG = 'itunes';
-    public const COLOR = '216be4';
+    public const string NAME = 'iTunes';
+    public const string HOMEPAGE = 'https://itunes.apple.com';
+    public const string TAG = 'itunes';
+    public const string COLOR = '216be4';
 
-    public const API_ENDPOINT = 'https://itunes.apple.com/';
-    public const API_METHOD = Platform::METHOD_GET;
+    public const string API_ENDPOINT = 'https://itunes.apple.com/';
+    public const string API_METHOD = Platform::METHOD_GET;
 
-    protected $endpoints = [
+    protected array $endpoints = [
         Platform::LOOKUP_TRACK => null,
         Platform::LOOKUP_ALBUM => self::API_ENDPOINT.'lookup',
         Platform::LOOKUP_ARTIST => self::API_ENDPOINT.'lookup',
@@ -29,7 +29,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         Platform::SEARCH_ALBUM => self::API_ENDPOINT.'search/album',
         // Platform::SEARCH_ARTIST => self::API_ENDPOINT . "search/artist"
     ];
-    protected $terms = [
+    protected array $terms = [
         Platform::LOOKUP_TRACK => null,
         Platform::LOOKUP_ALBUM => 'id',
         Platform::LOOKUP_ARTIST => 'id',
@@ -37,7 +37,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         Platform::SEARCH_ALBUM => 'term',
         // Platform::SEARCH_ARTIST => "term"
     ];
-    protected $options = [
+    protected array $options = [
         Platform::LOOKUP_TRACK => [],
         Platform::LOOKUP_ALBUM => [],
         Platform::LOOKUP_ARTIST => [],
@@ -47,10 +47,10 @@ class ItunesPlatform extends Platform implements WebStoreInterface
     ];
 
     // https://itunes.apple.com/us/artist/jack-johnson/id909253
-    public const REGEX_ITUNES_ARTIST = "/\/artist\/(?P<artist_name>".Platform::REGEX_FULLSTRING.")\/(id)?(?P<artist_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const string REGEX_ITUNES_ARTIST = "/\/artist\/(?P<artist_name>".Platform::REGEX_FULLSTRING.")\/(id)?(?P<artist_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
     // https://itunes.apple.com/us/album/weezer/id1136784464
-    public const REGEX_ITUNES_ALBUM = "/\/album\/(?P<album_name>".Platform::REGEX_FULLSTRING.")\/(id)?(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
+    public const string REGEX_ITUNES_ALBUM = "/\/album\/(?P<album_name>".Platform::REGEX_FULLSTRING.")\/(id)?(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
     #[\Override]
     public function hasPermalink(string $permalink): bool
@@ -61,7 +61,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
     #[\Override]
     protected function addContextOptions(?array $data, ?string $countryCode = null): array
     {
-        $data['country'] = strtoupper($countryCode ?: self::DEFAULT_COUNTRY_CODE);
+        $data['country'] = strtoupper(self::countryCodeOrDefault($countryCode));
 
         return $data;
     }

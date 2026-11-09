@@ -25,7 +25,7 @@ final class ApiUtils
 
         $mimeType = $request->getMimeType($format);
 
-        if ($apiMethod) {
+        if (null !== $apiMethod) {
             $request->attributes->set('api_method', $apiMethod);
         }
 

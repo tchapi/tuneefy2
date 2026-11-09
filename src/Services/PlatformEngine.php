@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 
 class PlatformEngine
 {
-    public const ERRORS = [
+    public const array ERRORS = [
         'GENERAL_ERROR' => ['GENERAL_ERROR' => 'An error was encountered'],
         'BAD_PLATFORM_TYPE' => ['BAD_PLATFORM_TYPE' => 'This type of platform does not exist'],
         'BAD_PLATFORM' => ['BAD_PLATFORM' => 'This platform does not exist'],
@@ -47,7 +47,7 @@ class PlatformEngine
      */
     private $platforms;
 
-    private $flags = [
+    private array $flags = [
         'type/track' => Platform::SEARCH_TRACK,
         'type/album' => Platform::SEARCH_ALBUM,
         'mode/lazy' => Platform::MODE_LAZY,

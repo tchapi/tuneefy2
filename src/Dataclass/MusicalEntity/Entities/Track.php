@@ -9,13 +9,13 @@ use App\Utils\Utils;
 
 class Track extends MusicalEntity
 {
-    public const TYPE = 'track';
+    public const string TYPE = 'track';
 
-    private $track_title;
-    private $album;
+    private string $track_title = '';
+    private Album $album;
 
     // Introspection
-    private $safe_track_title;
+    private string $safe_track_title = '';
 
     public function __construct(Album $album, string $track_title = '')
     {

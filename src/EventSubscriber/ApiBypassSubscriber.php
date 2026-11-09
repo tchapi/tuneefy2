@@ -4,6 +4,7 @@ namespace App\EventSubscriber;
 
 use App\Services\ClientCredentialsGrant;
 use League\OAuth2\Server\AuthorizationServer;
+use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -12,7 +13,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class ApiBypassSubscriber implements EventSubscriberInterface
 {
-    private $generatedToken;
+    private ?AccessTokenEntityInterface $generatedToken = null;
 
     public function __construct(
         private ClientCredentialsGrant $grant,

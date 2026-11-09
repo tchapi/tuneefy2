@@ -120,8 +120,8 @@ class ApiController extends AbstractController
         $countryCode = $request->query->get('countryCode', null);
         $mode = $request->query->get('mode', null);
         $query = $request->query->get('q', null);
-        $rawLimit = $request->query->get('limit', null);
-        $limit = $rawLimit ? max(0, min(intval($rawLimit), Platform::LIMIT * 2)) : Platform::LIMIT;
+        $rawLimit = $request->query->getInt('limit');
+        $limit = $rawLimit > 0 ? min($rawLimit, Platform::LIMIT * 2) : Platform::LIMIT;
 
         try {
             $real_type = $engine->translateFlag('type', $type);
@@ -170,8 +170,8 @@ class ApiController extends AbstractController
         $countryCode = $request->query->get('countryCode', null);
         $mode = $request->query->get('mode', null);
         $query = $request->query->get('q', null);
-        $rawLimit = $request->query->get('limit', null);
-        $limit = $rawLimit ? max(0, min(intval($rawLimit), Platform::LIMIT * 2)) : Platform::LIMIT;
+        $rawLimit = $request->query->getInt('limit');
+        $limit = $rawLimit > 0 ? min($rawLimit, Platform::LIMIT * 2) : Platform::LIMIT;
 
         $include = strtolower($request->query->get('include', ''));
         $aggressive = 'true' === $request->query->get('aggressive', 'false');
