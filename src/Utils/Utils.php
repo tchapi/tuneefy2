@@ -27,9 +27,12 @@ final class Utils
     */
     public static function sanitize(string $string): string
     {
-        $string = transliterator_transliterate('Any-Latin; Latin-ASCII', $string);
+        $transliterated = transliterator_transliterate('Any-Latin; Latin-ASCII', $string);
+        if (false === $transliterated) {
+            $transliterated = $string;
+        }
 
-        return strtolower(preg_replace('/[^\w\-]+/u', '-', $string));
+        return strtolower(preg_replace('/[^\w\-]+/u', '-', $transliterated) ?? $transliterated);
     }
 
     /*
@@ -44,13 +47,14 @@ final class Utils
         // Cut the string
         $out = trim(substr($text, 0, $max));
 
-        if (false === strpos($text, ' ')) {
-            // If it's a single word, just return with the suffix
+        $lastSpace = strrpos($out, ' ');
+        if (false === $lastSpace) {
+            // A single word so far: just return it with the suffix
             return $out.$append;
         }
 
         // Else, we replace the last word with the suffix
-        return substr($out, 0, strrpos($out, ' ') + 1).$append;
+        return substr($out, 0, $lastSpace + 1).$append;
     }
 
     /*

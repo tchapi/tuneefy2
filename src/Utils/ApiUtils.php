@@ -19,7 +19,7 @@ final class ApiUtils
     {
         $format = $request->query->get('format') ?? $request->getPreferredFormat();
 
-        if (!in_array($format, self::ACCEPTABLE_FORMATS)) {
+        if (!\is_string($format) || !in_array($format, self::ACCEPTABLE_FORMATS, true)) {
             $format = 'json';
         }
 

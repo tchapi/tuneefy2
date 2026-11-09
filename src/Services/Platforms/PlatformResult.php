@@ -19,7 +19,7 @@ class PlatformResult
     private $expires;
 
     /**
-     * @var MusicalEntity
+     * @var ?MusicalEntity
      */
     private $musical_entity;
 
@@ -82,9 +82,9 @@ class PlatformResult
 
         if (null !== $this->musical_entity && null !== $thatMusicalEntity) {
             // Merge musical entities
-            if ($this->musical_entity instanceof Track) {
+            if ($this->musical_entity instanceof Track && $thatMusicalEntity instanceof Track) {
                 $this->musical_entity = Track::merge($this->musical_entity, $thatMusicalEntity);
-            } elseif ($this->musical_entity instanceof Album) {
+            } elseif ($this->musical_entity instanceof Album && $thatMusicalEntity instanceof Album) {
                 $this->musical_entity = Album::merge($this->musical_entity, $thatMusicalEntity);
             }
 

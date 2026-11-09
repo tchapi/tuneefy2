@@ -3,10 +3,11 @@
 namespace App\Entity;
 
 use App\Dataclass\MusicalEntity\MusicalEntity;
+use App\Repository\ItemRepository;
 use App\Utils\LegacyEncoding;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: "App\Repository\ItemRepository")]
+#[ORM\Entity(repositoryClass: ItemRepository::class)]
 #[ORM\Table(name: 'items')]
 #[ORM\Index(name: 'album', columns: ['album'])]
 #[ORM\Index(name: 'artist', fields: ['artist'])]

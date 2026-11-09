@@ -136,17 +136,16 @@ class Album extends MusicalEntity
             $artist = $a->getArtist();
         }
 
-        if ('' === $a->getPicture()) {
-            $picture = $b->getPicture();
-        } elseif ('' === $b->getPicture()) {
-            $picture = $a->getPicture();
+        $aPicture = $a->getPicture();
+        $bPicture = $b->getPicture();
+
+        if (null === $aPicture || '' === $aPicture) {
+            $picture = $bPicture;
+        } elseif (null === $bPicture || '' === $bPicture) {
+            $picture = $aPicture;
         } else {
             // They both have pictures, prefer NOT deezer
-            if (false === strpos($a->getPicture(), 'api.deezer.com')) {
-                $picture = $a->getPicture();
-            } else {
-                $picture = $b->getPicture();
-            }
+            $picture = str_contains($aPicture, 'api.deezer.com') ? $bPicture : $aPicture;
         }
 
         // Create the result

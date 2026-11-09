@@ -83,20 +83,20 @@ class FrontendController extends AbstractController
         $verification_params = http_build_query([
             'secret' => $this->getParameter('mail.captcha_secret'),
             'response' => $request->get('captcha'),
-            'remoteip' => $_SERVER['REMOTE_ADDR'],
+            'remoteip' => $request->getClientIp(),
         ]);
 
         $verification = file_get_contents('https://www.google.com/recaptcha/api/siteverify?'.$verification_params);
-        $json = json_decode($verification, true);
+        $json = false === $verification ? null : json_decode($verification, true);
 
-        if (false === $json['success']) {
-            error_log('Error validating captcha: '.$verification);
+        if (!\is_array($json) || true !== ($json['success'] ?? null)) {
+            error_log('Error validating captcha: '.var_export($verification, true));
 
             return new Response('0');
         }
 
         try {
-            $sanitized_email = filter_var($request->get('mail'), FILTER_SANITIZE_EMAIL);
+            $sanitized_email = (string) filter_var($request->get('mail'), FILTER_SANITIZE_EMAIL);
 
             $message = (new Email())
               ->subject('[CONTACT] '.$sanitized_email.' (via tuneefy.com)')
@@ -176,6 +176,10 @@ class FrontendController extends AbstractController
             throw $this->createNotFoundException('Could not get item from database');
         }
 
+        if (null === $item) {
+            throw $this->createNotFoundException('No such item');
+        }
+
         // Check the type (track || album) and redirect if necessary
         if (null === $type || $item->getType() !== $type) {
             return $this->redirectToRoute('show', [
@@ -191,19 +195,16 @@ class FrontendController extends AbstractController
             // Let's redirect anyway, we should log an error somehow TODO FIX ME
         }
 
-        if (null !== $item) {
-            // Override, just to get the page in JSON
-            if ('json' === $format) {
-                return new JsonResponse($item->toArray());
-            }
-
-            return $this->render('item.'.$type.'.html.twig', [
-                'uid' => $uid,
-                'item' => $item,
-                'embed' => null !== $embed,
-            ]);
+        // Override, just to get the page in JSON
+        if ('json' === $format) {
+            return new JsonResponse($item->toArray());
         }
-        throw $this->createNotFoundException('Could not get item from database');
+
+        return $this->render('item.'.$type.'.html.twig', [
+            'uid' => $uid,
+            'item' => $item,
+            'embed' => null !== $embed,
+        ]);
     }
 
     #[Route('/s/{type}/{uid}/listen/{platform}/{i<[0-9]>}', name: 'listen')]
@@ -221,6 +222,10 @@ class FrontendController extends AbstractController
             $item = $itemRepository->getMusicalEntityByItemId($id);
         } catch (\Exception $e) {
             throw $this->createNotFoundException('Could not get item from database');
+        }
+
+        if (null === $item) {
+            throw $this->createNotFoundException('No such item');
         }
 
         // Check we have a 'platform' link

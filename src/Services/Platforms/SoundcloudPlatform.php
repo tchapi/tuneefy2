@@ -74,6 +74,10 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
     protected function requestAccessToken(): array
     {
         $ch = curl_init();
+        if (false === $ch) {
+            return [];
+        }
+
         curl_setopt_array($ch, [
             CURLOPT_URL => 'https://secure.soundcloud.com/oauth/token',
             CURLOPT_POST => 1,

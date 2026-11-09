@@ -28,11 +28,8 @@ class BackendController extends AbstractController
         $stats = [];
 
         foreach ($statsRaw as $stat) {
-            if (isset($stats[StatsService::METHOD_NAMES[$stat['method']]])) {
-                $stats[StatsService::METHOD_NAMES[$stat['method']]] += $stat['count'];
-            } else {
-                $stats[StatsService::METHOD_NAMES[$stat['method']]] = $stat['count'];
-            }
+            $name = StatsService::METHOD_NAMES[$stat['method']] ?? StatsService::METHOD_NAMES[StatsService::METHOD_OTHER];
+            $stats[$name] = ($stats[$name] ?? 0) + $stat['count'];
         }
 
         // Format

@@ -181,7 +181,7 @@ abstract class MusicalEntity implements MusicalEntityInterface
             }
 
             // Remove n-uple spaces
-            $str = preg_replace("/\s+/i", ' ', $str);
+            $str = preg_replace("/\s+/i", ' ', $str) ?? $str;
         }
 
         return [
