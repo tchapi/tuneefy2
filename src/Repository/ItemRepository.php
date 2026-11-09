@@ -133,14 +133,24 @@ class ItemRepository extends ServiceEntityRepository
         return [$intentItem->getMusicalEntity()->getType(), $this->utils->toUId($intentItem->getId())];
     }
 
+    private const int CLEANUP_BATCH_SIZE = 1000;
+
+    /**
+     * Deletes in batches: a single DELETE over every expired intent locks a large part of the
+     * table for its whole duration, which stalls the searches that insert into it meanwhile.
+     */
     public function cleanExpiredIntents(): int
     {
-        return $this->createQueryBuilder('i')
-          ->delete()
-          ->andWhere('i.intent IS NOT NULL')
-          ->andWhere('i.expiresAt IS NOT NULL')
-          ->andWhere('i.expiresAt < CURRENT_TIMESTAMP()')
-          ->getQuery()
-          ->execute();
+        $connection = $this->getEntityManager()->getConnection();
+        $total = 0;
+
+        do {
+            $deleted = (int) $connection->executeStatement(
+                'DELETE FROM `items` WHERE `intent` IS NOT NULL AND `expires_at` IS NOT NULL AND `expires_at` < NOW() LIMIT '.self::CLEANUP_BATCH_SIZE
+            );
+            $total += $deleted;
+        } while (self::CLEANUP_BATCH_SIZE === $deleted);
+
+        return $total;
     }
 }

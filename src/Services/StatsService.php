@@ -120,11 +120,74 @@ final class StatsService
         return $res->fetchAllAssociative();
     }
 
+    // The aggregations behind the materialized views. They are run as plain SELECTs, which read a
+    // consistent snapshot without locking anything: an INSERT ... SELECT would hold shared locks on
+    // every row it reads for its whole duration, blocking the page views and searches that write
+    // to the same tables.
+    private const string TRENDS_SQL = '
+        (SELECT "platform" AS `type`, `platform`, NULL AS `id`, NULL AS `track`, NULL AS `album`, NULL AS `artist`, COUNT(`id`) AS `count` FROM `stats_listening` GROUP BY `platform` ORDER BY `count` DESC)
+        UNION
+        (SELECT "track" AS `type`, NULL AS `platform`, `items`.`id`, `items`.`track`, `items`.`album`, `items`.`artist`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` LEFT JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` WHERE `items`.`track` IS NOT NULL GROUP BY `stats_viewing`.`item_id` ORDER BY `count` DESC LIMIT 5)
+        UNION
+        (SELECT "album" AS `type`, NULL AS `platform`, `items`.`id`, NULL AS `track`, `items`.`album`, `items`.`artist`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` LEFT JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` WHERE `items`.`track` IS NULL GROUP BY `stats_viewing`.`item_id` ORDER BY `count` DESC LIMIT 5)
+        UNION
+        (SELECT "artist" AS `type`, NULL AS `platform`, NULL AS `id`, NULL AS `track`, NULL AS `album`, `items`.`artist`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` LEFT JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` GROUP BY `items`.`artist` ORDER BY `count` DESC LIMIT 5)
+    ';
+
+    private const string HOT_ITEMS_SQL = '
+        (SELECT "track" AS `type`, `items`.`id`, `items`.`object`, NULL AS `count` FROM `items` WHERE `track` IS NOT NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` DESC LIMIT 1)
+        UNION
+        (SELECT "album" AS `type`, `items`.`id`, `items`.`object`, NULL AS `count` FROM `items` WHERE `track` IS NULL AND `expires_at` IS NULL AND `intent` IS NULL ORDER BY `created_at` DESC LIMIT 1)
+        UNION
+        (SELECT "most" AS `type`, `items`.`id`, `items`.`object`, COUNT(`stats_viewing`.`item_id`) AS `count` FROM `stats_viewing` LEFT JOIN `items` ON `items`.`id` = `stats_viewing`.`item_id` WHERE `stats_viewing`.`viewed_at` > DATE_SUB(NOW(), INTERVAL 1 WEEK) GROUP BY `items`.`id` ORDER BY `count` DESC LIMIT 1)
+    ';
+
+    private const string API_STATS_SQL = '
+        SELECT `client_id`, `method`, COUNT(`id`) AS `count` FROM `stats_api` GROUP BY `client_id`, `method`
+    ';
+
     public function updateMaterializedViews(): void
     {
-        foreach (['refresh_trends_mv_now', 'refresh_hot_items_mv_now', 'refresh_stats_api_mv_now'] as $procedure) {
-            $this->connection->executeStatement(sprintf('CALL %s(@rc)', $procedure));
+        $this->refreshMaterializedView('trends_mv', ['type', 'platform', 'id', 'track', 'album', 'artist', 'count'], self::TRENDS_SQL);
+        $this->refreshMaterializedView('hot_items_mv', ['type', 'id', 'object', 'count'], self::HOT_ITEMS_SQL);
+        $this->refreshMaterializedView('stats_api_mv', ['client_id', 'method', 'count'], self::API_STATS_SQL);
+    }
+
+    /**
+     * Computes the rows with a plain read, writes them to a shadow table and swaps it in atomically,
+     * so the view is never empty while it is being refreshed.
+     *
+     * @param list<string> $columns
+     */
+    private function refreshMaterializedView(string $table, array $columns, string $sql): void
+    {
+        $rows = $this->connection->fetchAllAssociative($sql);
+
+        $new = $table.'_new';
+        $old = $table.'_old';
+        $quotedColumns = implode(', ', array_map(fn (string $column): string => '`'.$column.'`', $columns));
+        $placeholders = '('.implode(', ', array_fill(0, \count($columns), '?')).')';
+
+        $this->connection->executeStatement(sprintf('DROP TABLE IF EXISTS `%s`', $new));
+        $this->connection->executeStatement(sprintf('CREATE TABLE `%s` LIKE `%s`', $new, $table));
+
+        if ([] !== $rows) {
+            $values = [];
+            foreach ($rows as $row) {
+                foreach ($columns as $column) {
+                    $values[] = $row[$column];
+                }
+            }
+
+            $this->connection->executeStatement(
+                sprintf('INSERT INTO `%s` (%s) VALUES %s', $new, $quotedColumns, implode(', ', array_fill(0, \count($rows), $placeholders))),
+                $values
+            );
         }
+
+        $this->connection->executeStatement(sprintf('DROP TABLE IF EXISTS `%s`', $old));
+        $this->connection->executeStatement(sprintf('RENAME TABLE `%s` TO `%s`, `%s` TO `%s`', $table, $old, $new, $table));
+        $this->connection->executeStatement(sprintf('DROP TABLE `%s`', $old));
     }
 
     public function getItemsStats(): array
