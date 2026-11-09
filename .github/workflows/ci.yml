@@ -52,7 +52,6 @@ jobs:
       - name: Code style
         run: vendor/bin/php-cs-fixer fix --dry-run --diff --config=.php-cs-fixer.php
 
-      # Known issues are listed in psalm-baseline.xml: only new ones fail the build
       - name: Static analysis
         run: vendor/bin/psalm --no-progress --threads=4
 

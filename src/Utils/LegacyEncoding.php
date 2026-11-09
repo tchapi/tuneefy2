@@ -41,7 +41,10 @@ final class LegacyEncoding
             return $string;
         }
 
-        return iconv('ISO-8859-1', 'UTF-8', $string);
+        $converted = iconv('ISO-8859-1', 'UTF-8', $string);
+
+        // iconv() fails on bytes it cannot convert: keep the original rather than lose it
+        return false === $converted ? $string : $converted;
     }
 
     private static function repairValue(mixed $value, array &$seen): mixed

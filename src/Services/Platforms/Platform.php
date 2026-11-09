@@ -188,7 +188,7 @@ abstract class Platform implements GeneralPlatformInterface
     // class a chance to add other contextual options
     protected function addContextOptions(?array $data, ?string $countryCode = null): array
     {
-        return $data;
+        return $data ?? [];
     }
 
     // This function, or its children class' counterpart,
@@ -252,6 +252,10 @@ abstract class Platform implements GeneralPlatformInterface
     private function prepareCall(array $request): \CurlHandle
     {
         $ch = curl_init();
+        if (false === $ch) {
+            throw new PlatformException($this, 'Could not initialize curl');
+        }
+
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_HTTPHEADER => $request['headers'],
@@ -333,7 +337,8 @@ abstract class Platform implements GeneralPlatformInterface
         $ch = $platform->prepareCall($request);
         $response = curl_exec($ch);
 
-        if (false === $response) {
+        // With CURLOPT_RETURNTRANSFER the response is a string, or false on failure
+        if (!is_string($response)) {
             $platform->logFailure('request', curl_error($ch));
 
             throw new PlatformException($platform, curl_error($ch));

@@ -191,6 +191,8 @@ class PlatformEngine
         } elseif (Platform::SEARCH_ALBUM === $type) {
             return ['errors' => [self::ERRORS['NOT_CAPABLE_ALBUMS']]];
         }
+
+        return ['errors' => [self::ERRORS['BAD_MUSICAL_TYPE']]];
     }
 
     public function aggregate(array $platforms, int $type, string $query, int $limit, int $mode, bool $aggressive, ?string $countryCode = null): array

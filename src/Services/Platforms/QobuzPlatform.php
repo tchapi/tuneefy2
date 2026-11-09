@@ -152,6 +152,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
     {
         $entities = $response->data;
 
+        $results = [];
         switch ($type) {
             case Platform::SEARCH_TRACK:
                 $results = $entities->tracks->items;

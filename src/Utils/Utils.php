@@ -18,7 +18,7 @@ final class Utils
 
     public function fromUId(string $uid): int
     {
-        return intval(base_convert($uid, 36, 10) / $this->base);
+        return intdiv((int) base_convert($uid, 36, 10), $this->base);
     }
 
     /*
@@ -60,12 +60,12 @@ final class Utils
     {
         $bom = pack('H*', 'EFBBBF');
 
-        return preg_replace("/^$bom/", '', $string);
+        return preg_replace("/^$bom/", '', $string) ?? $string;
     }
 
     public static function flattenMetaXMLNodes(string $xml): string
     {
-        return preg_replace('/<meta\ rel\=\".*\/([a-zA-Z0-9]*)\">(.*)<\/meta>/', '<$1>$2</$1>', $xml);
+        return preg_replace('/<meta\ rel\=\".*\/([a-zA-Z0-9]*)\">(.*)<\/meta>/', '<$1>$2</$1>', $xml) ?? $xml;
     }
 
     /*
@@ -82,6 +82,8 @@ final class Utils
     */
     public static function flatten(array $tokens): string
     {
-        return preg_replace('/[^a-z0-9]+/', '', strtolower(implode('', $tokens)));
+        $joined = strtolower(implode('', $tokens));
+
+        return preg_replace('/[^a-z0-9]+/', '', $joined) ?? $joined;
     }
 }

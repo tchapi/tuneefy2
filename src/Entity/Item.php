@@ -84,7 +84,11 @@ class Item
     public function getObject(): string
     {
         if (is_resource($this->object)) {
-            $this->object = stream_get_contents($this->object);
+            $contents = stream_get_contents($this->object);
+            if (false === $contents) {
+                throw new \RuntimeException('Could not read the stored object');
+            }
+            $this->object = $contents;
         }
 
         return $this->object;

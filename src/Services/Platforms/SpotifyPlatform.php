@@ -171,6 +171,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
             return [];
         }
 
+        $results = [];
         switch ($type) {
             case Platform::SEARCH_TRACK:
                 $results = $entities->tracks->items;
