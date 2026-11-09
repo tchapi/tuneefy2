@@ -99,19 +99,20 @@ class FrontendController extends AbstractController
             $sanitized_email = filter_var($request->get('mail'), FILTER_SANITIZE_EMAIL);
 
             $message = (new Email())
-              ->subject('[CONTACT] '.$sanitized_email.' (via tuneefy.com)"')
+              ->subject('[CONTACT] '.$sanitized_email.' (via tuneefy.com)')
               ->from($this->getParameter('mail.contact_email'))
               ->to($this->getParameter('mail.team_email'))
               ->text($sanitized_email." sent a message from the site : \n\n".nl2br($request->get('message')));
 
-            // Send the message now
-            $result = $mailer->send($message);
+            // Send the message now: send() returns nothing and throws on failure
+            $mailer->send($message);
         } catch (\Exception $e) {
             error_log('Error sending mail from contact form: '.$e->getMessage());
-            $result = 0;
+
+            return new Response('0');
         }
 
-        return new Response($result > 0 ? '1' : '0');
+        return new Response('1');
     }
 
     #[Route('/trends', name: 'trends')]

@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="7.2.0@7c1fcd8a86b7912663bffd385da323dd8dcce1c5">
-  <file src="src/Controller/FrontendController.php">
-    <AssignmentToVoid>
-      <code><![CDATA[$result]]></code>
-    </AssignmentToVoid>
-    <TypeDoesNotContainType>
-      <code><![CDATA[$result > 0]]></code>
-    </TypeDoesNotContainType>
-  </file>
   <file src="src/Entity/Item.php">
     <FalsableReturnStatement>
       <code><![CDATA[$this->object]]></code>
