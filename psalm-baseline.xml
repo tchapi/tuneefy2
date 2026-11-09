@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="7.2.0@7c1fcd8a86b7912663bffd385da323dd8dcce1c5">
+  <file src="src/Command/ExpiredIntentsCleanerCommand.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[protected function execute(InputInterface $input, OutputInterface $output): int]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Command/StatsUpdaterCommand.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[protected function execute(InputInterface $input, OutputInterface $output): int]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Command/TokenIssuerCommand.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[protected function configure(): void]]></code>
+      <code><![CDATA[protected function execute(InputInterface $input, OutputInterface $output): int]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Controller/ApiController.php">
+    <InvalidScalarArgument>
+      <code><![CDATA[StatsService::METHOD_AGGREGATE]]></code>
+      <code><![CDATA[StatsService::METHOD_LOOKUP]]></code>
+      <code><![CDATA[StatsService::METHOD_PLATFORMS]]></code>
+      <code><![CDATA[StatsService::METHOD_PLATFORMS]]></code>
+      <code><![CDATA[StatsService::METHOD_SEARCH]]></code>
+      <code><![CDATA[StatsService::METHOD_SHARE]]></code>
+    </InvalidScalarArgument>
+    <TypeDoesNotContainNull>
+      <code><![CDATA[null === $intent]]></code>
+      <code><![CDATA[null === $intent]]></code>
+      <code><![CDATA[null === $platforms]]></code>
+    </TypeDoesNotContainNull>
+  </file>
+  <file src="src/Controller/FrontendController.php">
+    <AssignmentToVoid>
+      <code><![CDATA[$result]]></code>
+    </AssignmentToVoid>
+    <TypeDoesNotContainType>
+      <code><![CDATA[$result > 0]]></code>
+    </TypeDoesNotContainType>
+  </file>
+  <file src="src/Dataclass/MusicalEntity/Entities/Album.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function getArtist(): string]]></code>
+      <code><![CDATA[public function getHash(bool $aggressive = false): string]]></code>
+      <code><![CDATA[public function getSafeTitle(): string]]></code>
+      <code><![CDATA[public function introspect(): MusicalEntityInterface]]></code>
+      <code><![CDATA[public function toArray(): array]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Dataclass/MusicalEntity/Entities/Track.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function getArtist(): string]]></code>
+      <code><![CDATA[public function getHash(bool $aggressive = false): string]]></code>
+      <code><![CDATA[public function getSafeTitle(): string]]></code>
+      <code><![CDATA[public function introspect(): MusicalEntityInterface]]></code>
+      <code><![CDATA[public function toArray(): array]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Dataclass/MusicalEntity/MusicalEntity.php">
+    <InvalidOperand>
+      <code><![CDATA[$this->isAcoustic()]]></code>
+      <code><![CDATA[$this->isCover()]]></code>
+      <code><![CDATA[$this->isEdit()]]></code>
+      <code><![CDATA[$this->isRemix()]]></code>
+    </InvalidOperand>
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function toArray(): array]]></code>
+    </MissingOverrideAttribute>
+    <RedundantCondition>
+      <code><![CDATA[true]]></code>
+      <code><![CDATA[true]]></code>
+    </RedundantCondition>
+  </file>
+  <file src="src/Entity/ApiClient.php">
+    <ImplementedReturnTypeMismatch>
+      <code><![CDATA[(Role|string)[]]]></code>
+    </ImplementedReturnTypeMismatch>
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function eraseCredentials(): void]]></code>
+      <code><![CDATA[public function getRoles(): array]]></code>
+      <code><![CDATA[public function getUserIdentifier(): string]]></code>
+    </MissingOverrideAttribute>
+    <UndefinedDocblockClass>
+      <code><![CDATA[(Role|string)[]]]></code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="src/Entity/Item.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[$this->object]]></code>
+    </FalsableReturnStatement>
+  </file>
+  <file src="src/EventSubscriber/ApiBypassSubscriber.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public static function getSubscribedEvents(): array]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/EventSubscriber/ApiStatsSubscriber.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public static function getSubscribedEvents(): array]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/EventSubscriber/LocaleSubscriber.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public static function getSubscribedEvents(): array]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Security/AdminUser.php">
+    <ImplementedReturnTypeMismatch>
+      <code><![CDATA[(Role|string)[]]]></code>
+    </ImplementedReturnTypeMismatch>
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function eraseCredentials(): void]]></code>
+      <code><![CDATA[public function getPassword(): string]]></code>
+      <code><![CDATA[public function getRoles(): array]]></code>
+      <code><![CDATA[public function getUserIdentifier(): string]]></code>
+    </MissingOverrideAttribute>
+    <UndefinedDocblockClass>
+      <code><![CDATA[(Role|string)[]]]></code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="src/Security/AdminUserProvider.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function loadUserByIdentifier(string $identifier): UserInterface]]></code>
+      <code><![CDATA[public function refreshUser(UserInterface $user): UserInterface]]></code>
+      <code><![CDATA[public function supportsClass($class): bool]]></code>
+    </MissingOverrideAttribute>
+    <MissingTemplateParam>
+      <code><![CDATA[UserProviderInterface]]></code>
+    </MissingTemplateParam>
+    <UndefinedDocblockClass>
+      <code><![CDATA[UsernameNotFoundException]]></code>
+    </UndefinedDocblockClass>
+  </file>
+  <file src="src/Security/LoginFormAuthenticator.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[protected function getLoginUrl(Request $request): string]]></code>
+      <code><![CDATA[public function authenticate(Request $request): Passport]]></code>
+      <code><![CDATA[public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): ?Response]]></code>
+      <code><![CDATA[public function supports(Request $request): bool]]></code>
+    </MissingOverrideAttribute>
+    <ParamNameMismatch>
+      <code><![CDATA[$providerKey]]></code>
+    </ParamNameMismatch>
+  </file>
+  <file src="src/Serializer/ApiErrorSerializer.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function getSupportedTypes(?string $format): array]]></code>
+      <code><![CDATA[public function normalize($exception, ?string $format = null, array $context = []): array]]></code>
+      <code><![CDATA[public function supportsNormalization($data, ?string $format = null, array $context = []): bool]]></code>
+    </MissingOverrideAttribute>
+    <ParamNameMismatch>
+      <code><![CDATA[$exception]]></code>
+    </ParamNameMismatch>
+  </file>
+  <file src="src/Services/ClientCredentialsGrant.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function respondToAccessTokenRequest(]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Services/PlatformEngine.php">
+    <DuplicateArrayKey>
+      <code><![CDATA['BAD_MUSICAL_TYPE' => ['BAD_MUSICAL_TYPE' => 'This musical type does not exist']]]></code>
+    </DuplicateArrayKey>
+    <InvalidDocblock>
+      <code><![CDATA[public function getPlatformsByTags(array $tags): array]]></code>
+    </InvalidDocblock>
+    <InvalidReturnType>
+      <code><![CDATA[array]]></code>
+    </InvalidReturnType>
+    <RedundantFunctionCall>
+      <code><![CDATA[array_values]]></code>
+    </RedundantFunctionCall>
+    <TypeDoesNotContainType>
+      <code><![CDATA[!$platformResult]]></code>
+      <code><![CDATA[!$platformResult]]></code>
+    </TypeDoesNotContainType>
+  </file>
+  <file src="src/Services/Platforms/CachedAccessTokenTrait.php">
+    <RedundantCast>
+      <code><![CDATA[(string) $this->key]]></code>
+    </RedundantCast>
+  </file>
+  <file src="src/Services/Platforms/DeezerPlatform.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function expandPermalink(string $permalink, int $mode): PlatformResult]]></code>
+      <code><![CDATA[public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array]]></code>
+      <code><![CDATA[public function hasPermalink(string $permalink): bool]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Services/Platforms/ItunesPlatform.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[protected function addContextOptions(?array $data, ?string $countryCode = null): array]]></code>
+      <code><![CDATA[public function expandPermalink(string $permalink, int $mode): PlatformResult]]></code>
+      <code><![CDATA[public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array]]></code>
+      <code><![CDATA[public function hasPermalink(string $permalink): bool]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Services/Platforms/LastFMPlatform.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[protected function addContextOptions(?array $data, ?string $countryCode = null): array]]></code>
+      <code><![CDATA[public function expandPermalink(string $permalink, int $mode): PlatformResult]]></code>
+      <code><![CDATA[public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array]]></code>
+      <code><![CDATA[public function hasPermalink(string $permalink): bool]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Services/Platforms/MixcloudPlatform.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function expandPermalink(string $permalink, int $mode): PlatformResult]]></code>
+      <code><![CDATA[public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array]]></code>
+      <code><![CDATA[public function hasPermalink(string $permalink): bool]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Services/Platforms/Platform.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[$ch]]></code>
+    </FalsableReturnStatement>
+    <InvalidNullableReturnType>
+      <code><![CDATA[array]]></code>
+    </InvalidNullableReturnType>
+    <InvalidScalarArgument>
+      <code><![CDATA[$response]]></code>
+      <code><![CDATA[$response]]></code>
+    </InvalidScalarArgument>
+    <MissingOverrideAttribute>
+      <code><![CDATA[public function getColor(): string]]></code>
+      <code><![CDATA[public function getName(): string]]></code>
+      <code><![CDATA[public function isCapableOfLookingUp(): bool]]></code>
+      <code><![CDATA[public function isCapableOfSearchingAlbums(): bool]]></code>
+      <code><![CDATA[public function isCapableOfSearchingTracks(): bool]]></code>
+      <code><![CDATA[public function isDefault(): bool]]></code>
+      <code><![CDATA[public function isEnabledForApi(): bool]]></code>
+      <code><![CDATA[public function isEnabledForWebsite(): bool]]></code>
+      <code><![CDATA[public static function getTag(): string]]></code>
+    </MissingOverrideAttribute>
+    <NullableReturnStatement>
+      <code><![CDATA[$data]]></code>
+    </NullableReturnStatement>
+    <TypeDoesNotContainNull>
+      <code><![CDATA[false === $response || null === $response]]></code>
+      <code><![CDATA[null === $response]]></code>
+    </TypeDoesNotContainNull>
+  </file>
+  <file src="src/Services/Platforms/PlatformResult.php">
+    <InvalidClass>
+      <code><![CDATA[?\Datetime]]></code>
+    </InvalidClass>
+  </file>
+  <file src="src/Services/Platforms/QobuzPlatform.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[protected function addContextOptions(?array $data, ?string $countryCode = null): array]]></code>
+      <code><![CDATA[public function expandPermalink(string $permalink, int $mode): PlatformResult]]></code>
+      <code><![CDATA[public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array]]></code>
+      <code><![CDATA[public function hasPermalink(string $permalink): bool]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Services/Platforms/SoundcloudPlatform.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[protected function addContextHeaders(): array]]></code>
+      <code><![CDATA[protected function requestAccessToken(): array]]></code>
+      <code><![CDATA[public function expandPermalink(string $permalink, int $mode): PlatformResult]]></code>
+      <code><![CDATA[public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array]]></code>
+      <code><![CDATA[public function hasPermalink(string $permalink): bool]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Services/Platforms/SpotifyPlatform.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[protected function addContextHeaders(): array]]></code>
+      <code><![CDATA[protected function addContextOptions(?array $data, ?string $countryCode = null): array]]></code>
+      <code><![CDATA[protected function requestAccessToken(): array]]></code>
+      <code><![CDATA[public function expandPermalink(string $permalink, int $mode): PlatformResult]]></code>
+      <code><![CDATA[public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array]]></code>
+      <code><![CDATA[public function hasPermalink(string $permalink): bool]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Services/Platforms/TidalPlatform.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[protected function addContextOptions(?array $data, ?string $countryCode = null): array]]></code>
+      <code><![CDATA[public function expandPermalink(string $permalink, int $mode): PlatformResult]]></code>
+      <code><![CDATA[public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array]]></code>
+      <code><![CDATA[public function hasPermalink(string $permalink): bool]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Services/Platforms/YoutubePlatform.php">
+    <MissingOverrideAttribute>
+      <code><![CDATA[protected function addContextOptions(?array $data, ?string $countryCode = null): array]]></code>
+      <code><![CDATA[public function expandPermalink(string $permalink, int $mode): PlatformResult]]></code>
+      <code><![CDATA[public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array]]></code>
+      <code><![CDATA[public function hasPermalink(string $permalink): bool]]></code>
+    </MissingOverrideAttribute>
+  </file>
+  <file src="src/Utils/LegacyEncoding.php">
+    <FalsableReturnStatement>
+      <code><![CDATA[iconv('ISO-8859-1', 'UTF-8', $string)]]></code>
+    </FalsableReturnStatement>
+  </file>
+  <file src="src/Utils/Utils.php">
+    <InvalidNullableReturnType>
+      <code><![CDATA[string]]></code>
+      <code><![CDATA[string]]></code>
+      <code><![CDATA[string]]></code>
+    </InvalidNullableReturnType>
+    <InvalidOperand>
+      <code><![CDATA[base_convert($uid, 36, 10)]]></code>
+    </InvalidOperand>
+    <NullableReturnStatement>
+      <code><![CDATA[preg_replace("/^$bom/", '', $string)]]></code>
+      <code><![CDATA[preg_replace('/<meta\ rel\=\".*\/([a-zA-Z0-9]*)\">(.*)<\/meta>/', '<$1>$2</$1>', $xml)]]></code>
+      <code><![CDATA[preg_replace('/[^a-z0-9]+/', '', strtolower(implode('', $tokens)))]]></code>
+    </NullableReturnStatement>
+  </file>
+</files>

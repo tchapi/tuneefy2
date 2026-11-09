@@ -1,7 +1,7 @@
 name: CI
 
 # Runs on every push, without any secret, as two parallel jobs:
-#  - static: lints, code style and the Unit suite
+#  - static: lints, code style, static analysis and the Unit suite
 #  - app:    the database built from the migrations, the commands that cron runs
 #            on the server, the Acceptance suite and the Api tests that need no
 #            music platform credentials (group "offline")
@@ -51,6 +51,10 @@ jobs:
 
       - name: Code style
         run: vendor/bin/php-cs-fixer fix --dry-run --diff --config=.php-cs-fixer.php
+
+      # Known issues are listed in psalm-baseline.xml: only new ones fail the build
+      - name: Static analysis
+        run: vendor/bin/psalm --no-progress --threads=4
 
       - name: Unit tests
         run: vendor/bin/codecept run Unit

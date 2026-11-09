@@ -105,13 +105,15 @@
         "codeception/module-phpbrowser": "^3.0",
         "codeception/module-rest": "^3.3",
         "friendsofphp/php-cs-fixer": "^3.51",
+        "psalm/plugin-symfony": "^5",
         "symfony/browser-kit": "7.4.*",
         "symfony/css-selector": "7.4.*",
         "symfony/debug-bundle": "7.4.*",
         "symfony/maker-bundle": "^1.0",
         "symfony/phpunit-bridge": "7.4.*",
         "symfony/stopwatch": "7.4.*",
-        "symfony/web-profiler-bundle": "7.4.*"
+        "symfony/web-profiler-bundle": "7.4.*",
+        "vimeo/psalm": "^7"
     },
     "extra": {
         "symfony": {
