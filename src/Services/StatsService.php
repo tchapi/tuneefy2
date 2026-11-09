@@ -35,7 +35,7 @@ final class StatsService
         $this->connection = $doctrine->getConnection();
     }
 
-    public function addListeningStat(int $item_id, string $platformTag, int $index)
+    public function addListeningStat(int $item_id, string $platformTag, int $index): void
     {
         $statement = $this->connection->prepare('INSERT INTO `stats_listening` (`item_id`, `platform`, `index`, `listened_at`) VALUES (:item_id, :platform, :index, NOW())');
 
@@ -50,7 +50,7 @@ final class StatsService
         }
     }
 
-    public function addListeningStatDirect(string $platformTag)
+    public function addListeningStatDirect(string $platformTag): void
     {
         $statement = $this->connection->prepare('INSERT INTO `stats_listening` (`platform`, `listened_at`) VALUES (:platform, NOW())');
 
@@ -63,7 +63,7 @@ final class StatsService
         }
     }
 
-    public function addViewingStat(int $item_id)
+    public function addViewingStat(int $item_id): void
     {
         $statement = $this->connection->prepare('INSERT INTO `stats_viewing` (`item_id`, `referer`, `viewed_at`) VALUES (:item_id, :referer, NOW())');
 
@@ -79,7 +79,7 @@ final class StatsService
         }
     }
 
-    public function addApiCallingStat(int $method, ?string $client_id = null)
+    public function addApiCallingStat(int $method, ?string $client_id = null): void
     {
         $statement = $this->connection->prepare('INSERT INTO `stats_api` (`client_id`, `method`, `called_at`) VALUES (:client_id, :method, NOW())');
 
@@ -93,7 +93,7 @@ final class StatsService
         }
     }
 
-    public function getAllTrends()
+    public function getAllTrends(): array
     {
         $statement = $this->connection->prepare('SELECT * FROM `trends_mv` ORDER BY type, count DESC');
 
@@ -106,7 +106,7 @@ final class StatsService
         return $res->fetchAllAssociative();
     }
 
-    public function getHotItems()
+    public function getHotItems(): array
     {
         $statement = $this->connection->prepare('SELECT * FROM `hot_items_mv`');
 
@@ -141,7 +141,7 @@ final class StatsService
         return $result;
     }
 
-    public function getApiStats()
+    public function getApiStats(): array
     {
         $statement = $this->connection->prepare('SELECT * FROM `stats_api_mv` ORDER BY client_id, method DESC');
 

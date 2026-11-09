@@ -298,7 +298,7 @@ abstract class Platform implements GeneralPlatformInterface
         $this->cache->save($item);
     }
 
-    private function postProcessResult(string $response)
+    private function postProcessResult(string $response): ?\stdClass
     {
         if (!$response) {
             // Error in the request, we should gracefully fail returning null
@@ -330,35 +330,46 @@ abstract class Platform implements GeneralPlatformInterface
         return json_decode('{"data":'.$response.'}', false);
     }
 
-    protected static function fetch(Platform $platform, int $type, string $query, ?string $countryCode = null)
+    /**
+     * @throws PlatformException when the platform cannot be reached or answers something undecodable
+     */
+    protected static function fetch(Platform $platform, int $type, string $query, ?string $countryCode = null): \stdClass
     {
         $request = $platform->buildRequest($type, $query, $countryCode);
 
         if (null !== ($cached = $platform->getCachedResponse($request))) {
-            return $platform->postProcessResult($cached);
+            $response = $cached;
+        } else {
+            $ch = $platform->prepareCall($request);
+            $response = curl_exec($ch);
+
+            // With CURLOPT_RETURNTRANSFER the response is a string, or false on failure
+            if (!is_string($response)) {
+                $platform->logFailure('request', curl_error($ch));
+
+                throw new PlatformException($platform, curl_error($ch));
+            }
+
+            $platform->cacheResponse($request, $ch, $response, $type);
         }
 
-        $ch = $platform->prepareCall($request);
-        $response = curl_exec($ch);
+        $decoded = $platform->postProcessResult($response);
 
-        // With CURLOPT_RETURNTRANSFER the response is a string, or false on failure
-        if (!is_string($response)) {
-            $platform->logFailure('request', curl_error($ch));
+        if (null === $decoded) {
+            $platform->logFailure('request', 'empty or undecodable response');
 
-            throw new PlatformException($platform, curl_error($ch));
+            throw new PlatformException($platform, 'empty or undecodable response');
         }
 
-        $platform->cacheResponse($request, $ch, $response, $type);
-
-        return $platform->postProcessResult($response);
+        return $decoded;
     }
 
-    public static function search(Platform $platform, int $type, string $query, int $limit, int $mode, ?string $countryCode = null)
+    public static function search(Platform $platform, int $type, string $query, int $limit, int $mode, ?string $countryCode = null): array
     {
         $response = self::fetch($platform, $type, $query, $countryCode);
 
-        if (null === $response || false === $response->data) {
-            // HTTP error or undecodable payload
+        if (false === $response->data) {
+            // The XML could not be parsed
             $platform->logFailure('search', 'empty or undecodable response');
 
             throw new PlatformException($platform);
@@ -463,5 +474,5 @@ abstract class Platform implements GeneralPlatformInterface
         ];
     }
 
-    abstract public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode);
+    abstract public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array;
 }

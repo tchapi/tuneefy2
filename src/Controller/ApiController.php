@@ -6,6 +6,7 @@ use App\Repository\ItemRepository;
 use App\Services\PlatformEngine;
 use App\Services\Platforms\Platform;
 use App\Services\Platforms\PlatformException;
+use App\Services\Platforms\PlatformResult;
 use App\Services\Platforms\PlatformType;
 use App\Services\StatsService;
 use App\Utils\ApiUtils;
@@ -154,7 +155,7 @@ class ApiController extends AbstractController
 
         if (count($result['results']) > 0) {
             $data = [
-                'results' => array_map(function ($e) { return $e->toArray(); }, $result['results']),
+                'results' => array_map(fn (PlatformResult $e): array => $e->toArray(), $result['results']),
             ];
         } else {
             return $apiUtils->createGenericErrorResponse($request, 'NO_MATCH', 200);
@@ -189,7 +190,7 @@ class ApiController extends AbstractController
         // Unknown names are silently dropped: if none of them is valid, no platform is
         // searched at all. Only an absent or empty "include" means all platforms.
         $platforms = $engine->getPlatformsByTags(explode(',', $include));
-        if (null === $include || '' === $include) {
+        if ('' === $include) {
             $platforms = $engine->getAllPlatforms();
         }
 
@@ -210,7 +211,7 @@ class ApiController extends AbstractController
         if (count($result['results']) > 0) {
             $data = [
                 'errors' => $result['errors'],
-                'results' => array_map(function ($e) { return $e->toArray(); }, $result['results']),
+                'results' => array_map(fn (PlatformResult $e): array => $e->toArray(), $result['results']),
             ];
         } else {
             return $apiUtils->createGenericErrorResponse($request, 'NO_MATCH', 200);

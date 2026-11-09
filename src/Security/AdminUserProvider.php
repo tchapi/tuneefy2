@@ -20,10 +20,8 @@ class AdminUserProvider implements UserProviderInterface
      * this method.
      *
      * @throws UserNotFoundException if the user is not found
-     *
-     * @return UserInterface
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername(string $username): UserInterface
     {
         throw new \Exception('Not implemented, because not needed');
     }
@@ -59,7 +57,7 @@ class AdminUserProvider implements UserProviderInterface
      * Tells Symfony to use this provider for this User class.
      */
     #[\Override]
-    public function supportsClass($class): bool
+    public function supportsClass(string $class): bool
     {
         return AdminUser::class === $class;
     }

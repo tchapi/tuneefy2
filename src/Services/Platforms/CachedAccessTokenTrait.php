@@ -36,7 +36,7 @@ trait CachedAccessTokenTrait
         }
 
         // A failed request is remembered for a minute only, so as not to burn any quota
-        $item->set($token)->expiresAfter(null === $token ? 60 : max(60, (int) ($result['expires_in'] ?? 3600) - 300));
+        $item->set($token)->expiresAfter(null === $token ? 60 : max(60, ($result['expires_in'] ?? 3600) - 300));
         $this->cache->save($item);
 
         return $token;

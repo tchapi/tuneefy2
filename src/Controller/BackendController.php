@@ -24,7 +24,7 @@ class BackendController extends AbstractController
     {
         $statsRaw = $statsService->getApiStats();
         $clients = $entityManager->getRepository(ApiClient::class)->findAllWithOAuth2Client();
-        $activeClients = array_filter($clients, function ($e) {return $e['active']; });
+        $activeClients = array_filter($clients, fn (array $e): bool => (bool) $e['active']);
         $stats = [];
 
         foreach ($statsRaw as $stat) {
