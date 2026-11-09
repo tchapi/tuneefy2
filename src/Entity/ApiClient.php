@@ -35,8 +35,9 @@ class ApiClient implements UserInterface
     private $oauth2ClientIdentifier;
 
     /**
-     * @return (Role|string)[] The user roles
+     * @return string[] The user roles
      */
+    #[\Override]
     public function getRoles(): array
     {
         // Only used in stateful version, when we bypass the oauth
@@ -49,10 +50,12 @@ class ApiClient implements UserInterface
      * This is important if, at any given point, sensitive information like
      * the plain-text password is stored on this object.
      */
+    #[\Override]
     public function eraseCredentials(): void
     {
     }
 
+    #[\Override]
     public function getUserIdentifier(): string
     {
         return $this->name;

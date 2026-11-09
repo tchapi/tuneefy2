@@ -52,11 +52,13 @@ class ItunesPlatform extends Platform implements WebStoreInterface
     // https://itunes.apple.com/us/album/weezer/id1136784464
     public const REGEX_ITUNES_ALBUM = "/\/album\/(?P<album_name>".Platform::REGEX_FULLSTRING.")\/(id)?(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
+    #[\Override]
     public function hasPermalink(string $permalink): bool
     {
         return false !== strpos($permalink, 'music.apple.') || false !== strpos($permalink, 'itunes.apple.');
     }
 
+    #[\Override]
     protected function addContextOptions(?array $data, ?string $countryCode = null): array
     {
         $data['country'] = strtoupper($countryCode ?: self::DEFAULT_COUNTRY_CODE);
@@ -64,6 +66,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         return $data;
     }
 
+    #[\Override]
     public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
@@ -102,6 +105,7 @@ class ItunesPlatform extends Platform implements WebStoreInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
+    #[\Override]
     public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
         $entities = $response->data->results;

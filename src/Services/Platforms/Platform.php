@@ -116,16 +116,19 @@ abstract class Platform implements GeneralPlatformInterface
         $this->secret = $secret;
     }
 
+    #[\Override]
     public function getName(): string
     {
         return static::NAME;
     }
 
+    #[\Override]
     public static function getTag(): string
     {
         return static::TAG;
     }
 
+    #[\Override]
     public function getColor(): string
     {
         return static::COLOR;
@@ -144,31 +147,37 @@ abstract class Platform implements GeneralPlatformInterface
         return PlatformType::GeneralPlatform;
     }
 
+    #[\Override]
     public function isDefault(): bool
     {
         return $this->default;
     }
 
+    #[\Override]
     public function isEnabledForApi(): bool
     {
         return $this->enables['api'];
     }
 
+    #[\Override]
     public function isEnabledForWebsite(): bool
     {
         return $this->enables['website'];
     }
 
+    #[\Override]
     public function isCapableOfSearchingTracks(): bool
     {
         return $this->capabilities['track_search'];
     }
 
+    #[\Override]
     public function isCapableOfSearchingAlbums(): bool
     {
         return $this->capabilities['album_search'];
     }
 
+    #[\Override]
     public function isCapableOfLookingUp(): bool
     {
         return $this->capabilities['lookup'];
@@ -324,8 +333,7 @@ abstract class Platform implements GeneralPlatformInterface
         $ch = $platform->prepareCall($request);
         $response = curl_exec($ch);
 
-        // curl_exec() returns false on failure (not null)
-        if (false === $response || null === $response) {
+        if (false === $response) {
             $platform->logFailure('request', curl_error($ch));
 
             throw new PlatformException($platform, curl_error($ch));

@@ -51,11 +51,13 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
     // https://soundcloud.com/robbabicz/pink-trees-1
     public const REGEX_SOUNDCLOUD_ALL = "/\/".Platform::REGEX_FULLSTRING."\/".Platform::REGEX_FULLSTRING."[\/]?$/";
 
+    #[\Override]
     public function hasPermalink(string $permalink): bool
     {
         return false !== strpos($permalink, 'soundcloud.');
     }
 
+    #[\Override]
     protected function addContextHeaders(): array
     {
         // https://developers.soundcloud.com/docs/api/guide#authentication
@@ -68,6 +70,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
     /**
      * client_credentials flow: HTTP Basic authentication only, credentials in the body are not supported.
      */
+    #[\Override]
     protected function requestAccessToken(): array
     {
         $ch = curl_init();
@@ -91,6 +94,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         return json_decode($response, true) ?: [];
     }
 
+    #[\Override]
     public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
@@ -126,6 +130,7 @@ class SoundcloudPlatform extends Platform implements WebStreamingPlatformInterfa
         return new PlatformResult($metadata, $musical_entity);
     }
 
+    #[\Override]
     public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
         $entities = $response->data;

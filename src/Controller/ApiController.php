@@ -186,8 +186,10 @@ class ApiController extends AbstractController
             return $apiUtils->createGenericErrorResponse($request, 'MISSING_QUERY');
         }
 
+        // Unknown names are silently dropped: if none of them is valid, no platform is
+        // searched at all. Only an absent or empty "include" means all platforms.
         $platforms = $engine->getPlatformsByTags(explode(',', $include));
-        if (null === $include || '' === $include || null === $platforms) { // Silently fails if a name is invalid, that's ok
+        if (null === $include || '' === $include) {
             $platforms = $engine->getAllPlatforms();
         }
 
@@ -220,7 +222,7 @@ class ApiController extends AbstractController
     #[Route('/v2/share/{intent}', name: 'share')]
     public function share(Request $request, ItemRepository $itemRepository, ApiUtils $apiUtils, string $intent): Response
     {
-        if (null === $intent || '' === $intent) {
+        if ('' === $intent) {
             return $apiUtils->createGenericErrorResponse($request, 'NO_INTENT');
         }
 

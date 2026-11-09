@@ -14,7 +14,7 @@ class PlatformResult
     private $intent;
 
     /**
-     * @var ?\Datetime
+     * @var ?\DateTime
      */
     private $expires;
 

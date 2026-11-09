@@ -22,6 +22,7 @@ abstract class MusicalEntity implements MusicalEntityInterface
         $this->extra_info = [];
     }
 
+    #[\Override]
     public function toArray(): array
     {
         return [
@@ -118,7 +119,7 @@ abstract class MusicalEntity implements MusicalEntityInterface
 
     public function getExtraInfoHash(): string
     {
-        return (0 + $this->isCover()).(0 + $this->isAcoustic()).(0 + $this->isRemix()).(0 + $this->isEdit());
+        return ((int) $this->isCover()).((int) $this->isAcoustic()).((int) $this->isRemix()).((int) $this->isEdit());
     }
 
     /*
@@ -147,11 +148,11 @@ abstract class MusicalEntity implements MusicalEntityInterface
 
         // 2. It's a special remix ?
         // (we don't remove that from the title neither)
-        $extra_info['is_remix'] = true && preg_match("/.*[\-\—\–\(\[].*(mix|remix)/iu", $str);
+        $extra_info['is_remix'] = (bool) preg_match("/.*[\-\—\–\(\[].*(mix|remix)/iu", $str);
 
         // 3. It's acoustic ?
         // (we don't remove that from the title neither)
-        $extra_info['acoustic'] = true && preg_match("/.*[\-\—\–\(\[].*(acoustic|acoustique)/iu", $str);
+        $extra_info['acoustic'] = (bool) preg_match("/.*[\-\—\–\(\[].*(acoustic|acoustique)/iu", $str);
 
         // 4. Any featuring ?
         if (preg_match("/.*f(?:ea)?t(?:uring)?\.?\s?(?P<artist>[^\(\)\[\]\-]*)/iu", $str, $matches_feat)) {

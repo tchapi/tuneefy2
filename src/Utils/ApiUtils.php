@@ -15,7 +15,7 @@ final class ApiUtils
     {
     }
 
-    public function createFormattedResponse(Request $request, mixed $data, int $httpStatus = 200, ?string $apiMethod = null)
+    public function createFormattedResponse(Request $request, mixed $data, int $httpStatus = 200, ?int $apiMethod = null)
     {
         $format = $request->query->get('format') ?? $request->getPreferredFormat();
 

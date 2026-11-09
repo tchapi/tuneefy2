@@ -35,6 +35,7 @@ final class ClientCredentialsGrant extends BaseClientCredentialsGrant
         return $this->issueAccessToken($accessTokenTTL, $client, $client->getIdentifier(), []);
     }
 
+    #[\Override]
     public function respondToAccessTokenRequest(
         ServerRequestInterface $request,
         ResponseTypeInterface $responseType,

@@ -29,6 +29,7 @@ class Track extends MusicalEntity
     }
 
     // Getters and setters
+    #[\Override]
     public function getArtist(): string
     {
         return $this->album->getArtist();
@@ -39,6 +40,7 @@ class Track extends MusicalEntity
         return $this->track_title;
     }
 
+    #[\Override]
     public function getSafeTitle(): string
     {
         return $this->safe_track_title;
@@ -64,6 +66,7 @@ class Track extends MusicalEntity
         return $this->album->getPicture();
     }
 
+    #[\Override]
     public function toArray(): array
     {
         $album = $this->album->toArray();
@@ -91,6 +94,7 @@ class Track extends MusicalEntity
       Strips unnecessary words from a track title
       And extracts extra_info
     */
+    #[\Override]
     public function introspect(): MusicalEntityInterface
     {
         if (false === $this->introspected) {
@@ -114,6 +118,7 @@ class Track extends MusicalEntity
         return $this;
     }
 
+    #[\Override]
     public function getHash(bool $aggressive = false): string
     {
         if (true === $aggressive) {

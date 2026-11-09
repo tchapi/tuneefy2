@@ -7,18 +7,21 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ApiErrorSerializer implements NormalizerInterface
 {
-    public function normalize($exception, ?string $format = null, array $context = []): array
+    #[\Override]
+    public function normalize($data, ?string $format = null, array $context = []): array
     {
         return [
-            'errors' => [['GENERAL_ERROR' => $exception->getMessage()]],
+            'errors' => [['GENERAL_ERROR' => $data->getMessage()]],
         ];
     }
 
+    #[\Override]
     public function supportsNormalization($data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof FlattenException;
     }
 
+    #[\Override]
     public function getSupportedTypes(?string $format): array
     {
         return [

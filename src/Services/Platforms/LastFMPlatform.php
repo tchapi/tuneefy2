@@ -56,11 +56,13 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
     // http://www.lastfm.fr/music/Sex+Pistols
     public const REGEX_LASTFM_ARTIST = "/music\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
+    #[\Override]
     public function hasPermalink(string $permalink): bool
     {
         return false !== strpos($permalink, 'lastfm.') || false !== strpos($permalink, 'last.fm');
     }
 
+    #[\Override]
     protected function addContextOptions(?array $data, ?string $countryCode = null): array
     {
         $data['api_key'] = $this->key;
@@ -68,6 +70,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         return $data;
     }
 
+    #[\Override]
     public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
@@ -149,6 +152,7 @@ class LastFMPlatform extends Platform implements ScrobblingPlatformInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
+    #[\Override]
     public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
         $entities = $response->data;

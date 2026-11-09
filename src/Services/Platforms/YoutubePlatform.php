@@ -50,11 +50,13 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
     // https://www.youtube.com/watch?v=FNdC_3LR2AI
     public const REGEX_YOUTUBE_ALL = "/\/watch\?v\=(?P<video_id>[a-zA-Z0-9\-\_]*)(|\&(.*))$/";
 
+    #[\Override]
     public function hasPermalink(string $permalink): bool
     {
         return false !== strpos($permalink, 'youtube.');
     }
 
+    #[\Override]
     protected function addContextOptions(?array $data, ?string $countryCode = null): array
     {
         $data['key'] = $this->key;
@@ -68,6 +70,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         return sprintf('https://www.youtube.com/watch?v=%s', $video_id);
     }
 
+    #[\Override]
     public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
@@ -145,6 +148,7 @@ class YoutubePlatform extends Platform implements WebStreamingPlatformInterface
         return [$title, $artist];
     }
 
+    #[\Override]
     public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
         // Catch errors (invalid key, quota exceeded, ...)

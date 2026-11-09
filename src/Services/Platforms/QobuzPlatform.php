@@ -67,11 +67,13 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
     // http://play.qobuz.com/artist/36819
     public const NEW_REGEX_QOBUZ_ARTIST = "/\/artist\/(?P<album_id>".Platform::REGEX_NUMERIC_ID.")[\/]?$/";
 
+    #[\Override]
     public function hasPermalink(string $permalink): bool
     {
         return false !== strpos($permalink, 'qobuz.com');
     }
 
+    #[\Override]
     protected function addContextOptions(?array $data, ?string $countryCode = null): array
     {
         $data['app_id'] = $this->key;
@@ -89,6 +91,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         return sprintf('https://open.qobuz.com/album/%s', $id);
     }
 
+    #[\Override]
     public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
@@ -144,6 +147,7 @@ class QobuzPlatform extends Platform implements WebStreamingPlatformInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
+    #[\Override]
     public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
         $entities = $response->data;

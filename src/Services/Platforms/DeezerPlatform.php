@@ -56,11 +56,13 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
     // http://www.deezer.com/fr/artist/16948
     public const REGEX_DEEZER_ARTIST = "/\/artist\/(?P<artist_id>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
+    #[\Override]
     public function hasPermalink(string $permalink): bool
     {
         return false !== strpos($permalink, 'deezer.');
     }
 
+    #[\Override]
     public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
@@ -118,6 +120,7 @@ class DeezerPlatform extends Platform implements WebStreamingPlatformInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
+    #[\Override]
     public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
         $entities = $response->data;

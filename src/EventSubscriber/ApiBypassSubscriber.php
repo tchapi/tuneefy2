@@ -96,6 +96,7 @@ class ApiBypassSubscriber implements EventSubscriberInterface
         $this->generatedToken = null;
     }
 
+    #[\Override]
     public static function getSubscribedEvents(): array
     {
         return [

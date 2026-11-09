@@ -54,11 +54,13 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
     // http://www.tidal.com/artist/3528326
     public const REGEX_TIDAL_ARTIST = "/artist\/(?P<artist_id>".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
+    #[\Override]
     public function hasPermalink(string $permalink): bool
     {
         return false !== strpos($permalink, 'tidal.') || false !== strpos($permalink, 'tidalhifi.');
     }
 
+    #[\Override]
     protected function addContextOptions(?array $data, ?string $countryCode = null): array
     {
         $data['token'] = $this->key;
@@ -76,6 +78,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         return sprintf('https://resources.wimpmusic.com/images/%s/320x320.jpg', str_replace('-', '/', $cover_hash));
     }
 
+    #[\Override]
     public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
@@ -133,6 +136,7 @@ class TidalPlatform extends Platform implements WebStreamingPlatformInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
+    #[\Override]
     public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
         $entities = $response->data->items;

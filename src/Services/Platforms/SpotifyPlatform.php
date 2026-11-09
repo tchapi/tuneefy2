@@ -59,11 +59,13 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
     // LOCAL files : http://open.spotify.com/local/hang+the+bastard/raw+sorcery/doomed+fucking+doomed/206
     public const REGEX_SPOTIFY_LOCAL = "/local\/(?P<artist_name>".Platform::REGEX_FULLSTRING.")\/(?P<album_name>".Platform::REGEX_FULLSTRING.")\/(?P<track_name>".Platform::REGEX_FULLSTRING.")\/[0-9]+$/";
 
+    #[\Override]
     public function hasPermalink(string $permalink): bool
     {
         return false !== strpos($permalink, 'spotify:') || false !== strpos($permalink, 'open.spotify.') || false !== strpos($permalink, 'play.spotify.');
     }
 
+    #[\Override]
     protected function addContextOptions(?array $data, ?string $countryCode = null): array
     {
         $data['market'] = strtoupper($countryCode ?: self::DEFAULT_COUNTRY_CODE);
@@ -71,6 +73,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
         return $data;
     }
 
+    #[\Override]
     protected function addContextHeaders(): array
     {
         // https://developer.spotify.com/documentation/web-api/tutorials/client-credentials-flow
@@ -79,6 +82,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
         return null === $token ? [] : ['Authorization: Bearer '.$token];
     }
 
+    #[\Override]
     protected function requestAccessToken(): array
     {
         $ch = curl_init();
@@ -100,6 +104,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
         return json_decode($response, true) ?: [];
     }
 
+    #[\Override]
     public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
@@ -152,6 +157,7 @@ class SpotifyPlatform extends Platform implements WebStreamingPlatformInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
+    #[\Override]
     public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
         $entities = $response->data;

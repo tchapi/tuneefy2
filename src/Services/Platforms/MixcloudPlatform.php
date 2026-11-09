@@ -52,11 +52,13 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
     // https://www.mixcloud.com/LeFtOoO/678-new-section-boyz-onra-romare-drake-roman-rauch-clap-clap/
     public const REGEX_MIXCLOUD_TRACK = "/mixcloud\.com\/(?P<artist_slug>".Platform::REGEX_FULLSTRING.")\/(?P<track_long_slug>".Platform::REGEX_FULLSTRING."\/".Platform::REGEX_FULLSTRING.")[\/]?$/";
 
+    #[\Override]
     public function hasPermalink(string $permalink): bool
     {
         return false !== strpos($permalink, 'mixcloud.');
     }
 
+    #[\Override]
     public function expandPermalink(string $permalink, int $mode): PlatformResult
     {
         $musical_entity = null;
@@ -100,6 +102,7 @@ class MixcloudPlatform extends Platform implements WebStreamingPlatformInterface
         return new PlatformResult($metadata, $musical_entity);
     }
 
+    #[\Override]
     public function extractSearchResults(\stdClass $response, int $type, string $query, int $limit, int $mode): array
     {
         return [];

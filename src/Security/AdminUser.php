@@ -17,8 +17,9 @@ class AdminUser implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return (Role|string)[] The user roles
+     * @return string[] The user roles
      */
+    #[\Override]
     public function getRoles(): array
     {
         return ['ROLE_ADMIN'];
@@ -27,6 +28,7 @@ class AdminUser implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * Returns the password used to authenticate the user.
      */
+    #[\Override]
     public function getPassword(): string
     {
         return $this->password;
@@ -54,6 +56,7 @@ class AdminUser implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->username;
     }
 
+    #[\Override]
     public function getUserIdentifier(): string
     {
         return $this->username;
@@ -65,6 +68,7 @@ class AdminUser implements UserInterface, PasswordAuthenticatedUserInterface
      * This is important if, at any given point, sensitive information like
      * the plain-text password is stored on this object.
      */
+    #[\Override]
     public function eraseCredentials(): void
     {
     }

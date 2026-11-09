@@ -22,7 +22,7 @@ trait CachedAccessTokenTrait
             return $this->requestAccessToken()['access_token'] ?? null;
         }
 
-        $item = $this->cache->getItem(static::TAG.'_access_token_'.md5((string) $this->key));
+        $item = $this->cache->getItem(static::TAG.'_access_token_'.md5($this->key));
 
         if ($item->isHit()) {
             return $item->get();

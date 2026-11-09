@@ -35,17 +35,20 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         $this->adminPassword = $adminPassword;
     }
 
+    #[\Override]
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate('admin_login');
     }
 
+    #[\Override]
     public function supports(Request $request): bool
     {
         return 'admin_login' === $request->attributes->get('_route')
             && $request->isMethod('POST');
     }
 
+    #[\Override]
     public function authenticate(Request $request): Passport
     {
         $credentials = [
@@ -74,9 +77,10 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         );
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): ?Response
+    #[\Override]
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+        if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 

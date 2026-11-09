@@ -3,10 +3,13 @@
 namespace App\Security;
 
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+/**
+ * @implements UserProviderInterface<AdminUser>
+ */
 class AdminUserProvider implements UserProviderInterface
 {
     /**
@@ -16,7 +19,7 @@ class AdminUserProvider implements UserProviderInterface
      * If you're not using these features, you do not need to implement
      * this method.
      *
-     * @throws UsernameNotFoundException if the user is not found
+     * @throws UserNotFoundException if the user is not found
      *
      * @return UserInterface
      */
@@ -25,6 +28,7 @@ class AdminUserProvider implements UserProviderInterface
         throw new \Exception('Not implemented, because not needed');
     }
 
+    #[\Override]
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         return new AdminUser($identifier, bin2hex(random_bytes(64)));
@@ -41,6 +45,7 @@ class AdminUserProvider implements UserProviderInterface
      * If your firewall is "stateless: true" (for a pure API), this
      * method is not called.
      */
+    #[\Override]
     public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof AdminUser) {
@@ -53,6 +58,7 @@ class AdminUserProvider implements UserProviderInterface
     /**
      * Tells Symfony to use this provider for this User class.
      */
+    #[\Override]
     public function supportsClass($class): bool
     {
         return AdminUser::class === $class;

@@ -17,7 +17,6 @@ class PlatformEngine
     public const ERRORS = [
         'GENERAL_ERROR' => ['GENERAL_ERROR' => 'An error was encountered'],
         'BAD_PLATFORM_TYPE' => ['BAD_PLATFORM_TYPE' => 'This type of platform does not exist'],
-        'BAD_MUSICAL_TYPE' => ['BAD_MUSICAL_TYPE' => 'This musical type is not valid'],
         'BAD_PLATFORM' => ['BAD_PLATFORM' => 'This platform does not exist'],
         'BAD_MODE' => ['BAD_MODE' => 'This mode is not valid'],
         'MISSING_PERMALINK' => ['MISSING_PERMALINK' => 'Missing or empty parameter: q (permalink)'],
@@ -90,7 +89,7 @@ class PlatformEngine
     }
 
     /**
-     * @param string[]
+     * @param string[] $tags
      *
      * @return Platform[]
      */
@@ -153,7 +152,7 @@ class PlatformEngine
             throw $e;
         }
 
-        if (!$platformResult || null === $platformResult->getMusicalEntity()) {
+        if (null === $platformResult->getMusicalEntity()) {
             // Don't store anything in this case
             return ['result' => $platformResult];
         }
@@ -258,7 +257,6 @@ class PlatformEngine
             return $this->itemRepository->addItem($e->finalizeMerge(), $this->getCurrentClientIdentifier());
         }, $merged_results);
 
-        // Discards the key (hash) that we don't need anymore
-        return array_values($merged_results);
+        return $merged_results;
     }
 }
