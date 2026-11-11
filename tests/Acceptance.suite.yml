@@ -3,4 +3,4 @@ suite_namespace: Tests\Acceptance
 modules:
     enabled:
         - PhpBrowser:
-            url: http://127.0.0.1:9999/
+            url: http://localhost:9999/

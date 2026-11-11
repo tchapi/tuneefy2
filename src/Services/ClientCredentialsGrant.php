@@ -32,7 +32,15 @@ final class ClientCredentialsGrant extends BaseClientCredentialsGrant
             return null;
         }
 
-        return $this->issueAccessToken($accessTokenTTL, $client, $client->getIdentifier(), []);
+        // The roles granted by the token are derived from its scopes (ROLE_OAUTH2_<SCOPE>):
+        // use the default scopes, as a regular client_credentials request would
+        $scopes = $this->scopeRepository->finalizeScopes(
+            $this->validateScopes($this->defaultScope),
+            $this->getIdentifier(),
+            $client
+        );
+
+        return $this->issueAccessToken($accessTokenTTL, $client, $client->getIdentifier(), $scopes);
     }
 
     #[\Override]

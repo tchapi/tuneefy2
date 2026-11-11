@@ -1,6 +1,6 @@
 nelmio_cors:
     paths:
-        '^/api/':
+        '^/v2/':
             allow_origin: ['*']
             allow_headers: ['*']
             allow_methods: ['POST', 'GET']
