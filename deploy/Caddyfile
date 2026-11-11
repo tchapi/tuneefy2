@@ -31,5 +31,7 @@ data.tuneefy.com {
                 Access-Control-Allow-Methods "GET, POST, OPTIONS, HEAD"
                 Access-Control-Allow-Headers X-Requested-With
         }
+        # The CORS preflights carry no credential: answered here, they never reach the API firewall
+        respond @options 204
         import security
 }
