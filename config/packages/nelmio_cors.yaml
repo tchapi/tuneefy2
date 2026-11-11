@@ -1,10 +1,23 @@
+# In production the CORS headers of the API are set by Caddy (see deploy/Caddyfile): the
+# application must not add its own, a browser rejects a response carrying each header twice.
+# The bundle only serves the dev and test environments, where there is no reverse proxy.
 nelmio_cors:
-    paths:
-        '^/v2/':
-            allow_origin: ['*']
-            allow_headers: ['*']
-            allow_methods: ['POST', 'GET']
-            max_age: 3600
+    paths: []
 
+when@dev:
+    nelmio_cors:
+        paths:
+            '^/v2/':
+                allow_origin: ['*']
+                allow_headers: ['*']
+                allow_methods: ['POST', 'GET']
+                max_age: 3600
 
-
+when@test:
+    nelmio_cors:
+        paths:
+            '^/v2/':
+                allow_origin: ['*']
+                allow_headers: ['*']
+                allow_methods: ['POST', 'GET']
+                max_age: 3600
